@@ -1,5 +1,5 @@
 #define ApplicationName 'EASI'
-#define ApplicationVersion '0.0.11.10872'
+#define ApplicationVersion '0.0.11.10873'
 #define AppIco SourcePath + "\src\ui\resources\app.ico"
 #define OutputDir SourcePath + "\build\release"
 
