@@ -1,8 +1,9 @@
 # coding=utf-8
 
-from hypothesis import strategies as st, given
-import subprocess
 import string
+import subprocess
+
+from hypothesis import strategies as st, given
 
 from src.low.custom_path import Path, create_temp_file
 from tests.with_file import TestCaseWithTestFile
@@ -68,11 +69,8 @@ class TestCustomPath(TestCaseWithTestFile):
         self.assertSequenceEqual(p.human_size(), '1.0G')
         os.remove('./test')
 
-
     @given(s=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1), st.none()),
-           p=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1), st.none()),
-           d=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1), st.none()))
-    def test_create_temp_file(self, s, p, d):
+           p=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1), st.none()), )
+    def test_create_temp_file(self, s, p):
         p = Path(create_temp_file(suffix=s, prefix=p))
         self.assertTrue(all([p.exists(), p.isfile()]))
-

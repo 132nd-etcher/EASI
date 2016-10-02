@@ -130,7 +130,7 @@ class TestMeta(TestCase):
 
     @given(b=st.integers(min_value=1, max_value=1))
     @settings(max_examples=50)
-    def test_corrupted_file(self, b):
+    def test_corrupted_file(self, _):
         with open('./test_b', 'wb') as f:
             f.write(os.urandom(1024 * 32))
         meta = Meta('./test_b', auto_read=False)
@@ -175,7 +175,7 @@ class TestMeta(TestCase):
 
         class C(Meta):
             @meta_property_with_default('default', str)
-            def some_prop(self, value):
+            def some_prop(self, _):
                 f('mock called')
 
         c = C('./test')

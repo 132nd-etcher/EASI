@@ -12,7 +12,7 @@ logger = make_logger(__name__)
 
 
 def install_new_version(latest_version: GHLatest):
-    raise NotImplementedError
+    raise NotImplementedError  # FIXME
 
 
 def get_latest_version(gh_user: str, gh_repo: str) -> GHLatest or None:

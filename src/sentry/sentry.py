@@ -28,6 +28,13 @@ def sentry_register_context(key, obj):
 
 
 def filter_breadcrumbs(_logger, level, msg, *args, **kwargs):
+    skip_lvl = []
+    skip_msg = []
+
+    if level in skip_lvl or msg in skip_msg:
+        return False
+
+    print('got args, kwargs: ', args, kwargs)
     if _logger == 'requests':
         return False
     return True
@@ -84,6 +91,7 @@ crash_reporter.captureException = types.MethodType(capture_with_context, crash_r
 # Overloads the send method in script mode
 # ----------------------------------------------------
 if not constants.FROZEN:
+    # noinspection PyUnusedLocal
     def dummy_capture(*args, **kwargs):
         logger.error('crash report would have been sent')
         # logger.error(pprint.pformat(data))

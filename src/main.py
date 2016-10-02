@@ -50,7 +50,8 @@ def main(init_only=False, test_run=False):
         logger.info('builtins overloads: registering')
 
         if constants.FROZEN:
-            def new_print(*args, **kwargs):
+            # noinspection PyUnusedLocal
+            def new_print(*_, **kwargs):
                 """Replace print builtins to mute output on frozen version"""
                 pass
 

@@ -29,8 +29,8 @@ class MainUiActiveDCSInstallation:
                 self.index.append((x, y))
         self.config_mapping = {
             'stable': dcs_installs.stable,
-            'beta'  : dcs_installs.beta,
-            'alpha' : dcs_installs.alpha,
+            'beta': dcs_installs.beta,
+            'alpha': dcs_installs.alpha,
         }
 
     @property
@@ -58,6 +58,7 @@ class MainUiActiveDCSInstallation:
         except FileNotFoundError:
             pass
 
+    # noinspection PyAttributeOutsideInit
     def setup(self):
         self.menu = QMenu(self.main_ui)
         self.qact_show_main_install = QAction('Main installation', self.main_ui)
@@ -89,7 +90,7 @@ class MainUiActiveDCSInstallation:
                         return
         self.combo.setCurrentIndex(0)
 
-    def dcs_installs_changed(self, **kwargs):
+    def dcs_installs_changed(self, **_):
         self.combo.clear()
         self.update_index()
         for x in self.index:
