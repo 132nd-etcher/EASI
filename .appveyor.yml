@@ -1,6 +1,6 @@
 # CI on Windows via appveyor
 
-version: 0.0.11.10862
+version: 0.0.11.10863
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
@@ -10,6 +10,8 @@ environment:
       secure: GWMPMTNpIs/NmumBQYkAMHQiCIPJLLEBw/wWbwHdpqQ=
     VAULT_SECRET:
       secure: PZenz3embI+Bi4Odqt1HoAwDxnx0hVVcApSrjqTtx2U=
+    CODACY_PROJECT_TOKEN:
+      secure: KufyrkuCy7as7DpyKxxqpyQKDX4Zvhyz1szpaoFTsqw90iRsE/wNkaFJIGj+wKsE
     SCRUTINIZER:
       secure: Z7n1eRV3NvHwwVK3ay0Ng6J09jJe/jNbq+2KJXZhDMBFVLrPjsIGyEyXOHgxLf8h3K7JYctoNOJ3yAnQ10cuGJY2amVbcrPCDzx0cUFe/g0=
     CODECLIMATE_REPO_TOKEN:
@@ -55,6 +57,8 @@ before_build:
 #  - "%PYTHON%/Scripts/codeclimate-test-reporter.exe"
   - "%PYTHON%/Scripts/pip.exe install scrutinizer-ocular"
   - "%PYTHON%/Scripts/ocular.exe --access-token %SCRUTINIZER% --data-file .coverage --config-file .coveragerc"
+  - "%PYTHON%/Scripts/pip.exe install codacy-coverage"
+  - "%PYTHON%/Scripts/python-codacy-coverage.exe -r coverage.xml"
 
 build_script:
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_console --key %COMPILEKEY%"
