@@ -1,6 +1,6 @@
 # CI on Windows via appveyor
 
-version: 0.0.11.10870
+version: 0.0.11.10871
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
