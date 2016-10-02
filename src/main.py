@@ -22,6 +22,7 @@ def main(*, init_only=False, test_run=False):
                 constants.TESTING = True
 
         if test_run:
+            init_only = True
             constants.TESTING = True
 
         if constants.TESTING:
@@ -114,11 +115,10 @@ def main(*, init_only=False, test_run=False):
 
         logger.debug('startup queue populated')
 
-        if 'test_and_exit' in sys.argv:
-            pool.queue_task(sys.exit, [0])
-
-        if constants.TESTING:
-            pool.queue_task(sig_main_ui.exit)
+        if constants.TESTING or 'test_and_exit' in sys.argv:
+            pool.join_all()
+            sig_main_ui.exit()
+            sys.exit(0)
 
         logger.info('transferring control to QtApp')
         sys.exit(qt_app.exec())
