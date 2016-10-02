@@ -10,6 +10,7 @@ from hypothesis import strategies as st
 from src.low.custom_path import Path
 from src.low.meta.decorators import meta_property, meta_property_with_default
 from src.low.meta.meta import Meta
+from src.low.meta.meta_singleton import MetaSingleton
 
 from src.low.custom_logging import make_logger
 
@@ -190,3 +191,13 @@ class TestMeta(TestCase):
         self.assertEqual(f.call_count, 0)
         c.some_prop = 'text'
         self.assertEqual(f.call_count, 1)
+
+    def test_singleton_meta(self):
+        m1 = MetaSingleton('./test')
+        m2 = MetaSingleton(Path('./test'))
+        self.assertTrue(m1 is m2)
+
+    @given(x=st.one_of(st.booleans(), st.integers(), st.none(), st.floats()))
+    def test_single_meta_wrong_type(self, x):
+        with self.assertRaises(TypeError):
+            MetaSingleton(x)

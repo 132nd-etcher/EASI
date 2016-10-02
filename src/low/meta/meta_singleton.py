@@ -1,9 +1,10 @@
 # coding=utf-8
 
+import abc
 from src.low.custom_path import Path
 from .meta import Meta
 
-class _MetaSingleton(type):
+class _MetaSingleton(abc.ABCMeta):
     """
     When used as metaclass, allow only one instance of a class
     """
