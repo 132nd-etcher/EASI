@@ -1,6 +1,6 @@
 # CI on Windows via appveyor
 
-version: 0.0.11.10852
+version: 0.0.11.10853
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
@@ -34,7 +34,9 @@ install:
   - "%PYTHON%/Scripts/pip.exe install -r requirements.txt"
 
   # Installing various utilities
-  - choco install -y InnoSetup
+  - choco install -y InnoSetup curl
+  - curl http://esrg.sourceforge.net/utils_win_up/md5sum/crc32.exe
+  - crc32 .gitignore
   - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
 
 cache:
