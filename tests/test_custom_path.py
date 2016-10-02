@@ -23,11 +23,15 @@ class TestCustomPath(TestCaseWithTestFile):
         p = Path()
 
     def test_get_version(self):
+        import os
         p = Path(r'c:\windows\explorer.exe')
         self.assertTrue(p.isfile())
         self.assertTrue(p.exists())
         self.assertTrue(p.get_version_info())
-        self.assertSequenceEqual(p.get_version_info(), '6.1.7601.17514')
+        if os.environ.get('APPVEYOR', None):
+            self.assertSequenceEqual(p.get_version_info(), '6.3.9600.18231')
+        else:
+            self.assertSequenceEqual(p.get_version_info(), '6.1.7601.17514')
         with self.assertRaises(FileNotFoundError):
             Path('c:\explorer.exe').get_version_info()
         with self.assertRaises(TypeError):
