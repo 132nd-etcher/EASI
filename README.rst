@@ -10,7 +10,7 @@ Etcher's Automated Skin Installer
 
 .. image:: https://ci.appveyor.com/api/projects/status/ej728cibs8q13qw2/branch/master?svg=true&passingText=master%20-%20OK
     :target: https://github.com/132nd-etcher/EASI
-    :alt: Develop build status
+    :alt: Master build status
 
 .. image:: https://ci.appveyor.com/api/projects/status/ej728cibs8q13qw2/branch/develop?svg=true&passingText=develop%20-%20OK
     :target: https://github.com/132nd-etcher/EASI
