@@ -9,7 +9,7 @@ from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 
 
-def main(*, init_only=False, test_run=False):
+def main(init_only=False, test_run=False):
     # FIXME: check all NotImplementedError
     # noinspection PyBroadException
     try:

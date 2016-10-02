@@ -45,10 +45,11 @@ class TestCustomPath(TestCaseWithTestFile):
 
         p = Path('./test')
 
-        def __make_file(len):
+        def __make_file(_len):
             with open('./test', 'wb') as f:
-                if len == 0: return
-                f.seek(len - 1)
+                if _len == 0:
+                    return
+                f.seek(_len - 1)
                 f.write(b'0')
 
         __make_file(0)

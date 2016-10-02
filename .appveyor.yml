@@ -1,6 +1,6 @@
 # CI on Windows via appveyor
 
-version: 0.0.11.10874
+version: 0.0.11.10875
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
@@ -94,6 +94,15 @@ deploy:
       secure: T9LMiMzikVwlfnYhxlIpzhmfotDN75SUmEv1FSGLHZ/vMHMCMT3SEapSOH1iPdaD
     on:
       branch: master                 # release from master branch only
+      appveyor_repo_tag: false       # deploy on tag push only
+  - provider: GitHub
+    artifact: setup           # upload all NuGet packages to release assets
+    draft: false
+    prerelease: true
+    auth_token:
+      secure: T9LMiMzikVwlfnYhxlIpzhmfotDN75SUmEv1FSGLHZ/vMHMCMT3SEapSOH1iPdaD
+    on:
+      branch: prerelease             # release from prerelease branch only
       appveyor_repo_tag: false       # deploy on tag push only
 
 skip_tags: true
