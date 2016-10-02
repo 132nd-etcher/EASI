@@ -39,7 +39,7 @@ install:
   - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
 
 cache:
-  - "%PYTHON% -> requirements.txt"
+  - "%PYTHON%"
   - C:\Program Files (x86)\Inno Setup 5
   - C:\Users\appveyor\AppData\Local\pip\cache
   - C:\ProgramData\chocolatey
