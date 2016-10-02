@@ -1,6 +1,6 @@
 # CI on Windows via appveyor
 
-version: 0.0.11.10871
+version: 0.0.11.10872
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
@@ -55,8 +55,8 @@ before_build:
   - "%PYTHON%/Scripts/codecov.exe"
 #  - "%PYTHON%/Scripts/pip.exe install codeclimate-test-reporter codecov"
 #  - "%PYTHON%/Scripts/codeclimate-test-reporter.exe"
-  - "%PYTHON%/Scripts/pip.exe install scrutinizer-ocular"
-  - "%PYTHON%/Scripts/ocular.exe --data-file .coverage --config-file .coveragerc"
+#  - "%PYTHON%/Scripts/pip.exe install scrutinizer-ocular"
+#  - "%PYTHON%/Scripts/ocular.exe --data-file .coverage --config-file .coveragerc"
   - "%PYTHON%/Scripts/pip.exe install codacy-coverage"
   - "%PYTHON%/Scripts/python-codacy-coverage.exe -r coverage.xml"
 
