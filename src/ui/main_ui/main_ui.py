@@ -1,6 +1,5 @@
 # coding=utf-8
 
-import sys
 from queue import Queue
 
 from src.low import constants

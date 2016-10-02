@@ -2,7 +2,6 @@
 
 
 from src.qt import *
-import time
 
 
 class MainGuiWorker(QObject):

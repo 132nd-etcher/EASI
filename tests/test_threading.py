@@ -42,7 +42,7 @@ class TestThreading(TestCase):
         def some_func():
             return True
 
-        for x in range(100):
+        for _ in range(100):
             self.assertTrue(p.queue_task(some_func))
         p.join_all()
         time.sleep(0.1)

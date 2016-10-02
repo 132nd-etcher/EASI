@@ -46,11 +46,6 @@ class TestMeta(TestCase):
             if os.path.exists(x):
                 os.remove(x)
 
-    def test_imports(self):
-        from src.low.meta import Meta
-        from src.low.meta.decorators import meta_property_with_default, meta_property
-        from src.low import meta
-
     def test_init(self):
         with self.assertRaises(TypeError):
             # noinspection PyArgumentList
@@ -98,7 +93,6 @@ class TestMeta(TestCase):
             m.data = x
 
     def test_init_with_path(self):
-        from src.low.custom_path import Path
         p = Path('./test')
         self.assertIsInstance(p, Path)
         Meta(p, auto_read=False)
