@@ -2,17 +2,17 @@
 Etcher's Automated Skin Installer
 *********************************
 
-.. image:: https://ci.appveyor.com/api/projects/status/pmr6o0maujb70dkb/branch/develop?svg=true&passingText=develop%20-%20OK
+.. image:: https://ci.appveyor.com/api/projects/status/ej728cibs8q13qw2/branch/master?svg=true&passingText=master%20-%20OK
+    :target: https://github.com/132nd-etcher/EASI
+    :alt: Develop build status
+
+.. image:: https://ci.appveyor.com/api/projects/status/ej728cibs8q13qw2/branch/develop?svg=true&passingText=develop%20-%20OK
     :target: https://github.com/132nd-etcher/EASI
     :alt: Develop build status
 
 .. image:: https://codeclimate.com/github/132nd-etcher/EASI/badges/gpa.svg
    :target: https://codeclimate.com/github/132nd-etcher/EASI
    :alt: Code Climate
-
-.. image:: https://codeclimate.com/github/132nd-etcher/EASI/badges/coverage.svg
-   :target: https://codeclimate.com/github/132nd-etcher/EASI/coverage
-   :alt: Test Coverage
 
 .. image:: https://codeclimate.com/github/132nd-etcher/EASI/badges/issue_count.svg
    :target: https://codeclimate.com/github/132nd-etcher/EASI
