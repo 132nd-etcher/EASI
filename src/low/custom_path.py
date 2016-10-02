@@ -35,24 +35,21 @@ class Path(path.Path):
         :param path_to_exe: path to the executable file
         :return: version as a String or None
         """
-        if not self.exists() or not self.isfile():
-            return None
+        if not self.exists():
+            raise FileNotFoundError(self.abspath())
+        if not self.isfile():
+            raise TypeError('not a file: {}'.format(self.abspath()))
         try:
             pe = pefile.PE(self.abspath())
-            if not 'VS_FIXEDFILEINFO' in pe.__dict__:
-                return None
-                print("ERROR: Oops, %s has no version info. Can't continue." % (self.abspath()))
-                return
-            if not pe.VS_FIXEDFILEINFO:
-                return None
-                print("ERROR: VS_FIXEDFILEINFO field not set for %s. Can't continue." % (self.abspath()))
-                return
-            verinfo = pe.VS_FIXEDFILEINFO
-            filever = (verinfo.FileVersionMS >> 16, verinfo.FileVersionMS & 0xFFFF, verinfo.FileVersionLS >> 16, verinfo.FileVersionLS & 0xFFFF)
-            prodver = (verinfo.ProductVersionMS >> 16, verinfo.ProductVersionMS & 0xFFFF, verinfo.ProductVersionLS >> 16, verinfo.ProductVersionLS & 0xFFFF)
-            return '%d.%d.%d.%d' % filever
-        except:
-            return None
+        except pefile.PEFormatError:
+            raise ValueError('file has no version: {}'.format(self.abspath()))
+        if 'VS_FIXEDFILEINFO' not in pe.__dict__ or not pe.VS_FIXEDFILEINFO:
+            raise ValueError('file has no version: {}'.format(self.abspath()))
+        verinfo = pe.VS_FIXEDFILEINFO
+        filever = (verinfo.FileVersionMS >> 16, verinfo.FileVersionMS & 0xFFFF, verinfo.FileVersionLS >> 16, verinfo.FileVersionLS & 0xFFFF)
+        prodver = (verinfo.ProductVersionMS >> 16, verinfo.ProductVersionMS & 0xFFFF, verinfo.ProductVersionLS >> 16, verinfo.ProductVersionLS & 0xFFFF)
+        return '%d.%d.%d.%d' % filever
+
 
 
 def create_temp_file(*, suffix=None, prefix=None, create_in_dir=None):
@@ -63,6 +60,8 @@ def create_temp_file(*, suffix=None, prefix=None, create_in_dir=None):
     :param create_in_dir: directory in which the file will be created (defaults to temp)
     :return: temporary file path as a string
     """
+    if create_in_dir is None:
+        create_in_dir = tempfile.gettempdir()
     os_handle, temp_file = tempfile.mkstemp(suffix=suffix, prefix=prefix, dir=create_in_dir)
     os.close(os_handle)
     return Path(temp_file)
