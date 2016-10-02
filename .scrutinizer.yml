@@ -152,7 +152,7 @@ filter:
 build:
   tests:
     override:
-      - command: 'pip install coverage && coverage run --source ./src -m nose ./tests',
+      - command: 'pip install coverage && coverage run --source ./src -m nose ./tests'
         coverage:
             file: '.coverage'
             config_file: '.coveragerc'
