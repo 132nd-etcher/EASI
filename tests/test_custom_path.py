@@ -39,6 +39,32 @@ class TestCustomPath(TestCaseWithTestFile):
         with self.assertRaises(ValueError):
             Path('src/main.py').get_version_info()
 
+    def test_human_size(self):
+
+        p = Path('./test')
+
+        def __make_file(len):
+            with open('./test', 'wb') as f:
+                if len == 0: return
+                f.seek(len - 1)
+                f.write(b'0')
+
+        __make_file(0)
+        self.assertSequenceEqual(p.human_size(), '0B')
+        __make_file(1)
+        self.assertSequenceEqual(p.human_size(), '1B')
+        __make_file(512)
+        self.assertSequenceEqual(p.human_size(), '512B')
+        __make_file(1024)
+        self.assertSequenceEqual(p.human_size(), '1.0K')
+        __make_file(1024 * 128)
+        self.assertSequenceEqual(p.human_size(), '128.0K')
+        __make_file(1024 * 1024)
+        self.assertSequenceEqual(p.human_size(), '1.0M')
+        __make_file(1024 * 1024 * 1024)
+        self.assertSequenceEqual(p.human_size(), '1.0G')
+        os.remove('./test')
+
 
     @given(s=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1), st.none()),
            p=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1), st.none()),

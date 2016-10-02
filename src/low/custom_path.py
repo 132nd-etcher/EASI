@@ -3,6 +3,7 @@
 import binascii
 import os
 import tempfile
+from humanize import filesize
 
 import path
 import pefile
@@ -20,6 +21,9 @@ class Path(path.Path):
                     return buf
             except:
                 raise RuntimeError('failed to compute crc32 for: {}'.format(self.abspath()))
+
+    def human_size(self):
+        return filesize.naturalsize(self.getsize(), gnu=True)
 
     def normalize(self):
         """
