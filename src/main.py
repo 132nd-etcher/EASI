@@ -1,8 +1,6 @@
 # coding=utf-8
 
 import builtins
-import os
-import sys
 
 import certifi
 
@@ -15,6 +13,8 @@ def main(*, init_only=False, test_run=False):
     # FIXME: check all NotImplementedError
     # noinspection PyBroadException
     try:
+
+        import sys
 
         if len(sys.argv) > 1:
             print('sys.argv: ', str(sys.argv))
@@ -39,6 +39,7 @@ def main(*, init_only=False, test_run=False):
             # FIXME this will need some work
             raise ImportError('cacert.pem file is corrupted, please reinstall EASI ({})'.format(cacert.crc32()))
         logger.debug('setting up local cacert file to: {}'.format(str(cacert)))
+        import os
         os.environ['REQUESTS_CA_BUNDLE'] = str(cacert)
 
         logger.info('sentry: initializing')

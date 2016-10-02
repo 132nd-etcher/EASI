@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from hypothesis import strategies as st, given
-import os
 import subprocess
 import string
 
@@ -14,6 +13,7 @@ class TestCustomPath(TestCaseWithTestFile):
         return subprocess.check_output(['crc32', path]).decode().split(' ')[0][2:]
 
     def test_crc32(self):
+        import os
         for p in [Path(f) for f in os.listdir('.')]:
             if p.isfile():
                 self.assertEqual(p.crc32(), self.hash_file(p.abspath()))
@@ -40,6 +40,8 @@ class TestCustomPath(TestCaseWithTestFile):
             Path('src/main.py').get_version_info()
 
     def test_human_size(self):
+
+        import os
 
         p = Path('./test')
 

@@ -1,7 +1,6 @@
 # coding=utf-8
 import abc
 
-from src.low.custom_path import Path
 from .abstract_sentry import SentryContextInterface
 
 

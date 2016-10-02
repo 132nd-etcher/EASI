@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from src.helper.helper import BaseHelper
-from src.sig import sig_long_op_dialog
 
 
 class KdiffHelper(BaseHelper):

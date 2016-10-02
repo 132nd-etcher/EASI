@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import time
-from unittest import TestCase, mock
+from unittest import TestCase
 
 from hypothesis import strategies as st, given, example
 

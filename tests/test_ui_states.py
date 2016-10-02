@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from unittest import mock
-from hypothesis import given, example
+from hypothesis import given
 from hypothesis import strategies as st
 
 from tests.init_qt_app import QtTestCase
