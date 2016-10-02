@@ -10,6 +10,8 @@ environment:
       secure: GWMPMTNpIs/NmumBQYkAMHQiCIPJLLEBw/wWbwHdpqQ=
     VAULT_SECRET:
       secure: PZenz3embI+Bi4Odqt1HoAwDxnx0hVVcApSrjqTtx2U=
+    CODECLIMATE_REPO_TOKEN:
+      secure: 5g9TZWYrT6Bq9BSvMcI408Nyh9OcoCHU+wFYXV7Q8nBg7lgRjH/ht1p2MQwJhsiEGHqw3Krk+h6a3w92725ldwxKOWrc8twh92gOPC0b4gs=
 
     matrix:
       - PYTHON: "C:\\Python35"
