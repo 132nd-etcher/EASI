@@ -143,7 +143,17 @@ filter:
     excluded_paths:
         - '*/tests/*'
 
-tools:
-    external_code_coverage:
-        timeout: 300   # How long should we wait for code coverage (in seconds).
-        runs: 1        # In how many runs have you split your tests?
+#tools:
+#    external_code_coverage:
+#        timeout: 300   # How long should we wait for code coverage (in seconds).
+#        runs: 1        # In how many runs have you split your tests?
+
+build:
+    tests:
+        override:
+            -
+                command: 'pip install coverage && coverage run --source ./src -m nose ./tests',
+                coverage:
+                    file: '.coverage'
+                    config_file: '.coveragerc'
+                    format: 'py-cc'
