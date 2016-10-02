@@ -1,0 +1,10 @@
+notify:
+  slack:
+    default:
+      url: "secret:pJg2R+BCHUUnwCh7H+VsQrrBFDEGxINSWKcoqciD3zg9m8xa2SbYOSNJkUdUUtG06TVl2s5b7//P1DpmziZg+T85VTHoPVB0ZoI8/9rnTxbqC7RX7Tttp7g8AK+TvrKu8uwfauE+HdQqmQs126ihzSlxZvEDf7V7LKYIMID2pdg="
+      threshold: 1%
+      branches:
+        - master
+        - develop
+        - feature/*
+      attachments: "sunburst, diff"

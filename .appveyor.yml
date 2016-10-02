@@ -1,0 +1,85 @@
+# CI on Windows via appveyor
+
+version: 0.0.11.10847
+
+environment:
+    GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
+    CYGWIN_GIT_PATH:   "C:\\cygwin\\bin;%GIT_DAEMON_PATH%"
+    CYGWIN64_GIT_PATH: "C:\\cygwin64\\bin;%GIT_DAEMON_PATH%"
+    COMPILEKEY:
+      secure: GWMPMTNpIs/NmumBQYkAMHQiCIPJLLEBw/wWbwHdpqQ=
+
+    matrix:
+      - PYTHON: "C:\\Python35"
+        PYTHON_VERSION: "3.5.2"
+        GIT_PATH: "%GIT_DAEMON_PATH%"
+        fast_finish: true
+
+init:
+  - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
+
+install:
+  - nuget install secure-file -ExcludeVersion
+  - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %my_secret% -out vault\secret.pyd
+  - "%PYTHON%/Scripts/pip.exe install nose"
+  - "%PYTHON%/Scripts/pip.exe install coverage"
+
+  # Upgrade to the latest version of pip to avoid it displaying warnings
+  # about it being out of date.
+  - "%PYTHON%/Scripts/pip.exe install --disable-pip-version-check --user --upgrade pip"
+  - "%PYTHON%/Scripts/pip.exe install -r requirements.txt"
+
+  # Installing various utilities
+  - choco install -y InnoSetup
+  - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
+
+cache:
+  - "%PYTHON% -> requirements.txt"
+  - C:\Program Files (x86)\Inno Setup 5
+  - C:\Users\appveyor\AppData\Local\pip\cache
+  - C:\ProgramData\chocolatey
+
+before_build:
+  - "%PYTHON%/Scripts/coverage.exe run --source ./src -m nose ./tests"
+  - "%PYTHON%/Scripts/coverage.exe xml"
+  - "%PYTHON%/Scripts/pip.exe install codeclimate-test-reporter codecov"
+  - "%PYTHON%/Scripts/codeclimate-test-reporter.exe"
+  - "%PYTHON%/Scripts/codecov.exe"
+
+build_script:
+  - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_console --key %COMPILEKEY%"
+  - set PATH="%APPVEYOR_BUILD_FOLDER%\build\dist_console";%PATH%
+  - easi.exe test_and_exit
+  - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY%"
+  - iscc inno_setup.iss
+#  - dir
+
+artifacts:
+  - path: ./build/release/*.exe
+    name: setup
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+    - prerelease
+    - develop  # FIXME this needs to go
+
+  # blacklist
+  except:
+    - gh-pages
+
+deploy:
+    # Deploy to GitHub Releases
+  - provider: GitHub
+    artifact: setup           # upload all NuGet packages to release assets
+    draft: false
+    prerelease: false
+    auth_token:
+      secure: T9LMiMzikVwlfnYhxlIpzhmfotDN75SUmEv1FSGLHZ/vMHMCMT3SEapSOH1iPdaD
+    on:
+      branch: master                 # release from master branch only
+      appveyor_repo_tag: false       # deploy on tag push only
+
+skip_tags: true

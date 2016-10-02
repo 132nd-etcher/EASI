@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/pic">
+        <file>caution.png</file>
+        <file>github.png</file>
+        <file>info.png</file>
+        <file>settings.png</file>
+        <file>exit.png</file>
+        <file>banner.png</file>
+    </qresource>
+    <qresource prefix="/font">
+        <file>anon_pro.ttf</file>
+    </qresource>
+    <qresource prefix="/ico">
+        <file>app.ico</file>
+    </qresource>
+</RCC>
