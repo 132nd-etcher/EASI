@@ -8,6 +8,8 @@ environment:
     CYGWIN64_GIT_PATH: "C:\\cygwin64\\bin;%GIT_DAEMON_PATH%"
     COMPILEKEY:
       secure: GWMPMTNpIs/NmumBQYkAMHQiCIPJLLEBw/wWbwHdpqQ=
+    VAULT_SECRET:
+      secure: PZenz3embI+Bi4Odqt1HoAwDxnx0hVVcApSrjqTtx2U=
 
     matrix:
       - PYTHON: "C:\\Python35"
@@ -20,7 +22,7 @@ init:
 
 install:
   - nuget install secure-file -ExcludeVersion
-  - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %my_secret% -out vault\secret.pyd
+  - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
   - "%PYTHON%/Scripts/pip.exe install nose"
   - "%PYTHON%/Scripts/pip.exe install coverage"
 
