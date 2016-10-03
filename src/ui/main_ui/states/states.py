@@ -21,6 +21,7 @@ def state_method(func):
 
 
 class MainUiStateManager(AbstractConnectedObject, AbstractMainUiState):
+
     state_mapping = {
         'starting': UiStateStartup,
         'running' : UiStateRunning,
@@ -38,33 +39,13 @@ class MainUiStateManager(AbstractConnectedObject, AbstractMainUiState):
         self.current_state = self.state_mapping[state]
 
     @state_method
-    def dcs_installs_lookup_finished(self):
-        """"""
-
-    @state_method
-    def updater_started(self):
-        """"""
-
-    @state_method
-    def keyring_validation_finished(self):
-        """"""
-
-    @state_method
-    def keyring_validation_start(self):
-        """"""
-
-    @state_method
-    def dcs_installs_lookup_start(self):
-        """"""
-
-    @state_method
-    def updater_finished(self):
-        """"""
-
-    @state_method
     def set_progress(self, value: int):
         """"""
 
     @state_method
     def add_progress(self, value: int):
+        """"""
+
+    @state_method
+    def set_progress_text(self, value: str):
         """"""

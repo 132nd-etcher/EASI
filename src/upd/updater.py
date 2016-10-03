@@ -27,7 +27,7 @@ def get_latest_version(gh_user: str, gh_repo: str) -> GHLatest or None:
 
 def check_for_update():
     logger.info('running')
-    sig_main_ui_states.updater_started()
+    sig_main_ui_states.set_progress_text('Looking for a newer version of {}'.format(constants.APP_SHORT_NAME))
     local_version = Version(__version__)
     if config.subscribe_to_test_versions:
         logger.debug('looking for a newer test version')
@@ -52,5 +52,5 @@ def check_for_update():
             latest.print_all()
             print(latest.version)
             logger.info('running experimental version of {}'.format(constants.APP_SHORT_NAME))
-    sig_main_ui_states.updater_finished()
+    sig_main_ui_states.set_progress(100)
     logger.info('done')

@@ -81,10 +81,10 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
 
 def init_keyring():
     logger.info('keyring: validating tokens')
-    sig_main_ui_states.keyring_validation_start()
+    sig_main_ui_states.set_progress_text('Validating credentials')
     keyring.validate_tokens()
     logger.info('keyring: tokens validated')
-    sig_main_ui_states.keyring_validation_finished()
+    sig_main_ui_states.set_progress(100)
 
 
 logger.info('keyring: initializing')

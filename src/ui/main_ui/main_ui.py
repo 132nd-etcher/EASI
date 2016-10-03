@@ -7,7 +7,6 @@ from src.qt import *
 from ..dialog_config.dialog import ConfigDialog
 from ..dialog_feedback.dialog import FeedbackDialog
 from ..dialog_long_op.dialog import LongOpDialog
-from ..dialog_long_op_dual.dialog import LongOpDualDialog
 # noinspection PyPackageRequirements
 from .interface.interface import MainUiSigProcessor
 from .main_ui_active_dcs_installation import MainUiActiveDCSInstallation
@@ -37,7 +36,6 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.sig_proc = MainUiSigProcessor(self)
         self.splash = MainUiSplash(self, 'splash')
         self.long_op = LongOpDialog(self, 'long_op')
-        self.long_op_dual = LongOpDualDialog(self, 'long_op_dual')
         self.config_dialog = ConfigDialog(self)
         self.active_dcs_installation = MainUiActiveDCSInstallation(self)
         self.mod_author_watcher = MainUiModAuthor(self)

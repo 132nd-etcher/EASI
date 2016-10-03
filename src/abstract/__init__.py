@@ -10,7 +10,7 @@ the MainUi itself, to enable Signal connectivity without breaking the abstractio
 """
 
 from .abstract_meta import AbstractMeta
-from .abstract_progress import DualProgressInterface, ProgressInterface
+from .abstract_progress import ProgressInterface
 from .abstract_sentry import SentryContextInterface
 from .mod import *
 from .ui import *

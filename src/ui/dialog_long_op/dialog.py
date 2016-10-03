@@ -20,13 +20,38 @@ class LongOpDialog(AbstractConnectedDialog, ProgressInterface):
 
     def __init__(self, parent, main_ui_obj_name):
         AbstractConnectedDialog.__init__(self, sig_long_op_dialog, main_ui_obj_name, _LongOpDialog(parent))
+        self.set_current_enabled(False)
+
+    @property
+    def dialog(self) -> Ui_Dialog:
+        return self.qobj
+
+    def set_current_enabled(self, value: bool):
+        self.dialog.label_current.setVisible(value)
+        self.dialog.progressBar.setVisible(value)
+
+    @staticmethod
+    def make(*args, **kwargs):
+        raise NotImplementedError('use signals')
 
     def set_progress(self, value: int):
-        self.qobj.progressBar.setValue(value)
+        self.dialog.progress_bar_total.setValue(value)
 
     def add_progress(self, value: int):
-        self.qobj.progressBar.setValue(self.qobj.progressBar.value() + value)
+        self.qobj.progress_bar_total.setValue(self.qobj.progressBar.value() + value)
 
     def set_text(self, value: str):
-        self.qobj.label.setText(str(value))
+        self.dialog.label.setText(str(value))
+        self.dialog.label.adjustSize()
         self.adjust_size()
+
+    def set_current_progress(self, value: int):
+        self.dialog.progressBar.setValue(value)
+
+    def add_current_progress(self, value: int):
+        current = self.qobj.progressBar.value()
+        self.dialog.progressBar.setValue(current + value)
+
+    def set_current_text(self, value: str):
+        self.dialog.label_current.setText(str(value))
+        # self.adjust_size()

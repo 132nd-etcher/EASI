@@ -47,7 +47,7 @@ class DCSInstalls(metaclass=Singleton):
     # noinspection PyBroadException
     def discover(self):
         logger.debug('looking for DCS installations paths')
-        sig_main_ui_states.dcs_installs_lookup_start()
+        sig_main_ui_states.set_progress_text('Looking for DCS installations')
         a_reg = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
         if config.saved_games_path is None:
             logger.debug('searching for base "Saved Games" folder')
@@ -99,7 +99,7 @@ class DCSInstalls(metaclass=Singleton):
                 logger.debug('no install path found for {}'.format(k))
             sig_main_ui_states.add_progress(partial_progress)
         sig_dcs_installs_changed.send()
-        sig_main_ui_states.dcs_installs_lookup_finished()
+        sig_main_ui_states.set_progress(100)
 
     def __get_props(self, channel):
         return self.installs[channel]['install'], self.installs[channel]['sg'], self.installs[channel]['version']

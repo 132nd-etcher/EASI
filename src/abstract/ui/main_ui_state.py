@@ -10,37 +10,12 @@ class AbstractMainUiState(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def updater_started(state_manager):
-        """Fires when EASI updater starts"""
-
-    @staticmethod
-    @abc.abstractstaticmethod
-    def updater_finished(state_manager):
-        """Fires when EASI updater finishes"""
-
-    @staticmethod
-    @abc.abstractstaticmethod
-    def dcs_installs_lookup_start(state_manager):
-        """Fires when EASI is looking for local DCS installations"""
-
-    @staticmethod
-    @abc.abstractstaticmethod
-    def dcs_installs_lookup_finished(state_manager):
-        """Fires when EASI is looking for local DCS installations"""
-
-    @staticmethod
-    @abc.abstractstaticmethod
-    def keyring_validation_start(state_manager):
-        """Fires when EASI is looking for local DCS installations"""
-
-    @staticmethod
-    @abc.abstractstaticmethod
-    def keyring_validation_finished(state_manager):
-        """Fires when EASI is looking for local DCS installations"""
+    def set_progress(state_manager, value: int):
+        """Sets current op progress"""
 
     @staticmethod
     @abc.abstractmethod
-    def set_progress(state_manager, value: int):
+    def set_progress_text(state_manager, value: str):
         """Sets current op progress"""
 
     @staticmethod

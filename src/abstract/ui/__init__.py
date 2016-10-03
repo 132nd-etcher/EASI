@@ -9,7 +9,7 @@ from .base_qobject import AbstractBaseQObject
 from .connected_dialog import AbstractConnectedDialog
 from .connected_object import AbstractConnectedObject
 from .connected_qobject import AbstractConnectedQObject
-from .long_op import AbstractLongOpDual, AbstractLongOp
+from .long_op import AbstractLongOp
 from .main_ui_interface import AbstractMainUiInterface
 from .main_ui_state import AbstractMainUiState
 from .progress_dialog import BaseProgressDialog
