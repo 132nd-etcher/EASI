@@ -65,8 +65,10 @@ class TestCustomPath(TestCaseWithTestFile):
         self.assertSequenceEqual(p.human_size(), '128.0K')
         __make_file(1024 * 1024)
         self.assertSequenceEqual(p.human_size(), '1.0M')
-        __make_file(1024 * 1024 * 1024)
-        self.assertSequenceEqual(p.human_size(), '1.0G')
+        __make_file((1024 * 1024 * 32) + (1024 * 128))
+        self.assertSequenceEqual(p.human_size(), '32.1M')
+        # __make_file(1024 * 1024 * 1024)
+        # self.assertSequenceEqual(p.human_size(), '1.0G')
         os.remove('./test')
 
     @given(s=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1), st.none()),
