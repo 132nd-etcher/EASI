@@ -144,6 +144,11 @@ class DownloadFileList:
         self.file_list.append(download_file)
         self.__d[download_file.url] = download_file
 
+    def add_file_from_github(self, user: str, repo: str, file_path: str, branch: str = 'master'):
+        self.add_file(url=r'https://raw.githubusercontent.com/{}/{}/{}/{}'.format(
+            user, repo, branch, file_path
+        ))
+
     def all_good(self):
         if len(self.file_list) == 0:
             raise ValueError('file list is empty')
@@ -239,12 +244,15 @@ class Downloader(metaclass=Singleton):
 
     def download_multiple_to_file(self,
                                   download_file_list: DownloadFileList,
-                                  progress: DualProgressInterface = None):
+                                  progress: DualProgressInterface = None,
+                                  on_completion: callable = None):
 
         self.pool_seq.queue_task(
             self.__download_multiple_to_file,
             kwargs=dict(download_file_list=download_file_list, progress=progress)
         )
+        if on_completion is not None:
+            self.pool_seq.queue_task(on_completion)
 
 
 downloader = Downloader()
