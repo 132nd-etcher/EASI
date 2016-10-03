@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.cfg import config
-from src.qt import *
+from src.qt import QDialog, QIcon, QDialogButtonBox, Qt, qt_resources
 from src.ui.skeletons.dialog_disclaimer import Ui_Dialog
 from .disclaimer import disclaimers, disclaimers_mod_author
 
@@ -26,7 +26,8 @@ class DisclaimerDialog(Ui_Dialog, QDialog):
                 ks.add(k)
         if discs:
             discs.insert(0,
-                         '<blockquote><p>By clicking "Accept" below, you explicitly state that you have acknowledged and that you agree with everything on this page.</p></blockquote>')
+                         '<blockquote><p>By clicking "Accept" below, you explicitly state that you have acknowledged '
+                         'and that you agree with everything on this page.</p></blockquote>')
             dialog = DisclaimerDialog()
             if special:
                 dialog.setWindowTitle('{} - {}'.format(dialog.windowTitle(), special))

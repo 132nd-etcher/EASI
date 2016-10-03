@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from src.qt import *
+from src.qt import QDialog, Qt
 from src.ui.skeletons.confirm_dialog import Ui_Dialog
 
 

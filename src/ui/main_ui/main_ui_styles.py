@@ -2,7 +2,7 @@
 
 import blinker
 
-from src.qt import *
+from src.qt import QStyleFactory, QApplication
 
 sig_main_ui_style = blinker.signal('sig_main_ui_style')
 

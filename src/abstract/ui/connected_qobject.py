@@ -2,7 +2,7 @@
 
 import abc
 
-from src.qt import *
+from src.qt import QObject
 from .connected_object import AbstractConnectedObject
 
 

@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.cfg import config
-from src.qt import *
+from src.qt import QDialog, Qt, QIcon, qt_resources, QDialogButtonBox
 from src.ui.dialog_msg.dialog import MsgDialog
 from src.ui.skeletons.dialog_feedback import Ui_Dialog
 
@@ -47,7 +47,7 @@ class FeedbackDialog:
                 message=text, level='debug',
                 tags={
                     'message': type_of_msg,
-                    'type'   : 'message',
+                    'type': 'message',
                 }
             )
             crash_reporter.context.clear()

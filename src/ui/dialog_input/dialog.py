@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.abstract.ui.base_dialog import AbstractBaseDialog
-from src.qt import *
+from src.qt import QDialog, Qt, QLineEdit, QLabel, QDialogButtonBox
 from src.ui.skeletons.input_dialog import Ui_Dialog
 
 

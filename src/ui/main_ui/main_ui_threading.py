@@ -1,7 +1,7 @@
 # coding=utf-8
 
 
-from src.qt import *
+from src.qt import QObject, pyqtSignal, QThread
 
 
 class MainGuiWorker(QObject):

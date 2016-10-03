@@ -3,18 +3,17 @@
 from queue import Queue
 
 from src.low import constants
-from src.qt import *
+from src.qt import QApplication, QMainWindow, Qt, QIcon, qt_resources
+from src.ui.main_ui.interface.interface import MainUiSigProcessor
+from src.ui.splash.dialog import MainUiSplash
+from .main_ui_active_dcs_installation import MainUiActiveDCSInstallation
+from .main_ui_mod_author import MainUiModAuthor
+from .main_ui_threading import MainGuiThreading
+from .states import MainUiStateManager
 from ..dialog_config.dialog import ConfigDialog
 from ..dialog_feedback.dialog import FeedbackDialog
 from ..dialog_long_op.dialog import LongOpDialog
-# noinspection PyPackageRequirements
-from .interface.interface import MainUiSigProcessor
-from .main_ui_active_dcs_installation import MainUiActiveDCSInstallation
-from .main_ui_threading import MainGuiThreading
-from .states import MainUiStateManager
-from .main_ui_mod_author import MainUiModAuthor
 from ..skeletons.main import Ui_MainWindow
-from ..splash.dialog import MainUiSplash
 
 
 # from src.abstract.ui import AbstractConnectedQObject
@@ -24,9 +23,10 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
 
     def __init__(self, qt_app: QApplication):
         # Fucking QMainWindow calls a general super().__init__ on every parent class, don't call them here !
-        QMainWindow.__init__(self,
-                             parent=None,
-                             flags=Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
+        QMainWindow.__init__(
+            self,
+            parent=None,
+            flags=Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
 
         self.qt_app = qt_app
 

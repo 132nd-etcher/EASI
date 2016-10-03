@@ -3,7 +3,7 @@
 import abc
 
 from src.abstract.ui.base_qobject import AbstractBaseQObject
-from src.qt import *
+from src.qt import QDialog
 
 
 class AbstractBaseDialog(AbstractBaseQObject, metaclass=abc.ABCMeta):

@@ -2,7 +2,7 @@
 
 from src.cfg import config
 from src.low.custom_logging import make_logger
-from src.qt import *
+from src.qt import QDialog, Qt, QStyleFactory
 from src.ui.dialog_config.abstract_config_dialog_child import AbstractConfigDialogChild
 from src.ui.dialog_config.settings_gh import GHSettings
 from src.ui.dialog_config.settings_mod_authoring import ModAuthoringSettings
@@ -48,7 +48,8 @@ class ConfigDialog(Ui_Settings, QDialog):
             assert isinstance(child, AbstractConfigDialogChild)
             child.setup()
 
-    def set_style(self, style):
+    @staticmethod
+    def set_style(style):
         import blinker
         sig = blinker.signal('sig_main_ui_style')
         print(style)

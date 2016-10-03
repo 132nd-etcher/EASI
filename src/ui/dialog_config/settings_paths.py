@@ -3,7 +3,7 @@
 import os
 
 from src.cfg import config
-from src.qt import *
+from src.qt import QAction, QMenu
 from src.ui.dialog_browse.dialog import BrowseDialog
 from src.ui.dialog_msg.dialog import MsgDialog
 from src.ui.skeletons.config_dialog import Ui_Settings
@@ -40,10 +40,12 @@ class PathsSettings(AbstractConfigDialogChild):
         self.qact_cache_browse.triggered.connect(self.browse_for_cache)
         self.qact_cache_show.triggered.connect(self.show_cache)
 
-    def show_sg(self):
+    @staticmethod
+    def show_sg():
         os.startfile(config.saved_games_path)
 
-    def show_cache(self):
+    @staticmethod
+    def show_cache():
         try:
             os.startfile(config.cache)
         except FileNotFoundError:

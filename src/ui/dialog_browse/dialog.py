@@ -3,7 +3,7 @@
 import typing
 
 from src.low.custom_path import Path
-from src.qt import *
+from src.qt import QFileDialog, QIcon, qt_resources
 
 
 class BrowseDialog(QFileDialog):
@@ -28,14 +28,14 @@ class BrowseDialog(QFileDialog):
             return None
 
     @staticmethod
-    def make(parent, title: str, filter: typing.List[str] = None, init_dir: str = '.'):
-        if filter is None:
-            filter = ['*.*']
+    def make(parent, title: str, _filter: typing.List[str] = None, init_dir: str = '.'):
+        if _filter is None:
+            _filter = ['*.*']
         dialog = BrowseDialog(parent, title)
         dialog.setOption(QFileDialog.DontResolveSymlinks)
         dialog.setOption(QFileDialog.DontUseCustomDirectoryIcons)
         dialog.setFileMode(QFileDialog.AnyFile)
-        dialog.setNameFilters(filter)
+        dialog.setNameFilters(_filter)
         dialog.setDirectory(init_dir)
         dialog.setAcceptMode(QFileDialog.AcceptOpen)
         dialog.setOption(QFileDialog.ReadOnly)

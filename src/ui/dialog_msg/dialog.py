@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.abstract.ui.base_dialog import AbstractBaseDialog
-from src.qt import *
+from src.qt import QDialog, Qt
 from src.ui.skeletons.msg_dialog import Ui_Dialog
 
 
@@ -16,6 +16,7 @@ class MsgDialog(AbstractBaseDialog):
     def __init__(self, parent=None):
         AbstractBaseDialog.__init__(self, _MsgDialog(parent))
 
+    # noinspection PyMethodOverriding
     @staticmethod
     def make(text, title=' ', parent=None):
         text = text.replace('\n', '<br>')

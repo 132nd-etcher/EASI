@@ -4,7 +4,7 @@ import os
 
 from src.cfg import config
 from src.dcs import dcs_installs
-from src.qt import *
+from src.qt import QMenu, QAction
 from src.sig import SignalReceiver, sig_dcs_installs_changed
 from src.ui.skeletons.main import Ui_MainWindow
 
