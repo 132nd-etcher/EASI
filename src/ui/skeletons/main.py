@@ -99,7 +99,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.group_active_dcs_installation.setTitle(_translate("MainWindow", "Active DCS installation: "))
         self.btn_active_dcs_installation_open_in_explorer.setText(_translate("MainWindow", "Show in explorer"))
-        self.label_dcs_version_static.setText(_translate("MainWindow", "Version: "))
+        self.label_dcs_version_static.setText(_translate("MainWindow", "Version of DCS: "))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuSettings.setTitle(_translate("MainWindow", "Settings"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))

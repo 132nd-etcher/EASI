@@ -91,7 +91,7 @@
        <item>
         <widget class="QLabel" name="label_dcs_version_static">
          <property name="text">
-          <string>Version: </string>
+          <string>Version of DCS: </string>
          </property>
         </widget>
        </item>
