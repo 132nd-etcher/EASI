@@ -223,12 +223,14 @@ class Downloader:
         def __download_content():
 
             current = 0
+            fdl = None
 
             def __set_composite_progress(value):
+                if fdl is None:
+                    return
                 partial_size = (value / 100) * fdl.size
                 progress.set_current_progress(value)
                 progress.set_progress(((current + partial_size) / total_size) * 100)
-                # print(current + partial_size)
 
             if progress:
                 progress.set_text('Downloading files...')

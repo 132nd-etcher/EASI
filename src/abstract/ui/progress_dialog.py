@@ -3,7 +3,17 @@
 from src.qt import QDialog, Qt
 
 
-class BaseProgressDialog(QDialog):
+# noinspection PyPep8Naming
+class BaseProgressDialogInterface:
+
+    def setupUi(self, dialog):
+        raise NotImplementedError
+
+    def setWindowModality(self):
+        raise NotImplementedError
+
+
+class BaseProgressDialog(QDialog, BaseProgressDialogInterface):
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.WindowTitleHint)
         self.setupUi(self)

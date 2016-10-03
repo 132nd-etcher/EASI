@@ -109,6 +109,67 @@ class AbstractModMetaFull(
     AbstractModMetaInformation,
     AbstractModMetaDCSVersion,
     AbstractModMetaFileList,
-    metaclass=abc.ABCMeta
+    # metaclass=abc.ABCMeta
 ):
-    pass
+    def short_desc(self, value) -> str:
+        pass
+
+    def files(self, value) -> typing.List[AbstractModFileRemoteMeta]:
+        pass
+
+    def release_status(self, value) -> str:
+        pass
+
+    def identifier(self, value) -> str:
+        pass
+
+    def help(self, value) -> str:
+        pass
+
+    def recommends(self, value) -> typing.List[str]:
+        pass
+
+    def issues(self, value) -> str:
+        pass
+
+    def name(self, value) -> str:
+        pass
+
+    def version(self, value) -> str:
+        pass
+
+    def license(self, value) -> str:
+        pass
+
+    def dcs_version(self, value) -> str:
+        pass
+
+    def provides(self, value) -> typing.List[str]:
+        pass
+
+    def meta_version(self, value) -> int:
+        pass
+
+    def author(self, value) -> str:
+        pass
+
+    def dcs_version_strict(self, value) -> bool:
+        pass
+
+    def homepage(self, value) -> str:
+        pass
+
+    def long_description(self):
+        pass
+
+    def repository(self, value) -> str:
+        pass
+
+    def conflicts(self, value) -> typing.List[str]:
+        pass
+
+    def mod_type(self, value) -> str:
+        pass
+
+    def depends(self, value) -> typing.List[str]:
+        pass

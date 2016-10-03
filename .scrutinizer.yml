@@ -141,6 +141,7 @@ filter:
   excluded_paths:
     - 'tests/*'
     - 'src/ui/skeletons/*'
+    - 'test_*.py'
 
 #tools:
 #    external_code_coverage:

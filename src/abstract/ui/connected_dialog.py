@@ -27,5 +27,6 @@ class AbstractConnectedDialog(AbstractConnectedQObject, AbstractBaseDialog, meta
         self.receiver = SignalReceiver(self)
         self.receiver[sig] = self.on_sig
 
+    @staticmethod
     def make(*args, **kwargs):
         raise NotImplementedError
