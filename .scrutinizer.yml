@@ -68,7 +68,7 @@ checks:
         format_missing_final_newline: true
         format_lowercase_l_suffix: true
         format_line_too_long:
-            max_length: '80'
+            max_length: '120'
         format_bad_whitespace: true
         format_bad_indentation:
             indentation: '4 spaces'
@@ -124,14 +124,12 @@ checks:
         basic_nonexistent_operator: true
         basic_missing_reversed_argument: true
         basic_missing_module_attribute: true
-        basic_missing_docstring: true
         basic_lost_exception: true
         basic_init_is_generator: true
         basic_function_redefined: true
         basic_expression_not_assigned: true
         basic_exec_used: true
         basic_eval_used: true
-        basic_empty_docstring: true
         basic_duplicate_key: true
         basic_duplicate_argument_name: true
         basic_dangerous_default_value: true
