@@ -26,3 +26,6 @@ class AbstractConnectedDialog(AbstractConnectedQObject, AbstractBaseDialog, meta
         self.main_ui_obj_name = main_ui_obj_name
         self.receiver = SignalReceiver(self)
         self.receiver[sig] = self.on_sig
+
+    def make(*args, **kwargs):
+        raise NotImplementedError

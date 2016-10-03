@@ -4,8 +4,7 @@ import time
 from hypothesis import strategies as st, given
 from unittest import TestCase
 from unittest.mock import MagicMock
-from src.dld.download import downloader, DownloadError, FileDownload
-from src.abstract.abstract_progress import ProgressInterface
+from src.dld.download import downloader, FileDownload
 from src.low.custom_path import Path
 
 file_list = [

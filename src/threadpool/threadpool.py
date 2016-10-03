@@ -233,12 +233,10 @@ class ThreadPoolThread(threading.Thread):
                             else:
                                 callback(return_value)
                     except SystemExit:
-                        import signal
                         import os
                         import _thread
                         _thread.interrupt_main()
                     except KeyboardInterrupt:
-                        import signal
                         import os
                         import _thread
                         _thread.interrupt_main()

@@ -10,6 +10,7 @@ import pefile
 # from win32.win32api import GetFileVersionInfo, HIWORD, LOWORD
 
 
+# noinspection PyAbstractClass
 class Path(path.Path):
     def crc32(self):
         if not self.isfile():
@@ -53,6 +54,25 @@ class Path(path.Path):
         filever = (verinfo.FileVersionMS >> 16, verinfo.FileVersionMS & 0xFFFF, verinfo.FileVersionLS >> 16, verinfo.FileVersionLS & 0xFFFF)
         # prodver = (verinfo.ProductVersionMS >> 16, verinfo.ProductVersionMS & 0xFFFF, verinfo.ProductVersionLS >> 16, verinfo.ProductVersionLS & 0xFFFF)
         return '%d.%d.%d.%d' % filever
+
+    def abspath(self):
+        return path.Path.abspath(self)
+
+    def exists(self):
+        return path.Path.exists(self)
+
+    def get_size(self):
+        return path.Path.getsize(self)
+
+    def remove(self):
+        return path.Path.remove(self)
+
+    def text(self, encoding=None, errors='strict'):
+        return path.Path.text(self, encoding, errors)
+
+    def write_text(self, text, encoding=None, errors='strict',
+                   linesep=os.linesep, append=False):
+        return path.Path.write_text(self, text, encoding, errors, linesep, append)
 
 
 
