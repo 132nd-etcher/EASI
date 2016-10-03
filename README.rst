@@ -52,13 +52,9 @@ After adding all requirements, you'll still need to:
 
       pyrcc5.exe qt_resource.qrc -o qt_resource_rc.py
 
-- provide a 'vault.secret.py' file like this one:
+- if you're using Sentry, provide a 'vault.secret.py' file like this one:
 
    .. code-block:: python
 
         class Secret:
             sentry_dsn = None
-
-   .. note::
-
-        Set the DSN to 'None' if you are not using Sentry
