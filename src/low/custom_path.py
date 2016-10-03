@@ -56,7 +56,7 @@ class Path(path.Path):
 
 
 
-def create_temp_file(*, suffix=None, prefix=None, create_in_dir=None):
+def create_temp_file(*, suffix=None, prefix=None, create_in_dir=None) -> Path:
     """
     Creates a temporary path in the user's temp dir
     :param suffix: filename suffix
