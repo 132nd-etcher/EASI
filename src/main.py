@@ -68,8 +68,7 @@ def main(init_only=False, test_run=False):
         from PyQt5.QtGui import QFontDatabase
         from PyQt5.QtWidgets import QApplication
         from src.qt import qt_resources
-        from src.ui.dialog_disclaimer import DisclaimerDialog
-        from src.ui.main_ui.main_ui import MainUi
+        from src.ui import MainUi, DisclaimerDialog
 
         logger.info('QApplication: starting')
         qt_app = QApplication([])
