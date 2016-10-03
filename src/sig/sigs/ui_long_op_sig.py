@@ -23,6 +23,7 @@ class AbstractLongOpDialogSig(InterfacedSignal, AbstractLongOp):
     @interfaced_method
     def hide(self):
         """"""
+
     @interfaced_method
     def add_current_progress(self, value: int):
         """"""

@@ -1,7 +1,6 @@
 # coding=utf-8
 
-# from src.dld.download import downloader, DownloadFileList
-from src.dld.download import downloader, FileDownload, BulkFileDownload
+from src.dld.download import downloader, FileDownload
 from src.sig import sig_long_op_dialog
 from tests.init_ui import get_qt_app
 

@@ -57,14 +57,14 @@ class DCSInstalls(metaclass=Singleton):
                                     r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders") as aKey:
                     # noinspection SpellCheckingInspection
                     self.base_sg = Path(winreg.QueryValueEx(aKey, "{4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4}")[0])
-            except:
+            except FileNotFoundError:
                 logger.debug('failed, trying "Shell Folders"')
                 try:
                     with winreg.OpenKey(a_reg,
                                         r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders") as aKey:
                         # noinspection SpellCheckingInspection
                         self.base_sg = Path(winreg.QueryValueEx(aKey, "{4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4}")[0])
-                except:
+                except FileNotFoundError:
                     logger.debug('darn it, another fail, falling back to "~"')
                     self.base_sg = Path('~').expanduser().abspath()
             config.saved_games_path = str(self.base_sg.abspath())

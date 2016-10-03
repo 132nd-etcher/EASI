@@ -2,11 +2,13 @@
 
 from src.abstract.ui.main_ui_state import AbstractMainUiState
 
-from src.low.constants import APP_SHORT_NAME
 from src.sig import sig_splash
 
 
 class UiStateStartup(AbstractMainUiState):
+    def set_current_state(self, state: str):
+        pass
+
     @staticmethod
     def set_progress_text(state_manager, value: str):
         sig_splash.show()

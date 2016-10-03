@@ -18,7 +18,6 @@ class MainUiSig(InterfacedSignal, AbstractMainUiInterface):
 
 
 class MainUiStatesSig(InterfacedSignal, AbstractMainUiState):
-
     @interfaced_method
     def set_current_state(self, state: str):
         pass
