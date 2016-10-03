@@ -1,6 +1,6 @@
 # CI on Windows via appveyor
 
-version: 0.0.11.10886.2
+version: 0.0.11.10886.3
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
@@ -49,6 +49,7 @@ cache:
   - C:\ProgramData\chocolatey
 
 before_build:
+  - curl --data-binary @.codecov.yml https://codecov.io/validate
   - "%PYTHON%/Scripts/coverage.exe run --source ./src -m nose ./tests"
   - "%PYTHON%/Scripts/coverage.exe xml"
   - "%PYTHON%/Scripts/pip.exe install codecov"
