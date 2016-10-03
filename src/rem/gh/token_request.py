@@ -57,5 +57,3 @@ def gh_request_token(username: str, password: str) -> str or None:
         else:
             logger.exception('login failed')
             raise
-    except:
-        logger.exception('uncaught exception')

@@ -37,16 +37,16 @@ class TestSignal(unittest.TestCase):
         self.assertEqual(i, 1)
 
         # test multiple send
-        def func2(_):
+        def func3(_):
             nonlocal i
             i += 1
 
-        self.sig.connect(func2)
+        self.sig.connect(func3)
         self.sig.send()
         self.assertEqual(i, 3)
 
         # test disconnection
-        self.sig.disconnect(func2)
+        self.sig.disconnect(func3)
         self.sig.send()
         self.assertEqual(i, 4)
 

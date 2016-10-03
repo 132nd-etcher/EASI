@@ -232,14 +232,16 @@ class ThreadPoolThread(threading.Thread):
                                 callback((task_id, return_value))
                             else:
                                 callback(return_value)
-                    except SystemExit or KeyboardInterrupt:
-                        pass
+                    except SystemExit:
                         import signal
                         import os
                         import _thread
                         _thread.interrupt_main()
-                        # self.__pool.queue_task(os.kill, [os.getpid(), signal.SIGINT])
-                        # os.kill(os.getpid(), signal.SIGINT)
+                    except KeyboardInterrupt:
+                        import signal
+                        import os
+                        import _thread
+                        _thread.interrupt_main()
                     except:
                         import sys
                         logger.error(

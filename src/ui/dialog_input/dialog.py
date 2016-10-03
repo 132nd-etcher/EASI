@@ -5,6 +5,7 @@ from src.qt import *
 from src.ui.skeletons.input_dialog import Ui_Dialog
 
 
+# noinspection PyPep8Naming
 class _Input_dialog(Ui_Dialog, QDialog):
     def __init__(self, parent):
         QDialog.__init__(self, parent, flags=Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint)

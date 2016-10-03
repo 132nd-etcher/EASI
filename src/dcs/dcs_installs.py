@@ -4,6 +4,7 @@ try:
     import winreg
 except ImportError:
     from unittest.mock import MagicMock
+
     winreg = MagicMock()
 from typing import Tuple
 
@@ -21,28 +22,29 @@ class DCSInstalls(metaclass=Singleton):
     def __init__(self):
         self.installs = {
             'stable': {
-                'reg_key'   : 'DCS World',
+                'reg_key': 'DCS World',
                 'sg_default': 'DCS',
-                'install'   : None,
-                'sg'        : None,
-                'version'   : None,
+                'install': None,
+                'sg': None,
+                'version': None,
             },
-            'beta'  : {
-                'reg_key'   : 'DCS World OpenBeta',
+            'beta': {
+                'reg_key': 'DCS World OpenBeta',
                 'sg_default': 'DCS.openbeta',
-                'install'   : None,
-                'sg'        : None,
-                'version'   : None,
+                'install': None,
+                'sg': None,
+                'version': None,
             },
-            'alpha' : {
-                'reg_key'   : 'DCS World 2 OpenAlpha',
+            'alpha': {
+                'reg_key': 'DCS World 2 OpenAlpha',
                 'sg_default': 'DCS.openalpha',
-                'install'   : None,
-                'sg'        : None,
-                'version'   : None,
+                'install': None,
+                'sg': None,
+                'version': None,
             },
         }
 
+    # noinspection PyBroadException
     def discover(self):
         logger.debug('looking for DCS installations paths')
         sig_main_ui_states.dcs_installs_lookup_start()
