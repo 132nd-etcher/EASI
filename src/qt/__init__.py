@@ -7,5 +7,3 @@ from PyQt5.QtWidgets import QMainWindow, QSplashScreen, QLabel, QProgressBar, QD
     QComboBox, QAction, QMenu, QFileDialog, QDialogButtonBox, QLineEdit
 
 from . import qt_resources
-# noinspection PyUnresolvedReferences
-# from .resources import qt_resources
