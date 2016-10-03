@@ -1,9 +1,9 @@
 # coding=utf-8
 
-import certifi
+import logging
 import sys
-import types
 
+import certifi
 import raven.breadcrumbs
 
 from src.__version__ import __version__
@@ -18,15 +18,62 @@ except ImportError:
 
 logger = make_logger(__name__)
 
-registered = {}
+
+class Sentry(raven.Client):
+    def __init__(self):
+        self.registered_contexts = {}
+        if Secret.sentry_dsn is not None:  # and not constants.TESTING:
+            raven.Client.__init__(
+                self,
+                'https://{}@sentry.io/99772?ca_certs={}'.format(Secret.sentry_dsn, certifi.where()),
+                release=__version__
+            )
+        else:
+            raven.Client.__init__(self)
+
+    def set_context(self):
+        self.tags_context(
+            dict(
+                frozen=constants.FROZEN,
+                platform=sys.platform,
+                release_name=constants.APP_RELEASE_NAME,
+                testing=constants.TESTING,
+            )
+        )
+        try:
+            self.tags_context(dict(windows_version=sys.getwindowsversion()))
+        except AttributeError:
+            pass
+
+    def register_context(self, key, obj):
+        """Registers a context to be read when a crash occurs; obj must implement get_context()"""
+        self.registered_contexts[key] = obj
+
+    def captureMessage(self, message, **kwargs):
+        self.set_context()
+        if kwargs.get('data', None) is None:
+            kwargs['data'] = {}
+        if kwargs['data'].get('level', None) is None:
+            kwargs['data']['level'] = logging.DEBUG
+        super(Sentry, self).captureMessage(message, **kwargs)
+
+    def captureException(self, exc_info=None, **kwargs):
+        self.set_context()
+        if not constants.FROZEN:
+            logger.error('crash report would have been sent')
+            return
+
+        logger.debug('capturing exception')
+        for k, context_provider in self.registered_contexts.items():
+            assert isinstance(context_provider, SentryContextInterface)
+            crash_reporter.extra_context({k: context_provider.get_context()})
+        super(Sentry, self).captureException(exc_info, **kwargs)
 
 
-def sentry_register_context(key, obj):
-    """Registers a context to be read when a crash occurs; obj must implement get_context()"""
-    global registered
-    registered[key] = obj
+crash_reporter = Sentry()
 
 
+# noinspection PyUnusedLocal
 def filter_breadcrumbs(_logger, level, msg, *args, **kwargs):
     skip_lvl = []
     skip_msg = []
@@ -34,68 +81,10 @@ def filter_breadcrumbs(_logger, level, msg, *args, **kwargs):
     if level in skip_lvl or msg in skip_msg:
         return False
 
-    print('got args, kwargs: ', args, kwargs)
+    # print('got args, kwargs: ', args, kwargs)
     if _logger == 'requests':
         return False
     return True
 
 
 raven.breadcrumbs.register_special_log_handler('__main__', filter_breadcrumbs)
-
-if Secret.sentry_dsn is None:
-    raise Exception('fuckit')
-
-if Secret.sentry_dsn is not None:  # and not constants.TESTING:
-    crash_reporter = raven.Client(
-        'https://{}@sentry.io/99772?ca_certs={}'.format(Secret.sentry_dsn, certifi.where()),
-        release=__version__
-    )
-else:
-    crash_reporter = raven.Client()
-
-try:
-    crash_reporter.tags_context(
-        {
-            'frozen'         : constants.FROZEN,
-            'platform'       : sys.platform,
-            'windows_version': sys.getwindowsversion(),
-        }
-    )
-except AttributeError:
-    crash_reporter.tags_context(
-        {
-            'frozen'  : constants.FROZEN,
-            'platform': sys.platform,
-        }
-    )
-
-# ---------------------------------------------------------------------------------------------------------------------
-# Overloads captureException
-# ----------------------------------------------------
-old_capture_exc = crash_reporter.captureException
-
-
-def capture_with_context(_, exc_info=None, **kwargs):
-    logger.debug('capturing exception')
-    for k in registered:
-        context_provider = registered[k]
-        assert isinstance(context_provider, SentryContextInterface)
-        crash_reporter.extra_context({k: context_provider.get_context()})
-    old_capture_exc(exc_info, **kwargs)
-
-
-# crash_reporter.captureException = capture_with_context
-crash_reporter.captureException = types.MethodType(capture_with_context, crash_reporter)
-
-# ---------------------------------------------------------------------------------------------------------------------
-# Overloads the send method in script mode
-# ----------------------------------------------------
-if not constants.FROZEN:
-    # noinspection PyUnusedLocal
-    def dummy_capture(*args, **kwargs):
-        logger.error('crash report would have been sent')
-        # logger.error(pprint.pformat(data))
-
-
-    crash_reporter.captureException = types.MethodType(dummy_capture, crash_reporter)
-# ----------------------------------------------------

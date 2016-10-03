@@ -43,7 +43,7 @@ def main(init_only=False, test_run=False):
         os.environ['REQUESTS_CA_BUNDLE'] = str(cacert)
 
         logger.info('sentry: initializing')
-        from src.sentry import crash_reporter, sentry_register_context
+        from src.sentry import crash_reporter
 
         logger.debug('sentry online: {}'.format(crash_reporter.state.ONLINE))
 
@@ -61,7 +61,7 @@ def main(init_only=False, test_run=False):
 
         from src.cfg import config
 
-        sentry_register_context('config', config)
+        crash_reporter.register_context('config', config)
 
         from src.keyring import keyring
 
@@ -113,6 +113,10 @@ def main(init_only=False, test_run=False):
         pool.queue_task(sig_main_ui.show)
         pool.queue_task(sig_main_ui_states.set_current_state, ['running'])
         pool.queue_task(logger.info, ['startup: all done!'])
+
+        def crash():
+            raise Exception('testing again')
+        pool.queue_task(crash)
 
         logger.debug('startup queue populated')
 
