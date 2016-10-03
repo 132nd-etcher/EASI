@@ -19,7 +19,7 @@ class AbstractBaseQObject(metaclass=abc.ABCMeta):
 
     def adjust_size(self):
         self.qobj.adjustSize()
-        self.qobj.setFixedSize(
-            self.qobj.width(),
-            self.qobj.height(),
-        )
+        # self.qobj.setFixedSize(
+        #     self.qobj.width(),
+        #     self.qobj.height(),
+        # )
