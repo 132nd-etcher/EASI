@@ -114,10 +114,6 @@ def main(init_only=False, test_run=False):
         pool.queue_task(sig_main_ui_states.set_current_state, ['running'])
         pool.queue_task(logger.info, ['startup: all done!'])
 
-        def crash():
-            raise Exception('testing again')
-        pool.queue_task(crash)
-
         logger.debug('startup queue populated')
 
         if constants.TESTING or 'test_and_exit' in sys.argv:
