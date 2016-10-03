@@ -46,17 +46,17 @@ class MainUiActiveDCSInstallation:
         idx = self.combo.currentIndex()
         return self.index[idx]
 
-    def show_main_install(self):
+    def __show(self, idx):
         try:
-            os.startfile(self.active_dcs_installation[0][0].abspath())
+            os.startfile(self.active_dcs_installation[0][idx].abspath())
         except FileNotFoundError:
             pass
 
-    def show_main_sg(self):
-        try:
-            os.startfile(self.active_dcs_installation[0][1].abspath())
-        except FileNotFoundError:
-            pass
+    def show_active_install(self):
+        self.__show(0)
+
+    def show_active_sg(self):
+        self.__show(1)
 
     # noinspection PyAttributeOutsideInit
     def setup(self):
@@ -77,8 +77,8 @@ class MainUiActiveDCSInstallation:
 
     # noinspection PyUnresolvedReferences
     def connect_qactions(self):
-        self.qact_show_main_install.triggered.connect(self.show_main_install)
-        self.qact_show_sg.triggered.connect(self.show_main_sg)
+        self.qact_show_main_install.triggered.connect(self.show_active_install)
+        self.qact_show_sg.triggered.connect(self.show_active_sg)
 
     def set_current_combo_index_to_config_value(self):
         if config.active_dcs_installation is not None:
