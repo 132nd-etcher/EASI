@@ -1,12 +1,11 @@
 # coding=utf-8
 
 import time
-import typing
 
-import requests
+from requests import head, get
+from requests.exceptions import InvalidURL, MissingSchema
 
-from src.abstract.abstract_progress import ProgressInterface, DualProgressInterface
-from src.low.singleton import Singleton
+from src.abstract.abstract_progress import ProgressInterface
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path, create_temp_file
 from src.threadpool import ThreadPool
@@ -14,245 +13,246 @@ from src.threadpool import ThreadPool
 logger = make_logger(__name__)
 
 
-class DownloadFile:
-    def __init__(self, url: str, outfile: Path or str = None):
-        self.__url = url
-        self.__header = None
-        self.__size = None
-        self.__content = None
-        self.__success = False
-        self.__done = False
-        if outfile is None:
-            logger.debug('{}: making temp file'.format(url))
-            self.__outfile = create_temp_file()
-        elif isinstance(outfile, str):
-            self.__outfile = Path(outfile)
-        elif not isinstance(outfile, Path):
-            raise TypeError('expected a Path or a str instance for outfile, got: {}'.format(type(outfile)))
+class DownloadError(Exception):
+    pass
 
-    def wait(self, follow_up: callable = None):
+
+class FileDownload:
+    def __init__(self, url: str, local_file: Path or str = None):
+        if local_file is None:
+            local_file = create_temp_file()
+        else:
+            local_file = self.normalize_local_file(local_file)
+        self.url = url
+        self.err = None
+        self.done = False
+        self.success = False
+        self.local_file = local_file
+        self.header = None
+        self.size = None
+
+    @staticmethod
+    def normalize_local_file(local_file):
+        if isinstance(local_file, str):
+            return Path(local_file)
+        elif isinstance(local_file, Path):
+            return local_file
+        elif local_file is None:
+            return Path(create_temp_file())
+        else:
+            raise TypeError('expected str or Path, got: {}'.format(type(local_file)))
+
+    def wait(self):
         while not self.done:
             time.sleep(0.1)
-        if follow_up:
-            follow_up()
 
-    def get_headers(self):
-        logger.debug('{}: getting headers'.format(self.url))
-        headers_request = requests.head(self.url)
-        if not headers_request.status_code == 200:
-            logger.error('header request failed: {}'.format(headers_request.reason))
-            self.__header = None
-        self.__header = headers_request
+    def queue_callback(self, callback: callable):
+        if callback:
+            callback(self)
 
-    def get_content_size(self, _try=1):
-        if self.__header is None:
-            self.get_headers()
+    def __fail(self, err: str):
+        self.err = err
+        logger.error('{}: download failed: {}'.format(self.url, err))
+        self.success = False
+        self.done = True
+
+    def __make_request(self, method):
         try:
-            self.__size = int(self.__header.headers['Content-Length'])
-        except KeyError:
-            if _try <= 4:
-                self.get_content_size(_try + 1)
-            else:
-                logger.exception('{}: unable to read size from headers: {}'.format(self.url, self.header.headers))
-                self.__size = None
-        logger.debug('{}: size: {}'.format(self.url, self.__size))
+            req = method(self.url)
+        except InvalidURL:
+            self.__fail('invalid url')
+        except MissingSchema:
+            self.__fail('missing schema')
+        except Exception as e:
+            self.__fail(e.__str__())
+        else:
+            if req.status_code != 200:
+                self.__fail('{}: request failed: {}: {}'.format(self.url, req.status_code, req.reason))
+            return req
 
-    def get_content(self):
-        logger.info('{}: getting content request'.format(self.url))
-        content_request = requests.get(self.url)
-        if not content_request.status_code == 200:
-            logger.error('content request failed: {}'.format(content_request.reason))
-            self.__content = None
-        self.__content = content_request
+    def get_size(self, _try=0):
+        header = self.__make_request(head)
+        if header:
+            try:
+                self.size = int(header.headers['Content-Length'])
+                return self.size
+            except KeyError:
+                if _try >= 4:
+                    logger.warning('{}: failed to get size value from headers'.format(self.url))
+                    return None
+                return self.get_size(_try + 1)
 
-    def download_to_file(self, progress_callback: callable or None):
-        self.get_content_size()
-        self.get_content()
-        if not self.__content:
-            self.__success, self.__done = False, True
-        logger.info('{}: downloading content to: {}'.format(self.url, self.outfile.abspath()))
-        downloaded_size = 0
-        with open(self.outfile.abspath(), 'wb') as f:
-            logger.debug('{}: downloading content into local file'.format(self.url))
-            for data in self.__content.iter_content(chunk_size=Downloader.chunk_size):
-                downloaded_size += len(data)
-                try:
-                    f.write(data)
-                except OSError:
-                    logger.exception('{}: failed to write data into local file'.format(self.url))
-                    self.__success, self.__done = False, True
-                if progress_callback is not None and self.size is not None:
-                    progress_callback(100 * (downloaded_size / self.size))
-        logger.debug('{}: download successful'.format(self.url))
-        self.__success, self.__done = True, True
-        return self
+    def download(self, progress_callback: callable = None):
+        if self.size is None:
+            self.size = self.get_size()
+        dl = 0
+        content = self.__make_request(get)
+        if content:
+            try:
+                with open(self.local_file.abspath(), 'wb') as f:
+                    for data in content.iter_content(chunk_size=Downloader.chunk_size):
+                        dl += len(data)
+                        f.write(data)
+                        if self.size is not None and progress_callback is not None:
+                            progress_callback(100 * (dl / self.size))
+            except OSError:
+                self.__fail('{}: failed to write on local file: {}'.format(self.url, self.local_file.abspath()))
+            self.success, self.done = True, True
 
-    @property
-    def url(self) -> str:
-        return self.__url
 
-    @property
-    def size(self):
-        return self.__size
+class BulkFileDownload:
+    def __init__(self, fdl_list: list = None):
+        if fdl_list is not None:
+            if not isinstance(fdl_list, list):
+                raise TypeError('expected a list, got: {}'.format(type(fdl_list)))
+            for x in fdl_list:
+                if isinstance(x, FileDownload):
+                    pass
+                else:
+                    raise TypeError('(in file_list) expected a FileDownload or a tuple/list '
+                                    'of (url, local_file), got: {}'.format(type(x)))
+        else:
+            fdl_list = list()
+        self.fdl_list = fdl_list
 
-    @property
-    def outfile(self) -> Path:
-        return self.__outfile
+    def queue_callback(self, callback: callable):
+        if callback:
+            callback(self)
 
-    @property
-    def header(self) -> requests.models.Response:
-        return self.__header
+    def wait(self):
+        while not self.done:
+            time.sleep(0.1)
 
-    @header.setter
-    def header(self, value: requests.models.Response):
-        self.__header = value
-
-    @property
-    def content(self) -> requests.models.Response:
-        return self.__content
-
-    @content.setter
-    def content(self, value: requests.models.Response):
-        self.__content = value
-
-    @property
-    def success(self) -> bool:
-        return self.__success
-
-    @success.setter
-    def success(self, value):
-        self.__success = value
+    def add_file(self, fdl: FileDownload):
+        self.fdl_list.append(fdl)
 
     @property
     def done(self):
-        return self.__done
-
-
-class DownloadFileList:
-    def __init__(self, init_file_list: list = None):
-        self.__file_list = init_file_list or []
-        self.__d = {file.url: file for file in self.__file_list}
-        self.__keys = self.__d.keys()
-        self.__items = self.__d.items()
-        self.__values = self.__d.values()
-
-    def add_file(self, *, download_file: DownloadFile = None, url: str = None, outfile: Path or str = None):
-        if not download_file:
-            if not url:
-                raise SyntaxError('missing url in method call')
-            download_file = DownloadFile(url=url, outfile=outfile)
-        self.file_list.append(download_file)
-        self.__d[download_file.url] = download_file
-
-    def add_file_from_github(self, user: str, repo: str, file_path: str, branch: str = 'master'):
-        self.add_file(url=r'https://raw.githubusercontent.com/{}/{}/{}/{}'.format(
-            user, repo, branch, file_path
-        ))
-
-    def all_good(self):
-        if len(self.file_list) == 0:
-            raise ValueError('file list is empty')
-        return all([file.success for file in self.file_list])
-
-    def __getitem__(self, key: str or DownloadFile):
-        if isinstance(key, DownloadFile):
-            key = key.url
-        return self.__d[key]
-
-    def __setitem__(self, key, value):
-        raise NotImplementedError('cannot set')
+        return all([f.done for f in self.fdl_list])
 
     @property
-    def file_list(self) -> typing.List[DownloadFile]:
-        return self.__file_list
+    def success(self):
+        return all([f.success for f in self.fdl_list])
 
     @property
-    def keys(self):
-        return self.__keys
-
-    @property
-    def values(self):
-        return self.__values
-
-    @property
-    def items(self):
-        return self.__items
-
-    def __iter__(self):
-        for x in self.file_list:
-            yield x
-
-    def __len__(self):
-        return len(self.file_list)
+    def total_size(self):
+        return sum([fdl.size for fdl in self.fdl_list])
 
 
-class Downloader(metaclass=Singleton):
-    threads_count = 8
+class Downloader:
     chunk_size = 4096
 
     def __init__(self):
-        self.pool_dl = ThreadPool(_num_threads=Downloader.threads_count, _basename='downloader', _daemon=True)
-        self.pool_seq = ThreadPool(_num_threads=1, _basename='downloader watcher', _daemon=True)
+        self.watchdog = ThreadPool(1, 'downloader', True)
+        self.pool = ThreadPool(8, 'download_pool', True)
 
-    def pause(self):
-        self.pool_dl.set_thread_count(0)
+    @staticmethod
+    def download_fdl(fdl: FileDownload, progress_callback: callable = None, raise_err: bool = False):
+        """
+        *BLOCKING*
 
-    def resume(self):
-        self.pool_dl.set_thread_count(Downloader.threads_count)
+        :param progress_callback: callback used to update progress (if any)
+        :param fdl: instance of FileDownload to download
+        :param raise_err: whether or not to raise Exceptions that happened during download
+        :return: FileDownload object
+        """
+        fdl.download(progress_callback=progress_callback)
+        if raise_err and fdl.err:
+            raise DownloadError(fdl.err)
+        return fdl
 
-    def download_to_file(self,
-                         url: str,
-                         outfile: Path or str = None,
-                         progress: ProgressInterface = None) -> DownloadFile:
-        download_file = DownloadFile(url, outfile)
-        progress.set_text('Downloading {}'.format(url))
-        self.pool_dl.queue_task(
-            download_file.download_to_file,
-            kwargs=dict(progress_callback=progress.set_progress)
-        )
-        return download_file
+    def __download(self,
+                   fdl,
+                   progress: ProgressInterface = None,
+                   raise_err: bool = True) -> FileDownload:
+        if progress:
+            progress.set_text('Downloading:\n{}'.format(fdl.url))
+            progress.set_progress(0)
+        kwargs = dict(fdl=fdl, raise_err=raise_err)
+        if progress:
+            kwargs['progress_callback'] = progress.set_progress
+        self.pool.queue_task(self.download_fdl, kwargs=kwargs)
+        fdl.wait()
 
-    def download_to_file_and_wait(self,
-                                  url: str,
-                                  outfile: Path or str = None,
-                                  progress: ProgressInterface = None) -> DownloadFile:
-        dl = self.download_to_file(url, outfile, progress)
-        self.pool_seq.queue_task(dl.wait)
-        return dl.success
+    def download(self,
+                 url,
+                 local_file: str or Path = None,
+                 progress: ProgressInterface = None,
+                 callback: callable = None,
+                 raise_err: bool = True) -> FileDownload:
+        """
+        Downloads the content of a URL into a local file
 
-    def __download_multiple_to_file(self,
-                                    download_file_list: DownloadFileList,
-                                    progress: DualProgressInterface = None):
+        :param url: str
+        :param local_file: str or Path to local file
+        :param progress: instance of ProgressInterface (has "set_progress", "set_text"
+        :param callback: will be called after download with FileDownload obj as first arg
+        :param raise_err: whether or not to raise Exceptions that happened during download
+        :return: FileDownload object
+        """
+        fdl = FileDownload(url, local_file)
+        self.watchdog.queue_task(self.__download, kwargs=dict(fdl=fdl, progress=progress, raise_err=raise_err))
+        if callback:
+            self.watchdog.queue_task(fdl.queue_callback, [callback])
+        return fdl
+
+    def bulk_download(self,
+                      fdl_list,
+                      progress: ProgressInterface = None,
+                      callback: callable = None,
+                      raise_err: bool = True):
 
         total_size = 0
-        dl_size = 0
-        progress.set_text('Initializing')
-        for file in download_file_list:
-            progress.set_current_text('{}'.format(file.url))
-            file.get_content_size()
-            if file.size:
-                total_size += file.size
-            progress.add_progress(100 / len(download_file_list))
 
-        progress.set_text('Downloading')
-        progress.set_progress(0)
-        for file in download_file_list:
-            progress.set_current_text('{}'.format(file.url))
-            file.download_to_file(progress_callback=progress.set_current_progress)
-            dl_size += file.size
-            progress.set_progress(100 * (dl_size / total_size))
+        def __gather_metadata():
+            nonlocal total_size
+            if progress:
+                progress.set_text('Gathering metadata...')
+            count = 0
+            for fdl in fdl_list:
+                assert isinstance(fdl, FileDownload)
+                fdl.get_size()
+                total_size += fdl.size
+                if raise_err and fdl.err:
+                    raise DownloadError(fdl.err)
+                count += 1
+                if progress:
+                    progress.set_progress((count / len(fdl_list)) * 100)
+            print('total size', total_size)
 
-    def download_multiple_to_file(self,
-                                  download_file_list: DownloadFileList,
-                                  progress: DualProgressInterface = None,
-                                  on_completion: callable = None):
+        def __download_content():
 
-        self.pool_seq.queue_task(
-            self.__download_multiple_to_file,
-            kwargs=dict(download_file_list=download_file_list, progress=progress)
-        )
-        if on_completion is not None:
-            self.pool_seq.queue_task(on_completion)
+            current = 0
+
+            def __set_composite_progress(value):
+                partial_size = (value / 100) * fdl.size
+                progress.set_current_progress(value)
+                progress.set_progress(((current + partial_size) / total_size) * 100)
+                # print(current + partial_size)
+
+            if progress:
+                progress.set_text('Downloading files...')
+                progress.set_progress(0)
+                progress.set_current_enabled(True)
+            for fdl in fdl_list:
+                if progress:
+                    progress.set_current_text(fdl.url)
+                assert isinstance(fdl, FileDownload)
+                kwargs = dict(fdl=fdl, raise_err=raise_err)
+                if progress:
+                    kwargs['progress_callback'] = __set_composite_progress
+                self.pool.queue_task(downloader.download_fdl, kwargs=kwargs)
+                if raise_err and fdl.err:
+                    raise DownloadError(fdl.err)
+                fdl.wait()
+                current += fdl.size
+
+        bdl = BulkFileDownload(fdl_list)
+        self.watchdog.queue_task(__gather_metadata)
+        self.watchdog.queue_task(__download_content)
+        if callback:
+            self.watchdog.queue_task(bdl.queue_callback, [callback])
+        return bdl
 
 
 downloader = Downloader()
