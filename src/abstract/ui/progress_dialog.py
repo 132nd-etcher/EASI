@@ -9,7 +9,7 @@ class BaseProgressDialogInterface:
     def setupUi(self, dialog):
         raise NotImplementedError
 
-    def setWindowModality(self):
+    def setWindowModality(self, modality):
         raise NotImplementedError
 
 
