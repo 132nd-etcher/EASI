@@ -49,12 +49,17 @@
     <widget class="QComboBox" name="comboBox">
      <item>
       <property name="text">
-       <string>Question</string>
+       <string>I need help with something</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Feature request</string>
+       <string>I would like to request a new feature</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>I would like to report an issue</string>
       </property>
      </item>
      <item>
