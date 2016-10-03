@@ -11,8 +11,8 @@ Develop:
 .. image:: https://api.codacy.com/project/badge/Grade/3a1f938dbe5545ad9cfa29b8df61e6ac
     :target: https://www.codacy.com/app/132nd-etcher/EASI?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=132nd-etcher/EASI&amp;utm_campaign=Badge_Grade
 
-.. image:: https://api.codacy.com/project/badge/Grade/3a1f938dbe5545ad9cfa29b8df61e6ac
-    :target: https://www.codacy.com/app/132nd-etcher/EASI?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=132nd-etcher/EASI&amp;utm_campaign=Badge_Grade
+.. image:: https://api.codacy.com/project/badge/Coverage/3a1f938dbe5545ad9cfa29b8df61e6ac
+    :target: https://www.codacy.com/app/132nd-etcher/EASI?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=132nd-etcher/EASI&amp;utm_campaign=Badge_Coverage
 
 .. image:: https://scrutinizer-ci.com/g/132nd-etcher/EASI/badges/quality-score.png?b=develop
     :target: https://scrutinizer-ci.com/g/132nd-etcher/EASI/?branch=develop
