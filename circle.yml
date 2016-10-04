@@ -10,5 +10,5 @@ dependencies:
 
 test:
   override:
-    - srcclr activate < %SRCCLR%
+    - srcclr activate
     - srcclr scan --url https://github.com/132nd-etcher/EASI
