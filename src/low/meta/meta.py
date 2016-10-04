@@ -84,7 +84,7 @@ class Meta(AbstractMeta):
     def __delitem__(self, key):
         del self.data[key]
 
-    def __setitem__(self, key, value, _write=True):
+    def __setitem__(self, key, value, _write=False):
         self.data[key] = value
         if _write:
             self.write()
