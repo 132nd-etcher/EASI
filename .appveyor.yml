@@ -16,6 +16,8 @@ environment:
       secure: Z7n1eRV3NvHwwVK3ay0Ng6J09jJe/jNbq+2KJXZhDMBFVLrPjsIGyEyXOHgxLf8h3K7JYctoNOJ3yAnQ10cuGJY2amVbcrPCDzx0cUFe/g0=
     CODECLIMATE_REPO_TOKEN:
       secure: 5g9TZWYrT6Bq9BSvMcI408Nyh9OcoCHU+wFYXV7Q8nBg7lgRjH/ht1p2MQwJhsiEGHqw3Krk+h6a3w92725ldwxKOWrc8twh92gOPC0b4gs=
+    SRCCLR:
+      secure: TjIzH1RVw180dC0+hsPANE4l7wiSFGTNniHv/HAf1G8pdE1OOc6zOoXrtlkBhvQl
 
     matrix:
       - PYTHON: "C:\\Python35"
@@ -29,12 +31,14 @@ init:
 install:
   - nuget install secure-file -ExcludeVersion
   - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
+  - "%PYTHON%/Scripts/pip.exe install --disable-pip-version-check --user --upgrade pip"
+  - curl -sSL https://srcclr.com/install | bash
+  - srcclr activate %SRCCLR%
+  - srcclr scan --url https://github.com/132nd-etcher/EASI
   - "%PYTHON%/Scripts/pip.exe install nose"
   - "%PYTHON%/Scripts/pip.exe install coverage"
-
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
-  - "%PYTHON%/Scripts/pip.exe install --disable-pip-version-check --user --upgrade pip"
   - "%PYTHON%/Scripts/pip.exe install -r requirements.txt"
 
   # Installing various utilities
