@@ -17,4 +17,4 @@ class GH_sig(CustomSignal):
     def connected(self, username):
         CustomSignal.send(self, status=1, username=username)
 
-gh_token_status_changed_sig = GH_sig()
+
