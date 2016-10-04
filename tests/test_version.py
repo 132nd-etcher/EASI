@@ -56,7 +56,6 @@ class TestCustomVersion(unittest.TestCase):
     def test_CustomVersion_repr(self, m, mm, b, r):
         v = Version('.'.join([str(x) for x in [m, mm, b, r]]))
         self.assertEqual(v.__repr__(), 'Version(\'{}\')'.format('.'.join([str(x) for x in [m, mm, b, r]])))
-        self.assertEqual(v, eval(v.__repr__()))
 
     @given(
         st.integers(min_value=0),
