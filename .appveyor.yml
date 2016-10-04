@@ -1,6 +1,6 @@
 # CI on Windows via appveyor
 
-version: 0.0.11.10935.1
+version: 0.0.11.10935.2
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
@@ -16,6 +16,8 @@ environment:
       secure: Z7n1eRV3NvHwwVK3ay0Ng6J09jJe/jNbq+2KJXZhDMBFVLrPjsIGyEyXOHgxLf8h3K7JYctoNOJ3yAnQ10cuGJY2amVbcrPCDzx0cUFe/g0=
     CODECLIMATE_REPO_TOKEN:
       secure: 5g9TZWYrT6Bq9BSvMcI408Nyh9OcoCHU+wFYXV7Q8nBg7lgRjH/ht1p2MQwJhsiEGHqw3Krk+h6a3w92725ldwxKOWrc8twh92gOPC0b4gs=
+    COVERALLS_REPO_TOKEN:
+      secure: 0Vci1JqP+KrmA8CjVryiikwJRk2W198nIHmPwk0W75zrz1b1Orz2+JrdgqLl5d3q
 
     matrix:
       - PYTHON: "C:\\Python35"
@@ -57,6 +59,8 @@ before_build:
   - "%PYTHON%/Scripts/ocular.exe --access-token %SCRUTINIZER%"
   - "%PYTHON%/Scripts/pip.exe install codacy-coverage"
   - "%PYTHON%/Scripts/python-codacy-coverage.exe -r coverage.xml"
+  - "%PYTHON%/Scripts/pip.exe install coveralls"
+  - "%PYTHON%/Scripts/coveralls.exe"
 
 build_script:
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_console --key %COMPILEKEY%"
