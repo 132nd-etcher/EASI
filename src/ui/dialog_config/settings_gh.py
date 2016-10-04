@@ -1,7 +1,7 @@
 # coding=utf-8
 from src.keyring.keyring import keyring
 from src.low.custom_logging import make_logger
-from src.rem.gh import gh_request_token, TokenRequestError
+from src.rem.gh import GHSessionError, GHAnonymousSession, GHSession
 from src.sig import SignalReceiver, gh_token_status_changed_sig
 from src.ui.dialog_config.abstract_config_dialog_child import AbstractConfigDialogChild
 from src.ui.skeletons.config_dialog import Ui_Settings
@@ -41,16 +41,26 @@ class GHSettings(AbstractConfigDialogChild):
         self.dialog.label_gh_status.setText('Authenticating ...')
         self.dialog.label_gh_status.setStyleSheet('QLabel {{ color : black; }}')
         try:
-            token = gh_request_token(usr, pwd)
-        except TokenRequestError as e:
+            auth = GHAnonymousSession().create_new_authorization(usr, pwd)
+            token = auth.token
+        except GHSessionError as e:
             self.dialog.label_gh_status.setText(e.msg)
             self.dialog.label_gh_status.setStyleSheet('QLabel {{ color : red; }}')
         else:
             if token:
                 keyring.gh_token = token
+                GHSession().authenticate(token)
             self.dialog.buttonBox.button(self.dialog.buttonBox.Ok).setDefault(True)
-            self.gh_token_status_changed()
 
-    def gh_token_status_changed(self):
-        self.dialog.label_gh_status.setText(keyring.gh_status_text)
-        self.dialog.label_gh_status.setStyleSheet('QLabel {{ color : {}; }}'.format(keyring.gh_status_text_color))
+    def gh_token_status_changed(self, **kwargs):
+        print(kwargs)
+        status = kwargs.get('status')
+        if status == GHSession.session_status['not_connected']:
+            self.dialog.label_gh_status.setText('Not connected')
+            self.dialog.label_gh_status.setStyleSheet('QLabel { color : black; }')
+        if status == GHSession.session_status['wrong_token']:
+            self.dialog.label_gh_status.setText('Token not accepted; please create a new one')
+            self.dialog.label_gh_status.setStyleSheet('QLabel { color : red; }')
+        if status == GHSession.session_status['connected']:
+            self.dialog.label_gh_status.setText('Connected as: {}'.format(kwargs.get('username')))
+            self.dialog.label_gh_status.setStyleSheet('QLabel { color : green; }')

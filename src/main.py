@@ -63,8 +63,6 @@ def main(init_only=False, test_run=False):
 
         crash_reporter.register_context('config', config)
 
-        from src.keyring import keyring
-
         from PyQt5.QtGui import QFontDatabase
         from PyQt5.QtWidgets import QApplication
         from src.qt import qt_resources
@@ -98,7 +96,7 @@ def main(init_only=False, test_run=False):
 
         from src.upd import check_for_update
         from src.dcs import init_dcs_installs
-        from src.keyring import init_keyring
+        from src.rem import init_remotes
         from src.threadpool import ThreadPool
         from src.sig import sig_splash, sig_main_ui, sig_main_ui_states
         import src.upd
@@ -108,7 +106,7 @@ def main(init_only=False, test_run=False):
         pool.queue_task(sig_splash.show)
         pool.queue_task(check_for_update)
         pool.queue_task(init_dcs_installs)
-        pool.queue_task(init_keyring)
+        pool.queue_task(init_remotes)
         pool.queue_task(sig_splash.kill)
         pool.queue_task(sig_main_ui.show)
         pool.queue_task(sig_main_ui_states.set_current_state, ['running'])

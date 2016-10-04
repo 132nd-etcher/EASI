@@ -9,4 +9,8 @@ logger = make_logger(__name__)
 class KeyringValues:
     @meta_property_with_default(None, str)
     def gh_token(self, value: str) -> str:
-        """Dictionnary of Github tokens"""
+        """Dictionary of Github tokens"""
+
+    @meta_property_with_default(None, str)
+    def db_token(self, value: str) -> str:
+        """Dictionary of Github tokens"""

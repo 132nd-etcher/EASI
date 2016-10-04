@@ -12,7 +12,7 @@ class Ui_Settings(object):
     def setupUi(self, Settings):
         Settings.setObjectName("Settings")
         Settings.setWindowModality(QtCore.Qt.ApplicationModal)
-        Settings.resize(749, 526)
+        Settings.resize(749, 547)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/pic/settings.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Settings.setWindowIcon(icon)
@@ -241,7 +241,7 @@ class Ui_Settings(object):
         self.githubUsernameLabel.setText(_translate("Settings", "Username"))
         self.githubPasswordLabel.setText(_translate("Settings", "Password"))
         self.btn_gh_create.setText(_translate("Settings", "Create token"))
-        self.label.setText(_translate("Settings", "<html><head/><body><p>You can see your active Github tokens at: <a href=\"https://github.com/settings/tokens\"><span style=\" text-decoration: underline; color:#0000ff;\">https://github.com/settings/tokens</span></a></p></body></html>"))
+        self.label.setText(_translate("Settings", "<html><head/><body><p>You can see your active Github tokens at: <a href=\"https://github.com/settings/applications\"><span style=\" text-decoration: underline; color:#0000ff;\">https://github.com/settings/applications</span></a></p></body></html>"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_credentials), _translate("Settings", "Credentials"))
 
 from src.ui.resources import qt_resource_rc

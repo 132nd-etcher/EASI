@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>749</width>
-    <height>526</height>
+    <height>547</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -483,7 +483,7 @@
               <item>
                <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can see your active Github tokens at: &lt;a href=&quot;https://github.com/settings/tokens&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/settings/tokens&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can see your active Github tokens at: &lt;a href=&quot;https://github.com/settings/applications&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/settings/applications&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="textFormat">
                  <enum>Qt::RichText</enum>
