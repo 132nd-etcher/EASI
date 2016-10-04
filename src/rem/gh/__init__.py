@@ -4,4 +4,4 @@
 # from .token_request import gh_request_token, TokenRequestError
 # from .token_test import gh_token_is_valid
 
-from .gh_session import gh, gh_anon
+from .gh_session import GHSessionError, GHAnonymousSession, GHSession

@@ -2,10 +2,11 @@
 
 import requests
 
+from src.sig import gh_token_status_changed_sig
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
-from src.rem.gh.gh_objects import GHAllReleases, GHLatestRelease, GHUser, GHRepoList, GHRepo, GHAuthorization
+from src.rem.gh.gh_objects import GHAllReleases, GHUser, GHRepoList, GHRepo, GHAuthorization, GHRelease
 
 try:
     from vault.secret import Secret
@@ -13,6 +14,11 @@ except ImportError:
     from vault.empty_secret import Secret
 
 logger = make_logger(__name__)
+
+
+class GHSessionError(Exception):
+    def __init__(self, msg):
+        self.msg = msg
 
 
 # TODO: https://github.com/github/choosealicense.com/tree/gh-pages/_licenses
@@ -32,7 +38,10 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
 
     def __parse_resp(self) -> requests.models.Response:
         if self.resp is None or not self.resp.ok:
-            raise ConnectionError('request failed: {} - Reason: {}'.format(self.req, self.resp.reason))
+            if self.resp.status_code >= 500:
+                logger.error(r'Github API seems to be down, check https://status.github.com/')
+            else:
+                raise GHSessionError('request failed: {}: {}: {}'.format(self.req, self.resp.status_code, self.resp.reason))
         logger.debug(self.resp.reason)
         return self.resp
 
@@ -65,9 +74,9 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
         self.resp = super(GHAnonymousSession, self).delete(self.req, **kwargs)
         return self.__parse_resp()
 
-    def get_latest_release(self, user: str, repo: str) -> GHLatestRelease:
+    def get_latest_release(self, user: str, repo: str) -> GHRelease:
         self.build_req('repos', user, repo, 'releases', 'latest')
-        return GHLatestRelease(self._get_json())
+        return GHRelease(self._get_json())
 
     def get_all_releases(self, user: str, repo: str):
         self.build_req('repos', user, repo, 'releases')
@@ -93,9 +102,6 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
             req = self.get(req.links['next']['url'], auth=(username, password))
             __add_auth(req.json())
         return auth_list
-        json = self._get_json(auth=(username, password))
-        print(json['link'])
-        return [GHAuthorization(x) for x in json]
 
     def remove_authorization(self, username, password, auth_id):
         self.build_req('authorizations', str(auth_id))
@@ -105,7 +111,6 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
         if Secret.gh_client_id is not None:
             for x in self.list_authorizations(username, password):
                 assert isinstance(x, GHAuthorization)
-                print(x.app().name)
                 if x.app().name == constants.APP_SHORT_NAME:
                     logger.debug('removing previous authorzation')
                     self.remove_authorization(username, password, x.id)
@@ -119,16 +124,34 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
             return GHAuthorization(self._put(json=json, auth=(username, password)).json())
 
 
-class GHAuthenticatedSession(GHAnonymousSession, metaclass=Singleton):
-    def __init__(self, token):
+class GHSession(GHAnonymousSession, metaclass=Singleton):
+    session_status = dict(
+        not_connected=0,
+        connected=1,
+        wrong_token=-1,
+    )
+
+    def __init__(self, token=None):
         GHAnonymousSession.__init__(self)
+        self.user = None
+        if token:
+            self.authenticate(token)
+        else:
+            gh_token_status_changed_sig.not_connected()
+
+    def authenticate(self, token):
         self.headers.update(
             {
                 'Authorization': 'token {}'.format(token)
             }
         )
         self.build_req('user')
-        self.user = GHUser(self._get_json())
+        try:
+            self.user = GHUser(self._get_json())
+        except GHSessionError:
+            gh_token_status_changed_sig.wrong_token()
+        else:
+            gh_token_status_changed_sig.connected(self.user.login)
 
     @property
     def rate_limit(self):
@@ -212,28 +235,10 @@ class GHAuthenticatedSession(GHAnonymousSession, metaclass=Singleton):
             context: str = None):
         self.build_req('repos', self.user.login, repo, 'statuses', sha)
         json = dict(state=state)
-        if target_url: json['target_url'] = target_url
-        if description: json['description'] = description
-        if context: json['context'] = context
-        print(json)
+        if target_url:
+            json['target_url'] = target_url
+        if description:
+            json['description'] = description
+        if context:
+            json['context'] = context
         self._post(json=json)
-
-
-gh_anon = GHAnonymousSession()
-gh = None
-
-if __name__ == '__main__':
-    # t = gh_anon.list_authorizations('132nd-etcher', 'kribOO5579')
-    # for x in t:
-    #     assert isinstance(x, GHAuthorization)
-    #     print(x.app().name)
-    #
-    # exit(0)
-
-    auth = gh_anon.create_new_authorization('132nd-etcher', 'kribOO5579')
-    # print(auth.header)
-    # print(auth.hashed_token)
-
-    gh = GHAuthenticatedSession(auth.token)
-    print(gh.user.login)
-    print(gh.rate_limit)

@@ -64,4 +64,7 @@ class GHAllReleaseAssets(BaseGHObject):
         for x in self.json:
             yield GHReleaseAsset(x)
 
+    def __getitem__(self, item) -> GHReleaseAsset:
+        return GHReleaseAsset(self.json[item])
+
 
