@@ -2,7 +2,7 @@
 from .base_custom_signal import CustomSignal
 from .base_receiver import SignalReceiver
 from .interface import interfaced_method, InterfacedSignal
-from .sigs import *
+from .sigs import AbstractLongOpDialogSig, AuthorModeSig, MainUiSig, SplashSig, MainUiStatesSig
 
 sig_dcs_installs_changed = CustomSignal()
 sig_sg_path_changed = CustomSignal()
