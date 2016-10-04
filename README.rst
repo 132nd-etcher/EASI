@@ -28,6 +28,9 @@ Develop:
 .. image:: https://codeclimate.com/github/132nd-etcher/EASI/badges/issue_count.svg
    :target: https://codeclimate.com/github/132nd-etcher/EASI
 
+.. image:: https://www.quantifiedcode.com/api/v1/project/c20bff6d0c384ec890e23c8d020ae34a/badge.svg
+  :target: https://www.quantifiedcode.com/app/project/c20bff6d0c384ec890e23c8d020ae34a
+
 
 Master: no build yet
 
