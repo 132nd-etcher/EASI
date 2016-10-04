@@ -184,6 +184,7 @@ class TestMeta(TestCase):
             c.some_prop = x
         self.assertEqual(f.call_count, 0)
         c.some_prop = 'text'
+        self.assertSequenceEqual(c.some_prop, 'text')
         self.assertEqual(f.call_count, 1)
 
     def test_singleton_meta(self):
