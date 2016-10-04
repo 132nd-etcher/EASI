@@ -9,6 +9,7 @@ from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.meta import Meta
 from src.low.singleton import Singleton
+from src.rem.gh.gh_session import GHAuthenticatedSession, gh
 from src.sig import sig_main_ui_states, gh_token_status_changed_sig
 from .values import KeyringValues
 
@@ -60,14 +61,13 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
     def validate_gh_token(self):
         if self.gh_token:
             try:
+                gh = GHAuthenticatedSession(self.gh_token)
                 assert isinstance(self.gh_token, str)
-                self.__gh = github3.login(token=self.gh_token)
-                self.__gh_user = self.gh.user()
-                # self.__gh_status = '<font color="green">connected as {}</font>'.format(self.gh_username)
+                # self.__gh = github3.login(token=self.gh_token)
+                self.__gh_user = gh.user.login
                 self.__gh_status_text = 'connected as {}'.format(self.gh_username)
                 self.__gh_status_text_color = 'green'
             except github3.GitHubError:
-                # self.__gh_status = '<font color="red">invalid token, please create a new one</font>'
                 self.__gh_status_text = 'invalid token, please create a new one'
                 self.__gh_status_text_color = 'red'
         else:
