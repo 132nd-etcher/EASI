@@ -1,8 +1,10 @@
 # coding=utf-8
 
+import webbrowser
+
 from dropbox import Dropbox as BaseDropbox, DropboxOAuth2FlowNoRedirect
 from dropbox.exceptions import AuthError
-import webbrowser
+
 try:
     from vault.secret import Secret
 except ImportError:
@@ -14,6 +16,7 @@ from src.low.custom_logging import make_logger
 from src.sig import db_token_status_changed_sig
 
 logger = make_logger(__name__)
+
 
 class DBSession(metaclass=Singleton):
     session_status = dict(
@@ -49,5 +52,5 @@ class DBSession(metaclass=Singleton):
 
     @staticmethod
     def finish_auth_flow(flow, code):
-        token, user_id = flow.finish(code)
+        token, _ = flow.finish(code)
         return token
