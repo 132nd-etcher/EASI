@@ -6,5 +6,5 @@ from .db.db_session import DBSession
 
 
 def init_remotes():
-    gh_session = GHSession(keyring.gh_token)
-    db_session = DBSession(keyring.db_token)
+    GHSession(keyring.gh_token)
+    DBSession(keyring.db_token)
