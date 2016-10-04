@@ -10,7 +10,8 @@ from tests.with_file import TestCaseWithTestFile
 
 
 class TestCustomPath(TestCaseWithTestFile):
-    def hash_file(self, path):
+    @staticmethod
+    def hash_file(path):
         return subprocess.check_output(['crc32', path]).decode().split(' ')[0][2:]
 
     def test_crc32(self):
@@ -21,7 +22,6 @@ class TestCustomPath(TestCaseWithTestFile):
             else:
                 with self.assertRaises(TypeError):
                     p.crc32()
-        p = Path()
 
     def test_get_version(self):
         import os
@@ -29,7 +29,7 @@ class TestCustomPath(TestCaseWithTestFile):
         self.assertTrue(p.isfile())
         self.assertTrue(p.exists())
         self.assertTrue(p.get_version_info())
-        if os.environ.get('APPVEYOR', None):
+        if os.environ.get('APPVEYOR'):
             self.assertSequenceEqual(p.get_version_info(), '6.3.9600.18231')
         else:
             self.assertSequenceEqual(p.get_version_info(), '6.1.7601.17514')

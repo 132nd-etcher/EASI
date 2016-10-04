@@ -56,9 +56,9 @@ class Sentry(raven.Client):
 
     def captureMessage(self, message, **kwargs):
         self.set_context()
-        if kwargs.get('data', None) is None:
+        if kwargs.get('data') is None:
             kwargs['data'] = {}
-        if kwargs['data'].get('level', None) is None:
+        if kwargs['data'].get('level') is None:
             kwargs['data']['level'] = logging.DEBUG
         super(Sentry, self).captureMessage(message, **kwargs)
 

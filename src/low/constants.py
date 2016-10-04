@@ -21,6 +21,7 @@ APP_VERSION = src.__version__.__version__
 APP_AUTHOR = 'etcher'
 APP_STATUS = 'alpha'
 APP_RELEASE_NAME = 'Another Fine Product From The Nonsense Factory'
+APP_WEBSITE = r'https://github.com/132nd-etcher/EASI'
 
 GH_APP_USER = '132nd-etcher'
 GH_APP_REPO = 'EASI'

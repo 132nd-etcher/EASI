@@ -8,6 +8,7 @@ def gh_token_is_valid(token: str) -> bool:
     try:
         # noinspection PyStatementEffect
         usr = g.user()
+        g.ratelimit_remaining
         return usr.name
     except github3.GitHubError:
         return False

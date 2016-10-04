@@ -5,6 +5,7 @@ from src.low.custom_logging import make_logger
 from src.qt import QDialog, Qt, QStyleFactory
 from src.ui.dialog_config.abstract_config_dialog_child import AbstractConfigDialogChild
 from src.ui.dialog_config.settings_gh import GHSettings
+from src.ui.dialog_config.settings_db import DBSettings
 from src.ui.dialog_config.settings_mod_authoring import ModAuthoringSettings
 from src.ui.dialog_config.settings_paths import PathsSettings
 from src.ui.skeletons.config_dialog import Ui_Settings
@@ -25,12 +26,14 @@ class ConfigDialog(Ui_Settings, QDialog):
         self.buttonBox.button(self.buttonBox.Reset).clicked.connect(self.load_settings)
         self.btn_update_check.clicked.connect(check_for_update)
         self.gh_settings = GHSettings(self)
+        self.db_settings = DBSettings(self)
         self.path_settings = PathsSettings(self)
         self.mod_authoring_settings = ModAuthoringSettings(self)
         self.settings_children = [
             self.path_settings,
             self.mod_authoring_settings,
-            self.gh_settings
+            self.gh_settings,
+            self.db_settings,
         ]
         f_style = QStyleFactory()
         self.comboBox.addItems(f_style.keys())
