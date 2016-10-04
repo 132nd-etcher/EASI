@@ -42,10 +42,6 @@ class GHReleaseAsset(BaseGHObject):
         """"""
 
     @json_property
-    def size(self):
-        """"""
-
-    @json_property
     def created_at(self):
         """"""
 
