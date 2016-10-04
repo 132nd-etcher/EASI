@@ -23,13 +23,17 @@ Develop:
     :target: https://scrutinizer-ci.com/g/132nd-etcher/EASI/?branch=develop
 
 .. image:: https://codeclimate.com/github/132nd-etcher/EASI/badges/gpa.svg
-   :target: https://codeclimate.com/github/132nd-etcher/EASI
+    :target: https://codeclimate.com/github/132nd-etcher/EASI
 
 .. image:: https://codeclimate.com/github/132nd-etcher/EASI/badges/issue_count.svg
-   :target: https://codeclimate.com/github/132nd-etcher/EASI
+    :target: https://codeclimate.com/github/132nd-etcher/EASI
 
 .. image:: https://www.quantifiedcode.com/api/v1/project/c20bff6d0c384ec890e23c8d020ae34a/snapshot/origin:develop:HEAD/badge.svg
-  :target: https://www.quantifiedcode.com/app/project/c20bff6d0c384ec890e23c8d020ae34a
+    :target: https://www.quantifiedcode.com/app/project/c20bff6d0c384ec890e23c8d020ae34a
+
+.. image:: https://coveralls.io/repos/github/132nd-etcher/EASI/badge.svg?branch=develop
+    :target: https://coveralls.io/github/132nd-etcher/EASI?branch=develop
+
 
 
 Master: no build yet
