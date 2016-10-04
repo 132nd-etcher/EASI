@@ -14,6 +14,9 @@ class BaseProgressDialogInterface:
 
 
 class BaseProgressDialog(QDialog, BaseProgressDialogInterface):
+    def setupUi(self, dialog):
+        raise NotImplementedError
+
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.WindowTitleHint)
         self.setupUi(self)
