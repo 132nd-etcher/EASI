@@ -53,7 +53,6 @@ class GHSettings(AbstractConfigDialogChild):
             self.dialog.buttonBox.button(self.dialog.buttonBox.Ok).setDefault(True)
 
     def gh_token_status_changed(self, **kwargs):
-        print(kwargs)
         status = kwargs.get('status')
         if status == GHSession.session_status['not_connected']:
             self.dialog.label_gh_status.setText('Not connected')
