@@ -31,8 +31,9 @@ Develop:
 .. image:: https://www.quantifiedcode.com/api/v1/project/c20bff6d0c384ec890e23c8d020ae34a/snapshot/origin:develop:HEAD/badge.svg
     :target: https://www.quantifiedcode.com/app/project/c20bff6d0c384ec890e23c8d020ae34a
 
-.. image:: https://coveralls.io/repos/github/132nd-etcher/EASI/badge.svg?branch=develop
-    :target: https://coveralls.io/github/132nd-etcher/EASI?branch=develop
+.. image:: https://coveralls.io/repos/github/132nd-etcher/EASI/badge.svg?branch=HEAD
+    :target: https://coveralls.io/github/132nd-etcher/EASI?branch=HEAD
+
 
 
 
