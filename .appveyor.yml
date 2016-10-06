@@ -18,6 +18,10 @@ environment:
       secure: 5g9TZWYrT6Bq9BSvMcI408Nyh9OcoCHU+wFYXV7Q8nBg7lgRjH/ht1p2MQwJhsiEGHqw3Krk+h6a3w92725ldwxKOWrc8twh92gOPC0b4gs=
     COVERALLS_REPO_TOKEN:
       secure: 0Vci1JqP+KrmA8CjVryiikwJRk2W198nIHmPwk0W75zrz1b1Orz2+JrdgqLl5d3q
+    GH_PAGES_TOKEN:
+      secure: Wn4FCPRsCJUZy0bnpVt2ClZSp9XsrT0rocBBNDOFGPvmcCZq4fPNDWI1FfoO08zV
+    GH_MAIL:
+      secure: 9bVWUcCZXTNmCwwwQ9c/LY+ZxQWBTzzEJoojPZbp4Qk=
 
     matrix:
       - PYTHON: "C:\\Python35"
@@ -69,6 +73,24 @@ build_script:
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY%"
   - iscc inno_setup.iss
 #  - dir
+
+on_success:
+  - mkdir ..\gh-pages
+  - "curl -s https://raw.githubusercontent.com/Wyamio/Wyam/master/RELEASE -o ..\\Wyam\\wyamversion.txt"
+  - git config --global user.email "%GH_MAIL%"
+  - git config --global user.name "etcher"
+  - git clone https://github.com/132nd-etcher/EASI.git ..\gh-pages
+  - cd ..\gh-pages
+  - git checkout gh-pages
+  - git rm -rf .
+  - cd ..\EASI\docs\source
+  - make html HTML_OUTPUT_DIR=..\gh-pages
+  - cd ..\..\..\gh-pages
+  - git remote set-url origin https://github.com/132nd-etcher/EASI.git
+  - git add -A
+  - git commit -a -m "auto gh-pages build"
+  - git push
+  - cd ..\EASI
 
 artifacts:
   - path: ./build/release/*.exe
