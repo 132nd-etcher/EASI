@@ -34,8 +34,8 @@ Develop:
 .. image:: https://coveralls.io/repos/github/132nd-etcher/EASI/badge.svg?branch=HEAD
     :target: https://coveralls.io/github/132nd-etcher/EASI?branch=HEAD
 
-
-
+.. image:: https://snap-ci.com/132nd-etcher/EASI/branch/develop/build_image
+    :target: https://snap-ci.com/132nd-etcher/EASI/branch/develop
 
 Master: no build yet
 
