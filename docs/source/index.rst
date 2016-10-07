@@ -8,6 +8,8 @@ EASI documentation
 ******************
 |epilog|
 
+Testing gh-pages auto-deploy
+
 :index:`paragraph`
 
 Contents:
