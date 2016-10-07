@@ -1,6 +1,7 @@
 import abc
 import os
 
+from src.low.custom_path import Path
 from src.qt import QMenu, QAction, QToolButton, QIcon
 from src.ui.dialog_browse.dialog import BrowseDialog
 from src.ui.dialog_config.settings.abstract_config import AbstractConfigSetting
@@ -54,3 +55,12 @@ class AbstractPathSetting(AbstractConfigSetting):
     @abc.abstractproperty
     def qt_menu_btn(self) -> QToolButton:
         """"""
+
+    def validate_dialog_value(self) -> bool:
+        p = Path(self.get_value_from_dialog())
+        if not p.exists():
+            self.show_tooltip('Directory does not exist')
+        elif not p.isdir():
+            self.show_tooltip('Not a directory')
+        else:
+            return True
