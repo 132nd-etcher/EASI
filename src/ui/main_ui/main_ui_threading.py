@@ -2,6 +2,10 @@
 
 
 from src.qt import QObject, pyqtSignal, QThread
+from src.low.custom_logging import make_logger
+
+
+logger = make_logger(__name__)
 
 
 class MainGuiWorker(QObject):
@@ -67,18 +71,21 @@ class MainGuiThreading:
                 raise ValueError('unknown object: {}'.format(obj_name))
             method = getattr(obj, func, None)
         _args = kwargs.pop('args', None)
-        if _args:
-            args = _args
-        if method is None:
-            raise ValueError('unknown method: {}'.format(func))
-        if args and kwargs:
-            method(*args, **kwargs)
-        elif args:
-            method(*args)
-        elif kwargs:
-            method(**kwargs)
-        else:
-            method()
+        try:
+            if _args:
+                args = _args
+            if method is None:
+                raise ValueError('unknown method: {}'.format(func))
+            if args and kwargs:
+                method(*args, **kwargs)
+            elif args:
+                method(*args)
+            elif kwargs:
+                method(**kwargs)
+            else:
+                method()
+        except TypeError:
+            logger.exception('method "{}" of object "{}" failed ([{}], {{{}}})'.format(method, func, args, kwargs))
 
     @classmethod
     def do(cls, obj_name, func, *args, **kwargs):
