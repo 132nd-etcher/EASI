@@ -8,8 +8,8 @@ class BaseProgressDialogInterface:
     def setupUi(self, dialog):
         raise NotImplementedError
 
-    def setWindowModality(self, modality):
-        raise NotImplementedError
+        # def setWindowModality(self, modality):
+        #     raise NotImplementedError
 
 
 class BaseProgressDialog(QDialog, BaseProgressDialogInterface):
