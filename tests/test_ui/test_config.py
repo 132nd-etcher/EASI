@@ -39,6 +39,7 @@ class TestConfig(QtTestCase):
         QTest.keyClicks(self.dialog.sg_line_edit, test_dir.abspath())
         self.assertSequenceEqual(self.dialog.sg_line_edit.text(), test_dir.abspath())
         self.dialog.accept()
+        time.sleep(0.5)
         self.assertSequenceEqual(config.saved_games_path, test_dir.abspath())
         self.dialog.show()
         self.dialog.sg_line_edit.clear()
@@ -47,6 +48,7 @@ class TestConfig(QtTestCase):
         m = mock.MagicMock()
         self.dialog.config_settings['sg_path'].show_tooltip = m
         self.dialog.accept()
+        time.sleep(0.5)
         m.assert_called_with('Not a directory')
         self.assertSequenceEqual(config.saved_games_path, test_dir.abspath())
         self.dialog.show()
@@ -56,6 +58,7 @@ class TestConfig(QtTestCase):
         m = mock.MagicMock()
         self.dialog.config_settings['sg_path'].show_tooltip = m
         self.dialog.accept()
+        time.sleep(0.5)
         m.assert_called_with('Directory does not exist')
         self.assertSequenceEqual(config.saved_games_path, test_dir.abspath())
         self.dialog.sg_line_edit.clear()
