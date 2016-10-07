@@ -2,16 +2,17 @@
 """
 Convenience module for storing/restoring per-user configuration values
 """
-from src.low.custom_logging import make_logger
 from src.low import constants
-from src.low.meta import Meta
+from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
+from src.meta import Meta
 from .values import ConfigValues
 
 logger = make_logger(__name__)
 
-class Config(Meta, ConfigValues, metaclass=Singleton):
 
+
+class Config(Meta, ConfigValues, metaclass=Singleton):
     def __init__(self, config_file=None):
         if config_file is None:
             config_file = constants.PATH_CONFIG_FILE

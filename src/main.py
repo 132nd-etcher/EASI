@@ -28,7 +28,6 @@ def main(init_only=False, test_run=False):
         if constants.TESTING:
             # Bypass creation of main logger for tests
             import logging
-
             logger = logging.getLogger('__main__')
         else:
             logger = make_logger(log_file_path=constants.PATH_LOG_FILE)
@@ -86,6 +85,8 @@ def main(init_only=False, test_run=False):
             if not DisclaimerDialog.make():
                 logger.warning('disclaimer: user declined')
                 sys.exit(0)
+            if config.author_mode and not DisclaimerDialog.make_for_mod_authors():
+                config.author_mode = False
             logger.info('disclaimer: done')
 
         # noinspection PyUnusedLocal
@@ -98,11 +99,19 @@ def main(init_only=False, test_run=False):
         from src.dcs import init_dcs_installs
         from src.rem import init_remotes
         from src.threadpool import ThreadPool
-        from src.sig import sig_splash, sig_main_ui, sig_main_ui_states
+        from src.sig import sig_splash, sig_main_ui, sig_main_ui_states, SignalReceiver, sig_interrupt_startup
         import src.upd
 
         logger.info('startup: init')
         pool = ThreadPool(_num_threads=1, _basename='startup', _daemon=False)
+        rec = SignalReceiver(None)
+
+        def interrupt_startup():
+            print('killing startup pool')
+            pool.join_all(False, False)
+
+        rec[sig_interrupt_startup] = interrupt_startup
+
         pool.queue_task(sig_splash.show)
         pool.queue_task(check_for_update)
         pool.queue_task(init_dcs_installs)
@@ -136,7 +145,6 @@ def main(init_only=False, test_run=False):
 
 
 if __name__ == '__main__':
-
     def nice_exit(*_):
         import os
         # Shameful monkey-patching to bypass windows being a jerk

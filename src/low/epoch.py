@@ -64,10 +64,15 @@ class Epoch:
         return Epoch.epoch_cache
 
     @staticmethod
-    def now() -> pendulum.Pendulum:
-        epoch = Epoch.epoch_cached_online()
-        return pendulum.from_timestamp(epoch)
+    def now(refresh=False) -> pendulum.Pendulum:
+        if refresh:
+            return pendulum.from_timestamp(Epoch.epoch_online())
+        return pendulum.from_timestamp(Epoch.epoch_cached_online())
 
     @staticmethod
-    def datetime_string():
-        return Epoch.now().to_datetime_string()
+    def datetime_string(refresh=False) -> str:
+        return Epoch.now(refresh).to_datetime_string()
+
+    @staticmethod
+    def to_iso8601(refresh=False) -> str:
+        return Epoch.now(refresh).to_iso8601_string()

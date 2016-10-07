@@ -9,7 +9,7 @@ class TestCustomVersion(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_CustomVersion_creation(self):
+    def test_custom_version_creation(self):
         with self.assertRaises(ValueError):
             Version()
         for wrong_Version_str in ['0.0.0', '0.0.0.0.0', 'some_str']:
@@ -24,7 +24,7 @@ class TestCustomVersion(unittest.TestCase):
         self.assertEqual(v.revision, 3)
         self.assertEqual(v.build, 4)
 
-    def test_Version_comparison(self):
+    def test_version_comparison(self):
         v1 = Version('1.0.0.0')
         v2 = Version('1.2.3.4')
         v3 = Version('1.3.3.4')
@@ -53,7 +53,7 @@ class TestCustomVersion(unittest.TestCase):
         st.integers(min_value=0),
         st.integers(min_value=0),
     )
-    def test_CustomVersion_repr(self, m, mm, b, r):
+    def test_custom_version_repr(self, m, mm, b, r):
         v = Version('.'.join([str(x) for x in [m, mm, b, r]]))
         self.assertEqual(v.__repr__(), 'Version(\'{}\')'.format('.'.join([str(x) for x in [m, mm, b, r]])))
 

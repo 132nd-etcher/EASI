@@ -6,13 +6,12 @@ from unittest import mock
 
 from hypothesis import given, settings, example
 from hypothesis import strategies as st
-
-from src.low.custom_path import Path
-from src.low.meta.decorators import meta_property, meta_property_with_default
-from src.low.meta.meta import Meta
-from src.low.meta.meta_singleton import MetaSingleton
+from src.meta.decorators import meta_property, meta_property_with_default
+from src.meta.meta import Meta
 
 from src.low.custom_logging import make_logger
+from src.low.custom_path import Path
+from src.meta.meta_singleton import MetaSingleton
 
 logger = make_logger(__name__)
 

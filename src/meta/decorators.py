@@ -1,5 +1,6 @@
 # coding=utf-8
 
+
 # noinspection PyPep8Naming
 class meta_property:
     """Decorator used to define a property of a Meta class

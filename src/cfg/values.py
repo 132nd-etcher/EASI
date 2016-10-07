@@ -4,7 +4,7 @@ import os
 
 import path
 
-from src.low.meta import meta_property_with_default
+from src.meta import meta_property_with_default
 from src.sig import sig_author_mode, sig_sg_path_changed, sig_cache_path_changed
 
 
@@ -44,7 +44,7 @@ class ConfigValues:
         sig_author_mode.mod_author_changed(value)
 
     @meta_property_with_default(os.path.abspath('.\cache'), str)
-    def cache(self, value: str):
+    def cache_path(self, value: str):
         p = path.Path(value)
         if not p.exists():
             os.makedirs(str(p.abspath()))

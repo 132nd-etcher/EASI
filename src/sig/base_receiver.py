@@ -3,6 +3,7 @@
 from blinker import Signal
 
 
+# FIXME: this needs test
 class SignalReceiver:
     def __init__(self, parent):
         self.handlers = {}
@@ -13,8 +14,12 @@ class SignalReceiver:
             try:
                 func(**kwargs)
             except ValueError:
-                raise NotImplementedError(
-                    '{}: {} has not method: {})'.format(sender, self.parent.__class__.__name__, kwargs))
+                if self.parent:
+                    raise NotImplementedError('{}: {} has not method: {})'.format(
+                        sender, self.parent.__class__.__name__, func.__name__))
+                else:
+                    raise NotImplementedError('{}: method not found: {})'.format(
+                        sender, func.__name__))
 
         signal.connect(handle_sig)
         self.handlers[signal] = handle_sig

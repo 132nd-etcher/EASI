@@ -16,14 +16,14 @@ class BaseGHObject:
         return self.json['header']
 
     def get_all(self):
-        ret = []
+        ret = set()
         for k in self.__class__.__dict__:
             if k.startswith('__'):
                 continue
             if callable(getattr(self, k)):
-                ret.append((k, getattr(self, k)().get_all()))
+                ret.add((k, getattr(self, k)().get_all()))
             else:
-                ret.append((k, getattr(self, k)))
+                ret.add((k, getattr(self, k)))
         return ret
         # return [getattr(self, k)  if not k.startswith('__')]
 

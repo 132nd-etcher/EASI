@@ -1,13 +1,13 @@
 # coding=utf-8
 
-import tempfile
 import sys
+import tempfile
 from unittest import mock
 
 from hypothesis import strategies as st, given
 
 from src.cfg.values import ConfigValues
-from src.low.meta import Meta
+from src.meta import Meta
 from tests.with_file import TestCaseWithTestFile
 
 
@@ -39,9 +39,9 @@ class TestConfigValues(TestCaseWithTestFile):
             m.assert_called_once_with()
 
         with self.assertRaises(TypeError):
-            c.cache = sys.executable
+            c.cache_path = sys.executable
         with self.assertRaises(ValueError):
-            c.cache = tempfile.gettempdir()
+            c.cache_path = tempfile.gettempdir()
         with mock.patch('src.sig.base_custom_signal.CustomSignal.send') as m:
             c.saved_games_path = tempfile.mkdtemp()
             m.assert_called_once_with()

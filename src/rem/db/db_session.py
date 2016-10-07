@@ -13,7 +13,7 @@ from src.low import constants
 from src.__version__ import version
 from src.low.singleton import Singleton
 from src.low.custom_logging import make_logger
-from src.sig import db_token_status_changed_sig
+from src.sig import sig_db_token_status_changed
 
 logger = make_logger(__name__)
 
@@ -31,7 +31,7 @@ class DBSession(metaclass=Singleton):
         self.session = None
         self.account = None
         if token is None:
-            db_token_status_changed_sig.not_connected()
+            sig_db_token_status_changed.not_connected()
         else:
             self.authenticate(token)
 
@@ -39,10 +39,10 @@ class DBSession(metaclass=Singleton):
         try:
             self.session = BaseDropbox(token)
             self.account = self.session.users_get_current_account()
-            db_token_status_changed_sig.connected(self.account.name.given_name)
+            sig_db_token_status_changed.connected(self.account.name.given_name)
         except AuthError:
             logger.error('wrong token')
-            db_token_status_changed_sig.wrong_token()
+            sig_db_token_status_changed.wrong_token()
 
     @staticmethod
     def start_auth_flow():

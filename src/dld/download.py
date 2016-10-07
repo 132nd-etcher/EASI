@@ -47,8 +47,8 @@ class FileDownload:
             time.sleep(0.1)
 
     def queue_callback(self, callback: callable):
-        if callback:
-            callback(self)
+        self.wait()
+        callback(self)
 
     def __fail(self, err: str):
         self.err = err
@@ -58,7 +58,7 @@ class FileDownload:
 
     def __make_request(self, method):
         try:
-            req = method(self.url)
+            req = method(self.url, allow_redirects=True)
         except InvalidURL:
             self.__fail('invalid url')
         except MissingSchema:
@@ -66,11 +66,20 @@ class FileDownload:
         except Exception as e:
             self.__fail(e.__str__())
         else:
+            # if req.is_redirect or req.is_permanent_redirect:
+            #     self.url = req.
+            # if 300 <= req.status_code < 400:
+            #     logger.info('redirection, getting location')
+            #     self.url = req.
+            #     return self.__ma
             if req.status_code != 200:
                 self.__fail('{}: request failed: {}: {}'.format(self.url, req.status_code, req.reason))
             return req
 
-    def get_size(self, _try=0):
+        # invalid syntax (<string>, line 1)
+        # 'https://github-cloud.s3.amazonaws.com/releases/69669314/82ed146a-8b2a-11e6-9f69-d3b8d9c0da86.exe?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAISTNZFOVBIJMK3TQ%2F20161005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20161005T170455Z&X-Amz-Expires=300&X-Amz-Signature=e07603c53eda7c30138ea9219669cd9953c2095f0edba7d230dde4fb9cb1eb57&X-Amz-SignedHeaders=host&actor_id=0&response-content-disposition=attachment%3B%20filename%3DEASI_setup_0.0.11.10762.exe&response-content-type=application%2Foctet-stream'
+
+    def get_size(self, _try=1):
         header = self.__make_request(head)
         if header:
             try:
@@ -179,7 +188,8 @@ class Downloader:
                  local_file: str or Path = None,
                  progress: ProgressInterface = None,
                  callback: callable = None,
-                 raise_err: bool = True) -> FileDownload:
+                 raise_err: bool = True,
+                 size: int = None) -> FileDownload:
         """
         Downloads the content of a URL into a local file
 
@@ -191,6 +201,8 @@ class Downloader:
         :return: FileDownload object
         """
         fdl = FileDownload(url, local_file)
+        if size:
+            fdl.size = size
         self.watchdog.queue_task(self.__download, kwargs=dict(fdl=fdl, progress=progress, raise_err=raise_err))
         if callback:
             self.watchdog.queue_task(fdl.queue_callback, [callback])

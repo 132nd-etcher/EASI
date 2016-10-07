@@ -3,8 +3,8 @@
 
 from .base_gh_object import BaseGHObject, json_property
 
-class GHUser(BaseGHObject):
 
+class GHUser(BaseGHObject):
     @json_property
     def login(self):
         """"""

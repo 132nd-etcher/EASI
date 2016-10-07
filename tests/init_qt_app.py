@@ -1,13 +1,13 @@
 # coding=utf-8
-
+import time
 from unittest import TestCase
 
 from src.low.singleton import Singleton
+from src.main import main
 
 
 class QtApp(metaclass=Singleton):
     def __init__(self):
-        from src.main import main
         qt_app, main_ui = main(init_only=True, test_run=True)
         self.qt_app = qt_app
         self.main_ui = main_ui

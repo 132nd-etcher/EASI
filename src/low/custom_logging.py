@@ -21,7 +21,7 @@ def make_logger(module_name='__main__', log_file_path=None, logging_level=loggin
     :param module_name: name of the module this logger pertains to
     :return: logger object
     """
-    if logging_level not in [logging.DEBUG, logging.INFO, logging.WARNING, logging.WARN, logging.ERROR]:
+    if logging_level not in {logging.DEBUG, logging.INFO, logging.WARNING, logging.WARN, logging.ERROR}:
         raise ValueError('unknown logging level: {}'.format(logging_level))
     if module_name == '__main__':
         return __setup_logger(log_file_path=log_file_path, logging_level=logging_level, custom_handler=custom_handler)
@@ -35,23 +35,23 @@ def make_logger(module_name='__main__', log_file_path=None, logging_level=loggin
 class ParasiteLogger:
 
     def __init__(self, prefix: str, logger: logging.Logger):
-        self.prefix = prefix
-        self.logger = logger
+        self.__parasite_logger_prefix = prefix
+        self.__logger = logger
 
     def debug(self, txt: str):
-        self.logger.debug('{}: {}'.format(self.prefix, txt))
+        self.__logger.debug('{}: {}'.format(self.__parasite_logger_prefix, txt))
 
     def info(self, txt: str):
-        self.logger.info('{}: {}'.format(self.prefix, txt))
+        self.__logger.info('{}: {}'.format(self.__parasite_logger_prefix, txt))
 
     def warning(self, txt: str):
-        self.logger.warning('{}: {}'.format(self.prefix, txt))
+        self.__logger.warning('{}: {}'.format(self.__parasite_logger_prefix, txt))
 
     def error(self, txt: str):
-        self.logger.error('{}: {}'.format(self.prefix, txt))
+        self.__logger.error('{}: {}'.format(self.__parasite_logger_prefix, txt))
 
     def critical(self, txt: str):
-        self.logger.critical('{}: {}'.format(self.prefix, txt))
+        self.__logger.critical('{}: {}'.format(self.__parasite_logger_prefix, txt))
 
 
 class Logged:

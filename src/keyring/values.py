@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.low.custom_logging import make_logger
-from src.low.meta import meta_property_with_default
+from src.meta import meta_property_with_default
 
 logger = make_logger(__name__)
 

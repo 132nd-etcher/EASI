@@ -1,15 +1,18 @@
 # coding=utf-8
 
-from src.cfg import config
 from src.low.custom_logging import make_logger
-from src.qt import QDialog, Qt, QStyleFactory
-from src.ui.dialog_config.abstract_config_dialog_child import AbstractConfigDialogChild
-from src.ui.dialog_config.settings_gh import GHSettings
-from src.ui.dialog_config.settings_db import DBSettings
-from src.ui.dialog_config.settings_mod_authoring import ModAuthoringSettings
-from src.ui.dialog_config.settings_paths import PathsSettings
+from src.qt import QDialog, Qt
+from src.sig import sig_config_changed, SignalReceiver
 from src.ui.skeletons.config_dialog import Ui_Settings
 from src.upd import check_for_update
+from .settings.abstract_config import AbstractConfigSetting
+from .settings.abstract_credential import AbstractCredentialSetting
+from .settings.setting_author_mode import AuthorModeSetting
+from .settings.setting_cache_path import CachePathSetting
+from .settings.setting_dropbox import DropboxSetting
+from .settings.setting_github import GithubSetting
+from .settings.setting_sg_path import SGPathSetting
+from .settings.setting_update_to_experimental import ExperimentalUpdateSetting
 
 logger = make_logger(__name__)
 
@@ -25,54 +28,56 @@ class ConfigDialog(Ui_Settings, QDialog):
         self.buttonBox.button(self.buttonBox.Apply).clicked.connect(self.save_settings)
         self.buttonBox.button(self.buttonBox.Reset).clicked.connect(self.load_settings)
         self.btn_update_check.clicked.connect(check_for_update)
-        self.gh_settings = GHSettings(self)
-        self.db_settings = DBSettings(self)
-        self.path_settings = PathsSettings(self)
-        self.mod_authoring_settings = ModAuthoringSettings(self)
-        self.settings_children = [
-            self.path_settings,
-            self.mod_authoring_settings,
-            self.gh_settings,
-            self.db_settings,
-        ]
-        f_style = QStyleFactory()
-        self.comboBox.addItems(f_style.keys())
-        self.comboBox.activated[str].connect(self.set_style)
+        self.config_settings = {
+            'author_mode': AuthorModeSetting(self, 'author_mode'),
+            'test_update': ExperimentalUpdateSetting(self, 'subscribe_to_test_versions'),
+            'sg_path': SGPathSetting(self, 'saved_games_path'),
+            'cache_path': CachePathSetting(self, 'cache_path'),
+        }
+        self.keyring_settings = {
+            'dropbox': DropboxSetting(self, 'db_token'),
+            'github': GithubSetting(self, 'gh_token'),
+        }
+        self.receiver = SignalReceiver(self)
+        self.receiver[sig_config_changed] = self.settings_changed
+
+    def __set_apply_btn_enabled(self, value: bool):
+        self.buttonBox.button(self.buttonBox.Apply).setEnabled(value)
 
     def show(self):
-        self.gh_settings.dialog.githubPasswordLineEdit.setText('')
-        self.gh_settings.dialog.githubUsernameLineEdit.setText('')
+        for config_setting in self.config_settings.values():
+            config_setting.show()
+        for keyring_setting in self.keyring_settings.values():
+            keyring_setting.show()
+
         self.load_settings()
+        self.__set_apply_btn_enabled(False)
         super(ConfigDialog, self).show()
 
     def setup(self):
+        for setting in self.config_settings.values():
+            assert isinstance(setting, AbstractConfigSetting)
+            setting.setup()
+            for method in setting.dialog_has_changed_methods():
+                self.receiver[method] = self.settings_changed
+        for setting in self.keyring_settings.values():
+            assert isinstance(setting, AbstractCredentialSetting)
+            setting.setup()
         self.load_settings()
-        for child in self.settings_children:
-            assert isinstance(child, AbstractConfigDialogChild)
-            child.setup()
-
-    @staticmethod
-    def set_style(style):
-        import blinker
-        sig = blinker.signal('sig_main_ui_style')
-        print(style)
-        sig.send('dialog_config', style=style)
 
     def load_settings(self):
-        self.subscribe_to_test_versions.setChecked(config.subscribe_to_test_versions)
-        self.author_mode.setChecked(config.author_mode)
-        for child in self.settings_children:
-            assert isinstance(child, AbstractConfigDialogChild)
-            child.load_settings()
+        for setting in self.config_settings.values():
+            assert isinstance(setting, AbstractConfigSetting)
+            setting.load_from_meta()
+        self.__set_apply_btn_enabled(False)
 
     def save_settings(self):
-        success = True
-        config.subscribe_to_test_versions = self.subscribe_to_test_versions.isChecked()
-        config.author_mode = self.author_mode.isChecked()
-        for child in self.settings_children:
-            assert isinstance(child, AbstractConfigDialogChild)
-            success = success and child.save_settings()
-        return success
+        for setting in self.config_settings.values():
+            assert isinstance(setting, AbstractConfigSetting)
+            if not setting.save_to_meta():
+                return False
+        self.__set_apply_btn_enabled(False)
+        return True
 
     def reject(self):
         super(ConfigDialog, self).reject()
@@ -82,6 +87,14 @@ class ConfigDialog(Ui_Settings, QDialog):
         if self.save_settings():
             super(ConfigDialog, self).accept()
             self.hide()
+
+    def settings_changed(self):
+        self.__set_apply_btn_enabled(False)
+        for setting in self.config_settings.values():
+            if setting.has_changed:
+                self.__set_apply_btn_enabled(True)
+            else:
+                setting.validation_success()
 
     @staticmethod
     def make():

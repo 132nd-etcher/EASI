@@ -2,11 +2,11 @@
 
 import requests
 
-from src.sig import gh_token_status_changed_sig
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
 from src.rem.gh.gh_objects import GHAllReleases, GHUser, GHRepoList, GHRepo, GHAuthorization, GHRelease
+from src.sig import sig_gh_token_status_changed
 
 try:
     from vault.secret import Secret
@@ -41,7 +41,11 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
             if self.resp.status_code >= 500:
                 logger.error(r'Github API seems to be down, check https://status.github.com/')
             else:
-                raise GHSessionError('request failed: {}: {}: {}'.format(self.req, self.resp.status_code, self.resp.reason))
+                if self.resp.status_code == 401:
+                    raise GHSessionError('Unauthorized: wrong password and/or username')
+                else:
+                    raise GHSessionError('request failed: {}: {}: {}'.format(
+                        self.req, self.resp.status_code, self.resp.reason))
         logger.debug(self.resp.reason)
         return self.resp
 
@@ -85,6 +89,14 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
     def list_user_repos(self, user: str):
         self.build_req('users', user, 'repos')
         return GHRepoList(self._get_json())
+
+    def get_repo(self, user: str, repo: str):
+        self.build_req('repos', user, repo)
+        return GHRepo(self._get_json())
+
+    def get_user(self, user: str):
+        self.build_req('users', user)
+        return GHUser(self._get_json())
 
     def list_authorizations(self, username, password) -> list:
 
@@ -137,7 +149,7 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
         if token:
             self.authenticate(token)
         else:
-            gh_token_status_changed_sig.not_connected()
+            sig_gh_token_status_changed.not_connected()
 
     def authenticate(self, token):
         self.headers.update(
@@ -149,9 +161,9 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
         try:
             self.user = GHUser(self._get_json())
         except GHSessionError:
-            gh_token_status_changed_sig.wrong_token()
+            sig_gh_token_status_changed.wrong_token()
         else:
-            gh_token_status_changed_sig.connected(self.user.login)
+            sig_gh_token_status_changed.connected(self.user.login)
 
     @property
     def rate_limit(self):

@@ -1,20 +1,11 @@
 # coding=utf-8
 
 from src.rem.gh.gh_objects.base_gh_object import BaseGHObject, json_property
-from src.rem.gh.gh_objects.gh_user import GHUser
 from src.rem.gh.gh_objects.gh_permissions import GHPermissions
-
-
-class GHRepoList(BaseGHObject):
-
-    def __iter__(self):
-        for x in self.json:
-            yield GHRepo(x)
-
+from src.rem.gh.gh_objects.gh_user import GHUser
 
 
 class GHRepo(BaseGHObject):
-
     def owner(self) -> GHUser:
         return GHUser(self.json['owner'])
 
@@ -22,7 +13,6 @@ class GHRepo(BaseGHObject):
         return GHPermissions(self.json['permissions'])
 
     def source(self):
-        print(type(self.json))
         if 'source' in self.json.keys():
             return GHRepo(self.json['source'])
 
@@ -109,3 +99,25 @@ class GHRepo(BaseGHObject):
     @json_property
     def tags_url(self):
         """"""
+
+
+class GHRepoList(BaseGHObject):
+    def __iter__(self):
+        for x in self.json:
+            yield GHRepo(x)
+
+    def __getitem__(self, item) -> GHRepo:
+        for repo in self:
+            if repo.name == item:
+                return repo
+        raise AttributeError('repository not found: {}'.format(item))
+
+    def __contains__(self, item) -> bool:
+        try:
+            self.__getitem__(item)
+            return True
+        except AttributeError:
+            return False
+
+    def __len__(self) -> int:
+        return len(self.json)

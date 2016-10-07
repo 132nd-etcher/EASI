@@ -1,11 +1,10 @@
 # coding=utf-8
 """Manages credentials"""
 
-
 from src.low import constants
 from src.low.custom_logging import make_logger
-from src.low.meta import Meta
 from src.low.singleton import Singleton
+from src.meta import Meta
 from .values import KeyringValues
 
 logger = make_logger(__name__)

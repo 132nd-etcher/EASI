@@ -3,7 +3,7 @@
 import typing
 
 from src.abstract import AbstractModMetaFull, AbstractModFileRemoteMeta
-from src.low.meta import Meta, meta_property_with_default
+from src.meta import Meta, meta_property_with_default
 
 
 class ModMeta(Meta, AbstractModMetaFull):

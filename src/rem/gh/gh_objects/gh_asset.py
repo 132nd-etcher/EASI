@@ -5,7 +5,6 @@ from src.rem.gh.gh_objects.gh_user import GHUser
 
 
 class GHReleaseAsset(BaseGHObject):
-
     @json_property
     def url(self):
         """"""
@@ -55,12 +54,22 @@ class GHReleaseAsset(BaseGHObject):
 
 
 class GHAllReleaseAssets(BaseGHObject):
-
     def __iter__(self):
         for x in self.json:
             yield GHReleaseAsset(x)
 
+    def __len__(self) -> int:
+        return len(self.json)
+
     def __getitem__(self, item) -> GHReleaseAsset:
-        return GHReleaseAsset(self.json[item])
+        for asset in self:
+            if asset.name == item:
+                return asset
+        raise AttributeError('asset not found: {}'.format(item))
 
-
+    def __contains__(self, item) -> bool:
+        try:
+            self.__getitem__(item)
+            return True
+        except AttributeError:
+            return False

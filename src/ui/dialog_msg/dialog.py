@@ -13,16 +13,15 @@ class _MsgDialog(Ui_Dialog, QDialog):
 
 
 class MsgDialog(AbstractBaseDialog):
-    def __init__(self, parent=None):
+    def __init__(self, text: str, title: str, parent=None):
         AbstractBaseDialog.__init__(self, _MsgDialog(parent))
+        text = text.replace('\n', '<br>')
+        self.qobj.label.setText(text)
+        self.qobj.setWindowTitle(title)
+        self.adjust_size()
 
     # noinspection PyMethodOverriding
     @staticmethod
-    def make(text, title=' ', parent=None):
-        text = text.replace('\n', '<br>')
-        dialog = MsgDialog(parent)
-        qobj = dialog.qobj
-        qobj.label.setText(text)
-        qobj.setWindowTitle(title)
-        dialog.adjust_size()
-        qobj.exec()
+    def make(text: str, title: str = ' ', parent=None):
+        dialog = MsgDialog(text, title, parent)
+        dialog.qobj.exec()

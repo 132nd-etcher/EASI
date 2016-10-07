@@ -3,10 +3,12 @@
 import binascii
 import os
 import tempfile
-from humanize import filesize
 
 import path
 import pefile
+from humanize import filesize
+
+
 # from win32.win32api import GetFileVersionInfo, HIWORD, LOWORD
 
 
@@ -51,7 +53,8 @@ class Path(path.Path):
         if 'VS_FIXEDFILEINFO' not in pe.__dict__ or not pe.VS_FIXEDFILEINFO:
             raise ValueError('file has no version: {}'.format(self.abspath()))
         verinfo = pe.VS_FIXEDFILEINFO
-        filever = (verinfo.FileVersionMS >> 16, verinfo.FileVersionMS & 0xFFFF, verinfo.FileVersionLS >> 16, verinfo.FileVersionLS & 0xFFFF)
+        filever = (verinfo.FileVersionMS >> 16, verinfo.FileVersionMS & 0xFFFF, verinfo.FileVersionLS >> 16,
+                   verinfo.FileVersionLS & 0xFFFF)
         # prodver = (verinfo.ProductVersionMS >> 16, verinfo.ProductVersionMS & 0xFFFF, verinfo.ProductVersionLS >> 16, verinfo.ProductVersionLS & 0xFFFF)
         return '%d.%d.%d.%d' % filever
 
@@ -75,7 +78,6 @@ class Path(path.Path):
         return path.Path.write_text(self, text, encoding, errors, linesep, append)
 
 
-
 def create_temp_file(*, suffix=None, prefix=None, create_in_dir=None) -> Path:
     """
     Creates a temporary path in the user's temp dir
@@ -89,3 +91,17 @@ def create_temp_file(*, suffix=None, prefix=None, create_in_dir=None) -> Path:
     os_handle, temp_file = tempfile.mkstemp(suffix=suffix, prefix=prefix, dir=create_in_dir)
     os.close(os_handle)
     return Path(temp_file)
+
+
+def create_temp_dir(*, suffix=None, prefix=None, create_in_dir=None) -> Path:
+    """
+    Creates a temporary path in the user's temp dir
+    :param suffix: filename suffix
+    :param prefix: filename prefix
+    :param create_in_dir: directory in which the file will be created (defaults to temp)
+    :return: temporary file path as a string
+    """
+    if create_in_dir is None:
+        create_in_dir = tempfile.gettempdir()
+    temp_dir = tempfile.mkdtemp(suffix=suffix, prefix=prefix, dir=create_in_dir)
+    return Path(temp_dir)
