@@ -1,6 +1,6 @@
 # CI on Windows via appveyor
 
-version: 0.0.11.11034.14
+version: 0.0.11.11034.15
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
@@ -74,26 +74,26 @@ build_script:
   - iscc inno_setup.iss
 #  - dir
 
-on_success:
-  - git config --global user.email "%GH_MAIL%"
-  - git config --global user.name "etcher"
-  - cd ..
-  - git clone https://github.com/132nd-etcher/EASI.git gh-pages
-  - cd gh-pages
-  - git checkout gh-pages
-  - git rm -rf .
-  - cd ..
-  - cd easi
-  - cd docs
-  - make html SPHINXBUILD="%PYTHON%/Scripts/sphinx-build.exe" HTML_OUTPUT_DIR=..\gh-pages
-  - cd ..
-  - cd ..
-  - cd gh-pages
-  - git remote set-url origin https://github.com/132nd-etcher/EASI.git
-  - git add -A
-  - git commit -a -m "auto gh-pages build"
-  - git push
-  - cd ..\easi
+#on_success:
+#  - git config --global user.email "%GH_MAIL%"
+#  - git config --global user.name "etcher"
+#  - cd ..
+#  - git clone https://github.com/132nd-etcher/EASI.git gh-pages
+#  - cd gh-pages
+#  - git checkout gh-pages
+#  - git rm -rf .
+#  - cd ..
+#  - cd easi
+#  - cd docs
+#  - make html SPHINXBUILD="%PYTHON%/Scripts/sphinx-build.exe" HTML_OUTPUT_DIR=..\gh-pages
+#  - cd ..
+#  - cd ..
+#  - cd gh-pages
+#  - git remote set-url origin https://github.com/132nd-etcher/EASI.git
+#  - git add -A
+#  - git commit -a -m "auto gh-pages build"
+#  - git push
+#  - cd ..\easi
 
 artifacts:
   - path: ./build/release/*.exe
