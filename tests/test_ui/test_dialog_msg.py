@@ -22,4 +22,4 @@ class TestDialogMsg(QtTestCase):
             text = '\n'.join([base_text] * i)
             dialog = MsgDialog(text=text, title=title)
             dialog.show()
-            self.assertGreaterEqual(dialog.qobj.height(), 100 + (13 * max(len(text.split('\n')) - 3, 0)) - i - 10)
+            self.assertGreaterEqual(dialog.qobj.height(), 100 + (13 * max(len(text.split('\n')) - 3, 0)) - (3 * i))
