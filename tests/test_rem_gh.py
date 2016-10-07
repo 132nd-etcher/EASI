@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import time
 from unittest import TestCase, mock, skipUnless
 
 from hypothesis import strategies as st
@@ -9,12 +10,15 @@ from src.rem.gh import GHAnonymousSession, GHSession
 from src.rem.gh.gh_objects import GHRepo, GHRepoList, GHRelease
 
 try:
+    # noinspection PyUnresolvedReferences
     from tests.unittest_secret import Secret
+
     token = Secret.gh_test_token
 except ImportError:
     token = False
 
 
+# noinspection PyPep8Naming
 class TestGHAnonymousSession(TestCase):
     def __init__(self, methodName):
         TestCase.__init__(self, methodName)
@@ -50,6 +54,7 @@ class TestGHAnonymousSession(TestCase):
         self.assertTrue('README.rst' in latest.assets())
 
 
+# noinspection PyPep8Naming
 @skipUnless(token, 'no test token available')
 class TestGHSession(TestCase):
     def __init__(self, methodName):
@@ -88,6 +93,7 @@ class TestGHSession(TestCase):
         name = 'test_repo'
         desc = 'some description'
         self.s.create_repo(name=name, description=desc, auto_init=False)
+        time.sleep(2)
         repo = self.s.get_repo(name)
         c = [
             (repo.name, name),

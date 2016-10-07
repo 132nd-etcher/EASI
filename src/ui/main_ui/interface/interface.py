@@ -5,7 +5,6 @@ from src.ui.main_ui.interface.wrapper import interfaced_method
 
 
 class MainUiSigProcessor(AbstractMainUiInterface):
-
     main_ui = None
 
     def __init__(self, main_ui):
@@ -34,8 +33,7 @@ class MainUiSigProcessor(AbstractMainUiInterface):
     def hide(cls):
         """pass"""
 
-
     @classmethod
     @interfaced_method(None)
-    def exit(self):
+    def exit(cls):
         """pass"""

@@ -84,6 +84,7 @@ class MainGuiThreading:
     def do(cls, obj_name, func, *args, **kwargs):
         """
         Executes a Gui method inside the Qt main loop
+        :param obj_name: attribute of MainUi instance that has the "func" method
         :param func: name of the method to run
         :param args: argument of the method
         :param kwargs: keyword arguments of the method

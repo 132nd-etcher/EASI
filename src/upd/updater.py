@@ -1,4 +1,5 @@
 # coding=utf-8
+# noinspection PyProtectedMember
 from os import execl, _exit
 from src.__version__ import version as local_version
 from src.cfg import config

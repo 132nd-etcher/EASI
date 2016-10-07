@@ -14,7 +14,8 @@ class ModDraft(AbstractMod):
     def meta(self) -> AbstractModMetaFull:
         return self.__meta
 
-    def is_ready(self):
+    @staticmethod
+    def is_ready():
         return False
 
     def write(self):

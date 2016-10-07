@@ -23,10 +23,11 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
 
     def __init__(self, qt_app: QApplication):
         # Fucking QMainWindow calls a general super().__init__ on every parent class, don't call them here !
+        flags = Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowCloseButtonHint
         QMainWindow.__init__(
             self,
             parent=None,
-            flags=Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
+            flags=flags | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
 
         self.qt_app = qt_app
 

@@ -9,11 +9,11 @@ epoch_timer = None
 epoch_cache = None
 
 
-# TODO: expoch needs to be a class with static method to instantiate online and online cached, and easy conversion to time with the pendulum module
+# TODO: expoch needs to be a class with static method to instantiate online and online cached,
+# and easy conversion to time with the pendulum module
 
 
 class Epoch:
-
     epoch_timer = None
     epoch_cache = None
     pool = [
@@ -30,8 +30,6 @@ class Epoch:
         '3.ca.pool.ntp.org',
         'pool.ntp.org',
     ]
-
-
 
     @staticmethod
     def epoch_online(pool=None):

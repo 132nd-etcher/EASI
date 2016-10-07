@@ -1,6 +1,7 @@
 # coding=utf-8
 import abc
 
+
 class AbstractSplash(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def get(self):

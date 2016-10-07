@@ -29,19 +29,9 @@ class Path(path.Path):
         return filesize.naturalsize(self.getsize(), gnu=True)
 
     def normalize(self):
-        """
-        Transforms a path into an lower case absolute path, with backslashes replaced by slashes
-        :param path:
-        :return:
-        """
         return self.abspath().replace('\\', '/').lower()
 
     def get_version_info(self):
-        """
-        Reads the version info string of an executable
-        :param path_to_exe: path to the executable file
-        :return: version as a String or None
-        """
         if not self.exists():
             raise FileNotFoundError(self.abspath())
         if not self.isfile():

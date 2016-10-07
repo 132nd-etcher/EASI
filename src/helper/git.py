@@ -4,7 +4,8 @@ from path import Path
 
 from src.helper.abstract import AbstractHelper
 
-PORTABLE_GIT_LINK = r'https://github.com/git-for-windows/git/releases/download/v2.10.0.windows.1/PortableGit-2.10.0-32-bit.7z.exe'
+PORTABLE_GIT_LINK = r'https://github.com/git-for-windows/git/releases/download/v2.10.0.windows.1/' \
+                    r'PortableGit-2.10.0-32-bit.7z.exe'
 
 
 class GitHelper(AbstractHelper):

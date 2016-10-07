@@ -4,6 +4,7 @@ import abc
 from src.low.custom_path import Path
 from .meta import Meta
 
+
 class _MetaSingleton(abc.ABCMeta):
     """
     When used as metaclass, allow only one instance of a class
@@ -28,5 +29,4 @@ class _MetaSingleton(abc.ABCMeta):
 
 class MetaSingleton(Meta, metaclass=_MetaSingleton):
     def __init__(self, path: Path or str, init_dict: dict = None, auto_read=True):
-
         Meta.__init__(self, path, init_dict, auto_read)

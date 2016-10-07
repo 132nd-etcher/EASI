@@ -32,6 +32,7 @@ class TestDialogFeedback(QtTestCase):
         dialog.dialog.show()
         dialog.dialog.comboBox.setCurrentIndex(random.randint(0, dialog.dialog.comboBox.count()))
         dialog.dialog.textEdit.setText(some_text)
+        # noinspection PyCallByClass,PyTypeChecker
         QTimer.singleShot(0, dialog.dialog.buttonBox.button(dialog.dialog.buttonBox.Ok).clicked)
         dialog.dialog.exec()
         m.assert_called_with(

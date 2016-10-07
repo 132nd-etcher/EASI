@@ -20,5 +20,5 @@ class AbstractConnectedObject(metaclass=abc.ABCMeta):
         if not hasattr(main_ui, self.main_ui_obj_name):
             raise AttributeError('main_ui has not attribute "{}"'.format(self.main_ui_obj_name))
         if not hasattr(self, op):
-            raise NotImplementedError('unknown method for {} class: {}'.format(self.__class__.__name__, op))
+            raise AttributeError('unknown method for {} class: {}'.format(self.__class__.__name__, op))
         main_ui.sig_proc.do(self.main_ui_obj_name, op, *args, **kwargs)

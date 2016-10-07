@@ -9,7 +9,8 @@ from src.threadpool import ThreadPool
 
 
 class TestThreading(TestCase):
-    def sleep(self, t=0.1):
+    @staticmethod
+    def sleep(t=0.1):
         time.sleep(t)
 
     def test_join(self):

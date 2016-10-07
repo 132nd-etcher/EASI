@@ -215,7 +215,7 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
         self.build_req('user', 'repos')
         return GHRepoList(self._get_json())
 
-    def get_repo(self, repo_name: str):
+    def get_repo(self, repo_name: str, **_):
         self.build_req('repos', self.user.login, repo_name)
         return GHRepo(self._get_json())
 
@@ -232,7 +232,8 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
             head=head,
             base=base
         )
-        if description: json['body'] = description
+        if description:
+            json['body'] = description
         self.build_req('repos', user, repo, 'pulls')
         self._post(json=json)
 

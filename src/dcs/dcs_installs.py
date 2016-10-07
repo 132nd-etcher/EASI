@@ -20,6 +20,7 @@ logger = make_logger(__name__)
 
 class DCSInstalls(metaclass=Singleton):
     def __init__(self):
+        self.base_sg = None
         self.installs = {
             'stable': {
                 'reg_key': 'DCS World',

@@ -39,10 +39,10 @@ class TestDownload(TestCase):
             fdl = downloader.download(x)
             self.assertFalse(fdl.success)
         for x in self.wrong_url:
-            def parse_test_results(fdl):
-                assert isinstance(fdl, FileDownload)
-                self.assertFalse(fdl.success)
-                self.assertIsNotNone(fdl.err)
+            def parse_test_results(_fdl):
+                assert isinstance(_fdl, FileDownload)
+                self.assertFalse(_fdl.success)
+                self.assertIsNotNone(_fdl.err)
             fdl = downloader.download(x, callback=parse_test_results)
             fdl.wait()
 

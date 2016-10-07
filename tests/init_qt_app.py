@@ -1,5 +1,4 @@
 # coding=utf-8
-import time
 from unittest import TestCase
 
 from src.low.singleton import Singleton

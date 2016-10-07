@@ -193,6 +193,7 @@ class Downloader:
         """
         Downloads the content of a URL into a local file
 
+        :param size: size of the file; if specified, bypass headers
         :param url: str
         :param local_file: str or Path to local file
         :param progress: instance of ProgressInterface (has "set_progress", "set_text"

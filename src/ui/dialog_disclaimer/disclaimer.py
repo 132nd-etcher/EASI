@@ -20,5 +20,8 @@ disclaimers = [
 ]
 
 disclaimers_mod_author = [
-    ('author_disc_welcom', """<h2>Nice !</h2><p>I'm glad you've decided to put content online for the community ! Before you start, make sure you understand how EASI works by reading the documentation. Don't hesitate to send your questions my way if you get stuck =)</p>""")
+    ('author_disc_welcom',
+     """<h2>Nice !</h2><p>I'm glad you've decided to put content online for the community ! Before you start, make
+     sure you understand how EASI works by reading the documentation. Don't hesitate to send your questions my way if
+     you get stuck =)</p>""")
 ]

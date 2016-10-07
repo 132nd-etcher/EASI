@@ -11,7 +11,6 @@ from .values import ConfigValues
 logger = make_logger(__name__)
 
 
-
 class Config(Meta, ConfigValues, metaclass=Singleton):
     def __init__(self, config_file=None):
         if config_file is None:

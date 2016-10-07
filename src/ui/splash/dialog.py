@@ -37,8 +37,6 @@ class CustomSplash(QSplashScreen):
         # Vivaldi
         self.label_rel_name = QLabel('{}'.format(constants.APP_RELEASE_NAME), self)
         h_offset = 40
-        font = QFont('Vivaldi', 20, QFont.Bold)
-        font = QFont('Vivaldi', 24)
         # font = QFont('Monotype Corsiva', 20)
         font = QFont('Lucida Handwriting', 16)
         self.label_rel_name.setWordWrap(True)

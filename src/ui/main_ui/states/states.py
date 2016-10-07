@@ -21,10 +21,9 @@ def state_method(func):
 
 
 class MainUiStateManager(AbstractConnectedObject, AbstractMainUiState):
-
     state_mapping = {
         'starting': UiStateStartup,
-        'running' : UiStateRunning,
+        'running': UiStateRunning,
     }
 
     def __init__(self, main_ui_obj_name):
