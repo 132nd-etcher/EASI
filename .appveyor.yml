@@ -1,6 +1,6 @@
 # CI on Windows via appveyor
 
-version: 0.0.11.11034.7
+version: 0.0.11.11034.8
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
@@ -75,17 +75,20 @@ build_script:
 #  - dir
 
 on_success:
-  - mkdir ..\gh-pages
-  - "curl -s https://raw.githubusercontent.com/Wyamio/Wyam/master/RELEASE -o ..\\Wyam\\wyamversion.txt"
   - git config --global user.email "%GH_MAIL%"
   - git config --global user.name "etcher"
-  - git clone https://github.com/132nd-etcher/EASI.git ..\gh-pages
-  - cd ..\gh-pages
+  - cd ..
+  - git clone https://github.com/132nd-etcher/EASI.git gh-pages
+  - cd gh-pages
   - git checkout gh-pages
   - git rm -rf .
-  - cd ..\EASI\docs
-  - make html HTML_OUTPUT_DIR=..\gh-pages
-  - cd ..\..\gh-pages
+  - cd ..
+  - cd easi
+  - cd docs
+  - "make html HTML_OUTPUT_DIR=..\gh-pages"
+  - cd ..
+  - cd ..
+  - cd gh-pages
   - git remote set-url origin https://github.com/132nd-etcher/EASI.git
   - git add -A
   - git commit -a -m "auto gh-pages build"
