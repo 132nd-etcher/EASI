@@ -22,6 +22,13 @@ class LongOpDialog(AbstractConnectedDialog, ProgressInterface):
         AbstractConnectedDialog.__init__(self, sig_long_op_dialog, main_ui_obj_name, _LongOpDialog(parent))
         self.set_current_enabled(False)
 
+    # noinspection PyMethodOverriding
+    def show(self, title: str, text: str):
+        self.dialog.setWindowTitle(title)
+        self.dialog.label.setText(text)
+        super(LongOpDialog, self).show()
+
+
     @property
     def dialog(self) -> _LongOpDialog:
         return self.qobj
