@@ -1,6 +1,6 @@
 # CI on Windows via appveyor
 
-version: 0.0.11.11034.10
+version: 0.0.11.11034.11
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
@@ -85,7 +85,7 @@ on_success:
   - cd ..
   - cd easi
   - cd docs
-  - make html HTML_OUTPUT_DIR=..\gh-pages
+  - make html SPHINXBUILD="%PYTHON%/Scripts/sphinx-build.exe" HTML_OUTPUT_DIR=..\gh-pages
   - cd ..
   - cd ..
   - cd gh-pages
