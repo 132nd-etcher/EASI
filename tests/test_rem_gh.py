@@ -10,12 +10,9 @@ from src.rem.gh.gh_objects import GHRepo, GHRepoList, GHRelease
 
 try:
     from tests.unittest_secret import Secret
-
-    test_with_token = True
+    token = Secret.gh_test_token
 except ImportError:
-    test_with_token = False
-
-token = Secret.gh_test_token
+    token = False
 
 
 class TestGHAnonymousSession(TestCase):
@@ -53,7 +50,7 @@ class TestGHAnonymousSession(TestCase):
         self.assertTrue('README.rst' in latest.assets())
 
 
-@skipUnless(test_with_token, 'no test token available')
+@skipUnless(token, 'no test token available')
 class TestGHSession(TestCase):
     def __init__(self, methodName):
         TestCase.__init__(self, methodName)
