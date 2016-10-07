@@ -1,6 +1,6 @@
 # coding=utf-8
 from src.abstract.ui.splash import AbstractSplash
-from src.sig.interface import interfaced_method, InterfacedSignal
+from .interface import interfaced_method, InterfacedSignal
 
 
 class SplashSig(InterfacedSignal, AbstractSplash):

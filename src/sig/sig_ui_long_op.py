@@ -1,9 +1,9 @@
 # coding=utf-8
 from src.abstract import AbstractLongOp
-from ..interface import interfaced_method, InterfacedSignal
+from .interface import interfaced_method, InterfacedSignal
 
 
-class AbstractLongOpDialogSig(InterfacedSignal, AbstractLongOp):
+class LongOpDialogSig(InterfacedSignal, AbstractLongOp):
     @interfaced_method
     def set_text(self, value: str):
         pass

@@ -1,6 +1,6 @@
 # coding=utf-8
 from src.abstract import AbstractMainUiInterface, AbstractMainUiState
-from src.sig.interface import interfaced_method, InterfacedSignal
+from .interface import interfaced_method, InterfacedSignal
 
 
 class MainUiSig(InterfacedSignal, AbstractMainUiInterface):
