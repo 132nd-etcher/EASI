@@ -10,6 +10,7 @@ class ProgressInterface(metaclass=abc.ABCMeta):
         - a progress label
 
     """
+
     @abc.abstractmethod
     def set_progress(self, value: int):
         """Sets the progress bar to 'value' """

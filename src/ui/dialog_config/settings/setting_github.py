@@ -33,9 +33,11 @@ class GithubSetting(AbstractCredentialSetting):
         usr = self.dialog.githubUsernameLineEdit.text()
         pwd = self.dialog.githubPasswordLineEdit.text()
         if not usr:
+            # noinspection PyArgumentList
             QToolTip.showText(self.dialog.githubUsernameLineEdit.mapToGlobal(QPoint(0, 0)), 'missing username')
             return
         if not pwd:
+            # noinspection PyArgumentList
             QToolTip.showText(self.dialog.githubPasswordLineEdit.mapToGlobal(QPoint(0, 0)), 'missing password')
             return
         self.status_label.setText('Authenticating ...')

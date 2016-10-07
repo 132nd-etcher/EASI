@@ -1,38 +1,6 @@
 # coding=utf-8
 import abc
 
-
-# from src.ui.main_ui.interface.wrapper import interfaced_method
-
-
-# # DEPRECATED candidate
-# class SplashInterface:
-#     @classmethod
-#     @interfaced_method('splash')
-#     def splash_show(cls):
-#         """pass"""
-#
-#     @classmethod
-#     @interfaced_method('splash')
-#     def splash_kill(cls):
-#         """pass"""
-#
-#     @classmethod
-#     @interfaced_method('splash')
-#     def splash_set_progress(cls, value: int):
-#         """pass"""
-#
-#     @classmethod
-#     @interfaced_method('splash')
-#     def splash_set_text(cls, value: str):
-#         """pass"""
-#
-#     @classmethod
-#     @interfaced_method('splash')
-#     def splash_add_to_progress(cls, value: int):
-#         """pass"""
-
-
 class AbstractSplash(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def get(self):

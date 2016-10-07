@@ -2,9 +2,6 @@
 
 import abc
 
-from PyQt5.QtCore import QPoint
-from PyQt5.QtWidgets import QToolTip
-
 from src.ui.skeletons.config_dialog import Ui_Settings
 
 

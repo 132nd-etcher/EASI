@@ -1,10 +1,8 @@
+import abc
 import os
 
-import abc
-
-from src.qt import QMenu, QAction, QToolButton
-
 from src.low.custom_path import Path
+from src.qt import QMenu, QAction, QToolButton
 from src.ui.dialog_browse.dialog import BrowseDialog
 from src.ui.dialog_config.settings.abstract_config import AbstractConfigSetting
 

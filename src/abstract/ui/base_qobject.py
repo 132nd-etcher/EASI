@@ -2,7 +2,7 @@
 
 import abc
 
-from src.qt import QWidget, Qt
+from src.qt import QWidget
 
 
 class AbstractBaseQWidget(metaclass=abc.ABCMeta):

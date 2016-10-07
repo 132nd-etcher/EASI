@@ -12,12 +12,6 @@ class AbstractBaseDialog(AbstractBaseQWidget, metaclass=abc.ABCMeta):
             raise TypeError('dialog should be an instance of QDialog, got: {}'.format(type(dialog)))
         AbstractBaseQWidget.__init__(self, dialog)
 
-    # def show(self, title: str = None, text: str = None):
-    #     self.qobj.setWindowTitle(title)
-    #     self.qobj.label.setText(text)
-    #     self.adjust_size()
-    #     super(AbstractBaseDialog, self).show()
-
     @staticmethod
     def make(*args, **kwargs):
         raise NotImplementedError('use signals instead')

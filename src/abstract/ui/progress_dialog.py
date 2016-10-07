@@ -5,7 +5,6 @@ from src.qt import QDialog, Qt
 
 # noinspection PyPep8Naming
 class BaseProgressDialogInterface:
-
     def setupUi(self, dialog):
         raise NotImplementedError
 
