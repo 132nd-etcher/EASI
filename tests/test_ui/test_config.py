@@ -1,7 +1,7 @@
 # coding=utf-8
 
-import time
-from unittest import mock
+import os
+from unittest import mock, skipIf
 
 from PyQt5.QtTest import QTest
 
@@ -23,6 +23,7 @@ class TestConfig(QtTestCase):
     def test_subscribe_to_test_versions(self):
         pass
 
+    @skipIf(os.getenv('APPVEYOR'), 'Skipping this one on AV')
     def test_sg_path(self):
         test_dir = create_temp_dir()
         test_file = create_temp_file()
@@ -38,8 +39,7 @@ class TestConfig(QtTestCase):
         # noinspection PyArgumentList
         QTest.keyClicks(self.dialog.sg_line_edit, test_dir.abspath())
         self.assertSequenceEqual(self.dialog.sg_line_edit.text(), test_dir.abspath())
-        self.dialog.accept()
-        time.sleep(0.5)
+        QTest.mouseClick(self.dialog.buttonBox.button(self.dialog.buttonBox.Ok), Qt.LeftButton)
         self.assertSequenceEqual(config.saved_games_path, test_dir.abspath())
         self.dialog.show()
         self.dialog.sg_line_edit.clear()
@@ -47,8 +47,7 @@ class TestConfig(QtTestCase):
         QTest.keyClicks(self.dialog.sg_line_edit, test_file.abspath())
         m = mock.MagicMock()
         self.dialog.config_settings['sg_path'].show_tooltip = m
-        self.dialog.accept()
-        time.sleep(0.5)
+        QTest.mouseClick(self.dialog.buttonBox.button(self.dialog.buttonBox.Ok), Qt.LeftButton)
         m.assert_called_with('Not a directory')
         self.assertSequenceEqual(config.saved_games_path, test_dir.abspath())
         self.dialog.show()
@@ -57,8 +56,7 @@ class TestConfig(QtTestCase):
         QTest.keyClicks(self.dialog.sg_line_edit, test_no_exist.abspath())
         m = mock.MagicMock()
         self.dialog.config_settings['sg_path'].show_tooltip = m
-        self.dialog.accept()
-        time.sleep(0.5)
+        QTest.mouseClick(self.dialog.buttonBox.button(self.dialog.buttonBox.Ok), Qt.LeftButton)
         m.assert_called_with('Directory does not exist')
         self.assertSequenceEqual(config.saved_games_path, test_dir.abspath())
         self.dialog.sg_line_edit.clear()
