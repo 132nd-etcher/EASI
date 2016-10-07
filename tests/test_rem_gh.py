@@ -70,21 +70,21 @@ class TestGHSession(TestCase):
 
     @mock.patch('src.sig.sig_gh_token_status_changed.not_connected')
     def test_init_empty(self, m):
-        Singleton._instances = {}
+        Singleton.wipe_instances()
         session = GHSession()
         self.assertFalse(session is self.s)
         m.assert_called_with()
 
     @mock.patch('src.sig.sig_gh_token_status_changed.connected')
     def test_init_correct_token(self, m):
-        Singleton._instances = {}
+        Singleton.wipe_instances()
         session = GHSession(token)
         self.assertFalse(session is self.s)
         m.assert_called_with(Secret.gh_test_token_login)
 
     @mock.patch('src.sig.sig_gh_token_status_changed.wrong_token')
     def test_init_wrong_token(self, m):
-        Singleton._instances = {}
+        Singleton.wipe_instances()
         session = GHSession(st.text(min_size=1))
         self.assertFalse(session is self.s)
         m.assert_called_with()

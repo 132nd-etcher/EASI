@@ -13,3 +13,8 @@ class Singleton(abc.ABCMeta):
         if cls not in cls._instances:
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
+
+    @classmethod
+    def wipe_instances(cls):
+        """Only for testing purposes"""
+        cls._instances = {}
