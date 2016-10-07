@@ -7,6 +7,9 @@
         <file>exit.png</file>
         <file>banner.png</file>
         <file>dropbox.png</file>
+        <file>download.png</file>
+        <file>fs_browse.png</file>
+        <file>fs_open.png</file>
     </qresource>
     <qresource prefix="/font">
         <file>anon_pro.ttf</file>
