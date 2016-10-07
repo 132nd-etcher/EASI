@@ -50,6 +50,4 @@ class ConfigValues:
             os.makedirs(str(p.abspath()))
         elif not p.isdir():
             raise TypeError('there is already a file at: {}'.format(p.abspath()))
-        elif not len(p.listdir()) == 0:
-            raise ValueError('folder is not empty: {}'.format(p.abspath()))
         sig_cache_path_changed.send()
