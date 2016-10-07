@@ -1,6 +1,6 @@
 # coding=utf-8
 from src.abstract import AbstractLongOp
-from src.sig import interfaced_method, InterfacedSignal
+from ..interface import interfaced_method, InterfacedSignal
 
 
 class AbstractLongOpDialogSig(InterfacedSignal, AbstractLongOp):
