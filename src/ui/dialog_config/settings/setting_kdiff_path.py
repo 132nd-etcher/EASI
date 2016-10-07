@@ -3,8 +3,8 @@ import shutil
 import zipfile
 
 from src.dld import downloader, FileDownload
-from src.low.custom_path import Path
 from src.low.custom_logging import make_logger
+from src.low.custom_path import Path
 from src.qt import QToolButton, QAction, QLineEdit, QIcon
 from src.sig import sig_long_op_dialog, sig_msgbox
 from src.ui.dialog_config.settings.abstract_path_setting import AbstractPathSetting
@@ -92,7 +92,7 @@ class KDiffPathSetting(AbstractPathSetting):
             init_dir = 'c:/users'
         path = BrowseDialog.get_existing_file(
             parent=self.dialog,
-            title='Select the kdiff3.exe file'.format(self.dir_name()),
+            title='Select the kdiff3.exe file',
             init_dir=init_dir,
             _filter=['kdiff3.exe']
         )
