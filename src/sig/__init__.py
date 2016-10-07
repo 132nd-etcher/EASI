@@ -7,6 +7,7 @@ from .sig_rem import RemSig
 from .sig_ui_splash import SplashSig
 from .sig_ui_main import MainUiSig, MainUiStatesSig
 from .sig_ui_long_op import LongOpDialogSig
+from .sig_msgbox import MsgboxSig
 
 sig_dcs_installs_changed = CustomSignal()
 sig_sg_path_changed = CustomSignal()
@@ -20,5 +21,6 @@ sig_gh_token_status_changed = RemSig()
 sig_db_token_status_changed = RemSig()
 sig_interrupt_startup = CustomSignal()
 sig_config_changed = CustomSignal()
+sig_msgbox = MsgboxSig()
 
 

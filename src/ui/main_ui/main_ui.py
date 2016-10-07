@@ -13,6 +13,7 @@ from .states import MainUiStateManager
 from ..dialog_config.dialog import ConfigDialog
 from ..dialog_feedback.dialog import FeedbackDialog
 from ..dialog_long_op.dialog import LongOpDialog
+from ..dialog_msg.dialog import MsgDialog
 from ..skeletons.main import Ui_MainWindow
 
 
@@ -37,6 +38,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.sig_proc = MainUiSigProcessor(self)
         self.splash = MainUiSplash(self, 'splash')
         self.long_op = LongOpDialog(self, 'long_op')
+        self.msgbox = MsgDialog(self, 'msgbox')
         self.config_dialog = ConfigDialog(self)
         self.active_dcs_installation = MainUiActiveDCSInstallation(self)
         self.mod_author_watcher = MainUiModAuthor(self)
