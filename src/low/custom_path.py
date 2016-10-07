@@ -45,7 +45,8 @@ class Path(path.Path):
         verinfo = pe.VS_FIXEDFILEINFO
         filever = (verinfo.FileVersionMS >> 16, verinfo.FileVersionMS & 0xFFFF, verinfo.FileVersionLS >> 16,
                    verinfo.FileVersionLS & 0xFFFF)
-        # prodver = (verinfo.ProductVersionMS >> 16, verinfo.ProductVersionMS & 0xFFFF, verinfo.ProductVersionLS >> 16, verinfo.ProductVersionLS & 0xFFFF)
+        # prodver = (verinfo.ProductVersionMS >> 16, verinfo.ProductVersionMS & 0xFFFF,
+        # verinfo.ProductVersionLS >> 16, verinfo.ProductVersionLS & 0xFFFF)
         return '%d.%d.%d.%d' % filever
 
     def abspath(self):

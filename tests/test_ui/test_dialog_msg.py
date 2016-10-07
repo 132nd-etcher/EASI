@@ -1,9 +1,9 @@
 # coding=utf-8
 
-from PyQt5 import QtTest
 from hypothesis import strategies as st, given
-from tests.init_qt_app import QtTestCase
+
 from src.ui.dialog_msg.dialog import _MsgDialog
+from tests.init_qt_app import QtTestCase
 
 
 class TestDialogMsg(QtTestCase):

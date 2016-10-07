@@ -12,8 +12,8 @@ from ...dialog_browse.dialog import BrowseDialog
 
 logger = make_logger(__name__)
 
-class KDiffPathSetting(AbstractPathSetting):
 
+class KDiffPathSetting(AbstractPathSetting):
     def __init__(self, dialog, value_name):
         AbstractPathSetting.__init__(self, dialog, value_name)
         self.q_action_install_kdiff = QAction(QIcon(':/pic/download.png'), 'Install now', self.dialog)
@@ -42,11 +42,11 @@ class KDiffPathSetting(AbstractPathSetting):
         if fdl.success:
             sig_long_op_dialog.set_progress(0)
             sig_long_op_dialog.set_current_text('Unzipping...')
-            with zipfile.ZipFile(fdl.local_file) as zip:
-                total = len(zip.namelist())
+            with zipfile.ZipFile(fdl.local_file) as _zip:
+                total = len(_zip.namelist())
                 count = 0
-                for name in zip.namelist():
-                    zip.extract(name, '.')
+                for name in _zip.namelist():
+                    _zip.extract(name, '.')
                     count += 1
                     sig_long_op_dialog.set_progress((count / total) * 100)
             shutil.move('kdiff3-master', 'kdiff3')

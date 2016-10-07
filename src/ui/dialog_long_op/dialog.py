@@ -28,7 +28,6 @@ class LongOpDialog(AbstractConnectedDialog, ProgressInterface):
         self.dialog.label.setText(text)
         super(LongOpDialog, self).show()
 
-
     @property
     def dialog(self) -> _LongOpDialog:
         return self.qobj
