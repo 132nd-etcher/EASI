@@ -1,16 +1,12 @@
 # coding=utf-8
 
 import time
-import pendulum
 
 import ntplib
+import pendulum
 
 epoch_timer = None
 epoch_cache = None
-
-
-# TODO: expoch needs to be a class with static method to instantiate online and online cached,
-# and easy conversion to time with the pendulum module
 
 
 class Epoch:
