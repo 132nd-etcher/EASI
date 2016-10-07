@@ -23,7 +23,7 @@ class LongOpDialog(AbstractConnectedDialog, ProgressInterface):
         self.set_current_enabled(False)
 
     @property
-    def dialog(self) -> Ui_Dialog:
+    def dialog(self) -> _LongOpDialog:
         return self.qobj
 
     def set_current_enabled(self, value: bool):
