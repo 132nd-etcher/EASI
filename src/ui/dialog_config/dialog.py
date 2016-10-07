@@ -1,8 +1,9 @@
 # coding=utf-8
 
+from src.low import constants
 from src.low.custom_logging import make_logger
 from src.qt import QDialog, Qt
-from src.sig import sig_config_changed, SignalReceiver
+from src.sig import sig_config_changed, SignalReceiver, sig_msgbox
 from src.ui.skeletons.config_dialog import Ui_Settings
 from src.upd import check_for_update
 from .settings.abstract_config import AbstractConfigSetting
@@ -11,6 +12,7 @@ from .settings.setting_author_mode import AuthorModeSetting
 from .settings.setting_cache_path import CachePathSetting
 from .settings.setting_dropbox import DropboxSetting
 from .settings.setting_github import GithubSetting
+from .settings.setting_kdiff_path import KDiffPathSetting
 from .settings.setting_sg_path import SGPathSetting
 from .settings.setting_update_to_experimental import ExperimentalUpdateSetting
 
@@ -27,12 +29,13 @@ class ConfigDialog(Ui_Settings, QDialog):
         self.buttonBox.rejected.connect(self.reject)
         self.buttonBox.button(self.buttonBox.Apply).clicked.connect(self.save_settings)
         self.buttonBox.button(self.buttonBox.Reset).clicked.connect(self.load_settings)
-        self.btn_update_check.clicked.connect(check_for_update)
+        self.btn_update_check.clicked.connect(self.__check_for_update)
         self.config_settings = {
             'author_mode': AuthorModeSetting(self, 'author_mode'),
             'test_update': ExperimentalUpdateSetting(self, 'subscribe_to_test_versions'),
             'sg_path': SGPathSetting(self, 'saved_games_path'),
             'cache_path': CachePathSetting(self, 'cache_path'),
+            'kdiff_path': KDiffPathSetting(self, 'kdiff_path'),
         }
         self.keyring_settings = {
             'dropbox': DropboxSetting(self, 'db_token'),
@@ -43,6 +46,11 @@ class ConfigDialog(Ui_Settings, QDialog):
 
     def __set_apply_btn_enabled(self, value: bool):
         self.buttonBox.button(self.buttonBox.Apply).setEnabled(value)
+
+    @staticmethod
+    def __check_for_update():
+        check_for_update()
+        sig_msgbox.show('Check done', 'Already running latest version of {}'.format(constants.APP_SHORT_NAME))
 
     def show(self):
         for config_setting in self.config_settings.values():

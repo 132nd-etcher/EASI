@@ -40,8 +40,7 @@ class TestConfigValues(TestCaseWithTestFile):
 
         with self.assertRaises(TypeError):
             c.cache_path = sys.executable
-        with self.assertRaises(ValueError):
-            c.cache_path = tempfile.gettempdir()
+        c.cache_path = tempfile.gettempdir()
         with mock.patch('src.sig.base_custom_signal.CustomSignal.send') as m:
             c.saved_games_path = tempfile.mkdtemp()
             m.assert_called_once_with()

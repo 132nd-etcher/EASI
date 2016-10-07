@@ -5,7 +5,7 @@ import os
 import path
 
 from src.meta import meta_property_with_default
-from src.sig import sig_author_mode, sig_sg_path_changed, sig_cache_path_changed
+from src.sig import sig_author_mode, sig_sg_path_changed, sig_cache_path_changed, sig_kdiff_path_changed
 
 
 class ConfigValues:
@@ -51,3 +51,14 @@ class ConfigValues:
         elif not p.isdir():
             raise TypeError('there is already a file at: {}'.format(p.abspath()))
         sig_cache_path_changed.send()
+
+    @meta_property_with_default(None, str)
+    def kdiff_path(self, value: str):
+        p = path.Path(value)
+        if not p.exists():
+            raise FileNotFoundError('{} does not exist'.format(p.abspath()))
+        elif not p.isfile():
+            raise ValueError('not a file: {}'.format(p.abspath()))
+        elif not p.name == 'kdiff3.exe':
+            raise ValueError('expected "kdiff3.exe", got: {} ({})'.format(p.name, p.abspath()))
+        sig_kdiff_path_changed.send()

@@ -60,13 +60,32 @@
           </property>
           <item>
            <layout class="QGridLayout" name="layout_paths">
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="sg_line_edit"/>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="sg_label">
+            <item row="1" column="2">
+             <widget class="QToolButton" name="btn_cache">
               <property name="text">
-               <string>Saved Games</string>
+               <string>...  </string>
+              </property>
+              <property name="popupMode">
+               <enum>QToolButton::InstantPopup</enum>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextOnly</enum>
+              </property>
+              <property name="autoRaise">
+               <bool>true</bool>
+              </property>
+              <property name="arrowType">
+               <enum>Qt::DownArrow</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="cache_line_edit"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="labelcache">
+              <property name="text">
+               <string>Cache</string>
               </property>
              </widget>
             </item>
@@ -89,18 +108,28 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="labelcache">
+            <item row="0" column="0">
+             <widget class="QLabel" name="sg_label">
               <property name="text">
-               <string>Cache</string>
+               <string>Saved Games</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="cache_line_edit"/>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="sg_line_edit"/>
             </item>
-            <item row="1" column="2">
-             <widget class="QToolButton" name="btn_cache">
+            <item row="2" column="0">
+             <widget class="QLabel" name="labelkdiff">
+              <property name="text">
+               <string>KDiff3</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="kdiff_line_edit"/>
+            </item>
+            <item row="2" column="2">
+             <widget class="QToolButton" name="btn_kdiff">
               <property name="text">
                <string>...  </string>
               </property>

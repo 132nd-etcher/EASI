@@ -1,8 +1,7 @@
 import abc
 import os
 
-from src.low.custom_path import Path
-from src.qt import QMenu, QAction, QToolButton
+from src.qt import QMenu, QAction, QToolButton, QIcon
 from src.ui.dialog_browse.dialog import BrowseDialog
 from src.ui.dialog_config.settings.abstract_config import AbstractConfigSetting
 
@@ -11,13 +10,13 @@ class AbstractPathSetting(AbstractConfigSetting):
     def __init__(self, dialog, value_name):
         AbstractConfigSetting.__init__(self, dialog, value_name)
         self.menu = QMenu(self.dialog)
-        self.q_action_browse = QAction('Change location', self.dialog)
-        self.q_action_show = QAction('Show in explorer', self.dialog)
+        self.q_action_browse = QAction(QIcon(':/pic/fs_browse.png'), 'Change location', self.dialog)
+        self.q_action_show = QAction(QIcon(':/pic/fs_open.png'), 'Show in explorer', self.dialog)
 
     def dialog_has_changed_methods(self) -> list:
         return [self.qt_object.textChanged]
 
-    def browse_for_dir(self):
+    def browse_for_value(self):
         init_dir = self.value
         if init_dir is None:
             init_dir = 'c:/users'
@@ -37,21 +36,12 @@ class AbstractPathSetting(AbstractConfigSetting):
         self.menu.addAction(self.q_action_show)
         self.qt_menu_btn.setMenu(self.menu)
         # noinspection PyUnresolvedReferences
-        self.q_action_browse.triggered.connect(self.browse_for_dir)
+        self.q_action_browse.triggered.connect(self.browse_for_value)
         # noinspection PyUnresolvedReferences
         self.q_action_show.triggered.connect(self.show_in_explorer)
 
     def get_value_from_dialog(self):
         return self.qt_object.text()
-
-    def validate_dialog_value(self) -> bool:
-        p = Path(self.get_value_from_dialog())
-        if not p.exists():
-            self.show_tooltip('Directory does not exist')
-        elif not p.isdir():
-            self.show_tooltip('Not a directory')
-        else:
-            return True
 
     def set_dialog_value(self, value: str):
         self.qt_object.setText(str(value))

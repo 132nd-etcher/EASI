@@ -21,6 +21,7 @@ sig_gh_token_status_changed = RemSig()
 sig_db_token_status_changed = RemSig()
 sig_interrupt_startup = CustomSignal()
 sig_config_changed = CustomSignal()
+sig_kdiff_path_changed = CustomSignal()
 sig_msgbox = MsgboxSig()
 
 

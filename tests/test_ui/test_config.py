@@ -67,7 +67,7 @@ class TestConfig(QtTestCase):
             self.dialog.config_settings['sg_path'].show_in_explorer()
             m.assert_called_with(test_dir.abspath())
         with mock.patch('src.ui.dialog_browse.dialog.BrowseDialog.get_directory') as m:
-            self.dialog.config_settings['sg_path'].browse_for_dir()
+            self.dialog.config_settings['sg_path'].browse_for_value()
             m.assert_called_with(
                 init_dir=test_dir.abspath(),
                 title='Select your {} directory'.format(self.dialog.config_settings['sg_path'].dir_name()),
