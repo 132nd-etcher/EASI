@@ -46,7 +46,10 @@ class LongOpDialog(AbstractConnectedDialog, ProgressInterface):
     def add_progress(self, value: int):
         self.qobj.progress_bar_total.setValue(self.qobj.progressBar.value() + value)
 
-    def set_text(self, value: str):
+    def set_progress_title(self, value: str):
+        self.dialog.setWindowTitle(value)
+
+    def set_progress_text(self, value: str):
         self.dialog.label.setText(str(value))
         self.dialog.label.adjustSize()
         self.adjust_size()

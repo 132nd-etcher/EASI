@@ -5,6 +5,10 @@ import abc
 
 class AbstractMainUiState(metaclass=abc.ABCMeta):
     @abc.abstractmethod
+    def show_msg(self, title: str, text: str, over_splash: bool = False):
+        """"""
+
+    @abc.abstractmethod
     def set_current_state(self, state: str):
         """pass"""
 
@@ -15,8 +19,13 @@ class AbstractMainUiState(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
+    def set_progress_title(state_manager, value: str):
+        """"""
+
+    @staticmethod
+    @abc.abstractmethod
     def set_progress_text(state_manager, value: str):
-        """Sets current op progress"""
+        """"""
 
     @staticmethod
     @abc.abstractmethod

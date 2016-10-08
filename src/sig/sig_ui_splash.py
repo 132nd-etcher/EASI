@@ -9,7 +9,7 @@ class SplashSig(InterfacedSignal, AbstractSplash):
         """"""
 
     @interfaced_method
-    def set_text(self, value: str):
+    def set_progress_text(self, value: str):
         """"""
 
     @interfaced_method

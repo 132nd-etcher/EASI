@@ -108,5 +108,5 @@ class MainUiSplash(AbstractConnectedQObject, AbstractSplash):
     def set_progress(self, value: int):
         self.get_progress().setValue(value)
 
-    def set_text(self, value: str):
+    def set_progress_text(self, value: str):
         self.get_progress().setFormat(value)

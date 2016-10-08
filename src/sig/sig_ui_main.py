@@ -19,7 +19,15 @@ class MainUiSig(InterfacedSignal, AbstractMainUiInterface):
 
 class MainUiStatesSig(InterfacedSignal, AbstractMainUiState):
     @interfaced_method
+    def show_msg(self, title, text: str, over_splash: bool = False):
+        pass
+
+    @interfaced_method
     def set_current_state(self, state: str):
+        pass
+
+    @interfaced_method
+    def set_progress_title(self, value: str):
         pass
 
     @interfaced_method

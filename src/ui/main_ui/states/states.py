@@ -1,5 +1,4 @@
 # coding=utf-8
-
 from src.abstract.ui.connected_object import AbstractConnectedObject
 from src.abstract.ui.main_ui_state import AbstractMainUiState
 from src.low.custom_logging import make_logger
@@ -16,11 +15,14 @@ def state_method(func):
             return getattr(self.current_state, func.__name__)(self, *args, **kwargs)
         except AttributeError:
             raise AttributeError('unknown function in MainUiStates: {}'.format(func.__name__))
+        except TypeError:
+            raise TypeError('incorrect call of {}: ({}) {{{}}}'.format(func.__name__, args, kwargs))
 
     return _wrapper
 
 
 class MainUiStateManager(AbstractConnectedObject, AbstractMainUiState):
+
     state_mapping = {
         'starting': UiStateStartup,
         'running': UiStateRunning,
@@ -46,5 +48,13 @@ class MainUiStateManager(AbstractConnectedObject, AbstractMainUiState):
         """"""
 
     @state_method
-    def set_progress_text(self, value: str):
+    def set_progress_title(state_manager, value: str):
+        """"""
+
+    @state_method
+    def set_progress_text(state_manager, value: str):
+        """"""
+
+    @state_method
+    def show_msg(self, title: str, text: str, over_splash: bool = False):
         """"""

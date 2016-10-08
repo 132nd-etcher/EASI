@@ -20,8 +20,12 @@ class ProgressInterface(metaclass=abc.ABCMeta):
         """Sets the progress bar to 'value' """
 
     @abc.abstractmethod
-    def set_text(self, value: str):
-        """Sets the progress bar to 'value' """
+    def set_progress_title(self, value: str):
+        """Sets the progress main title"""
+
+    @abc.abstractmethod
+    def set_progress_text(self, value: str):
+        """Sets the progress bar text"""
 
     @abc.abstractmethod
     def set_current_enabled(self, value: bool):

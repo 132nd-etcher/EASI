@@ -5,7 +5,11 @@ from .interface import interfaced_method, InterfacedSignal
 
 class LongOpDialogSig(InterfacedSignal, AbstractLongOp):
     @interfaced_method
-    def set_text(self, value: str):
+    def set_progress_title(self, value: str):
+        pass
+
+    @interfaced_method
+    def set_progress_text(self, value: str):
         pass
 
     @interfaced_method
