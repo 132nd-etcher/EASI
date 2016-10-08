@@ -6,11 +6,15 @@ from src.ui.skeletons.config_dialog import Ui_Settings
 
 
 class AbstractSetting(metaclass=abc.ABCMeta):
-    def __init__(self, dialog: Ui_Settings, value_name):
+    def __init__(self, dialog: Ui_Settings):
         self.dialog = dialog
         self.receiver = None
         self.tool_tip = None
-        self.value_name = value_name
+
+    @property
+    @abc.abstractproperty
+    def value_name(self) -> str:
+        """"""
 
     def show(self):
         pass

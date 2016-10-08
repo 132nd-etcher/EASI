@@ -4,8 +4,12 @@ from src.ui.dialog_config.settings.abstract_path_setting import AbstractPathSett
 
 
 class CachePathSetting(AbstractPathSetting):
-    def __init__(self, dialog, value_name: str):
-        AbstractPathSetting.__init__(self, dialog, value_name, sig_cache_path_changed)
+    @property
+    def value_name(self) -> str:
+        return 'cache_path'
+
+    def __init__(self, dialog):
+        AbstractPathSetting.__init__(self, dialog, sig_cache_path_changed)
 
     @property
     def qt_object(self):

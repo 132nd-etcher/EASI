@@ -5,7 +5,8 @@ import os
 import path
 
 from src.meta import meta_property_with_default
-from src.sig import sig_author_mode, sig_sg_path_changed, sig_cache_path_changed, sig_kdiff_path_changed
+from src.sig import sig_author_mode, sig_sg_path_changed, sig_cache_path_changed, sig_kdiff_path_changed,\
+    sig_keyring
 
 
 class ConfigValues:
@@ -42,6 +43,10 @@ class ConfigValues:
     @meta_property_with_default(False, bool)
     def author_mode(self, value: bool):
         sig_author_mode.mod_author_changed(value)
+
+    @meta_property_with_default(False, bool)
+    def encrypt_keyring(self, value: bool):
+        sig_keyring.encrypt_changed(value)
 
     @meta_property_with_default(os.path.abspath(r'.\cache'), str)
     def cache_path(self, value: str):

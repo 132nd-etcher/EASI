@@ -9,8 +9,8 @@ from src.sig import SignalReceiver
 
 
 class AbstractPathSetting(AbstractConfigSetting):
-    def __init__(self, dialog, value_name, path_changed_sig):
-        AbstractConfigSetting.__init__(self, dialog, value_name)
+    def __init__(self, dialog, path_changed_sig):
+        AbstractConfigSetting.__init__(self, dialog)
         self.menu = QMenu(self.dialog)
         self.q_action_browse = QAction(QIcon(':/pic/fs_browse.png'), 'Change location', self.dialog)
         self.q_action_show = QAction(QIcon(':/pic/fs_open.png'), 'Show in explorer', self.dialog)

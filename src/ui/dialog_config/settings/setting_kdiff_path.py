@@ -12,8 +12,12 @@ logger = make_logger(__name__)
 
 
 class KDiffPathSetting(AbstractPathSetting):
-    def __init__(self, dialog, value_name):
-        AbstractPathSetting.__init__(self, dialog, value_name, sig_kdiff_path_changed)
+    @property
+    def value_name(self) -> str:
+        return 'kdiff_path'
+
+    def __init__(self, dialog):
+        AbstractPathSetting.__init__(self, dialog, sig_kdiff_path_changed)
         self.q_action_install_kdiff = QAction(QIcon(':/pic/download.png'), 'Install now', self.dialog)
         self.dialog.kdiff_line_edit.addAction(self.q_action_install_kdiff, QLineEdit.TrailingPosition)
 

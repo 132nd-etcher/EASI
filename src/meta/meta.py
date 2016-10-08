@@ -17,8 +17,9 @@ class Meta(AbstractMeta):
     Intercepts all call made to "instance.some_value" and reroutes them to the "__data" attribute
     """
 
-    def __init__(self, path: str, init_dict: dict = None, auto_read=True):
+    def __init__(self, path: str, init_dict: dict = None, auto_read=True, encrypted=False):
         self.free = True
+        self.encrypt = encrypted
         if init_dict is None:
             self._data = {}
         else:
@@ -142,7 +143,10 @@ class Meta(AbstractMeta):
                     self.path.remove()
                     return
                 try:
-                    self.load(self.path.text(encoding='utf8'))
+                    if self.encrypt:
+                        self.load(self.path.bytes())
+                    else:
+                        self.load(self.path.text(encoding='utf8'))
                     # self.debug('file read successful')
                 except ValueError:
                     raise ValueError('{}: metadata file corrupted'.format(self.path.abspath()))
@@ -160,7 +164,10 @@ class Meta(AbstractMeta):
         # self.debug('writing file')
         self.wait_for_lock()
         try:
-            self.path.write_text(self.dump(), encoding='utf8')
+            if self.encrypt:
+                self.path.write_bytes(self.dump())
+            else:
+                self.path.write_text(self.dump(), encoding='utf8')
             # self.debug('file write successful')
         except OSError:
             self.exception('error while writing metadata to file')

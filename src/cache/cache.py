@@ -76,23 +76,23 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
 
     def on_created(self, event):
         if not event.is_directory:
-            self.build(event.src_path.replace('\\', '/'))
+            self.build(event.src_path)
             logger.debug('created: {}'.format(event.src_path))
 
     def on_modified(self, event):
         if not event.is_directory:
-            self.build(event.src_path.replace('\\', '/'))
+            self.build(event.src_path)
             logger.debug('modified: {}'.format(event.src_path))
 
     def on_moved(self, event):
         if not event.is_directory:
-            del self.meta[event.src_path.replace('\\', '/')]
+            del self.meta[event.src_path]
             self.build(event.dest_path)
             logger.debug('moved: {} -> {}'.format(event.src_path, event.dest_path))
 
     def on_deleted(self, event):
         if not event.is_directory:
-            del self.meta[event.src_path.replace('\\', '/')]
+            del self.meta[event.src_path]
             logger.debug('deleted: {}'.format(event.src_path))
 
     def build(self, rel_path: str = None):
@@ -104,7 +104,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                 for entry in os.scandir(root):
                     if entry.is_dir():
                         continue
-                    path = entry.path.replace('\\', '/')
+                    path = entry.path
                     abspath = os.path.join(self.path.dirname(), path)
                     name = entry.name
                     meta = CacheFile(name, abspath, path, entry.stat())
@@ -113,7 +113,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                 v.get_crc32()
         else:
             logger.debug('re-building cache for path: {}'.format(rel_path))
-            path = rel_path.replace('\\', '/')
+            path = rel_path
             abspath = os.path.abspath(rel_path)
             name = os.path.basename(rel_path)
             meta = CacheFile(name, abspath, path, os.stat(abspath))
@@ -135,7 +135,6 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         self.__path = value
 
     def __getitem__(self, item) -> CacheFile:
-        item = item.replace('\\', '/')
         try:
             return self.meta.__getitem__(item)
         except KeyError:
