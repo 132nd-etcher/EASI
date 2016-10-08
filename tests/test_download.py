@@ -31,7 +31,7 @@ class TestDownload(TestCase):
         self.url1 = r'https://raw.githubusercontent.com/132nd-etcher/kdiff3/master/Qt5Core.dll'
         self.url2 = r'https://raw.githubusercontent.com/132nd-etcher/kdiff3/master/Qt5Gui.dll'
         self.progress = MagicMock()
-        self.progress.set_text = MagicMock()
+        self.progress.set_progress_text = MagicMock()
         self.progress.set_progress = MagicMock()
 
     def test_wrong_url(self):
@@ -70,7 +70,7 @@ class TestDownload(TestCase):
         self.assertTrue(fdl.success)
         self.assertTrue(fdl.done)
         self.progress.set_progress.assert_called_with(100)
-        self.progress.set_text.assert_called_with('Downloading:\n{}'.format(self.url1))
+        self.progress.set_progress_text.assert_called_with('Downloading:\n{}'.format(self.url1))
 
     def test_bulk_download(self):
         callback = MagicMock()
