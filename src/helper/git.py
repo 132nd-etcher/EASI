@@ -13,7 +13,7 @@ class GitHelper(AbstractHelper):
     def path(self) -> Path:
         return ''
 
-    def install(self):
+    def install(self, wait: bool = True):
         pass
 
     @property
