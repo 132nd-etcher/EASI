@@ -76,9 +76,6 @@ class FileDownload:
                 self.__fail('{}: request failed: {}: {}'.format(self.url, req.status_code, req.reason))
             return req
 
-        # invalid syntax (<string>, line 1)
-        # 'https://github-cloud.s3.amazonaws.com/releases/69669314/82ed146a-8b2a-11e6-9f69-d3b8d9c0da86.exe?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAISTNZFOVBIJMK3TQ%2F20161005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20161005T170455Z&X-Amz-Expires=300&X-Amz-Signature=e07603c53eda7c30138ea9219669cd9953c2095f0edba7d230dde4fb9cb1eb57&X-Amz-SignedHeaders=host&actor_id=0&response-content-disposition=attachment%3B%20filename%3DEASI_setup_0.0.11.10762.exe&response-content-type=application%2Foctet-stream'
-
     def get_size(self, _try=1):
         header = self.__make_request(head)
         if header:
