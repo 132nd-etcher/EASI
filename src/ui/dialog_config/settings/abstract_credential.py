@@ -9,8 +9,8 @@ from .abstract import AbstractSetting
 
 class AbstractCredentialSetting(AbstractSetting, metaclass=abc.ABCMeta):
 
-    def __init__(self, dialog, value_name):
-        AbstractSetting.__init__(self, dialog, value_name)
+    def __init__(self, dialog):
+        AbstractSetting.__init__(self, dialog)
         self.receiver = SignalReceiver(self)
         self.receiver[self.token_changed_signal] = self.status_changed
         self.auth_btn.clicked.connect(self.authenticate)

@@ -15,6 +15,7 @@ from .settings.setting_github import GithubSetting
 from .settings.setting_kdiff_path import KDiffPathSetting
 from .settings.setting_sg_path import SGPathSetting
 from .settings.setting_update_to_experimental import ExperimentalUpdateSetting
+from .settings.setting_keyring_encrypt import KeyringEncryptSetting
 
 logger = make_logger(__name__)
 
@@ -31,15 +32,16 @@ class ConfigDialog(Ui_Settings, QDialog):
         self.buttonBox.button(self.buttonBox.Reset).clicked.connect(self.load_settings)
         self.btn_update_check.clicked.connect(self.__check_for_update)
         self.config_settings = {
-            'author_mode': AuthorModeSetting(self, 'author_mode'),
-            'test_update': ExperimentalUpdateSetting(self, 'subscribe_to_test_versions'),
-            'sg_path': SGPathSetting(self, 'saved_games_path'),
-            'cache_path': CachePathSetting(self, 'cache_path'),
-            'kdiff_path': KDiffPathSetting(self, 'kdiff_path'),
+            'encrypt_keyring': KeyringEncryptSetting(self),
+            'author_mode': AuthorModeSetting(self),
+            'test_update': ExperimentalUpdateSetting(self),
+            'sg_path': SGPathSetting(self),
+            'cache_path': CachePathSetting(self),
+            'kdiff_path': KDiffPathSetting(self),
         }
         self.keyring_settings = {
-            'dropbox': DropboxSetting(self, 'db_token'),
-            'github': GithubSetting(self, 'gh_token'),
+            'dropbox': DropboxSetting(self),
+            'github': GithubSetting(self),
         }
         self.receiver = SignalReceiver(self)
         self.receiver[sig_config_changed] = self.settings_changed

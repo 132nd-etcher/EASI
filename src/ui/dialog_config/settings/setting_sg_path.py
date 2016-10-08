@@ -5,8 +5,12 @@ from src.sig import sig_sg_path_changed
 
 class SGPathSetting(AbstractPathSetting):
 
-    def __init__(self, dialog, value_name: str):
-        AbstractPathSetting.__init__(self, dialog, value_name, sig_sg_path_changed)
+    @property
+    def value_name(self) -> str:
+        return 'saved_games_path'
+
+    def __init__(self, dialog):
+        AbstractPathSetting.__init__(self, dialog, sig_sg_path_changed)
 
     @property
     def qt_object(self):

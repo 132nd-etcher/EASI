@@ -8,6 +8,10 @@ from src.ui.dialog_config.settings.abstract_config import AbstractConfigSetting
 class ExperimentalUpdateSetting(AbstractConfigSetting):
 
     @property
+    def value_name(self) -> str:
+        return 'subscribe_to_test_versions'
+
+    @property
     def qt_object(self):
         return self.dialog.subscribe_to_test_versions
 
