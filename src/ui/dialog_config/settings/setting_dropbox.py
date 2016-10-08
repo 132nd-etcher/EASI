@@ -6,8 +6,6 @@ from src.ui.dialog_config.settings.abstract_credential import AbstractCredential
 
 
 class DropboxSetting(AbstractCredentialSetting):
-    def show(self):
-        pass
 
     @property
     def token_changed_signal(self) -> CustomSignal:

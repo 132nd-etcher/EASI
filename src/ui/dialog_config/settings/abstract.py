@@ -12,9 +12,8 @@ class AbstractSetting(metaclass=abc.ABCMeta):
         self.tool_tip = None
         self.value_name = value_name
 
-    @abc.abstractmethod
     def show(self):
-        """"""
+        pass
 
     @property
     @abc.abstractproperty

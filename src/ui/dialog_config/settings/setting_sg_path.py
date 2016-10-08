@@ -1,14 +1,12 @@
 # coding=utf-8
 from src.ui.dialog_config.settings.abstract_path_setting import AbstractPathSetting
+from src.sig import sig_sg_path_changed
 
 
 class SGPathSetting(AbstractPathSetting):
 
     def __init__(self, dialog, value_name: str):
-        AbstractPathSetting.__init__(self, dialog, value_name)
-
-    def show(self):
-        pass
+        AbstractPathSetting.__init__(self, dialog, value_name, sig_sg_path_changed)
 
     @property
     def qt_object(self):

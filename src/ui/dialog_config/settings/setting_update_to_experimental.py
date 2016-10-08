@@ -6,8 +6,6 @@ from src.ui.dialog_config.settings.abstract_config import AbstractConfigSetting
 
 
 class ExperimentalUpdateSetting(AbstractConfigSetting):
-    def show(self):
-        pass
 
     @property
     def qt_object(self):
