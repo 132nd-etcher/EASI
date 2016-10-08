@@ -14,7 +14,7 @@ class Version:
             if not isinstance(version_str, str):
                 raise ValueError('expected a str, got: {}'.format(type(version_str)))
             self.__version_str = version_str
-            pattern = re.compile("""^(?P<major>[0-9]+)\.(?P<minor>[0-9]+)\.(?P<revision>[0-9]+)\.(?P<build>[0-9]+)$""")
+            pattern = re.compile(r'^(?P<major>[0-9]+)\.(?P<minor>[0-9]+)\.(?P<revision>[0-9]+)\.(?P<build>[0-9]+)$')
             try:
                 m = pattern.match(version_str)
             except TypeError:
