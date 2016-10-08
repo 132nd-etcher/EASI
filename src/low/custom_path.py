@@ -13,6 +13,7 @@ from humanize import filesize
 # noinspection PyAbstractClass
 class Path(path.Path):
     def crc32(self):
+
         if not self.isfile():
             raise TypeError('cannot compute crc32, not a file: {}'.format(self.abspath()))
         else:
@@ -48,7 +49,7 @@ class Path(path.Path):
         return '%d.%d.%d.%d' % filever
 
     def abspath(self):
-        return path.Path.abspath(self)
+        return path.Path.abspath(self).replace('\\', '/')
 
     def exists(self):
         return path.Path.exists(self)
