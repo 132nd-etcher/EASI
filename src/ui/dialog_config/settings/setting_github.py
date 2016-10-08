@@ -6,6 +6,10 @@ from src.ui.dialog_config.settings.abstract_credential import AbstractCredential
 
 
 class GithubSetting(AbstractCredentialSetting):
+    @property
+    def value_name(self) -> str:
+        return 'gh_token'
+
     def show(self):
         self.dialog.githubPasswordLineEdit.setText('')
         self.dialog.githubUsernameLineEdit.setText('')
@@ -14,8 +18,8 @@ class GithubSetting(AbstractCredentialSetting):
     def token_changed_signal(self) -> CustomSignal:
         return sig_gh_token_status_changed
 
-    def __init__(self, dialog, value_name):
-        AbstractCredentialSetting.__init__(self, dialog, value_name)
+    def __init__(self, dialog):
+        AbstractCredentialSetting.__init__(self, dialog)
         self.flow = None
 
     def setup(self):

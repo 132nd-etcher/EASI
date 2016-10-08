@@ -10,6 +10,7 @@
         <file>download.png</file>
         <file>fs_browse.png</file>
         <file>fs_open.png</file>
+        <file>key.png</file>
     </qresource>
     <qresource prefix="/font">
         <file>anon_pro.ttf</file>

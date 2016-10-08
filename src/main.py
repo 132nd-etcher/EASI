@@ -71,11 +71,11 @@ def main(init_only=False, test_run=False):
         qt_app = QApplication([])
         logger.info('QApplication: started')
         logger.info('QFontDatabase: starting')
-        font_db = QFontDatabase()
+        # font_db = QFontDatabase()
         logger.debug('QFontDatabase: adding font to database')
-        font_db.addApplicationFont(qt_resources.app_font)
+        # font_db.addApplicationFont(qt_resources.app_font)
         logger.debug('QFontDatabase: registering app-wide font')
-        qt_app.setFont(font_db.font('Anonymous Pro', 'normal', 9))
+        # qt_app.setFont(font_db.font('Anonymous Pro', 'normal', 9))
         logger.info('QFontDatabase: started')
 
         if constants.TESTING:
@@ -96,6 +96,7 @@ def main(init_only=False, test_run=False):
             return qt_app, main_gui
 
         from src.upd import check_for_update
+        from src.keyring import init_keyring
         from src.dcs import init_dcs_installs
         from src.rem import init_remotes
         from src.helper import init_helpers
@@ -116,6 +117,7 @@ def main(init_only=False, test_run=False):
         pool.queue_task(sig_splash.show)
         pool.queue_task(check_for_update)
         pool.queue_task(init_dcs_installs)
+        pool.queue_task(init_keyring)
         pool.queue_task(init_remotes)
         pool.queue_task(init_helpers)
         pool.queue_task(sig_splash.kill)

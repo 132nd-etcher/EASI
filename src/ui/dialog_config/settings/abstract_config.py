@@ -8,11 +8,10 @@ from src.qt import QPoint, QToolTip
 
 
 class AbstractConfigSetting(AbstractSetting, metaclass=abc.ABCMeta):
-    def __init__(self, dialog, value_name: str):
-        AbstractSetting.__init__(self, dialog, value_name)
-        if not hasattr(self.store_class, value_name):
-            raise NameError('{} object has no value: {}'.format(self.store_class.__class__.__name__, value_name))
-        self.value_name = value_name
+    def __init__(self, dialog):
+        AbstractSetting.__init__(self, dialog)
+        if not hasattr(self.store_class, self.value_name):
+            raise NameError('{} object has no value: {}'.format(self.store_class.__class__.__name__, self.value_name))
 
     @property
     def store_class(self):

@@ -8,6 +8,10 @@ from src.ui.dialog_config.settings.abstract_config import AbstractConfigSetting
 class AuthorModeSetting(AbstractConfigSetting):
 
     @property
+    def value_name(self) -> str:
+        return 'author_mode'
+
+    @property
     def qt_object(self):
         return self.dialog.author_mode
 
