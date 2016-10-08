@@ -17,7 +17,7 @@ class KdiffHelper(AbstractHelper, metaclass=Singleton):
 
     @property
     def folder(self) -> Path:
-        return self.path.dirname().abspath()
+        return Path(self.path.dirname().abspath())
 
     @property
     def path(self) -> Path:
