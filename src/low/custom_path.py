@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import shutil
 import binascii
 import os
 import tempfile
@@ -67,6 +68,13 @@ class Path(path.Path):
     def write_text(self, text, encoding=None, errors='strict',
                    linesep=os.linesep, append=False):
         return path.Path.write_text(self, text, encoding, errors, linesep, append)
+
+    def rmtree(self, must_exist=True):
+        if not self.isdir():
+            raise TypeError('not a directory: {}'.format(self.abspath()))
+        if must_exist and not self.exists():
+            raise ValueError('directory does not exist: {}'.format(self.abspath()))
+        shutil.rmtree(self.abspath())
 
 
 def create_temp_file(*, suffix=None, prefix=None, create_in_dir=None) -> Path:
