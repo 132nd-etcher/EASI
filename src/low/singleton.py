@@ -14,7 +14,8 @@ class Singleton(abc.ABCMeta):
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
 
+    # noinspection PyMethodParameters
     @classmethod
-    def wipe_instances(mcs):
+    def wipe_instances(cls):
         """Only for testing purposes"""
-        mcs._instances = {}
+        cls._instances = {}
