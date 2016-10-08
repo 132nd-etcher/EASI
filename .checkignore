@@ -1,2 +1,2 @@
 tests/*
-test_*.py
+src/ui/skeletons/*
