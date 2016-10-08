@@ -10,9 +10,6 @@ import pefile
 from humanize import filesize
 
 
-# from win32.win32api import GetFileVersionInfo, HIWORD, LOWORD
-
-
 # noinspection PyAbstractClass
 class Path(path.Path):
     def crc32(self):
