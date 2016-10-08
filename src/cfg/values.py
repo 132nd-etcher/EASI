@@ -43,7 +43,7 @@ class ConfigValues:
     def author_mode(self, value: bool):
         sig_author_mode.mod_author_changed(value)
 
-    @meta_property_with_default(os.path.abspath('.\cache'), str)
+    @meta_property_with_default(os.path.abspath(r'.\cache'), str)
     def cache_path(self, value: str):
         p = path.Path(value)
         if not p.exists():
@@ -52,7 +52,7 @@ class ConfigValues:
             raise TypeError('there is already a file at: {}'.format(p.abspath()))
         sig_cache_path_changed.send()
 
-    @meta_property_with_default(None, str)
+    @meta_property_with_default(os.path.abspath(r'.\kdiff3\kdiff3.exe'), str)
     def kdiff_path(self, value: str):
         p = path.Path(value)
         if not p.exists():

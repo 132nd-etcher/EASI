@@ -175,7 +175,7 @@ class Downloader:
                    progress: ProgressInterface = None,
                    raise_err: bool = True) -> FileDownload:
         if progress:
-            progress.set_text('Downloading:\n{}'.format(fdl.url))
+            progress.set_progress_text('Downloading:\n{}'.format(fdl.url))
             progress.set_progress(0)
         kwargs = dict(fdl=fdl, raise_err=raise_err)
         if progress:
@@ -220,7 +220,7 @@ class Downloader:
         def __gather_metadata():
             nonlocal total_size
             if progress:
-                progress.set_text('Gathering metadata...')
+                progress.set_progress_text('Gathering metadata...')
             count = 0
             for fdl in fdl_list:
                 assert isinstance(fdl, FileDownload)
@@ -246,7 +246,7 @@ class Downloader:
                 progress.set_progress(((current + partial_size) / total_size) * 100)
 
             if progress:
-                progress.set_text('Downloading files...')
+                progress.set_progress_text('Downloading files...')
                 progress.set_progress(0)
                 progress.set_current_enabled(True)
             for fdl in fdl_list:

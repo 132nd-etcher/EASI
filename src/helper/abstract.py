@@ -8,24 +8,34 @@ from src.low.custom_path import Path
 class AbstractHelper(metaclass=abc.ABCMeta):
     @property
     @abc.abstractproperty
-    def helper_dir(self):
-        """Root directory for all helpers"""
-
-    @property
-    def root_dir(self):
-        return Path(self.helper_dir).joinpath(self.name)
-
-    @property
-    @abc.abstractproperty
     def download_link(self):
         """Link to download the helper"""
 
     @property
     @abc.abstractproperty
-    def name(self):
-        """Returns root directory for this helper"""
+    def is_installed(self):
+        """"""
+
+    @abc.abstractmethod
+    def install(self):
+        """"""
 
     @property
     @abc.abstractproperty
-    def executable(self):
-        """Path to this helper's executable file"""
+    def name(self):
+        """"""
+
+    @property
+    @abc.abstractproperty
+    def path(self) -> Path:
+        """"""
+
+    @path.setter
+    @abc.abstractproperty
+    def path(self, value: str or Path):
+        """"""
+
+    @property
+    @abc.abstractproperty
+    def folder(self):
+        """"""
