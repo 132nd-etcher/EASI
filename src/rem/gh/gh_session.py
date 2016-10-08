@@ -19,6 +19,7 @@ logger = make_logger(__name__)
 class GHSessionError(Exception):
     def __init__(self, msg):
         self.msg = msg
+        Exception.__init__(self, msg)
 
 
 # TODO: https://github.com/github/choosealicense.com/tree/gh-pages/_licenses
