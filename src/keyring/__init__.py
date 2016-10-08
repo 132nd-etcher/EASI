@@ -1,2 +1,2 @@
 # coding=utf-8
-from .keyring import keyring
+from .keyring import keyring, init_keyring

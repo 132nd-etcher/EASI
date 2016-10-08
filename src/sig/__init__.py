@@ -8,6 +8,7 @@ from .sig_ui_splash import SplashSig
 from .sig_ui_main import MainUiSig, MainUiStatesSig
 from .sig_ui_long_op import LongOpDialogSig
 from .sig_msgbox import MsgboxSig
+from .sig_keyring import KeyringSig
 
 sig_dcs_installs_changed = CustomSignal()
 sig_sg_path_changed = CustomSignal()
@@ -23,5 +24,6 @@ sig_interrupt_startup = CustomSignal()
 sig_config_changed = CustomSignal()
 sig_kdiff_path_changed = CustomSignal()
 sig_msgbox = MsgboxSig()
+sig_keyring = KeyringSig()
 
 
