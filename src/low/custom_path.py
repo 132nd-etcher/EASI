@@ -13,6 +13,7 @@ from humanize import filesize
 # noinspection PyAbstractClass
 class Path(path.Path):
     def crc32(self):
+
         if not self.isfile():
             raise TypeError('cannot compute crc32, not a file: {}'.format(self.abspath()))
         else:
