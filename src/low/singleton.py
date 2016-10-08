@@ -15,6 +15,6 @@ class Singleton(abc.ABCMeta):
         return cls._instances[cls]
 
     @classmethod
-    def wipe_instances(cls):
+    def wipe_instances(mcs):
         """Only for testing purposes"""
-        cls._instances = {}
+        mcs._instances = {}

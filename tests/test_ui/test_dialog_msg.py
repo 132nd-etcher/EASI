@@ -2,12 +2,12 @@
 
 from hypothesis import strategies as st, given
 
+# noinspection PyProtectedMember
 from src.ui.dialog_msg.dialog import _MsgDialog
 from tests.init_qt_app import QtTestCase
 
 
 class TestDialogMsg(QtTestCase):
-
     @given(text=st.text(), title=st.text())
     def test_show(self, text, title):
         dialog = _MsgDialog()

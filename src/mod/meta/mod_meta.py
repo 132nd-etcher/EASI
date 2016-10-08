@@ -8,7 +8,7 @@ from src.meta import Meta, meta_property_with_default
 
 class ModMeta(Meta, AbstractModMetaFull):
     def __init__(self):
-        Meta.__init__(self)
+        Meta.__init__(self, '')
 
     @meta_property_with_default(None, str)
     def depends(self, value) -> typing.List[str]:

@@ -9,6 +9,25 @@ PORTABLE_GIT_LINK = r'https://github.com/git-for-windows/git/releases/download/v
 
 
 class GitHelper(AbstractHelper):
+    @property
+    def path(self) -> Path:
+        return ''
+
+    def install(self):
+        pass
+
+    @property
+    def folder(self):
+        return ''
+
+    @property
+    def is_installed(self):
+        return False
+
+    @property
+    def name(self):
+        return 'Git'
+
     def __init__(self):
         AbstractHelper.__init__(self)
         self.__path = None
@@ -23,6 +42,4 @@ class GitHelper(AbstractHelper):
 
     @property
     def executable(self):
-        if self.__path is None:
-            self.__path = Path(self.helper_dir).joinpath(self.directory).joinpath('git.exe')
-        return self.__path
+        return None

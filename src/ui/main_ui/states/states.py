@@ -48,11 +48,11 @@ class MainUiStateManager(AbstractConnectedObject, AbstractMainUiState):
         """"""
 
     @state_method
-    def set_progress_title(state_manager, value: str):
+    def set_progress_title(self, value: str):
         """"""
 
     @state_method
-    def set_progress_text(state_manager, value: str):
+    def set_progress_text(self, value: str):
         """"""
 
     @state_method
