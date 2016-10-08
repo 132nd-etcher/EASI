@@ -104,3 +104,4 @@ easi.credentials
 *.qrc_crc
 *.7z
 unittest_secret.py
+/kdiff3/
