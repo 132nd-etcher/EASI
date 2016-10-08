@@ -49,7 +49,7 @@ class Path(path.Path):
         return '%d.%d.%d.%d' % filever
 
     def abspath(self):
-        return path.Path.abspath(self)
+        return path.Path.abspath(self).replace('\\', '/')
 
     def exists(self):
         return path.Path.exists(self)

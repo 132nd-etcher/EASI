@@ -3,21 +3,19 @@
 import os
 import stat
 
-from watchdog.events import FileSystemEvent, FileSystemEventHandler
+from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
 from src.cfg import config
-from src.low.custom_path import Path
 from src.low.custom_logging import make_logger
+from src.low.custom_path import Path
 from src.low.singleton import Singleton
 from src.sig import SignalReceiver, sig_cache_path_changed
-
 
 logger = make_logger(__name__)
 
 
 class CacheFile:
-
     def __init__(
             self,
             name: str,
@@ -54,8 +52,10 @@ class CacheFile:
 
 
 class Cache(FileSystemEventHandler, metaclass=Singleton):
-    def __init__(self, path: str or Path):
+    def __init__(self, path: str or Path = None):
         FileSystemEventHandler.__init__(self)
+        if path is None:
+            raise ValueError('first Cache instantiation must include path')
         if isinstance(path, str):
             path = Path(path)
         self.__path = path
@@ -68,33 +68,35 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         self.observer.start()
         self.meta = {}
         self.build()
+        self.__is_building = True
+
+    @property
+    def is_building(self):
+        return self.__is_building
 
     def on_created(self, event):
         if not event.is_directory:
             self.build(event.src_path.replace('\\', '/'))
             logger.debug('created: {}'.format(event.src_path))
-            # print(self)
 
     def on_modified(self, event):
         if not event.is_directory:
             self.build(event.src_path.replace('\\', '/'))
             logger.debug('modified: {}'.format(event.src_path))
-            # print(self)
 
     def on_moved(self, event):
         if not event.is_directory:
             del self.meta[event.src_path.replace('\\', '/')]
             self.build(event.dest_path)
             logger.debug('moved: {} -> {}'.format(event.src_path, event.dest_path))
-            # print(self)
 
     def on_deleted(self, event):
         if not event.is_directory:
             del self.meta[event.src_path.replace('\\', '/')]
             logger.debug('deleted: {}'.format(event.src_path))
-            # print(self)
 
     def build(self, rel_path: str = None):
+        self.__is_building = True
         if rel_path is None:
             logger.info('re-building whole cache folder')
             self.meta = {}
@@ -117,7 +119,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
             meta = CacheFile(name, abspath, path, os.stat(abspath))
             meta.get_crc32()
             self.meta[meta.path] = meta
-
+        self.__is_building = False
 
     def cache_path_changed(self):
         self.path = config.cache_path
@@ -132,16 +134,26 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
             value = Path(value)
         self.__path = value
 
+    def __getitem__(self, item) -> CacheFile:
+        item = item.replace('\\', '/')
+        try:
+            return self.meta.__getitem__(item)
+        except KeyError:
+            return self.meta.__getitem__(Path(item).relpath(self.path))
+
+    def __contains__(self, item) -> bool:
+        try:
+            self.__getitem__(item)
+            return True
+        except KeyError:
+            return False
+
     def __str__(self):
         out = ['cache object']
         for k, meta in self.meta.items():
             out.append('{}: {}'.format(k, self.meta[k]))
         return '\n\t'.join(out)
 
-
-if __name__ == '__main__':
-    import time
-
-    cache = Cache('./cache')
-    while True:
-        time.sleep(0.5)
+    def __iter__(self):
+        for item in self.meta.values():
+            yield item
