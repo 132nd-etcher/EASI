@@ -1,5 +1,6 @@
 # coding=utf-8
 import os
+import time
 from unittest import TestCase
 
 from src.cache.cache import Cache
@@ -38,6 +39,8 @@ class TestCache(TestCase):
         f1 = Path(random_files.pop())
         mtime1 = f1.mtime
         f1.write_bytes(os.urandom(1024))
+        if os.getenv('APPVEYOR'):
+            time.sleep(2)
         self.assertGreater(f1.mtime, mtime1)
         while c.is_building:
             pass
