@@ -4,7 +4,7 @@ from hypothesis import strategies as st, given
 
 # noinspection PyProtectedMember
 from src.ui.dialog_msg.dialog import _MsgDialog
-from tests.init_qt_app import QtTestCase
+from tests.utils import QtTestCase
 
 
 class TestDialogMsg(QtTestCase):

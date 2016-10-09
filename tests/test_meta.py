@@ -1,7 +1,6 @@
 # coding=utf-8
 
 import os
-from unittest import TestCase
 from unittest import mock
 
 from hypothesis import given, settings, example
@@ -12,6 +11,8 @@ from src.meta.meta import Meta
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.meta.meta_singleton import MetaSingleton
+
+from .utils import ContainedTestCase
 
 logger = make_logger(__name__)
 
@@ -25,25 +26,12 @@ def st_any():
                      st.lists(st_any_base()), st.dictionaries(st_any_base(), st_any_base()))
 
 
-# noinspection PyUnresolvedReferences
-class TestMeta(TestCase):
-    to_del = ['./test', './test_b', './test_d', './test_t']
-
-    def __init__(self, *args, **kwargs):
-        TestCase.__init__(self, *args, **kwargs)
-
-        for x in TestMeta.to_del:
-            if os.path.exists(x):
-                os.remove(x)
+class TestMeta(ContainedTestCase):
 
     def setUp(self):
-        self.meta = Meta('./test', auto_read=False)
-
-    def tearDown(self):
-        del self.meta
-        for x in TestMeta.to_del:
-            if os.path.exists(x):
-                os.remove(x)
+        super(TestMeta, self).setUp()
+        self.temp_file = self.create_temp_file()
+        self.meta = Meta(self.temp_file, auto_read=False)
 
     def test_init(self):
         with self.assertRaises(TypeError):
@@ -51,13 +39,14 @@ class TestMeta(TestCase):
             Meta()
 
     def test_init_with_str(self):
-        Meta('./test', auto_read=False)
+        Meta(self.create_temp_file(), auto_read=False)
 
     @given(x=st.one_of(st.booleans(), st.none(), st.integers(), st.floats()))
     def test_path_set(self, x):
-        m = Meta('./test', auto_read=False)
-        m.path = './test'
-        m.path = Path('./test')
+        p = self.create_temp_file()
+        m = Meta(p.abspath(), auto_read=False)
+        m.path = p.abspath()
+        m.path = Path(str(p.abspath()))
         with self.assertRaises(TypeError):
             m.path = x
 
@@ -67,7 +56,7 @@ class TestMeta(TestCase):
         min_size=1)
     )
     def test_context(self, d):
-        m = Meta('./test_d', init_dict=d, auto_read=False)
+        m = Meta(self.create_temp_file(), init_dict=d, auto_read=False)
         self.assertDictEqual(d, m.get_context())
 
     @given(d=st.dictionaries(
@@ -79,7 +68,7 @@ class TestMeta(TestCase):
     )
     def test_dict_props(self, d):
         assert isinstance(d, dict)
-        m = Meta('./test_d', init_dict=d, auto_read=False)
+        m = Meta(self.create_temp_file(), init_dict=d, auto_read=False)
         logger.critical(d)
         self.assertSequenceEqual([x for x in m], [x for x in d])
         for x in d.keys():
@@ -87,12 +76,12 @@ class TestMeta(TestCase):
 
     @given(x=st.one_of(st.booleans(), st.none(), st.integers(), st.floats(), st.text()))
     def test_set_data(self, x):
-        m = Meta('./test')
+        m = Meta(self.create_temp_file())
         with self.assertRaises(TypeError):
             m.data = x
 
     def test_init_with_path(self):
-        p = Path('./test')
+        p = Path(self.create_temp_file())
         self.assertIsInstance(p, Path)
         Meta(p, auto_read=False)
 
@@ -122,7 +111,7 @@ class TestMeta(TestCase):
     def test_write_basic(self, d):
         self.meta.data = d
         self.meta.write()
-        meta = Meta('./test', auto_read=False)
+        meta = Meta(self.temp_file, auto_read=False)
         self.assertFalse(self.meta == meta)
         meta.read()
         self.assertDictEqual(self.meta.data, meta.data)
@@ -130,15 +119,16 @@ class TestMeta(TestCase):
     @given(b=st.integers(min_value=1, max_value=1))
     @settings(max_examples=50)
     def test_corrupted_file(self, **_):
-        with open('./test_b', 'wb') as f:
+        p = self.create_temp_file()
+        with open(p, 'wb') as f:
             f.write(os.urandom(1024 * 32))
-        meta = Meta('./test_b', auto_read=False)
+        meta = Meta(p, auto_read=False)
         with self.assertRaises(ValueError):
             meta.read()
 
     @given(d=st.dictionaries(st.text(), st_any()))
     def test_props(self, d):
-        p = Path('./test')
+        p = Path(self.create_temp_file())
         m = Meta(p, init_dict=d, auto_read=False)
         self.assertIs(p, m.path)
         self.assertIs(d, m.data)
@@ -147,12 +137,13 @@ class TestMeta(TestCase):
     @mock.patch('src.low.custom_path.Path.remove')
     def test_empty(self, m):
         assert isinstance(m, mock.MagicMock)
-        open('./test_t', 'w').close()
-        meta = Meta('./test_t')
+        p = self.create_temp_file()
+        open(p.abspath(), 'w').close()
+        meta = Meta(p.abspath())
         self.assertEqual(m.call_count, 1)
         meta.read()
         self.assertEqual(m.call_count, 2)
-        Meta('./test_t', auto_read=False)
+        Meta(p.abspath(), auto_read=False)
         self.assertEqual(m.call_count, 2)
 
     @given(x=st.one_of(st.text(), st.integers(), st.floats(), st.none()))
@@ -177,7 +168,7 @@ class TestMeta(TestCase):
             def some_prop(self, _):
                 f('mock called')
 
-        c = C('./test')
+        c = C(self.create_temp_file())
         self.assertSequenceEqual(c.some_prop, 'default')
         with self.assertRaises(TypeError):
             c.some_prop = x
@@ -187,8 +178,9 @@ class TestMeta(TestCase):
         self.assertEqual(f.call_count, 1)
 
     def test_singleton_meta(self):
-        m1 = MetaSingleton('./test')
-        m2 = MetaSingleton(Path('./test'))
+        p = self.create_temp_file()
+        m1 = MetaSingleton(p)
+        m2 = MetaSingleton(str(p.abspath()))
         self.assertTrue(m1 is m2)
 
     @given(x=st.one_of(st.booleans(), st.integers(), st.none(), st.floats()))

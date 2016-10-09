@@ -8,16 +8,22 @@ from hypothesis import strategies as st, given
 
 from src.cfg.values import ConfigValues
 from src.meta import Meta
-from tests.with_file import TestCaseWithTestFile
+from .utils import ContainedTestCase
 
 
 class C(Meta, ConfigValues):
     pass
 
 
-class TestConfigValues(TestCaseWithTestFile):
+class TestConfigValues(ContainedTestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestConfigValues, self).__init__(*args, **kwargs)
+        self.test_file = None
 
     def setUp(self):
+        super(TestConfigValues, self).setUp()
+        self.test_file = self.create_temp_file()
         self.c = C(self.test_file)
 
     @given(x=st.one_of(st.booleans(), st.floats(), st.none(), st.integers()))

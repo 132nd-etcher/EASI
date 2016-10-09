@@ -3,7 +3,7 @@
 from hypothesis import given
 from hypothesis import strategies as st
 
-from tests.init_qt_app import QtTestCase
+from tests.utils import QtTestCase
 
 
 class TestMain(QtTestCase):

@@ -2,7 +2,7 @@
 
 import random
 from hypothesis import strategies as st, given, example, settings
-from tests.init_qt_app import QtTestCase
+from tests.utils import QtTestCase
 from src.ui import FeedbackDialog, MsgDialog
 from src.cfg import config
 from src.sentry import crash_reporter

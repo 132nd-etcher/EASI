@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from tests.init_qt_app import QtTestCase
+from tests.utils import QtTestCase
 
 
 class TestMain(QtTestCase):
