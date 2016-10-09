@@ -25,9 +25,13 @@ class TempDir(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         if self.temp_dir.exists():
+
+            def on_error(func, path, exc_info):
+                self.__force_rm_handle(func, path, exc_info)
+
             shutil.rmtree(
                 self.temp_dir.abspath(),
-                onerror=lambda func, _path, e: self.__force_rm_handle(func, _path, e)
+                onerror=on_error
             )
             if self.temp_dir.exists():
                 raise Exception('failed to delete tempdir')
