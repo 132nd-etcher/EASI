@@ -1,7 +1,8 @@
 # coding=utf-8
 
 import time
-from unittest import TestCase, mock, skipUnless
+import os
+from unittest import TestCase, mock, skipUnless, skipIf
 
 from hypothesis import strategies as st
 
@@ -19,6 +20,7 @@ except ImportError:
 
 
 # noinspection PyPep8Naming
+@skipIf(os.getenv('APPVEYOR'), 'AppVeyor gets 403 from GH all the time')
 class TestGHAnonymousSession(TestCase):
     def __init__(self, methodName):
         TestCase.__init__(self, methodName)
@@ -56,6 +58,7 @@ class TestGHAnonymousSession(TestCase):
 
 # noinspection PyPep8Naming
 @skipUnless(token, 'no test token available')
+@skipIf(os.getenv('APPVEYOR'), 'AppVeyor gets 403 from GH all the time')
 class TestGHSession(TestCase):
     def __init__(self, methodName):
         TestCase.__init__(self, methodName)
