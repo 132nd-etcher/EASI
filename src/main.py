@@ -95,8 +95,8 @@ def main(init_only=False, test_run=False):
         if init_only:
             return qt_app, main_gui
 
-        if not os.getenv('APPVEYOR'):
-            from src.upd import check_for_update
+
+        from src.upd import check_for_update
         from src.keyring import init_keyring
         from src.dcs import init_dcs_installs
         from src.rem import init_remotes
@@ -116,7 +116,8 @@ def main(init_only=False, test_run=False):
         rec[sig_interrupt_startup] = interrupt_startup
 
         pool.queue_task(sig_splash.show)
-        pool.queue_task(check_for_update)
+        if not os.getenv('APPVEYOR'):
+            pool.queue_task(check_for_update)
         pool.queue_task(init_dcs_installs)
         pool.queue_task(init_keyring)
         pool.queue_task(init_remotes)
