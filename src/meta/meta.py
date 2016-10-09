@@ -17,7 +17,7 @@ class Meta(AbstractMeta):
     Intercepts all call made to "instance.some_value" and reroutes them to the "__data" attribute
     """
 
-    def __init__(self, path: str, init_dict: dict = None, auto_read=True, encrypted=False):
+    def __init__(self, path: str or Path, init_dict: dict = None, auto_read=True, encrypted=False):
         self.free = True
         self.encrypt = encrypted
         if init_dict is None:

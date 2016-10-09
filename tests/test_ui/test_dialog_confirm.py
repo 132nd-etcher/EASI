@@ -3,7 +3,7 @@
 from PyQt5.QtCore import QTimer
 
 from src.ui import ConfirmDialog
-from tests.init_qt_app import QtTestCase
+from tests.utils import QtTestCase
 
 
 class TestConfigDialog(QtTestCase):

@@ -9,7 +9,7 @@ from src.cfg import config
 from src.low.custom_path import create_temp_file, create_temp_dir
 from src.qt import Qt
 from src.ui.dialog_config import ConfigDialog
-from tests.init_qt_app import QtTestCase
+from tests.utils import QtTestCase
 
 
 class TestConfig(QtTestCase):

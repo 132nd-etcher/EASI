@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.qt import QObject, QIcon, QLabel
-from tests.init_qt_app import QtTestCase
+from tests.utils import QtTestCase
 from src.abstract.ui.base_dialog import AbstractBaseDialog
 from src.abstract.ui.base_qobject import AbstractBaseQWidget
 

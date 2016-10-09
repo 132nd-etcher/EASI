@@ -7,7 +7,7 @@ from requests.exceptions import InvalidURL, MissingSchema
 
 from src.abstract.abstract_progress import ProgressInterface
 from src.low.custom_logging import make_logger
-from src.low.custom_path import Path, create_temp_file
+from src.low.custom_path import Path, create_temp_file, create_temp_dir
 from src.threadpool import ThreadPool
 
 logger = make_logger(__name__)
@@ -18,11 +18,13 @@ class DownloadError(Exception):
 
 
 class FileDownload:
-    def __init__(self, url: str, local_file: Path or str = None):
+    def __init__(self, url: str, local_file: Path or str = None, local_folder: Path or str = None):
+        if local_folder is not None:
+            local_folder = self.normalize_path(local_folder)
         if local_file is None:
-            local_file = create_temp_file()
+            local_file = create_temp_file(create_in_dir=local_folder)
         else:
-            local_file = self.normalize_local_file(local_file)
+            local_file = self.normalize_path(local_file)
         self.url = url
         self.err = None
         self.done = False
@@ -32,15 +34,13 @@ class FileDownload:
         self.size = None
 
     @staticmethod
-    def normalize_local_file(local_file):
-        if isinstance(local_file, str):
-            return Path(local_file)
-        elif isinstance(local_file, Path):
-            return local_file
-        elif local_file is None:
-            return Path(create_temp_file())
+    def normalize_path(path):
+        if isinstance(path, str):
+            return Path(path)
+        elif isinstance(path, Path):
+            return path
         else:
-            raise TypeError('expected str or Path, got: {}'.format(type(local_file)))
+            raise TypeError('expected str or Path, got: {}'.format(type(path)))
 
     def wait(self):
         while not self.done:
@@ -107,7 +107,13 @@ class FileDownload:
 
 
 class BulkFileDownload:
-    def __init__(self, fdl_list: list = None):
+    def __init__(self, fdl_list: list = None, local_folder: str or Path = None):
+        if local_folder is None:
+            local_folder = create_temp_dir()
+        elif isinstance(local_folder, str):
+            local_folder = Path(local_folder)
+        self.local_folder = local_folder
+
         if fdl_list is not None:
             if not isinstance(fdl_list, list):
                 raise TypeError('expected a list, got: {}'.format(type(fdl_list)))
@@ -228,7 +234,6 @@ class Downloader:
                 count += 1
                 if progress:
                     progress.set_progress((count / len(fdl_list)) * 100)
-            print('total size', total_size)
 
         def __download_content():
 
@@ -250,7 +255,10 @@ class Downloader:
                 if progress:
                     progress.set_current_text(fdl.url)
                 assert isinstance(fdl, FileDownload)
-                kwargs = dict(fdl=fdl, raise_err=raise_err)
+                kwargs = dict(
+                    fdl=fdl,
+                    raise_err=raise_err
+                )
                 if progress:
                     kwargs['progress_callback'] = __set_composite_progress
                 self.pool.queue_task(downloader.download_fdl, kwargs=kwargs)

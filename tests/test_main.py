@@ -4,7 +4,7 @@ import os
 import time
 import unittest
 
-from tests.init_qt_app import QtTestCase
+from tests.utils import QtTestCase
 
 
 @unittest.skipUnless(os.getenv('TEST_MAIN_LOOP') is not None, 'Not testing main loop')

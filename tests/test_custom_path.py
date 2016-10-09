@@ -5,11 +5,11 @@ import subprocess
 
 from hypothesis import strategies as st, given
 
-from src.low.custom_path import Path, create_temp_file
-from tests.with_file import TestCaseWithTestFile
+from src.low.custom_path import Path
+from .utils import ContainedTestCase
 
 
-class TestCustomPath(TestCaseWithTestFile):
+class TestCustomPath(ContainedTestCase):
     @staticmethod
     def hash_file(path):
         return subprocess.check_output(['crc32', path]).decode().split(' ')[0][2:]
@@ -42,12 +42,10 @@ class TestCustomPath(TestCaseWithTestFile):
 
     def test_human_size(self):
 
-        import os
-
-        p = Path('./test')
+        p = Path(self.create_temp_file())
 
         def __make_file(_len):
-            with open('./test', 'wb') as f:
+            with open(p.abspath(), 'wb') as f:
                 if _len == 0:
                     return
                 f.seek(_len - 1)
@@ -67,12 +65,9 @@ class TestCustomPath(TestCaseWithTestFile):
         self.assertSequenceEqual(p.human_size(), '1.0M')
         __make_file((1024 * 1024 * 32) + (1024 * 128))
         self.assertSequenceEqual(p.human_size(), '32.1M')
-        # __make_file(1024 * 1024 * 1024)
-        # self.assertSequenceEqual(p.human_size(), '1.0G')
-        os.remove('./test')
 
     @given(s=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1), st.none()),
            p=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1), st.none()), )
     def test_create_temp_file(self, s, p):
-        p = Path(create_temp_file(suffix=s, prefix=p))
+        p = Path(self.create_temp_file(suffix=s, prefix=p))
         self.assertTrue(all([p.exists(), p.isfile()]))
