@@ -4,6 +4,10 @@ Etcher's Automated Skin Installer
 
 Develop:
 
+.. image:: https://badge.waffle.io/132nd-etcher/EASI.svg?label=ready&title=Ready 
+    :target: https://waffle.io/132nd-etcher/EASI 
+    :alt: 'Stories in Ready'
+
 .. image:: https://ci.appveyor.com/api/projects/status/ej728cibs8q13qw2/branch/develop?svg=true&passingText=develop%20-%20OK
     :target: https://ci.appveyor.com/project/132nd-etcher/easi
 
