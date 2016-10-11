@@ -51,3 +51,7 @@ After adding all requirements, you'll still need to:
    .. note::
 
         Set the DSN to 'None' if you are not using Sentry
+
+.. image:: https://badges.gitter.im/easi_/Lobby.svg
+   :alt: Join the chat at https://gitter.im/easi_/Lobby
+   :target: https://gitter.im/easi_/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
