@@ -46,8 +46,11 @@ Develop:
     :alt: Code Health
 
 .. image:: https://badges.gitter.im/easi_/Lobby.svg
-   :alt: Join the chat at https://gitter.im/easi_/Lobby
-   :target: https://gitter.im/easi_/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+    :alt: Join the chat at https://gitter.im/easi_/Lobby
+    :target: https://gitter.im/easi_/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
+.. image:: https://www.versioneye.com/user/projects/57fcb44b886dd100411cdf7e/badge.svg?style=flat-square
+    :target: https://www.versioneye.com/user/projects/57fcb44b886dd100411cdf7e
 
 Master: no build yet
 
