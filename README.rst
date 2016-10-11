@@ -41,6 +41,10 @@ Develop:
     :target: https://landscape.io/github/132nd-etcher/EASI/develop
     :alt: Code Health
 
+.. image:: https://badges.gitter.im/easi_/Lobby.svg
+   :alt: Join the chat at https://gitter.im/easi_/Lobby
+   :target: https://gitter.im/easi_/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
 Master: no build yet
 
 Documentation
