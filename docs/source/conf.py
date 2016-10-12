@@ -41,12 +41,12 @@ raw_version = Version(__version__)
 # ones.
 extensions = [
     'sphinx.ext.ifconfig',
-    'sphinx.ext.githubpages',  # doesn't work for readthedocs; guys, update to 1.4, maybe soon ?
+    # 'sphinx.ext.githubpages',  # doesn't work for readthedocs; guys, update to 1.4, maybe soon ?
     'sphinx.ext.todo',
-    'cloud_sptheme.ext.issue_tracker',
+    # 'cloud_sptheme.ext.issue_tracker',
     # 'cloud_sptheme.ext.index_styling',
-    'cloud_sptheme.ext.relbar_toc',  # doesn't work for readthedocs; guys, update to 1.4, maybe soon ?
-    'cloud_sptheme.ext.table_styling',
+    # 'cloud_sptheme.ext.relbar_toc',  # doesn't work for readthedocs; guys, update to 1.4, maybe soon ?
+    # 'cloud_sptheme.ext.table_styling',
     'sphinx.ext.extlinks',
 ]
 extlinks = {'gh_issue': ('https://github.com/132nd-etcher/EASI_doctest/issues/%s',
@@ -59,7 +59,7 @@ numfig = True
 
 """A string of reStructuredText that will be included at the end of every source file that is read. This is the right
 place to add substitutions that should be available in every file. An example:
-(include with |132|"""
+(include with |epilog|)"""
 rst_epilog = """
 .. |epilog| replace:: some epilog substitute
 """

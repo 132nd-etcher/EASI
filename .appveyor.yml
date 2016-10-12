@@ -1,11 +1,15 @@
 # CI on Windows via appveyor
 
-#version: 0.0.11.11110.12
+version: 0.0.11.11194.{branch}_{build}
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
     CYGWIN_GIT_PATH:   "C:\\cygwin\\bin;%GIT_DAEMON_PATH%"
     CYGWIN64_GIT_PATH: "C:\\cygwin64\\bin;%GIT_DAEMON_PATH%"
+    PYTHON: "C:\\Python35"
+    PYTHON_VERSION: "3.5.2"
+    GIT_PATH: "%GIT_DAEMON_PATH%"
+    EASI_VERSION: 0.0.11.11194
     COMPILEKEY:
       secure: GWMPMTNpIs/NmumBQYkAMHQiCIPJLLEBw/wWbwHdpqQ=
     VAULT_SECRET:
@@ -23,11 +27,8 @@ environment:
     GH_MAIL:
       secure: 9bVWUcCZXTNmCwwwQ9c/LY+ZxQWBTzzEJoojPZbp4Qk=
 
-    matrix:
-      - PYTHON: "C:\\Python35"
-        PYTHON_VERSION: "3.5.2"
-        GIT_PATH: "%GIT_DAEMON_PATH%"
-        fast_finish: true
+matrix:
+    fast_finish: true
 
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
@@ -41,6 +42,7 @@ install:
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
   - "%PYTHON%/Scripts/pip.exe install -r requirements.txt"
+  - "%PYTHON%/Scripts/pip.exe install -r build-requirements.txt"
 
   # Installing various utilities
   - choco install -y InnoSetup curl
@@ -112,24 +114,23 @@ branches:
     - gh-pages
 
 deploy:
-    # Deploy to GitHub Releases
   - provider: GitHub
-    artifact: setup           # upload all NuGet packages to release assets
+    artifact: setup
     draft: false
     prerelease: false
     auth_token:
       secure: T9LMiMzikVwlfnYhxlIpzhmfotDN75SUmEv1FSGLHZ/vMHMCMT3SEapSOH1iPdaD
     on:
-      branch: master                 # release from master branch only
-      appveyor_repo_tag: false       # deploy on tag push only
+      branch: master
+      appveyor_repo_tag: false
   - provider: GitHub
-    artifact: setup           # upload all NuGet packages to release assets
+    artifact: setup
     draft: false
     prerelease: true
     auth_token:
       secure: T9LMiMzikVwlfnYhxlIpzhmfotDN75SUmEv1FSGLHZ/vMHMCMT3SEapSOH1iPdaD
     on:
-      branch: prerelease             # release from prerelease branch only
-      appveyor_repo_tag: false       # deploy on tag push only
+      branch: prerelease
+      appveyor_repo_tag: false
 
 skip_tags: true

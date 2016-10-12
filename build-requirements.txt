@@ -1,0 +1,2 @@
+git+https://github.com/132nd-etcher/pyinstaller.git#egg=PyInstaller
+pypiwin32==219
