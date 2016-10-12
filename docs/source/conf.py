@@ -360,7 +360,7 @@ latex_documents = [
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-latex_logo = r'F:\DEV\EASI\EASIv0.0.11\docs\source\_static\app.png'
+latex_logo = r'./_static/app.png'
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
