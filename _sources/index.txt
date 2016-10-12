@@ -72,25 +72,6 @@ cell1  cell2  cell3
 ...    ...    ...
 =====  =====  =======
 
-.. table:: Optional Caption
-    :widths: 1 1 1
-    :column-alignment: left center right
-    :column-wrapping: true true false
-    :column-dividers: none none none none
-
-    =========== =========== ===========
-    Width 50%   Width 33%   Width 16%
-    =========== =========== ===========
-    Line 1      This text   This text
-                should wrap will always
-                onto        be one line.
-                multiple
-                lines.
-    Line 2      Centered.   Right-Aligned.
-    Line 3      Centered    Right-Aligned
-                Again.      Again.
-    =========== =========== ===========
-
 And testing again and again
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
