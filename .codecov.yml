@@ -21,10 +21,4 @@ coverage:
     - "tests"
     - "src/ui/skeletons"
 
-comment:
-  layout: "header, diff, changes, sunburst, uncovered, tree"
-  branches:
-    - master
-    - develop
-    - prerelease
-  behavior: default
+comment: off
