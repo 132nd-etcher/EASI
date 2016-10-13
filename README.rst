@@ -2,8 +2,6 @@
 Etcher's Automated Skin Installer
 *********************************
 
-.. image:: http://b.repl.ca/v1/Author_skill-Script_kiddie-red.png
-
 .. image:: https://img.shields.io/badge/Author%20skill-Script%20kiddie-red.svg?style=flat
 
 .. image:: http://www.repostatus.org/badges/latest/wip.svg
