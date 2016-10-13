@@ -1,0 +1,24 @@
+codecov:
+  branch: develop
+  bot: 132nd-etcher
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+  notify:
+    slack:
+      default:
+        url: "secret:R8BYN/TOGaOS8VyDMIOJXNW5IBB1ful2erYRJMhggcyogBXZu/ZUvs+dXJcZHqXRYsHcWL+gfRDOQmkcL3mt3ypsjgIdJrWGVUcT7RGC/eMzVU1YsHt13zenEN399magVYzvb2ZvscqYtKkfCCxuw49trpd+rcHv+8BGjvmXa2c="
+        threshold: 1%
+        branches:
+          - master
+          - develop
+          - feature/*
+        attachments: "sunburst, diff"
+
+  ignore:
+    - "tests"
+    - "src/ui/skeletons"
+
+comment: off

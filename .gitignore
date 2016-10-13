@@ -105,3 +105,5 @@ easi.credentials
 *.7z
 unittest_secret.py
 /kdiff3/
+/ssh.key
+/ssh.pub

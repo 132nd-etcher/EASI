@@ -42,7 +42,8 @@ install:
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
   - "%PYTHON%/Scripts/pip.exe install -r requirements.txt"
-  - "%PYTHON%/Scripts/pip.exe install -r build-requirements.txt"
+  - "%PYTHON%/Scripts/pip.exe install -r requirements-extra.txt"
+  - "%PYTHON%/Scripts/pip.exe install -r requirements-build.txt"
 
   # Installing various utilities
   - choco install -y InnoSetup curl
@@ -67,6 +68,8 @@ before_build:
   - "%PYTHON%/Scripts/python-codacy-coverage.exe -r coverage.xml"
   - "%PYTHON%/Scripts/pip.exe install coveralls"
   - "%PYTHON%/Scripts/coveralls.exe"
+  - "%PYTHON%/Scripts/pip.exe install codecov"
+  - "%PYTHON%/Scripts/codecov.exe"
 
 build_script:
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_console --key %COMPILEKEY%"
