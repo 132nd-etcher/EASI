@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Wizard</class>
+ <widget class="QWizard" name="Wizard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>New mod</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/qt_resource.qrc">
+    <normaloff>:/ico/app.ico</normaloff>:/ico/app.ico</iconset>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <property name="wizardStyle">
+   <enum>QWizard::ClassicStyle</enum>
+  </property>
+  <widget class="QWizardPage" name="page_welcome">
+   <property name="acceptDrops">
+    <bool>false</bool>
+   </property>
+   <property name="toolTipDuration">
+    <number>0</number>
+   </property>
+   <property name="title">
+    <string>Welcome</string>
+   </property>
+   <attribute name="pageId">
+    <string notr="true">1</string>
+   </attribute>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../resources/qt_resource.qrc"/>
+ </resources>
+ <connections/>
+</ui>

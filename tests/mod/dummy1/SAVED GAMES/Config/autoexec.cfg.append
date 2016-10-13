@@ -1,0 +1,1 @@
+table.insert(options.graphics.VFSTexturePaths, "%SAVED_GAMES%/DCS/Textures/NewTextures")
