@@ -4,6 +4,8 @@ Etcher's Automated Skin Installer
 
 .. image:: http://b.repl.ca/v1/Author_skill-Script_kiddie-red.png
 
+.. image:: https://img.shields.io/badge/Author%20skill-Script%20kiddie-red.svg
+
 Develop:
 
 .. image:: https://badge.waffle.io/132nd-etcher/EASI.svg?label=ready&title=Ready 
