@@ -9,7 +9,7 @@ coverage:
   notify:
     slack:
       default:
-        url: "secret:zdv8K6Hxg69vulAKykwcrxW2vuGP1MRK0VK9ms9TYEspug+gz6jEQXtwtEJpUz20/FQuq77PvJpdzGS0Fkavx9Qaf3+giwmrpgGW1WL13+hRpake9cOZcWjIDIGtfkhGTt+Ov5thynhgTvsQZ5ZXWg6ndDBGRV5kCO7I9HrJgco="
+        url: "secret:R8BYN/TOGaOS8VyDMIOJXNW5IBB1ful2erYRJMhggcyogBXZu/ZUvs+dXJcZHqXRYsHcWL+gfRDOQmkcL3mt3ypsjgIdJrWGVUcT7RGC/eMzVU1YsHt13zenEN399magVYzvb2ZvscqYtKkfCCxuw49trpd+rcHv+8BGjvmXa2c="
         threshold: 1%
         branches:
           - master
