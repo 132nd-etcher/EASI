@@ -4,11 +4,13 @@ Etcher's Automated Skin Installer
 
 .. image:: http://forthebadge.com/images/badges/made-with-python.svg
 
+|
+
 .. image:: http://forthebadge.com/images/badges/uses-git.svg
 
-.. image:: http://forthebadge.com/images/badges/built-with-love.svg
+|
 
-.. image:: http://forthebadge.com/images/badges/winter-is-coming.svg
+.. image:: http://forthebadge.com/images/badges/built-with-love.svg
 
 
 
