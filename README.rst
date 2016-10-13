@@ -66,6 +66,12 @@ Documentation
 
 `Project documentation <https://132nd-etcher.github.io/EASI/>`_
 
+Project current throughput
+--------------------------
+
+.. image:: https://graphs.waffle.io/132nd-etcher/EASI/throughput.svg 
+ :target: https://waffle.io/132nd-etcher/EASI/metrics/throughput 
+ :alt: 'Throughput Graph'
 
 
 Building
