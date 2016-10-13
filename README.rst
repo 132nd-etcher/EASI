@@ -2,11 +2,24 @@
 Etcher's Automated Skin Installer
 *********************************
 
+.. image:: http://forthebadge.com/images/badges/made-with-python.svg
+
+.. image:: http://forthebadge.com/images/badges/uses-git.svg
+
+.. image:: http://forthebadge.com/images/badges/built-with-love.svg
+
+.. image:: http://forthebadge.com/images/badges/winter-is-coming.svg
+
+
+
 .. image:: https://img.shields.io/badge/Author%20skill-Script%20kiddie-red.svg?style=flat
+    :target: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 .. image:: http://www.repostatus.org/badges/latest/wip.svg
-   :alt: Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.
-   :target: http://www.repostatus.org/#wip
+    :alt: Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.
+    :target: http://www.repostatus.org/#wip
+   
+.. image:: https://img.shields.io/badge/License-GPL-blue.svg
 
 Develop:
 
