@@ -26,6 +26,9 @@ Develop:
 .. image:: https://scrutinizer-ci.com/g/132nd-etcher/EASI/badges/build.png?b=develop
     :target: https://scrutinizer-ci.com/g/132nd-etcher/EASI/?branch=develop
 
+.. image:: https://codecov.io/gh/132nd-etcher/EASI/branch/develop/graph/badge.svg
+  :target: https://codecov.io/gh/132nd-etcher/EASI
+
 .. image:: https://codeclimate.com/github/132nd-etcher/EASI/badges/gpa.svg
     :target: https://codeclimate.com/github/132nd-etcher/EASI
 
