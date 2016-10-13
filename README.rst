@@ -6,6 +6,10 @@ Etcher's Automated Skin Installer
 
 .. image:: https://img.shields.io/badge/Author%20skill-Script%20kiddie-red.svg?style=flat
 
+.. image:: http://www.repostatus.org/badges/latest/wip.svg
+   :alt: Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.
+   :target: http://www.repostatus.org/#wip
+
 Develop:
 
 .. image:: https://badge.waffle.io/132nd-etcher/EASI.svg?label=ready&title=Ready&style=flat
