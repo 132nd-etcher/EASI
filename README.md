@@ -2,7 +2,7 @@
 
 # Etcher's Automated Skins Installer
 
-![][project_status] [![gpl]][gpl_link] ![][pun]
+![][project_status] [![][gpl]][gpl_link] ![][pun]
 
   - [Documentation](#documentation)
   - [Building](#building)
