@@ -34,7 +34,7 @@ def main(init_only=False, test_run=False):
 
         cacert = Path(certifi.where())
         logger.info('checking certificate')
-        if not cacert.crc32() == '7E8D9995':
+        if not cacert.crc32() == '5630AEBB':
             # FIXME this will need some work
             raise ImportError('cacert.pem file is corrupted, please reinstall EASI ({})'.format(cacert.crc32()))
         logger.debug('setting up local cacert file to: {}'.format(str(cacert)))
