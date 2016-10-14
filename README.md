@@ -25,7 +25,7 @@
 | VersionEye       | [![versioneye]]         [versioneye_link]   |                                             |
 | Gitter           | [![gitter]]             [gitter_link]       |                                             |
 
-[![throughput]] [throughput_link]
+[![throughput]] [waffle_link]
 
 ![][gh_issues]
 ![][gh_issues_closed]
