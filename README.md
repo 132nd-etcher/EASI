@@ -4,9 +4,9 @@
 
 
 
-[![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
-[![image](https://img.shields.io/badge/License-GPL-blue.svg)] [gpl]
-[![image](https://img.shields.io/badge/Author%20skill-Script%20kiddie-red.svg?style=flat)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![project_status]]
+[![gpl]] [gpl_link]
+[![pun]]
 
   - [Documentation](#documentation)
   - [Building](#building)
@@ -108,5 +108,8 @@ EASI is released under the [GPLv3 License][gpl].
 [versioneye_link]: https://www.versioneye.com/user/projects/57ff67d90676c900486e4f8d
 [gitter]: https://badges.gitter.im/easi_/Lobby.svg
 [gitter_link]: https://gitter.im/easi_/Lobby
-[gpl]: https://www.gnu.org/licenses/quick-guide-gplv3.en.html
+[gpl]: https://img.shields.io/badge/License-GPL-blue.svg
+[gpl_link]: https://www.gnu.org/licenses/quick-guide-gplv3.en.html
 [easi]: https://i.imgsafe.org/00192c67ea.png
+[project_status]: http://www.repostatus.org/badges/latest/wip.svg
+[pun]: https://img.shields.io/badge/Author%20skill-Script%20kiddie-red.svg?style=flat
