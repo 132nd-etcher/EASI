@@ -24,13 +24,13 @@ class Path(path.Path):
             except:
                 raise RuntimeError('failed to compute crc32 for: {}'.format(self.abspath()))
 
-    def human_size(self):
+    def human_size(self) -> str:
         return filesize.naturalsize(self.getsize(), gnu=True)
 
-    def normalize(self):
+    def normalize(self) -> str:
         return self.abspath().replace('\\', '/').lower()
 
-    def get_version_info(self):
+    def get_version_info(self) -> str:
         if not self.exists():
             raise FileNotFoundError(self.abspath())
         if not self.isfile():

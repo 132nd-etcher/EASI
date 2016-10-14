@@ -1,7 +1,8 @@
 # coding=utf-8
 # noinspection PyProtectedMember
 from os import execl, _exit
-from src.__version__ import version as local_version
+import semver
+from src.__version__ import __version__
 from src.cfg import config
 from src.low import constants
 from src.low.custom_logging import make_logger
@@ -42,10 +43,11 @@ def install_new_version(gh_release: GHRelease):
 
 
 def check_if_new(gh_release: GHRelease):
-    if gh_release.version > local_version:
+    comp = semver.compare(gh_release.version, __version__) == 1
+    if comp == 1:
         logger.info('new version found')
         install_new_version(gh_release)
-    elif gh_release.version == local_version:
+    elif comp == 0:
         logger.info('already running latest test version')
     else:
         logger.info('online version is older, skipping update')

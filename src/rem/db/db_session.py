@@ -2,6 +2,7 @@
 
 import webbrowser
 
+import semver
 from dropbox import Dropbox as BaseDropbox, DropboxOAuth2FlowNoRedirect
 from dropbox.exceptions import AuthError
 
@@ -10,7 +11,7 @@ try:
 except ImportError:
     from vault.empty_secret import Secret
 from src.low import constants
-from src.__version__ import version
+from src.__version__ import __version__
 from src.low.singleton import Singleton
 from src.low.custom_logging import make_logger
 from src.sig import sig_db_token_status_changed
@@ -26,7 +27,8 @@ class DBSession(metaclass=Singleton):
     )
 
     def __init__(self, token=None):
-        self.abbrev_version = '.'.join([str(x) for x in (version.major, version.minor, version.revision)])
+        d = semver.parse(__version__)
+        self.abbrev_version = '.'.join([str(d['major']), str(d['minor']), str(d['patch'])])
         self.agent = '{}/{}'.format(constants.APP_SHORT_NAME, self.abbrev_version)
         self.session = None
         self.account = None

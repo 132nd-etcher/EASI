@@ -50,10 +50,9 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
     def setup(self):
         self.setupUi(self)
         self.setWindowTitle(
-            '{} {} v{} - {}'.format(constants.APP_SHORT_NAME,
-                                    constants.APP_STATUS,
-                                    constants.APP_VERSION,
-                                    constants.APP_RELEASE_NAME))
+            '{} v{} - {}'.format(constants.APP_SHORT_NAME,
+                                 constants.APP_VERSION,
+                                 constants.APP_RELEASE_NAME))
         self.setWindowIcon(QIcon(qt_resources.app_ico))
 
     def connect_actions(self):

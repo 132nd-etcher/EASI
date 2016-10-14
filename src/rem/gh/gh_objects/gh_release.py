@@ -1,5 +1,4 @@
 # coding=utf-8
-from src.low.version import Version
 from src.rem.gh.gh_objects.base_gh_object import BaseGHObject, json_property
 from src.rem.gh.gh_objects.gh_asset import GHAllReleaseAssets
 from src.rem.gh.gh_objects.gh_user import GHUser
@@ -56,7 +55,7 @@ class GHRelease(BaseGHObject):
     def version(self):
         if self.tag_name is None:
             return None
-        return Version(self.tag_name)
+        return self.tag_name
 
     @property
     def setup_download_url(self):
