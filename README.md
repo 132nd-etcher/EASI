@@ -2,11 +2,7 @@
 
 # Etcher's Automated Skins Installer
 
-
-
-[![project_status]]
-[![gpl]] [gpl_link]
-[![pun]]
+![][project_status] [![gpl]][gpl_link] ![][pun]
 
   - [Documentation](#documentation)
   - [Building](#building)
@@ -14,7 +10,7 @@
 
 |                  | Master                                      | Develop                                   |
 | ---------------- | ------------------------------------------- | ----------------------------------------- |
-| Waffle           | [![waffle]] [waffle_link]                   |                                           |
+| Waffle           | [![waffle]]             [waffle_link]       |                                           |
 | Windows build    | [![appveyor_master]]    [appveyor_project]  | [![appveyor_dev]]    [appveyor_project]   |
 | Codacy           | [![codacy_grade]]       [codacy_grade_link] |                                           |
 |                  | [![codacy_cover]]       [codacy_grade_link] |                                           |
