@@ -1,8 +1,9 @@
 # coding=utf-8
 
+import semver
 import shortuuid
 
-from src.__version__ import version
+from src.__version__ import __version__
 from src.keyring.keyring import keyring
 from src.ui.dialog_msg.dialog import MsgDialog
 from .mod_draft import ModDraft
@@ -19,6 +20,6 @@ class ModFactory:
             return None
         mod_draft = ModDraft()
         mod_draft.meta.identifier = shortuuid.uuid()
-        mod_draft.meta.meta_version = version.build
+        mod_draft.meta.meta_version = semver.parse(__version__)['build']
         mod_draft.meta.author = gh_account
         return mod_draft

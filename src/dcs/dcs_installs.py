@@ -12,7 +12,6 @@ from src.cfg import config
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
-from src.low.version import Version
 from src.sig import sig_dcs_installs_changed, sig_sg_path_changed, sig_main_ui_states
 
 logger = make_logger(__name__)
@@ -106,15 +105,15 @@ class DCSInstalls(metaclass=Singleton):
         return self.installs[channel]['install'], self.installs[channel]['sg'], self.installs[channel]['version']
 
     @property
-    def stable(self) -> Tuple[Path, Path, Version]:
+    def stable(self) -> Tuple[Path, Path, str]:
         return self.__get_props('stable')
 
     @property
-    def beta(self) -> Tuple[Path, Path, Version]:
+    def beta(self) -> Tuple[Path, Path, str]:
         return self.__get_props('beta')
 
     @property
-    def alpha(self) -> Tuple[Path, Path, Version]:
+    def alpha(self) -> Tuple[Path, Path, str]:
         return self.__get_props('alpha')
 
 
