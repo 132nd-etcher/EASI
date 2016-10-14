@@ -9,6 +9,7 @@ import raven.breadcrumbs
 from src.__version__ import __version__
 from src.abstract import SentryContextInterface
 from src.cfg import config
+from src.rem.gh.gh_session import GHSession
 from src.low import constants
 from src.low.custom_logging import make_logger
 
@@ -45,6 +46,8 @@ class Sentry(raven.Client):
             self.tags_context(dict(username=config.usr_name))
         if config.usr_email:
             self.tags_context(dict(user_email=config.usr_email))
+        if GHSession().user:
+            self.tags_context(dict(gh_username=GHSession().user.login))
         try:
             self.tags_context(dict(windows_version=sys.getwindowsversion()))
         except AttributeError:
