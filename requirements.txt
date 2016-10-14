@@ -25,12 +25,14 @@ PyYAML==3.12
 raven==5.27.0
 requests==2.11.1
 ruamel.yaml==0.12.14
+semver==2.6.0
 shortuuid==0.4.3
 sip==4.18.1
 six==1.10.0
 typing==3.5.2.2
 tzlocal==1.2.2
-uritemplate.py==2.0.0
+uritemplate==3.0.0
+uritemplate.py==3.0.2
 urllib3==1.17
 watchdog==0.8.3
 WMI==1.4.9
