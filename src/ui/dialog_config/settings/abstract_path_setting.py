@@ -36,7 +36,7 @@ class AbstractPathSetting(AbstractConfigSetting):
             title='Select your {} directory'.format(self.dir_name()),
             init_dir=init_dir
         )
-        if path:
+        if isinstance(path, Path) and path.exists():
             self.qt_object.setText(str(path.abspath()))
 
     def show_in_explorer(self):
