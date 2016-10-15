@@ -6,6 +6,7 @@ import stat
 from unittest import TestCase
 
 from src.low.custom_path import create_temp_dir, create_temp_file
+from src.qt import QApplication
 from src.low.singleton import Singleton
 from src.main import main
 
@@ -68,9 +69,10 @@ class SingletonQtApp(metaclass=Singleton):
         self.main_ui = main_ui
 
 
-class QtTestCase(TestCase):
+class QtTestCase(ContainedTestCase):
     def __init__(self, *args, **kwargs):
         TestCase.__init__(self, *args, **kwargs)
-        self.__singleton_qt_app = SingletonQtApp()
-        self.qt_app = self.__singleton_qt_app.qt_app
-        self.main_ui = self.__singleton_qt_app.main_ui
+        singleton_qt_app = SingletonQtApp()
+        assert isinstance(singleton_qt_app.qt_app, QApplication)
+        self.qt_app = singleton_qt_app.qt_app
+        self.main_ui = singleton_qt_app.main_ui
