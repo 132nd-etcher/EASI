@@ -42,13 +42,12 @@ class AbstractPathSetting(AbstractConfigSetting):
     def show_in_explorer(self):
         os.startfile(self.value)
 
+    # noinspection PyUnresolvedReferences
     def setup(self):
         self.menu.addAction(self.q_action_browse)
         self.menu.addAction(self.q_action_show)
         self.qt_menu_btn.setMenu(self.menu)
-        # noinspection PyUnresolvedReferences
         self.q_action_browse.triggered.connect(self.browse_for_value)
-        # noinspection PyUnresolvedReferences
         self.q_action_show.triggered.connect(self.show_in_explorer)
 
     def get_value_from_dialog(self):
