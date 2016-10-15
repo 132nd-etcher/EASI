@@ -95,7 +95,6 @@ def main(init_only=False, test_run=False):
         if init_only:
             return qt_app, main_gui
 
-
         from src.upd import check_for_update
         from src.keyring import init_keyring
         from src.dcs import init_dcs_installs
