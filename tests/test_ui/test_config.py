@@ -43,7 +43,7 @@ def setup_valid_dialog(tmpdir):
 
 
 def test_config_dialog_signals(qtbot: QtBot, tmpdir):
-    dialog, sg, cache, kdiff = setup_valid_dialog(tmpdir)
+    dialog, _, _, _ = setup_valid_dialog(tmpdir)
     qtbot.addWidget(dialog)
     dialog.save_settings()
 
@@ -62,7 +62,6 @@ def test_config_dialog_signals(qtbot: QtBot, tmpdir):
 def test_sg_path(qtbot: QtBot, tmpdir, mocker):
     assert isinstance(qtbot, (QtBot, QTest))
     test_dir = str(tmpdir.mkdir('t'))
-    test_dir_not_found = str(tmpdir.join('x'))
     test_file = tmpdir.join('file')
     test_file.write('')
     test_file = str(test_file)
@@ -136,9 +135,6 @@ def test_sg_path(qtbot: QtBot, tmpdir, mocker):
     dialog.sg_line_edit.clear()
     qtbot.keyClicks(dialog.sg_line_edit, test_file, Qt.NoModifier)
     qtbot.mouseClick(dialog.buttonBox.button(dialog.buttonBox.Apply), Qt.LeftButton)
-
-    def show_error_called():
-        show_error_balloon.assert_called_with('Not a directory')
 
     qtbot.wait_until(show_error_called)
 
