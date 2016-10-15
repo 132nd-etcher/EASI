@@ -13,6 +13,7 @@ class AbstractBaseQWidget(metaclass=abc.ABCMeta):
 
     def show(self):
         self.qobj.show()
+        self.adjust_size()
 
     def hide(self):
         self.qobj.hide()
