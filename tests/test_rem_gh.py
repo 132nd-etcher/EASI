@@ -27,7 +27,7 @@ class TestGHAnonymousSession(TestCase):
         self.s = GHAnonymousSession()
 
     def test_users_repos(self):
-        repos = self.s.list_user_repos('132nd-etcher')
+        repos = self.s.list_user_repos('easitest')
         self.assertIsInstance(repos, GHRepoList)
         self.assertTrue('unittests' in repos)
         self.assertFalse('some_repo' in repos)
@@ -61,6 +61,7 @@ class TestGHAnonymousSession(TestCase):
 @skipIf(os.getenv('APPVEYOR'), 'AppVeyor gets 403 from GH all the time')
 class TestGHSession(TestCase):
     def __init__(self, methodName):
+        Singleton.wipe_instances()
         TestCase.__init__(self, methodName)
         self.s = GHSession(token)
 
@@ -68,7 +69,6 @@ class TestGHSession(TestCase):
         self.assertGreater(self.s.rate_limit, 3000)
 
     def test_singleton(self):
-        self.s = GHSession()
         self.assertIs(self.s, GHSession())
 
     @mock.patch('src.sig.sig_gh_token_status_changed.not_connected')
@@ -77,6 +77,8 @@ class TestGHSession(TestCase):
         session = GHSession()
         self.assertFalse(session is self.s)
         m.assert_called_with()
+        Singleton.wipe_instances()
+        self.s = GHSession(token)
 
     @mock.patch('src.sig.sig_gh_token_status_changed.connected')
     def test_init_correct_token(self, m):
@@ -84,6 +86,8 @@ class TestGHSession(TestCase):
         session = GHSession(token)
         self.assertFalse(session is self.s)
         m.assert_called_with(Secret.gh_test_token_login)
+        Singleton.wipe_instances()
+        self.s = GHSession(token)
 
     @mock.patch('src.sig.sig_gh_token_status_changed.wrong_token')
     def test_init_wrong_token(self, m):
@@ -91,6 +95,8 @@ class TestGHSession(TestCase):
         session = GHSession(st.text(min_size=1))
         self.assertFalse(session is self.s)
         m.assert_called_with()
+        Singleton.wipe_instances()
+        self.s = GHSession(token)
 
     def test_create_repo(self):
         name = 'test_repo'
