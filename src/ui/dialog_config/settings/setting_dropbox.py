@@ -8,6 +8,10 @@ from src.ui.dialog_config.settings.abstract_credential import AbstractCredential
 class DropboxSetting(AbstractCredentialSetting):
 
     @property
+    def qt_object(self):
+        return self.dialog.btn_db_check_code
+
+    @property
     def value_name(self) -> str:
         return 'db_token'
 

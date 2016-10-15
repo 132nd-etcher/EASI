@@ -1,11 +1,15 @@
 # coding=utf-8
-from src.qt import QLabel, QToolTip, QPoint
+from src.qt import QLabel
 from src.rem.gh.gh_session import GHSession, GHAnonymousSession, GHSessionError
 from src.sig import sig_gh_token_status_changed, CustomSignal
 from src.ui.dialog_config.settings.abstract_credential import AbstractCredentialSetting
 
 
 class GithubSetting(AbstractCredentialSetting):
+    @property
+    def qt_object(self):
+        return self.dialog.githubUsernameLineEdit
+
     @property
     def value_name(self) -> str:
         return 'gh_token'
