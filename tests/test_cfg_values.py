@@ -40,16 +40,13 @@ class TestConfigValues(ContainedTestCase):
             c.saved_games_path = self.test_file
         with self.assertRaises(FileNotFoundError):
             c.saved_games_path = ''
-        with mock.patch('src.sig.base_custom_signal.CustomSignal.send') as m:
+        with mock.patch('src.cfg.values.sig_cfg_sg_path.value_changed') as m:
             c.saved_games_path = tempfile.gettempdir()
-            m.assert_called_once_with()
+            m.assert_called_once_with(tempfile.gettempdir())
 
         with self.assertRaises(TypeError):
             c.cache_path = sys.executable
         c.cache_path = tempfile.gettempdir()
-        with mock.patch('src.sig.base_custom_signal.CustomSignal.send') as m:
-            c.saved_games_path = tempfile.mkdtemp()
-            m.assert_called_once_with()
 
 
 
