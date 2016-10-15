@@ -1,5 +1,5 @@
 # coding=utf-8
-from src.sig import sig_cache_path_changed
+from src.sig import sig_cfg_cache_path
 from src.ui.dialog_config.settings.abstract_path_setting import AbstractPathSetting
 
 
@@ -9,7 +9,7 @@ class CachePathSetting(AbstractPathSetting):
         return 'cache_path'
 
     def __init__(self, dialog):
-        AbstractPathSetting.__init__(self, dialog, sig_cache_path_changed)
+        AbstractPathSetting.__init__(self, dialog, sig_cfg_cache_path)
 
     @property
     def qt_object(self):
