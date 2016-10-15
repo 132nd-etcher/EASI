@@ -8,13 +8,10 @@ from hypothesis import strategies as st
 from src.meta.decorators import meta_property, meta_property_with_default
 from src.meta.meta import Meta
 
-from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.meta.meta_singleton import MetaSingleton
 
 from .utils import ContainedTestCase
-
-logger = make_logger(__name__)
 
 
 def st_any_base():
@@ -69,7 +66,6 @@ class TestMeta(ContainedTestCase):
     def test_dict_props(self, d):
         assert isinstance(d, dict)
         m = Meta(self.create_temp_file(), init_dict=d, auto_read=False)
-        logger.critical(d)
         self.assertSequenceEqual([x for x in m], [x for x in d])
         for x in d.keys():
             self.assertTrue(x in m)
