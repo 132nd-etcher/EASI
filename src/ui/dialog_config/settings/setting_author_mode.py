@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from src.sig import sig_author_mode, SignalReceiver, sig_config_changed
+from src.sig import sig_cfg_author_mode, SignalReceiver, sig_config_changed
 from src.ui.dialog_disclaimer.dialog import DisclaimerDialog
 from src.ui.dialog_config.settings.abstract_config import AbstractConfigSetting
 
@@ -20,7 +20,7 @@ class AuthorModeSetting(AbstractConfigSetting):
 
     def setup(self):
         self.receiver = SignalReceiver(self)
-        self.receiver[sig_author_mode] = self.author_mode_changed
+        self.receiver[sig_cfg_author_mode] = self.author_mode_changed
         self.dialog.tabWidget.setTabEnabled(1, self.value)
         self.dialog.tabWidget.setStyleSheet(
             "QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} ")

@@ -4,7 +4,7 @@ from src.helper.kdiff import kdiff
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.qt import QToolButton, QAction, QLineEdit, QIcon
-from src.sig import sig_kdiff_path_changed
+from src.sig import sig_cfg_kdiff_path
 from src.ui.dialog_config.settings.abstract_path_setting import AbstractPathSetting
 from ...dialog_browse.dialog import BrowseDialog
 
@@ -17,7 +17,7 @@ class KDiffPathSetting(AbstractPathSetting):
         return 'kdiff_path'
 
     def __init__(self, dialog):
-        AbstractPathSetting.__init__(self, dialog, sig_kdiff_path_changed)
+        AbstractPathSetting.__init__(self, dialog, sig_cfg_kdiff_path)
         self.q_action_install_kdiff = QAction(QIcon(':/pic/download.png'), 'Install now', self.dialog)
         self.dialog.kdiff_line_edit.addAction(self.q_action_install_kdiff, QLineEdit.TrailingPosition)
 
@@ -42,9 +42,9 @@ class KDiffPathSetting(AbstractPathSetting):
         if self.get_value_from_dialog():
             p = Path(self.get_value_from_dialog())
             if not p.exists():
-                self.show_tooltip('File does not exist')
+                self.show_error_balloon('File does not exist')
             elif not p.isfile():
-                self.show_tooltip('Not a file')
+                self.show_error_balloon('Not a file')
             else:
                 return True
         else:

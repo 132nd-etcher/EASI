@@ -22,11 +22,6 @@ class AbstractConfigSetting(AbstractSetting, metaclass=abc.ABCMeta):
         return config
 
     @property
-    @abc.abstractproperty
-    def qt_object(self):
-        """Returns Qt Object for this setting (used for validation fail)"""
-
-    @property
     def value_type(self):
         """Type of value as defined in meta"""
         return getattr(self.store_class, self.value_name).type
@@ -45,10 +40,6 @@ class AbstractConfigSetting(AbstractSetting, metaclass=abc.ABCMeta):
 
     def validation_success(self):
         self.qt_object.setStyleSheet('')
-
-    def show_tooltip(self, text):
-        # noinspection PyArgumentList
-        self.tool_tip = QToolTip.showText(self.qt_object.mapToGlobal(QPoint(0, 0)), text)
 
     @property
     def has_changed(self) -> bool:

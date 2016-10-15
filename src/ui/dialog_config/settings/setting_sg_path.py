@@ -1,6 +1,6 @@
 # coding=utf-8
 from src.ui.dialog_config.settings.abstract_path_setting import AbstractPathSetting
-from src.sig import sig_sg_path_changed
+from src.sig import sig_cfg_sg_path
 
 
 class SGPathSetting(AbstractPathSetting):
@@ -10,7 +10,7 @@ class SGPathSetting(AbstractPathSetting):
         return 'saved_games_path'
 
     def __init__(self, dialog):
-        AbstractPathSetting.__init__(self, dialog, sig_sg_path_changed)
+        AbstractPathSetting.__init__(self, dialog, sig_cfg_sg_path)
 
     @property
     def qt_object(self):
