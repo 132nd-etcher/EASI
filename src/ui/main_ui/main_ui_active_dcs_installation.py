@@ -16,7 +16,7 @@ class MainUiActiveDCSInstallation:
         self.index = []
         self.config_mapping = {}
         self.receiver = SignalReceiver(self)
-        self.receiver[sig_dcs_installs_changed] = self.dcs_installs_changed
+        self.receiver[sig_known_dcs_installs_changed] = self.known_dcs_installs_changed
         self.menu = QMenu(self.main_ui)
         self.qact_show_main_install = QAction('Main installation', self.main_ui)
         self.qact_show_sg = QAction('Saved games', self.main_ui)
