@@ -10,7 +10,7 @@ from src.cfg import config
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
-from src.sig import SignalReceiver, sig_cache_path_changed
+from src.sig import SignalReceiver, sig_cfg_cache_path
 
 logger = make_logger(__name__)
 
@@ -62,7 +62,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         if not self.__path.exists():
             self.__path.makedirs_p()
         self.rec = SignalReceiver(self)
-        self.rec[sig_cache_path_changed] = self.cache_path_changed
+        self.rec[sig_cfg_cache_path] = self.cache_path_changed
         self.observer = Observer()
         self.observer.schedule(self, self.path, recursive=True)
         self.observer.start()
@@ -121,8 +121,8 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
             self.meta[meta.path] = meta
         self.__is_building = False
 
-    def cache_path_changed(self):
-        self.path = config.cache_path
+    def cache_path_changed(self, value):
+        self.path = value
 
     @property
     def path(self) -> Path:

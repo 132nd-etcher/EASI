@@ -17,8 +17,8 @@ class AbstractPathSetting(AbstractConfigSetting):
         self.receiver = SignalReceiver(self)
         self.receiver[path_changed_sig] = self.on_path_changed
 
-    def on_path_changed(self):
-        self.set_dialog_value(self.value)
+    def on_path_changed(self, value):
+        self.set_dialog_value(value)
 
     def dialog_has_changed_methods(self) -> list:
         return [self.qt_object.textChanged]

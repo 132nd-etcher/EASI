@@ -5,7 +5,7 @@ import os
 from src.cfg import config
 from src.dcs import dcs_installs
 from src.qt import QMenu, QAction
-from src.sig import SignalReceiver, sig_dcs_installs_changed
+from src.sig import SignalReceiver, sig_known_dcs_installs_changed
 from src.ui.skeletons.main import Ui_MainWindow
 
 
@@ -16,7 +16,7 @@ class MainUiActiveDCSInstallation:
         self.index = []
         self.config_mapping = {}
         self.receiver = SignalReceiver(self)
-        self.receiver[sig_dcs_installs_changed] = self.dcs_installs_changed
+        self.receiver[sig_known_dcs_installs_changed] = self.known_dcs_installs_changed
 
     def update_index(self):
         self.index = []
@@ -80,19 +80,21 @@ class MainUiActiveDCSInstallation:
         self.qact_show_main_install.triggered.connect(self.show_active_install)
         self.qact_show_sg.triggered.connect(self.show_active_sg)
 
-    def set_current_combo_index_to_config_value(self):
-        if config.active_dcs_installation is not None:
-            dcs_install = self.config_mapping[config.active_dcs_installation]
+    def set_current_combo_index_to_config_value(self, value=None):
+        if value is None:
+            value = config.active_dcs_installation
+        if value is not None:
+            dcs_install = self.config_mapping[value]
             if dcs_install[0] is not None:
                 for idx, x in enumerate(self.index):
-                    if config.active_dcs_installation == x[1]:
+                    if value == x[1]:
                         self.combo.setCurrentIndex(idx)
                         return
         self.combo.setCurrentIndex(0)
 
-    def dcs_installs_changed(self, **_):
+    def known_dcs_installs_changed(self, value=None):
         self.combo.clear()
         self.update_index()
         for x in self.index:
             self.combo.addItem('({:6s}) {}'.format(x[1], x[0][0].abspath()))
-        self.set_current_combo_index_to_config_value()
+        self.set_current_combo_index_to_config_value(value)

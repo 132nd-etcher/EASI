@@ -12,7 +12,7 @@ from src.cfg import config
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
-from src.sig import sig_dcs_installs_changed, sig_sg_path_changed, sig_main_ui_states
+from src.sig import sig_known_dcs_installs_changed, sig_cfg_sg_path, sig_main_ui_states
 
 logger = make_logger(__name__)
 
@@ -68,7 +68,7 @@ class DCSInstalls(metaclass=Singleton):
                     logger.debug('darn it, another fail, falling back to "~"')
                     self.base_sg = Path('~').expanduser().abspath()
             config.saved_games_path = str(self.base_sg.abspath())
-            sig_sg_path_changed.send()
+            sig_cfg_sg_path.value_changed(str(self.base_sg.abspath()))
         else:
             logger.debug('using "Saved Games" folder: {}'.format(config.saved_games_path))
             self.base_sg = Path(config.saved_games_path)
@@ -98,7 +98,7 @@ class DCSInstalls(metaclass=Singleton):
             except FileNotFoundError:
                 logger.debug('no install path found for {}'.format(k))
             sig_main_ui_states.add_progress(partial_progress)
-        sig_dcs_installs_changed.send()
+        sig_known_dcs_installs_changed.send()
         sig_main_ui_states.set_progress(100)
 
     def __get_props(self, channel):
