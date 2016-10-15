@@ -26,10 +26,16 @@ class ConfigDialog(Ui_Settings, QDialog):
         Ui_Settings.__init__(self)
         self.main_ui = parent
         self.setupUi(self)
+        self.btn_apply = self.buttonBox.button(self.buttonBox.Apply)
+        self.btn_reset = self.buttonBox.button(self.buttonBox.Reset)
+        self.btn_ok = self.buttonBox.button(self.buttonBox.Ok)
+        self.btn_cancel = self.buttonBox.button(self.buttonBox.Cancel)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
-        self.buttonBox.button(self.buttonBox.Apply).clicked.connect(self.save_settings)
-        self.buttonBox.button(self.buttonBox.Reset).clicked.connect(self.load_settings)
+        self.btn_apply.clicked.connect(self.apply_clicked)
+        self.btn_reset.clicked.connect(self.reset_clicked)
+        self.btn_ok.clicked.connect(self.ok_clicked)
+        self.btn_cancel.clicked.connect(self.cancel_clicked)
         self.btn_update_check.clicked.connect(self.__check_for_update)
         self.config_settings = {
             'encrypt_keyring': KeyringEncryptSetting(self),
@@ -47,7 +53,7 @@ class ConfigDialog(Ui_Settings, QDialog):
         self.receiver[sig_config_changed] = self.settings_changed
 
     def __set_apply_btn_enabled(self, value: bool):
-        self.buttonBox.button(self.buttonBox.Apply).setEnabled(value)
+        self.btn_apply.setEnabled(value)
 
     @staticmethod
     def __check_for_update():
@@ -80,6 +86,18 @@ class ConfigDialog(Ui_Settings, QDialog):
             assert isinstance(setting, AbstractConfigSetting)
             setting.load_from_meta()
         self.__set_apply_btn_enabled(False)
+
+    def ok_clicked(self):
+        self.accept()
+
+    def reset_clicked(self):
+        self.load_settings()
+
+    def cancel_clicked(self):
+        self.reject()
+
+    def apply_clicked(self):
+        self.save_settings()
 
     def save_settings(self):
         for setting in self.config_settings.values():
