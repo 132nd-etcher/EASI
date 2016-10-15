@@ -1,12 +1,13 @@
 #define ApplicationName 'EASI'
-#define ApplicationVersion '0.0.11.11203'
+#define ApplicationVersion '0.0.11.11204'
+#define ApplicationVersionStr '0.0.11-alpha.1+11204'
 #define AppIco SourcePath + "\src\ui\resources\app.ico"
 #define OutputDir SourcePath + "\build\release"
 
 [Setup]
 AppName={#ApplicationName}
 AppVersion={#ApplicationVersion}
-AppVerName={#ApplicationName} {#ApplicationVersion}
+AppVerName={#ApplicationName} {#ApplicationVersionStr}
 AppUpdatesURL=https://github.com/132nd-etcher/EASI/releases
 AppSupportURL=https://github.com/132nd-etcher/EASI/issues
 VersionInfoVersion={#ApplicationVersion}
@@ -15,7 +16,7 @@ DefaultDirName={pf}\{#ApplicationName}
 AppId={{5b6dab14-577b-48b8-953a-80c0112a2aee}
 UninstallDisplayName={#ApplicationName}
 OutputDir={#OutputDir}
-OutputBaseFilename={#ApplicationName}_setup_{#ApplicationVersion}
+OutputBaseFilename={#ApplicationName}_setup_{#ApplicationVersionStr}
 ShowTasksTreeLines=True
 AppPublisher=etcher
 AppPublisherURL=etcher
@@ -35,7 +36,7 @@ VersionInfoTextVersion={#ApplicationName} {#ApplicationVersion}
 VersionInfoCopyright=Copyright (C) 2016  etcher
 VersionInfoProductName={#ApplicationName}
 VersionInfoProductVersion={#ApplicationVersion}
-VersionInfoProductTextVersion={#ApplicationName} {#ApplicationVersion}
+VersionInfoProductTextVersion={#ApplicationName} {#ApplicationVersionStr}
 DisableReadyPage=True
 
 [Files]
