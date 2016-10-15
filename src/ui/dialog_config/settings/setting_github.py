@@ -23,10 +23,11 @@ class GithubSetting(AbstractCredentialSetting):
         self.flow = None
 
     def setup(self):
-        self.dialog.githubUsernameLineEdit.textChanged.connect(self.set_default_button_to_create_gh_token)
-        self.dialog.githubPasswordLineEdit.textChanged.connect(self.set_default_button_to_create_gh_token)
+        self.dialog.githubUsernameLineEdit.textChanged.connect(self.text_changed)
+        self.dialog.githubPasswordLineEdit.textChanged.connect(self.text_changed)
 
-    def set_default_button_to_create_gh_token(self):
+    def text_changed(self):
+        self.remove_balloons()
         self.dialog.btn_gh_create.setDefault(True)
 
     @property
@@ -38,11 +39,13 @@ class GithubSetting(AbstractCredentialSetting):
         pwd = self.dialog.githubPasswordLineEdit.text()
         if not usr:
             # noinspection PyArgumentList
-            QToolTip.showText(self.dialog.githubUsernameLineEdit.mapToGlobal(QPoint(0, 0)), 'missing username')
+            # QToolTip.showText(self.dialog.githubUsernameLineEdit.mapToGlobal(QPoint(0, 0)), 'missing username')
+            self.show_error_balloon('Missing username', self.dialog.githubUsernameLineEdit)
             return
         if not pwd:
             # noinspection PyArgumentList
-            QToolTip.showText(self.dialog.githubPasswordLineEdit.mapToGlobal(QPoint(0, 0)), 'missing password')
+            # QToolTip.showText(self.dialog.githubPasswordLineEdit.mapToGlobal(QPoint(0, 0)), 'missing password')
+            self.show_error_balloon('Missing password', self.dialog.githubPasswordLineEdit)
             return
         self.status_label.setText('Authenticating ...')
         self.status_label.setStyleSheet('QLabel {{ color : black; }}')

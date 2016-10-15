@@ -42,9 +42,9 @@ class KDiffPathSetting(AbstractPathSetting):
         if self.get_value_from_dialog():
             p = Path(self.get_value_from_dialog())
             if not p.exists():
-                self.show_tooltip('File does not exist')
+                self.show_error_balloon('File does not exist')
             elif not p.isfile():
-                self.show_tooltip('Not a file')
+                self.show_error_balloon('Not a file')
             else:
                 return True
         else:

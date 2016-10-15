@@ -46,6 +46,7 @@ class AbstractPathSetting(AbstractConfigSetting):
         self.q_action_browse.triggered.connect(self.browse_for_value)
         # noinspection PyUnresolvedReferences
         self.q_action_show.triggered.connect(self.show_in_explorer)
+        self.qt_object.textChanged.connect(self.remove_balloons)
 
     def get_value_from_dialog(self):
         return self.qt_object.text()
@@ -65,8 +66,8 @@ class AbstractPathSetting(AbstractConfigSetting):
     def validate_dialog_value(self) -> bool:
         p = Path(self.get_value_from_dialog())
         if not p.exists():
-            self.show_tooltip('Directory does not exist')
+            self.show_error_balloon('Directory does not exist')
         elif not p.isdir():
-            self.show_tooltip('Not a directory')
+            self.show_error_balloon('Not a directory')
         else:
             return True
