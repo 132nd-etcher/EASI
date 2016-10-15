@@ -2,8 +2,8 @@
 
 from src.abstract.ui.connected_dialog import AbstractConnectedDialog
 from src.qt import QDialog, Qt
-from src.ui.skeletons.msg_dialog import Ui_Dialog
 from src.sig import sig_msgbox
+from src.ui.skeletons.msg_dialog import Ui_Dialog
 
 
 class _MsgDialog(Ui_Dialog, QDialog):
@@ -11,18 +11,6 @@ class _MsgDialog(Ui_Dialog, QDialog):
         QDialog.__init__(self, parent, flags=Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint)
         Ui_Dialog.__init__(self)
         self.setupUi(self)
-
-    def show(self):
-        self.adjust_size()
-        super(_MsgDialog, self).show()
-
-    def adjust_size(self):
-        self.setMaximumSize(400, 16777215)
-        self.adjustSize()
-        self.setFixedSize(
-            self.width() + 20,
-            self.height(),
-        )
 
 
 class MsgDialog(AbstractConnectedDialog):
@@ -34,7 +22,6 @@ class MsgDialog(AbstractConnectedDialog):
         text = text.replace('\n', '<br>')
         self.qobj.setWindowTitle(title)
         self.qobj.label.setText(text)
-        self.adjust_size()
         super(MsgDialog, self).show()
 
     # noinspection PyMethodOverriding
