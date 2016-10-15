@@ -2,7 +2,7 @@ import abc
 import os
 
 from src.low.custom_path import Path
-from src.qt import QMenu, QAction, QToolButton, QIcon
+from src.qt import QMenu, QAction, QToolButton, QIcon, QLineEdit
 from src.ui.dialog_browse.dialog import BrowseDialog
 from src.ui.dialog_config.settings.abstract_config import AbstractConfigSetting
 from src.sig import SignalReceiver
@@ -16,6 +16,10 @@ class AbstractPathSetting(AbstractConfigSetting):
         self.q_action_show = QAction(QIcon(':/pic/fs_open.png'), 'Show in explorer', self.dialog)
         self.receiver = SignalReceiver(self)
         self.receiver[path_changed_sig] = self.on_path_changed
+
+    @property
+    def qt_object(self) -> QLineEdit:
+        return super(AbstractPathSetting, self).qt_object()
 
     def on_path_changed(self):
         self.set_dialog_value(self.value)
