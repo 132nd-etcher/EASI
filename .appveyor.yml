@@ -44,6 +44,7 @@ install:
   - "%PYTHON%/Scripts/pip.exe install -r requirements.txt"
   - "%PYTHON%/Scripts/pip.exe install -r requirements-extra.txt"
   - "%PYTHON%/Scripts/pip.exe install -r requirements-build.txt"
+  - "%PYTHON%/Scripts/pip.exe install -r requirements-test.txt"
 
   # Installing various utilities
   - choco install -y InnoSetup curl
@@ -57,8 +58,9 @@ cache:
   - C:\ProgramData\chocolatey
 
 before_build:
-  - "%PYTHON%/Scripts/coverage.exe run --source ./src -m nose ./tests"
-  - "%PYTHON%/Scripts/coverage.exe xml"
+#  - "%PYTHON%/Scripts/coverage.exe run --source ./src -m nose ./tests"
+#  - "%PYTHON%/Scripts/coverage.exe xml"
+  - "%PYTHON%/Scripts/pytest.exe --cov=src --cov-config .coveragerc --cov-report xml -c .pytest --full-trace"
 #  - "%PYTHON%/Scripts/pip.exe install codeclimate-test-reporter codecov"
 #  - "%PYTHON%/Scripts/codeclimate-test-reporter.exe"
   - "%PYTHON%/Scripts/pip.exe install git+https://github.com/132nd-etcher/ocular.py.git"
