@@ -1,9 +1,9 @@
 # coding=utf-8
 import abc
 
-from src.sig import SignalReceiver, CustomSignal
 from src.keyring.keyring import keyring, Keyring
 from src.qt import QLabel
+from src.sig import SignalReceiver, CustomSignal
 from .abstract import AbstractSetting
 
 
