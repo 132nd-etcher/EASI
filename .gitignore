@@ -92,7 +92,7 @@ easi.config
 #/src/ui/resources/qt_resource_rc.py
 easi.credentials
 /tests/cover/
-/tests/.hypothesis/
+.hypothesis
 /tests/.noserc
 /.idea/*
 /src/ui/skeletons/*.autosave
