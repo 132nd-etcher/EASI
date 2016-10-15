@@ -1,5 +1,5 @@
 # coding=utf-8
-
+import os
 from unittest import mock
 
 from PyQt5.QtTest import QTest
@@ -67,8 +67,6 @@ def test_sg_path(qtbot: QtBot, tmpdir, mocker):
     test_file = str(test_file)
     dialog, sg, cache, kdiff = setup_valid_dialog(tmpdir)
 
-    print(dialog.sg_line_edit.text())
-
     assert config.saved_games_path == dialog.sg_line_edit.text()
 
     assert dialog.btn_apply.isEnabled() is False
@@ -112,31 +110,21 @@ def test_sg_path(qtbot: QtBot, tmpdir, mocker):
     save_settings = mocker.spy(dialog, 'save_settings')
 
     dialog.sg_line_edit.clear()
-    qtbot.keyClicks(dialog.sg_line_edit, 'something', Qt.NoModifier)
+    qtbot.keyClicks(dialog.sg_line_edit, str(tmpdir.join('some_path')), Qt.NoModifier)
 
     assert dialog.buttonBox.button(dialog.buttonBox.Apply).isEnabled()
+    assert dialog.sg_line_edit.text() == str(tmpdir.join('some_path'))
 
     qtbot.wait_until(apply_btn_active)
     qtbot.mouseClick(dialog.buttonBox.button(dialog.buttonBox.Apply), Qt.LeftButton)
 
-    def wait_for_save():
+    def settings_saved():
         assert save_settings.called
 
-    qtbot.wait_until(wait_for_save)
-
-    def show_error_called():
-        show_error_balloon.assert_called_with('Directory does not exist')
-
-    qtbot.wait_until(show_error_called)
+    qtbot.wait_until(settings_saved)
 
     show_error_balloon.reset_mock()
     save_settings.reset_mock()
-
-    dialog.sg_line_edit.clear()
-    qtbot.keyClicks(dialog.sg_line_edit, test_file, Qt.NoModifier)
-    qtbot.mouseClick(dialog.buttonBox.button(dialog.buttonBox.Apply), Qt.LeftButton)
-
-    qtbot.wait_until(show_error_called)
 
     dialog.sg_line_edit.clear()
     qtbot.keyClicks(dialog.sg_line_edit, test_dir, Qt.NoModifier)
@@ -238,3 +226,74 @@ def test_reset(qtbot, tmpdir):
     assert dialog.cache_line_edit.text() == cache
     assert config.kdiff_path == kdiff
     assert dialog.kdiff_line_edit.text() == kdiff
+
+
+def test_directory_does_not_exist(qtbot, tmpdir, mocker):
+    dialog, sg, cache, _ = setup_valid_dialog(tmpdir)
+
+    p = str(tmpdir.join('dir'))
+
+    assert os.path.exists(p) is False
+
+    save_settings = mocker.spy(dialog, 'save_settings')
+
+    for qt_object, cfg_value, obj_name in {
+        (dialog.sg_line_edit, sg, 'sg_path'),
+        (dialog.cache_line_edit, cache, 'cache_path'),
+    }:
+
+        dialog.setup()
+
+        show_error_balloon = mocker.spy(dialog.config_settings[obj_name], 'show_error_balloon')
+
+        assert qt_object.text() == cfg_value
+
+        qt_object.clear()
+        qtbot.keyClicks(qt_object, p)
+        qtbot.mouseClick(dialog.btn_apply, Qt.LeftButton)
+
+        def settings_saved():
+            save_settings.assert_called_with()
+
+        qtbot.wait_until(settings_saved)
+
+        show_error_balloon.assert_called_with('Directory does not exist')
+
+def test_not_a_directory(qtbot, tmpdir, mocker):
+    dialog, sg, cache, _ = setup_valid_dialog(tmpdir)
+
+    p = tmpdir.join('dir')
+    p.write('')
+    p = str(p)
+
+    assert os.path.exists(p) is True
+    assert os.path.isfile(p) is True
+
+    save_settings = mocker.spy(dialog, 'save_settings')
+
+    for qt_object, cfg_value, obj_name in {
+        (dialog.sg_line_edit, sg, 'sg_path'),
+        (dialog.cache_line_edit, cache, 'cache_path'),
+    }:
+
+        dialog.setup()
+
+        show_error_balloon = mocker.spy(dialog.config_settings[obj_name], 'show_error_balloon')
+
+        assert qt_object.text() == cfg_value
+
+        qt_object.clear()
+        qtbot.keyClicks(qt_object, p)
+        qtbot.mouseClick(dialog.btn_apply, Qt.LeftButton)
+
+        def settings_saved():
+            save_settings.assert_called_with()
+
+        qtbot.wait_until(settings_saved)
+
+        def show_error_called():
+            show_error_balloon.assert_called_with('Not a directory')
+
+        qtbot.wait_until(show_error_called)
+
+
