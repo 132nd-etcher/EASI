@@ -1,6 +1,7 @@
 # coding=utf-8
 import os
 import time
+
 from src.low.custom_path import Path
 
 from src.cache.cache import Cache
@@ -10,7 +11,6 @@ from .utils import ContainedTestCase
 
 
 class TestCache(ContainedTestCase):
-
     def __init__(self, test_method):
         super(TestCache, self).__init__(test_method)
         self.caches_obj = []
