@@ -17,6 +17,9 @@ class MainUiActiveDCSInstallation:
         self.config_mapping = {}
         self.receiver = SignalReceiver(self)
         self.receiver[sig_dcs_installs_changed] = self.dcs_installs_changed
+        self.menu = QMenu(self.main_ui)
+        self.qact_show_main_install = QAction('Main installation', self.main_ui)
+        self.qact_show_sg = QAction('Saved games', self.main_ui)
 
     def update_index(self):
         self.index = []
@@ -52,33 +55,26 @@ class MainUiActiveDCSInstallation:
         except FileNotFoundError:
             pass
 
-    def show_active_install(self):
+    def open_active_install_in_explorer(self):
         self.__show(0)
 
-    def show_active_sg(self):
+    def open_active_sg_in_explorer(self):
         self.__show(1)
 
-    # noinspection PyAttributeOutsideInit
+    # noinspection PyUnresolvedReferences
     def setup(self):
-        self.menu = QMenu(self.main_ui)
-        self.qact_show_main_install = QAction('Main installation', self.main_ui)
-        self.qact_show_sg = QAction('Saved games', self.main_ui)
         self.qact_show_main_install.setObjectName('show_main_install')
         self.qact_show_sg.setObjectName('show_sg')
         self.menu.addAction(self.qact_show_main_install)
         self.menu.addAction(self.qact_show_sg)
         self.btn.setMenu(self.menu)
-        self.connect_qactions()
+        self.qact_show_main_install.triggered.connect(self.open_active_install_in_explorer)
+        self.qact_show_sg.triggered.connect(self.open_active_sg_in_explorer)
         self.combo.currentIndexChanged.connect(self.current_index_changed)
 
     def current_index_changed(self):
         config.active_dcs_installation = self.active_dcs_installation[1]
         self.main_ui.label_dcs_version.setText(self.active_dcs_installation[0][2])
-
-    # noinspection PyUnresolvedReferences
-    def connect_qactions(self):
-        self.qact_show_main_install.triggered.connect(self.show_active_install)
-        self.qact_show_sg.triggered.connect(self.show_active_sg)
 
     def set_current_combo_index_to_config_value(self):
         if config.active_dcs_installation is not None:
