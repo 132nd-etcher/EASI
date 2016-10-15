@@ -13,9 +13,9 @@ from .settings.setting_cache_path import CachePathSetting
 from .settings.setting_dropbox import DropboxSetting
 from .settings.setting_github import GithubSetting
 from .settings.setting_kdiff_path import KDiffPathSetting
+from .settings.setting_keyring_encrypt import KeyringEncryptSetting
 from .settings.setting_sg_path import SGPathSetting
 from .settings.setting_update_to_experimental import ExperimentalUpdateSetting
-from .settings.setting_keyring_encrypt import KeyringEncryptSetting
 
 logger = make_logger(__name__)
 
