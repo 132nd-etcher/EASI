@@ -2,6 +2,7 @@
 import os
 from unittest import mock
 
+import pytest
 from PyQt5.QtTest import QTest
 from pytestqt.qtbot import QtBot
 
@@ -27,7 +28,8 @@ sig_keyring = k.start()
 sig_cfg_subscribe_to_test_versions = t.start()
 
 
-def setup_valid_dialog(tmpdir):
+@pytest.fixture()
+def dialog(tmpdir):
     sg = str(tmpdir.mkdir('sg'))
     cache = str(tmpdir.mkdir('cache'))
     kdiff = tmpdir.join('kdiff3.exe')
@@ -39,11 +41,12 @@ def setup_valid_dialog(tmpdir):
     dialog = ConfigDialog()
     dialog.show()
     dialog.setup()
-    return dialog, sg, cache, kdiff
+    yield dialog, sg, cache, kdiff
+    dialog.close()
 
 
-def test_config_dialog_signals(qtbot: QtBot, tmpdir):
-    dialog, _, _, _ = setup_valid_dialog(tmpdir)
+def test_config_dialog_signals(qtbot: QtBot, dialog):
+    dialog, _, _, _ = dialog
     qtbot.addWidget(dialog)
     dialog.save_settings()
 
@@ -57,14 +60,15 @@ def test_config_dialog_signals(qtbot: QtBot, tmpdir):
             dialog.subscribe_to_test_versions.isChecked())
 
     qtbot.wait_until(check_signal_called)
+    dialog.close()
 
 
-def test_sg_path(qtbot: QtBot, tmpdir, mocker):
+def test_sg_path(qtbot: QtBot, tmpdir, mocker, dialog):
     assert isinstance(qtbot, (QtBot, QTest))
     test_dir = str(tmpdir.mkdir('t'))
     test_file = tmpdir.join('file')
     test_file.write('')
-    dialog, sg, cache, kdiff = setup_valid_dialog(tmpdir)
+    dialog, sg, cache, kdiff = dialog
 
     assert config.saved_games_path == dialog.sg_line_edit.text()
 
@@ -142,8 +146,8 @@ def test_sg_path(qtbot: QtBot, tmpdir, mocker):
         )
 
 
-def test_cancel(qtbot, tmpdir):
-    dialog, sg, cache, kdiff = setup_valid_dialog(tmpdir)
+def test_cancel(qtbot, tmpdir, dialog):
+    dialog, sg, cache, kdiff = dialog
 
     assert config.saved_games_path == sg
     assert dialog.sg_line_edit.text() == sg
@@ -171,8 +175,8 @@ def test_cancel(qtbot, tmpdir):
     assert dialog.kdiff_line_edit.text() == test_file
 
 
-def test_ok(qtbot, tmpdir):
-    dialog, sg, cache, kdiff = setup_valid_dialog(tmpdir)
+def test_ok(qtbot, tmpdir, dialog):
+    dialog, sg, cache, kdiff = dialog
 
     assert config.saved_games_path == sg
     assert dialog.sg_line_edit.text() == sg
@@ -200,8 +204,8 @@ def test_ok(qtbot, tmpdir):
     assert dialog.kdiff_line_edit.text() == test_file
 
 
-def test_reset(qtbot, tmpdir):
-    dialog, sg, cache, kdiff = setup_valid_dialog(tmpdir)
+def test_reset(qtbot, tmpdir, dialog):
+    dialog, sg, cache, kdiff = dialog
 
     assert config.saved_games_path == sg
     assert dialog.sg_line_edit.text() == sg
@@ -227,8 +231,8 @@ def test_reset(qtbot, tmpdir):
     assert dialog.kdiff_line_edit.text() == kdiff
 
 
-def test_directory_does_not_exist(qtbot, tmpdir, mocker):
-    dialog, sg, cache, _ = setup_valid_dialog(tmpdir)
+def test_directory_does_not_exist(qtbot, tmpdir, mocker, dialog):
+    dialog, sg, cache, _ = dialog
 
     p = str(tmpdir.join('dir'))
 
@@ -258,8 +262,8 @@ def test_directory_does_not_exist(qtbot, tmpdir, mocker):
         show_error_balloon.assert_called_with('Directory does not exist')
 
 
-def test_not_a_directory(qtbot, tmpdir, mocker):
-    dialog, sg, cache, _ = setup_valid_dialog(tmpdir)
+def test_not_a_directory(qtbot, tmpdir, mocker, dialog):
+    dialog, sg, cache, _ = dialog
 
     p = tmpdir.join('dir')
     p.write('')
