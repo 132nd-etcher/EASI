@@ -1,10 +1,10 @@
 # coding=utf-8
 
 import abc
+
 from src.cfg import config
 from src.cfg.cfg import Config
 from .abstract import AbstractSetting
-from src.qt import QPoint, QToolTip
 
 
 class AbstractConfigSetting(AbstractSetting, metaclass=abc.ABCMeta):

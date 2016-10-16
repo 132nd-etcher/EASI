@@ -25,6 +25,7 @@ file_list = [
 class TestDownload(ContainedTestCase):
     def __init__(self, *args, **kwargs):
         super(TestDownload, self).__init__(*args, **kwargs)
+        # noinspection SpellCheckingInspection
         self.wrong_url = [
             r'https://raw.githubusercontent.com/132nd-etcher/kdiff3/master/Qt5Coree.dll',
             'caribou'

@@ -125,7 +125,7 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
             for x in self.list_authorizations(username, password):
                 assert isinstance(x, GHAuthorization)
                 if x.app().name == constants.APP_SHORT_NAME:
-                    logger.debug('removing previous authorzation')
+                    logger.debug('removing previous authorization')
                     self.remove_authorization(username, password, x.id)
             self.build_req('authorizations', 'clients', Secret.gh_client_id)
             json = dict(

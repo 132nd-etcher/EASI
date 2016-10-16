@@ -1,22 +1,39 @@
 # coding=utf-8
 
-from PyQt5.QtCore import QTimer
+from pytestqt.qtbot import QtBot
+from PyQt5.Qt import QTest
 
+from src.qt import Qt
 from src.ui import ConfirmDialog
-from tests.utils import QtTestCase
+
+question = 'some question'
+title = 'some title'
 
 
-class TestConfigDialog(QtTestCase):
-    def test_confirm_dialog(self):
-        question = 'some question'
-        title = 'some title'
-        dialog = ConfirmDialog(question, title)
-        dialog.show()
-        # noinspection PyCallByClass,PyTypeChecker
-        QTimer.singleShot(0, dialog.buttonBox.button(dialog.buttonBox.Yes).clicked)
-        self.assertTrue(dialog.exec())
-        dialog = ConfirmDialog(question, title)
-        dialog.show()
-        # noinspection PyCallByClass,PyTypeChecker
-        QTimer.singleShot(0, dialog.buttonBox.button(dialog.buttonBox.No).clicked)
-        self.assertFalse(dialog.exec())
+def test_init(qtbot: QtBot):
+    dialog = ConfirmDialog(question, title)
+    qtbot.add_widget(dialog)
+    dialog.show()
+    qtbot.wait_for_window_shown(dialog)
+    assert dialog.windowTitle() == title
+    assert dialog.label.text() == question
+
+
+def test_confirm_dialog_ok(qtbot: QtBot):
+    assert isinstance(qtbot, (QtBot, QTest))
+    dialog = ConfirmDialog(question, title)
+    qtbot.add_widget(dialog)
+    dialog.show()
+    qtbot.wait_for_window_shown(dialog)
+    qtbot.mouseClick(dialog.btn_yes, Qt.LeftButton)
+    assert dialog.result() == dialog.Accepted
+
+
+def test_confirm_dialog_cancel(qtbot: QtBot):
+    assert isinstance(qtbot, (QtBot, QTest))
+    dialog = ConfirmDialog(question, title)
+    qtbot.add_widget(dialog)
+    dialog.show()
+    qtbot.wait_for_window_shown(dialog)
+    qtbot.mouseClick(dialog.btn_no, Qt.LeftButton)
+    assert dialog.result() == dialog.Rejected

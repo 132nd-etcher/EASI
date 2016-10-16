@@ -4,6 +4,7 @@ from src.cfg import config
 from src.qt import QDialog, Qt, QIcon, qt_resources, QDialogButtonBox
 from src.sig import sig_msgbox
 from src.ui.skeletons.dialog_feedback import Ui_Dialog
+from src.sentry import crash_reporter
 
 
 class _FeedbackDialog(Ui_Dialog, QDialog):
@@ -12,14 +13,23 @@ class _FeedbackDialog(Ui_Dialog, QDialog):
         self.setupUi(self)
         self.setWindowIcon(QIcon(qt_resources.app_ico))
         self.setWindowTitle('Your opinion matters')
-        self.buttonBox.button(QDialogButtonBox.Ok).setText('Send')
+        self.btn_ok = self.buttonBox.button(QDialogButtonBox.Ok)
+        self.btn_cancel = self.buttonBox.button(QDialogButtonBox.Cancel)
+        self.btn_ok.setText('Send')
         if config.usr_name:
             self.nameLineEdit.setText(config.usr_name)
         if config.usr_email:
             self.emailLineEdit.setText(config.usr_email)
+        self.btn_ok.clicked.connect(self.btn_ok_clicked)
+        self.btn_cancel.clicked.connect(self.btn_cancel_clicked)
+
+    def btn_ok_clicked(self):
+        self.accept()
+
+    def btn_cancel_clicked(self):
+        self.reject()
 
     def accept(self):
-        from src.sentry import crash_reporter
         mail = self.emailLineEdit.text()
         if mail:
             config.usr_email = mail

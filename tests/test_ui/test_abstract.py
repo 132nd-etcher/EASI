@@ -1,20 +1,15 @@
 # coding=utf-8
 
-from src.qt import QObject, QIcon, QLabel
-from tests.utils import QtTestCase
+import pytest
+
 from src.abstract.ui.base_dialog import AbstractBaseDialog
 from src.abstract.ui.base_qobject import AbstractBaseQWidget
+from src.qt import QObject, QIcon, QLabel
 
 
-class TestAbstractBase(QtTestCase):
-
-    def test_wrong_init(self):
-        for x in [QObject, QLabel, QIcon, 'test', True, None, 32]:
-            with self.assertRaises(TypeError):
-                AbstractBaseDialog(x)
-            with self.assertRaises(TypeError):
+def test_wrong_init():
+    for x in [QObject, QLabel, QIcon, 'test', True, None, 32]:
+        with pytest.raises(TypeError):
+            AbstractBaseDialog(x)
+            with pytest.raises(TypeError):
                 AbstractBaseQWidget(x)
-
-
-
-

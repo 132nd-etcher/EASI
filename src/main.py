@@ -34,6 +34,7 @@ def main(init_only=False, test_run=False):
 
         cacert = Path(certifi.where())
         logger.info('checking certificate')
+        # noinspection SpellCheckingInspection
         if not cacert.crc32() == '5630AEBB':
             # FIXME this will need some work
             raise ImportError('cacert.pem file is corrupted, please reinstall EASI ({})'.format(cacert.crc32()))
@@ -102,7 +103,6 @@ def main(init_only=False, test_run=False):
         from src.helper import init_helpers
         from src.threadpool import ThreadPool
         from src.sig import sig_splash, sig_main_ui, sig_main_ui_states, SignalReceiver, sig_interrupt_startup
-        import src.upd
 
         logger.info('startup: init')
         pool = ThreadPool(_num_threads=1, _basename='startup', _daemon=False)

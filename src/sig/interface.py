@@ -4,10 +4,11 @@ from src.sig.base_custom_signal import CustomSignal
 
 def interfaced_method(func):
     def _wrapper(self, *args, **kwargs):
-        try:
-            return self.send('{}'.format(func.__name__), *args, **kwargs)
-        except AttributeError:
-            raise AttributeError('unknown function in MainInterface: {}'.format(func.__name__))
+        return self.send('{}'.format(func.__name__), *args, **kwargs)
+        # try:
+        #     return self.send('{}'.format(func.__name__), *args, **kwargs)
+        # except AttributeError:
+        #     raise AttributeError('unknown function in MainInterface: {}'.format(func.__name__))
 
     return _wrapper
 
