@@ -4,6 +4,7 @@ from src.abstract.ui.connected_dialog import AbstractConnectedDialog
 from src.qt import QDialog, Qt
 from src.sig import sig_msgbox
 from src.ui.skeletons.msg_dialog import Ui_Dialog
+from src.abstract.ui import AbstractMsgbox
 
 
 class _MsgDialog(Ui_Dialog, QDialog):
@@ -13,7 +14,7 @@ class _MsgDialog(Ui_Dialog, QDialog):
         self.setupUi(self)
 
 
-class MsgDialog(AbstractConnectedDialog):
+class MsgDialog(AbstractConnectedDialog, AbstractMsgbox):
     def __init__(self, parent, main_ui_obj_name):
         AbstractConnectedDialog.__init__(self, sig_msgbox, main_ui_obj_name, _MsgDialog(parent))
 

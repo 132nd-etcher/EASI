@@ -1,30 +1,28 @@
 # coding=utf-8
 
-from hypothesis import strategies as st, given
+from hypothesis import strategies as st, given, example
 
-# noinspection PyProtectedMember
-from src.ui.dialog_msg.dialog import _MsgDialog
-from tests.utils import QtTestCase
+from src.sig import sig_msgbox
+from src.ui.dialog_msg.dialog import MsgDialog
 
 
-class TestDialogMsg(QtTestCase):
-    @given(text=st.text(), title=st.text())
-    def test_show(self, text, title):
-        dialog = _MsgDialog()
-        dialog.show()
-        dialog.label.setText(text.replace('\n', '<br>'))
-        dialog.setWindowTitle(title)
-        self.assertTrue(dialog.isVisible())
-        self.assertSequenceEqual(dialog.label.text(), text.replace('\n', '<br>'))
-        self.assertSequenceEqual(dialog.windowTitle(), title)
+@given(text=st.text(), title=st.text())
+@example(title='', text='\n')
+def test_show(qtbot, main_ui, title, text):
+    dialog = MsgDialog(None, 'msgbox')
+    qtbot.add_widget(dialog.qobj)
+    sig_msgbox.show(title, text)
+    main_ui.sig_proc.do.assert_called_with('msgbox', 'show', args=(title, text))
+    dialog.show(title, text)
+    assert dialog.qobj.windowTitle() == title
+    assert dialog.qobj.label.text() == text.replace('\n', '<br>')
 
-    def test_adjust_size(self):
-        base_text = 'some text'
-        title = 'Title'
-        for i in range(1, 40):
-            text = '\n'.join([base_text] * i)
-            dialog = _MsgDialog()
-            dialog.label.setText(text)
-            dialog.setWindowTitle(title)
-            dialog.show()
-            self.assertGreaterEqual(dialog.height(), 100 + (13 * max(len(text.split('\n')) - 3, 0)) - (3 * i))
+
+def test_adjust_size(qtbot, main_ui):
+    dialog = MsgDialog(None, 'msgbox')
+    qtbot.add_widget(dialog.qobj)
+    for i in range(1, 40):
+        text = '\n'.join(['some text'] * i)
+        dialog.show('title', text)
+        print(i, dialog.qobj.height())
+        assert dialog.qobj.height() >= (i * 13) + 61

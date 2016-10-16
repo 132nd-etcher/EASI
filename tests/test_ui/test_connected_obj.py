@@ -1,37 +1,44 @@
 # coding=utf-8
 
-from unittest import TestCase, mock
+import pytest
+
+import src.abstract.ui.connected_object
+from src.abstract.ui.connected_object import AbstractConnectedObject
+from src.sig import CustomSignal
+
+sig = CustomSignal()
 
 
-class TestConnectedObject(TestCase):
-    # noinspection PyClassHasNoInit
-    def test_connected_object(self):
-        from src.sig import CustomSignal
-        from src.abstract.ui.connected_object import AbstractConnectedObject
+class C(AbstractConnectedObject):
+    pass
 
-        sig = CustomSignal()
 
-        class C(AbstractConnectedObject):
-            pass
+def test_main_ui_not_initialized():
+    src.abstract.ui.connected_object.main_ui = None
+    with pytest.raises(RuntimeError):
+        C(sig, 'some_obj')
 
-        from src.ui.main_ui.main_ui import MainUi
-        import src.abstract.ui.connected_object
-        src.abstract.ui.connected_object.main_ui = None
-        with self.assertRaises(RuntimeError):
-            C(sig, 'some_obj')
-        with mock.patch('src.abstract.ui.connected_object.main_ui', spec=MainUi) as m:
-            m.some_obj = mock.MagicMock()
-            m.sig_proc = mock.MagicMock()
-            m.sig_proc.do = mock.MagicMock()
-            c = C(sig, 'some_obj')
-            c.some_func = mock.MagicMock()
-            sig.send(op='some_func')
-            m.sig_proc.do.assert_called_with('some_obj', 'some_func')
-            with self.assertRaises(AttributeError):
-                sig.send(op='missing op')
-            with self.assertRaises(AttributeError):
-                C(sig, 'missing_obj')
-                sig.send(op='some_func')
-            with self.assertRaises(TypeError):
-                C('not_a_sig', 'some_obj')
-                sig.send(op='some_func')
+
+def test_connected_object(mocker, main_ui):
+    c = C(sig, 'some_obj')
+    c.some_func = mocker.MagicMock()
+    sig.send(op='some_func')
+    main_ui.sig_proc.do.assert_called_with('some_obj', 'some_func')
+
+
+def test_missing_op(main_ui):
+    with pytest.raises(AttributeError):
+        C(sig, 'some_obj')
+        sig.send(op='missing_op')
+
+
+def test_missing_obj(main_ui):
+    with pytest.raises(AttributeError):
+        C(sig, 'missing_obj')
+        sig.send(op='some_func')
+
+
+def test_not_a_signal(main_ui):
+    with pytest.raises(TypeError):
+        C('not_a_sig', 'some_obj')
+        sig.send(op='some_func')

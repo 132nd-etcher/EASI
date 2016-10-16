@@ -6,7 +6,7 @@ from .sig_rem import RemSig
 from .sig_ui_splash import SplashSig
 from .sig_ui_main import MainUiSig, MainUiStatesSig
 from .sig_ui_long_op import LongOpDialogSig
-from .sig_msgbox import MsgboxSig
+from .sig_ui_msgbox import MsgboxSig
 from .sig_config_value import ConfigValueSig
 
 sig_cfg_active_dcs_install = ConfigValueSig()

@@ -23,6 +23,7 @@ def test_dialog_feedback_field_population(qtbot: QtBot, usr_name, usr_mail):
 
 @given(some_text=st.text(max_size=200))
 @example(some_text='\r\n')
+@settings(max_examples=5)
 def test_feedback(qtbot: QtBot, mocker, some_text):
     msgbox = mocker.patch('src.ui.dialog_feedback.dialog.sig_msgbox.show')
     crash_reporter = mocker.patch('src.ui.dialog_feedback.dialog.crash_reporter', captureMessage=mock.MagicMock())
