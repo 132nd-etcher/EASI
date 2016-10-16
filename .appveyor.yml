@@ -11,7 +11,7 @@ environment:
     GIT_PATH: "%GIT_DAEMON_PATH%"
     EASI_VERSION: 0.0.11-alpha.1+11308
     COMPILEKEY:
-      secure: GWMPMTNpIs/NmumBQYkAMHQiCIPJLLEBw/wWbwHdpqQ=
+      secure: jJAI8pH/A53fLBF5sp3K7pK7q6q3OSzESU5w1VfpTFM=
     VAULT_SECRET:
       secure: PZenz3embI+Bi4Odqt1HoAwDxnx0hVVcApSrjqTtx2U=
     CODACY_PROJECT_TOKEN:
@@ -74,10 +74,10 @@ before_build:
   - "%PYTHON%/Scripts/codecov.exe"
 
 build_script:
-  - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_console --key %COMPILEKEY%"
+  - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_console --key %COMPILEKEY% --log-level=WARN"
   - set PATH="%APPVEYOR_BUILD_FOLDER%\build\dist_console";%PATH%
   - easi.exe test_and_exit
-  - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY%"
+  - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY% --log-level=WARN"
   - iscc inno_setup.iss
 #  - dir
 
