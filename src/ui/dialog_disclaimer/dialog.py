@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from src.cfg import config
+from src.low import constants
 from src.qt import QDialog, QIcon, QDialogButtonBox, Qt, qt_resources
 from src.ui.skeletons.dialog_disclaimer import Ui_Dialog
 from .disclaimer import disclaimers, disclaimers_mod_author
@@ -45,8 +46,12 @@ class DisclaimerDialog(Ui_Dialog, QDialog):
 
     @staticmethod
     def make():
+        if constants.TESTING:
+            return True
         return DisclaimerDialog._make(disclaimers)
 
     @staticmethod
     def make_for_mod_authors():
+        if constants.TESTING:
+            return True
         return DisclaimerDialog._make(disclaimers_mod_author, 'for mod authors only')
