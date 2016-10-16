@@ -19,7 +19,7 @@ class AbstractPathSetting(AbstractConfigSetting):
 
     @property
     def qt_object(self) -> QLineEdit:
-        return super(AbstractPathSetting, self).qt_object()
+        return super(AbstractPathSetting, self).qt_object
 
     def on_path_changed(self, value):
         self.set_dialog_value(value)
