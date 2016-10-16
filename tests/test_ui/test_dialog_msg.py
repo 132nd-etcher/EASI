@@ -23,11 +23,10 @@ def test_show(qtbot, main_ui, title, text):
 def test_adjust_size(qtbot, main_ui):
     dialog = MsgDialog(None, 'msgbox')
     qtbot.add_widget(dialog.qobj)
-    offset = 61
-    if os.environ.get('APPVEYOR'):
-        offset=50
     for i in range(1, 40):
         text = '\n'.join(['some text'] * i)
         dialog.show('title', text)
-        print(i, dialog.qobj.height())
-        assert dialog.qobj.height() >= (i * 13) + offset
+        if os.environ.get('APPVEYOR'):
+            assert dialog.qobj.height() >= min((i * 13) + 61, 512)
+        else:
+            assert dialog.qobj.height() >= (i * 13) + 61, 512
