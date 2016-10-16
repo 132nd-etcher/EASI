@@ -73,16 +73,16 @@ EASI is released under the [GPLv3 License][gpl_link].
 
 ![license]
 
-[waffle]:             https://img.shields.io/waffle/label/132nd-etcher/easi/in%20progress.svg?maxAge=86400
+[waffle]:             https://img.shields.io/waffle/label/132nd-etcher/easi/in%20progress.svg?maxAge=3600
 [waffle_link]:        https://waffle.io/132nd-etcher/EASI
 [throughput]:         https://graphs.waffle.io/132nd-etcher/EASI/throughput.svg
-[appveyor]:           https://img.shields.io/appveyor/ci/132nd-etcher/easi/master.svg?maxAge=86400
-[appveyor_dev]:       https://img.shields.io/appveyor/ci/132nd-etcher/easi/develop.svg?maxAge=86400
+[appveyor]:           https://img.shields.io/appveyor/ci/132nd-etcher/easi/master.svg?maxAge=3600
+[appveyor_dev]:       https://img.shields.io/appveyor/ci/132nd-etcher/easi/develop.svg?maxAge=3600
 [appveyor_link]:      https://ci.appveyor.com/project/132nd-etcher/easi
-[codacy_grade]:       https://img.shields.io/codacy/grade/3a1f938dbe5545ad9cfa29b8df61e6ac/master.svg?maxAge=86400
-[codacy_grade_dev]:   https://img.shields.io/codacy/grade/3a1f938dbe5545ad9cfa29b8df61e6ac/develop.svg?maxAge=86400
-[codacy_cover]:       https://img.shields.io/codacy/coverage/3a1f938dbe5545ad9cfa29b8df61e6ac/master.svg?maxAge=86400
-[codacy_cover_dev]:   https://img.shields.io/codacy/coverage/3a1f938dbe5545ad9cfa29b8df61e6ac/develop.svg?maxAge=86400
+[codacy_grade]:       https://img.shields.io/codacy/grade/3a1f938dbe5545ad9cfa29b8df61e6ac/master.svg?maxAge=3600
+[codacy_grade_dev]:   https://img.shields.io/codacy/grade/3a1f938dbe5545ad9cfa29b8df61e6ac/develop.svg?maxAge=3600
+[codacy_cover]:       https://img.shields.io/codacy/coverage/3a1f938dbe5545ad9cfa29b8df61e6ac/master.svg?maxAge=3600
+[codacy_cover_dev]:   https://img.shields.io/codacy/coverage/3a1f938dbe5545ad9cfa29b8df61e6ac/develop.svg?maxAge=3600
 [codacy_link]:        https://www.codacy.com/app/132nd-etcher/EASI/dashboard
 [scrutquality]:       https://scrutinizer-ci.com/g/132nd-etcher/EASI/badges/quality-score.png?b=master
 [scrutqualitydev]:    https://scrutinizer-ci.com/g/132nd-etcher/EASI/badges/quality-score.png?b=develop
@@ -111,16 +111,16 @@ EASI is released under the [GPLv3 License][gpl_link].
 [versioneye_link]:    https://www.versioneye.com/user/projects/57ff67d90676c900486e4f8d
 [gitter]:             https://badges.gitter.im/easi_/Lobby.svg
 [gitter_link]:        https://gitter.im/easi_/Lobby
-[license]:            https://img.shields.io/github/license/132nd-etcher/easi.svg?maxAge=86400
+[license]:            https://img.shields.io/github/license/132nd-etcher/easi.svg?maxAge=3600
 [gpl_link]:           https://www.gnu.org/licenses/quick-guide-gplv3.en.html
 [easi]:               https://i.imgsafe.org/00192c67ea.png
 [project_status]:     http://www.repostatus.org/badges/latest/wip.svg
 [pun]:                https://img.shields.io/badge/Author%20skill-Script%20kiddie-red.svg?style=flat
 [semver]:             https://img.shields.io/badge/semver-2.0.0-blue.svg
 
-[gh_download]:        https://img.shields.io/github/downloads/132nd-etcher/easi/total.svg?maxAge=86400
-[gh_issues]:          https://img.shields.io/github/issues/132nd-etcher/easi.svg?maxAge=86400
-[gh_issues_closed]:   https://img.shields.io/github/issues-closed/132nd-etcher/easi.svg?maxAge=86400
-[gh_pr]:              https://img.shields.io/github/issues-pr/132nd-etcher/easi.svg?maxAge=86400
-[gh_pr_closed]:       https://img.shields.io/github/issues-pr-closed/132nd-etcher/easi.svg?maxAge=86400
-[gh_release]:         https://img.shields.io/github/release/132nd-etcher/easi.svg?maxAge=86400
+[gh_download]:        https://img.shields.io/github/downloads/132nd-etcher/easi/total.svg?maxAge=3600
+[gh_issues]:          https://img.shields.io/github/issues/132nd-etcher/easi.svg?maxAge=3600
+[gh_issues_closed]:   https://img.shields.io/github/issues-closed/132nd-etcher/easi.svg?maxAge=3600
+[gh_pr]:              https://img.shields.io/github/issues-pr/132nd-etcher/easi.svg?maxAge=3600
+[gh_pr_closed]:       https://img.shields.io/github/issues-pr-closed/132nd-etcher/easi.svg?maxAge=3600
+[gh_release]:         https://img.shields.io/github/release/132nd-etcher/easi.svg?maxAge=3600
