@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from pytestqt.qtbot import QtBot
+from PyQt5.Qt import QTest
 
 from src.qt import Qt
 from src.ui import ConfirmDialog
@@ -19,6 +20,7 @@ def test_init(qtbot: QtBot):
 
 
 def test_confirm_dialog_ok(qtbot: QtBot):
+    assert isinstance(qtbot, (QtBot, QTest))
     dialog = ConfirmDialog(question, title)
     qtbot.add_widget(dialog)
     dialog.show()
@@ -28,6 +30,7 @@ def test_confirm_dialog_ok(qtbot: QtBot):
 
 
 def test_confirm_dialog_cancel(qtbot: QtBot):
+    assert isinstance(qtbot, (QtBot, QTest))
     dialog = ConfirmDialog(question, title)
     qtbot.add_widget(dialog)
     dialog.show()

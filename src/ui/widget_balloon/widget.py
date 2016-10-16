@@ -49,6 +49,6 @@ class WidgetBalloon(QLabel):
     def info(widget, text):
         return WidgetBalloon(widget, text, PaletteBalloon.info)
 
-    def mouseReleaseEvent(self, QMouseEvent):
+    def mouseReleaseEvent(self, event):
         self.hide()
-        super(WidgetBalloon, self).mouseReleaseEvent(QMouseEvent)
+        super(WidgetBalloon, self).mouseReleaseEvent(event)

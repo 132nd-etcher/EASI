@@ -20,6 +20,7 @@ def test_show(qtbot, main_ui, title, text):
     assert dialog.qobj.label.text() == text.replace('\n', '<br>')
 
 
+# noinspection PyUnusedLocal
 def test_adjust_size(qtbot, main_ui):
     dialog = MsgDialog(None, 'msgbox')
     qtbot.add_widget(dialog.qobj)

@@ -64,7 +64,6 @@ def test_sg_path(qtbot: QtBot, tmpdir, mocker):
     test_dir = str(tmpdir.mkdir('t'))
     test_file = tmpdir.join('file')
     test_file.write('')
-    test_file = str(test_file)
     dialog, sg, cache, kdiff = setup_valid_dialog(tmpdir)
 
     assert config.saved_games_path == dialog.sg_line_edit.text()
@@ -241,7 +240,6 @@ def test_directory_does_not_exist(qtbot, tmpdir, mocker):
         (dialog.sg_line_edit, sg, 'sg_path'),
         (dialog.cache_line_edit, cache, 'cache_path'),
     }:
-
         dialog.setup()
 
         show_error_balloon = mocker.spy(dialog.config_settings[obj_name], 'show_error_balloon')
@@ -259,6 +257,7 @@ def test_directory_does_not_exist(qtbot, tmpdir, mocker):
 
         show_error_balloon.assert_called_with('Directory does not exist')
 
+
 def test_not_a_directory(qtbot, tmpdir, mocker):
     dialog, sg, cache, _ = setup_valid_dialog(tmpdir)
 
@@ -275,7 +274,6 @@ def test_not_a_directory(qtbot, tmpdir, mocker):
         (dialog.sg_line_edit, sg, 'sg_path'),
         (dialog.cache_line_edit, cache, 'cache_path'),
     }:
-
         dialog.setup()
 
         show_error_balloon = mocker.spy(dialog.config_settings[obj_name], 'show_error_balloon')
@@ -295,5 +293,3 @@ def test_not_a_directory(qtbot, tmpdir, mocker):
             show_error_balloon.assert_called_with('Not a directory')
 
         qtbot.wait_until(show_error_called)
-
-

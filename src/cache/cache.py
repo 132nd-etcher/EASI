@@ -6,7 +6,6 @@ import stat
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
-from src.cfg import config
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton

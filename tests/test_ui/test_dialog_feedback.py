@@ -3,11 +3,12 @@
 import random
 from unittest import mock
 
-from src.qt import Qt
+from PyQt5.Qt import QTest
 from hypothesis import strategies as st, given, example, settings
 from pytestqt.qtbot import QtBot
 
 from src.cfg import config
+from src.qt import Qt
 from src.ui.dialog_feedback.dialog import FeedbackDialog
 
 
@@ -25,6 +26,7 @@ def test_dialog_feedback_field_population(qtbot: QtBot, usr_name, usr_mail):
 @example(some_text='\r\n')
 @settings(max_examples=5)
 def test_feedback(qtbot: QtBot, mocker, some_text):
+    assert isinstance(qtbot, (QtBot, QTest))
     msgbox = mocker.patch('src.ui.dialog_feedback.dialog.sig_msgbox.show')
     crash_reporter = mocker.patch('src.ui.dialog_feedback.dialog.crash_reporter', captureMessage=mock.MagicMock())
     dialog = FeedbackDialog()
