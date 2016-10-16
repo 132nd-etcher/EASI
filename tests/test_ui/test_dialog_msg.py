@@ -10,18 +10,18 @@ from src.ui.dialog_msg.dialog import MsgDialog
 
 @given(text=st.text(), title=st.text())
 @example(title='', text='\n')
-def test_show(qtbot, main_ui, title, text):
+def test_show(qtbot, mock_main_ui, title, text):
     dialog = MsgDialog(None, 'msgbox')
     qtbot.add_widget(dialog.qobj)
     sig_msgbox.show(title, text)
-    main_ui.sig_proc.do.assert_called_with('msgbox', 'show', args=(title, text))
+    mock_main_ui.sig_proc.do.assert_called_with('msgbox', 'show', args=(title, text))
     dialog.show(title, text)
     assert dialog.qobj.windowTitle() == title
     assert dialog.qobj.label.text() == text.replace('\n', '<br>')
 
 
 # noinspection PyUnusedLocal
-def test_adjust_size(qtbot, main_ui):
+def test_adjust_size(qtbot, mock_main_ui):
     dialog = MsgDialog(None, 'msgbox')
     qtbot.add_widget(dialog.qobj)
     for i in range(1, 40):

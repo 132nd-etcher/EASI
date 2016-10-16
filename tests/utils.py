@@ -6,9 +6,6 @@ import stat
 from unittest import TestCase
 
 from src.low.custom_path import create_temp_dir, create_temp_file
-from src.qt import QApplication
-from src.low.singleton import Singleton
-from src.main import main
 
 
 class TempDir(object):
@@ -60,19 +57,3 @@ class ContainedTestCase(TestCase):
         if create_in_dir is None:
             create_in_dir = self.temp_dir.abspath()
         return create_temp_file(suffix=suffix, prefix=prefix, create_in_dir=create_in_dir)
-
-
-class SingletonQtApp(metaclass=Singleton):
-    def __init__(self):
-        qt_app, main_ui = main(init_only=True, test_run=True)
-        self.qt_app = qt_app
-        self.main_ui = main_ui
-
-
-class QtTestCase(ContainedTestCase):
-    def __init__(self, *args, **kwargs):
-        TestCase.__init__(self, *args, **kwargs)
-        singleton_qt_app = SingletonQtApp()
-        assert isinstance(singleton_qt_app.qt_app, QApplication)
-        self.qt_app = singleton_qt_app.qt_app
-        self.main_ui = singleton_qt_app.main_ui
