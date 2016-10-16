@@ -14,7 +14,7 @@ class C(AbstractConnectedObject):
 
 
 def test_mock_main_ui_not_initialized():
-    src.abstract.ui.connected_object.mock_main_ui = None
+    src.abstract.ui.connected_object.main_ui = None
     with pytest.raises(RuntimeError):
         C(sig, 'some_obj')
 
