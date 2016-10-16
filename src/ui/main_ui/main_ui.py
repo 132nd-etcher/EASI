@@ -22,7 +22,7 @@ from ..skeletons.main import Ui_MainWindow
 class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
     threading_queue = Queue()
 
-    def __init__(self, qt_app: QApplication):
+    def __init__(self, qt_app: QApplication or None):
         # Fucking QMainWindow calls a general super().__init__ on every parent class, don't call them here !
         flags = Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowCloseButtonHint
         QMainWindow.__init__(
@@ -73,4 +73,5 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
 
     def exit(self, code=0):
         self.close()
-        self.qt_app.exit(code)
+        if self.qt_app:
+            self.qt_app.exit(code)
