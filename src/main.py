@@ -120,7 +120,10 @@ def main(init_only=False, test_run=False):
         pool.queue_task(init_dcs_installs)
         pool.queue_task(init_keyring)
         pool.queue_task(init_remotes)
-        pool.queue_task(init_helpers)
+        if constants.TESTING:
+            logger.debug('testing mode, skipping helpers download')
+        else:
+            pool.queue_task(init_helpers)
         pool.queue_task(sig_splash.kill)
         pool.queue_task(sig_main_ui.show)
         pool.queue_task(sig_main_ui_states.set_current_state, ['running'])
