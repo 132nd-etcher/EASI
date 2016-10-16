@@ -9,7 +9,7 @@ from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 
 
-def main(init_only=False, test_run=False):
+def main():
     # FIXME: check all NotImplementedError
     # noinspection PyBroadException
     try:
@@ -20,10 +20,6 @@ def main(init_only=False, test_run=False):
             print('sys.argv: ', str(sys.argv))
             if 'test_and_exit' in sys.argv:
                 constants.TESTING = True
-
-        if test_run:
-            init_only = True
-            constants.TESTING = True
 
         if constants.TESTING:
             # Bypass creation of main logger for tests
@@ -63,25 +59,24 @@ def main(init_only=False, test_run=False):
 
         crash_reporter.register_context('config', config)
 
-        from PyQt5.QtGui import QFontDatabase
-        from PyQt5.QtWidgets import QApplication
-        from src.qt import qt_resources
-        from src.ui import MainUi, DisclaimerDialog
-
-        logger.info('QApplication: starting')
-        qt_app = QApplication([])
-        logger.info('QApplication: started')
-        logger.info('QFontDatabase: starting')
-        # font_db = QFontDatabase()
-        logger.debug('QFontDatabase: adding font to database')
-        # font_db.addApplicationFont(qt_resources.app_font)
-        logger.debug('QFontDatabase: registering app-wide font')
-        # qt_app.setFont(font_db.font('Anonymous Pro', 'normal', 9))
-        logger.info('QFontDatabase: started')
-
         if constants.TESTING:
             logger.info('disclaimer: skipping (testing mode)')
         else:
+            from PyQt5.QtGui import QFontDatabase
+            from PyQt5.QtWidgets import QApplication
+            from src.qt import qt_resources
+            from src.ui import MainUi, DisclaimerDialog
+
+            logger.info('QApplication: starting')
+            qt_app = QApplication([])
+            logger.info('QApplication: started')
+            logger.info('QFontDatabase: starting')
+            # font_db = QFontDatabase()
+            logger.debug('QFontDatabase: adding font to database')
+            # font_db.addApplicationFont(qt_resources.app_font)
+            logger.debug('QFontDatabase: registering app-wide font')
+            # qt_app.setFont(font_db.font('Anonymous Pro', 'normal', 9))
+            logger.info('QFontDatabase: started')
             logger.info('disclaimer: showing')
             if not DisclaimerDialog.make():
                 logger.warning('disclaimer: user declined')
@@ -89,12 +84,8 @@ def main(init_only=False, test_run=False):
             if config.author_mode and not DisclaimerDialog.make_for_mod_authors():
                 config.author_mode = False
             logger.info('disclaimer: done')
-
-        # noinspection PyUnusedLocal
-        main_gui = MainUi(qt_app)
-
-        if init_only:
-            return qt_app, main_gui
+            # noinspection PyUnusedLocal
+            main_gui = MainUi(qt_app)
 
         from src.upd import check_for_update
         from src.keyring import init_keyring
@@ -135,9 +126,10 @@ def main(init_only=False, test_run=False):
             pool.join_all()
             sig_main_ui.exit()
             sys.exit(0)
-
-        logger.info('transferring control to QtApp')
-        sys.exit(qt_app.exec())
+        else:
+            logger.info('transferring control to QtApp')
+            # noinspection PyUnboundLocalVariable
+            sys.exit(qt_app.exec())
 
     except SystemExit:
         print('catched SystemExit')
