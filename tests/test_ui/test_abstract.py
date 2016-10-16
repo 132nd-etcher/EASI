@@ -11,5 +11,5 @@ def test_wrong_init():
     for x in [QObject, QLabel, QIcon, 'test', True, None, 32]:
         with pytest.raises(TypeError):
             AbstractBaseDialog(x)
-            with pytest.raises(TypeError):
-                AbstractBaseQWidget(x)
+        with pytest.raises(TypeError):
+            AbstractBaseQWidget(x)
