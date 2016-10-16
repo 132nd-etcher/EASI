@@ -4,12 +4,14 @@
 
 **Merged pull requests:**
 
+- semver 2.0.0 compliance [\#10](https://github.com/132nd-etcher/EASI/pull/10) ([132nd-etcher](https://github.com/132nd-etcher))
+- added Github username to Sentry contect [\#9](https://github.com/132nd-etcher/EASI/pull/9) ([132nd-etcher](https://github.com/132nd-etcher))
 - Added waffle.io badge [\#6](https://github.com/132nd-etcher/EASI/pull/6) ([132nd-etcher](https://github.com/132nd-etcher))
 - Add a Gitter chat badge to README.rst [\#5](https://github.com/132nd-etcher/EASI/pull/5) ([gitter-badger](https://github.com/gitter-badger))
-- Feature/test refac [\#4](https://github.com/132nd-etcher/EASI/pull/4) ([132nd-etcher](https://github.com/132nd-etcher))
-- Feature/encrypt cred [\#3](https://github.com/132nd-etcher/EASI/pull/3) ([132nd-etcher](https://github.com/132nd-etcher))
-- Feature/cache obj [\#2](https://github.com/132nd-etcher/EASI/pull/2) ([132nd-etcher](https://github.com/132nd-etcher))
-- testing\_pr [\#1](https://github.com/132nd-etcher/EASI/pull/1) ([132nd-etcher](https://github.com/132nd-etcher))
+- Refactor tests [\#4](https://github.com/132nd-etcher/EASI/pull/4) ([132nd-etcher](https://github.com/132nd-etcher))
+- Offer credentials file encryption [\#3](https://github.com/132nd-etcher/EASI/pull/3) ([132nd-etcher](https://github.com/132nd-etcher))
+- Create a cache object to manage cache folder [\#2](https://github.com/132nd-etcher/EASI/pull/2) ([132nd-etcher](https://github.com/132nd-etcher))
+- Testing pull request flow [\#1](https://github.com/132nd-etcher/EASI/pull/1) ([132nd-etcher](https://github.com/132nd-etcher))
 
 
 
