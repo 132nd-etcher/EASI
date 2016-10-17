@@ -133,20 +133,20 @@ deploy:
       branch: /feature/.*/
       appveyor_repo_tag: false
 
-  - provider: BinTray
-    username: 132nd-etcher
-    api_key:
-      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
-    subject: 132nd-etcher
-    repo: EASI
-    package: alpha
-    version: "%APPVEYOR_BUILD_VERSION%"
-    publish: true
-    override: false
-    explode: false
-    on:
-      branch: develop
-      appveyor_repo_tag: false
+#  - provider: BinTray
+#    username: 132nd-etcher
+#    api_key:
+#      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
+#    subject: 132nd-etcher
+#    repo: EASI
+#    package: alpha
+#    version: "%APPVEYOR_BUILD_VERSION%"
+#    publish: true
+#    override: false
+#    explode: false
+#    on:
+#      branch: develop
+#      appveyor_repo_tag: false
 
   - provider: BinTray
     username: 132nd-etcher
