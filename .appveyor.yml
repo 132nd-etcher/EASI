@@ -1,6 +1,6 @@
 # CI on Windows via appveyor
 
-version: 0.0.11-alpha.1+11308-AV_{branch}_{build}
+#version: 0.0.11-alpha.1+11312-AV_{branch}_{build}
 
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
@@ -9,7 +9,6 @@ environment:
     PYTHON: "C:\\Python35"
     PYTHON_VERSION: "3.5.2"
     GIT_PATH: "%GIT_DAEMON_PATH%"
-    EASI_VERSION: 0.0.11-alpha.1+11308
     COMPILEKEY:
       secure: jJAI8pH/A53fLBF5sp3K7pK7q6q3OSzESU5w1VfpTFM=
     VAULT_SECRET:
@@ -27,6 +26,7 @@ environment:
     GH_MAIL:
       secure: 9bVWUcCZXTNmCwwwQ9c/LY+ZxQWBTzzEJoojPZbp4Qk=
 
+
 matrix:
     fast_finish: true
 
@@ -34,6 +34,7 @@ init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
 
 install:
+  - choco install gitversion.portable -pre -y
   - nuget install secure-file -ExcludeVersion
   - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
   - "%PYTHON%/Scripts/pip.exe install --disable-pip-version-check --user --upgrade pip"
@@ -58,13 +59,9 @@ cache:
   - C:\ProgramData\chocolatey
 
 before_build:
-#  - "%PYTHON%/Scripts/coverage.exe run --source ./src -m nose ./tests"
-#  - "%PYTHON%/Scripts/coverage.exe xml"
+  - ps: gitversion /l console /output buildserver /b (get-item env:APPVEYOR_REPO_BRANCH).Value
   - "%PYTHON%/Scripts/pytest.exe --cov=src --cov-config .coveragerc --cov-report xml -c .pytest"
-#  - "%PYTHON%/Scripts/pip.exe install codeclimate-test-reporter codecov"
-#  - "%PYTHON%/Scripts/codeclimate-test-reporter.exe"
   - "%PYTHON%/Scripts/pip.exe install git+https://github.com/132nd-etcher/ocular.py.git"
-#  - "%PYTHON%/Scripts/ocular.exe --data-file .coverage --config-file .coveragerc"
   - "%PYTHON%/Scripts/ocular.exe --access-token %SCRUTINIZER%"
   - "%PYTHON%/Scripts/pip.exe install codacy-coverage"
   - "%PYTHON%/Scripts/python-codacy-coverage.exe -r coverage.xml"
@@ -79,63 +76,128 @@ build_script:
   - easi.exe test_and_exit
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY% --log-level=WARN"
   - iscc inno_setup.iss
-#  - dir
-
-#on_success:
-#  - git config --global user.email "%GH_MAIL%"
-#  - git config --global user.name "etcher"
-#  - cd ..
-#  - git clone https://github.com/132nd-etcher/EASI.git gh-pages
-#  - cd gh-pages
-#  - git checkout gh-pages
-#  - git rm -rf .
-#  - cd ..
-#  - cd easi
-#  - cd docs
-#  - make html SPHINXBUILD="%PYTHON%/Scripts/sphinx-build.exe" HTML_OUTPUT_DIR=..\gh-pages
-#  - cd ..
-#  - cd ..
-#  - cd gh-pages
-#  - git remote set-url origin https://github.com/132nd-etcher/EASI.git
-#  - git add -A
-#  - git commit -a -m "auto gh-pages build"
-#  - git push
-#  - cd ..\easi
 
 artifacts:
   - path: ./build/release/*.exe
     name: setup
 
-# branches to build
 branches:
-  # whitelist
   only:
     - master
-    - prerelease
-    - develop  # FIXME this needs to go
+    - develop
+    - /release/.*/
 
-  # blacklist
   except:
     - gh-pages
 
+max_jobs: 1
+
 deploy:
-  - provider: GitHub
-    artifact: setup
-    draft: false
-    prerelease: false
-    auth_token:
-      secure: T9LMiMzikVwlfnYhxlIpzhmfotDN75SUmEv1FSGLHZ/vMHMCMT3SEapSOH1iPdaD
+#  - provider: GitHub
+#    artifact: setup
+#    draft: false
+#    prerelease: false
+#    auth_token:
+#      secure: T9LMiMzikVwlfnYhxlIpzhmfotDN75SUmEv1FSGLHZ/vMHMCMT3SEapSOH1iPdaD
+#    on:
+#      branch: master
+#      appveyor_repo_tag: false
+
+  - provider: BinTray
+    username: 132nd-etcher
+    api_key:
+      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
+    subject: 132nd-etcher
+    repo: EASI
+    package: nightly
+    version: %APPVEYOR_BUILD_VERSION%
+    publish: true
+    override: false
+    explode: false
+    on:
+      branch: /pull/.*/
+      appveyor_repo_tag: false
+
+  - provider: BinTray
+    username: 132nd-etcher
+    api_key:
+      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
+    subject: 132nd-etcher
+    repo: EASI
+    package: nightly
+    version: %APPVEYOR_BUILD_VERSION%
+    publish: true
+    override: false
+    explode: false
+    on:
+      branch: /feature/.*/
+      appveyor_repo_tag: false
+
+  - provider: BinTray
+    username: 132nd-etcher
+    api_key:
+      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
+    subject: 132nd-etcher
+    repo: EASI
+    package: alpha
+    version: %APPVEYOR_BUILD_VERSION%
+    publish: true
+    override: false
+    explode: false
+    on:
+      branch: develop
+      appveyor_repo_tag: false
+
+  - provider: BinTray
+    username: 132nd-etcher
+    api_key:
+      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
+    subject: 132nd-etcher
+    repo: EASI
+    package: beta
+    version: %APPVEYOR_BUILD_VERSION%
+    publish: true
+    override: false
+    explode: false
+    on:
+      branch: /hotfix/.*/
+      appveyor_repo_tag: false
+
+  - provider: BinTray
+    username: 132nd-etcher
+    api_key:
+      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
+    subject: 132nd-etcher
+    repo: EASI
+    package: beta
+    version: %APPVEYOR_BUILD_VERSION%
+    publish: true
+    override: false
+    explode: false
+    on:
+      branch: /release/.*/
+      appveyor_repo_tag: false
+
+  - provider: BinTray
+    username: 132nd-etcher
+    api_key:
+      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
+    subject: 132nd-etcher
+    repo: EASI
+    package: stable
+    version: %APPVEYOR_BUILD_VERSION%
+    publish: true
+    override: false
+    explode: false
     on:
       branch: master
       appveyor_repo_tag: false
-  - provider: GitHub
-    artifact: setup
-    draft: false
-    prerelease: true
-    auth_token:
-      secure: T9LMiMzikVwlfnYhxlIpzhmfotDN75SUmEv1FSGLHZ/vMHMCMT3SEapSOH1iPdaD
-    on:
-      branch: prerelease
-      appveyor_repo_tag: false
 
 skip_tags: true
+
+skip_commits:
+  files:
+    - docs/*
+    - '**/*.html'
+  message:
+    - /.*(t|T)rivia.*/

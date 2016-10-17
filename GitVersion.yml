@@ -1,0 +1,8 @@
+mode: ContinuousDelivery
+branches:
+  (pull|pull\-requests|pr)[/-]: {}
+  dev(elop)?(ment)?$:
+    mode: ContinuousDelivery
+    tag: alpha
+ignore:
+  sha: []
