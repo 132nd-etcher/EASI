@@ -110,7 +110,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: nightly
-    version: %APPVEYOR_BUILD_VERSION%
+    version: "%APPVEYOR_BUILD_VERSION%"
     publish: true
     override: false
     explode: false
@@ -125,7 +125,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: nightly
-    version: %APPVEYOR_BUILD_VERSION%
+    version: "%APPVEYOR_BUILD_VERSION%"
     publish: true
     override: false
     explode: false
@@ -140,7 +140,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: alpha
-    version: %APPVEYOR_BUILD_VERSION%
+    version: "%APPVEYOR_BUILD_VERSION%"
     publish: true
     override: false
     explode: false
@@ -155,7 +155,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: beta
-    version: %APPVEYOR_BUILD_VERSION%
+    version: "%APPVEYOR_BUILD_VERSION%"
     publish: true
     override: false
     explode: false
@@ -170,7 +170,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: beta
-    version: %APPVEYOR_BUILD_VERSION%
+    version: "%APPVEYOR_BUILD_VERSION%"
     publish: true
     override: false
     explode: false
@@ -185,7 +185,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: stable
-    version: %APPVEYOR_BUILD_VERSION%
+    version: "%APPVEYOR_BUILD_VERSION%"
     publish: true
     override: false
     explode: false
@@ -199,5 +199,4 @@ skip_commits:
   files:
     - docs/*
     - '**/*.html'
-  message:
-    - /.*(t|T)rivia.*/
+  message: /.*(t|T)rivia.*/
