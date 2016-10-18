@@ -78,7 +78,7 @@ build_script:
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY% --log-level=WARN"
   - cmd: verpatch.exe %APPVEYOR_BUILD_FOLDER%\build\dist_windowed\easi.exe /high %GitVersion_FullSemVer% /va /pv %GitVersion_FullSemVer% /s product EASI /s copyright "2015 etcher" /s build %GitVersion_Sha% /langid 1033 /s PrivateBuild %APPVEYOR_BUILD_NUMBER%
   - cmd: iscc inno_setup.iss /DAppName=EASI /DAssemblySemVer=%GitVersion_AssemblySemVer% /DSemVer=%GitVersion_SemVer% /DFullSemVer=%GitVersion_FullSemVer% /DInformationalVersion=%GitVersion_InformationalVersion% /DSha=%GitVersion_Sha% /DAppIco=src\ui\resources\app.ico /DOutputDir=build\release
-  - cmd: mkdocs gh-deploy --clean
+  - "%PYTHON%/Scripts/mkdocs.exe gh-deploy --clean"
 
 artifacts:
   - path: ./build/release/*.exe
