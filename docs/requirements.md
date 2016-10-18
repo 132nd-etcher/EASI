@@ -56,7 +56,6 @@ For an up-to-date list of the packages actually used, see the different "require
 | livereload | [![PyPI version](https://badge.fury.io/py/livereload.svg)](https://badge.fury.io/py/livereload) |
 | Markdown | [![PyPI version](https://badge.fury.io/py/Markdown.svg)](https://badge.fury.io/py/Markdown) |
 | MarkupSafe | [![PyPI version](https://badge.fury.io/py/MarkupSafe.svg)](https://badge.fury.io/py/MarkupSafe) |
-| mkdocs | [![PyPI version](https://badge.fury.io/py/mkdocs.svg)](https://badge.fury.io/py/mkdocs) |
 | mkdocs-bootstrap | [![PyPI version](https://badge.fury.io/py/mkdocs-bootstrap.svg)](https://badge.fury.io/py/mkdocs-bootstrap) |
 | mkdocs-bootstrap | [![PyPI version](https://badge.fury.io/py/mkdocs-bootstrap.svg)](https://badge.fury.io/py/mkdocs-bootstrap) |
 | mkdocs-bootswatch | [![PyPI version](https://badge.fury.io/py/mkdocs-bootswatch.svg)](https://badge.fury.io/py/mkdocs-bootswatch) |
@@ -88,4 +87,5 @@ For an up-to-date list of the packages actually used, see the different "require
 | ---------------------: | --------------------- | --- |
 | pyinstaller | [![PyPI version](https://badge.fury.io/py/pyinstaller.svg)](https://github.com/132nd-etcher/pyinstaller) | build |
 | pygit2 | [![PyPI version](https://badge.fury.io/py/pygit2.svg)](https://github.com/132nd-etcher/pygit2_wheel) | project |
+| mkdocs | [![PyPI version](https://badge.fury.io/py/mkdocs.svg)](git+https://github.com/mkdocs/mkdocs.git) | docs |
 [version_eye_project_page]: https://www.versioneye.com/user/projects/57ff67d90676c900486e4f8d?child=summary
