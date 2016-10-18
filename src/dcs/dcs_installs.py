@@ -81,9 +81,9 @@ class DCSInstalls(metaclass=Singleton):
                 with winreg.OpenKey(a_reg, r'Software\Eagle Dynamics\{}'.format(self.installs[k]['reg_key'])) as aKey:
                     install_path = Path(winreg.QueryValueEx(aKey, "Path")[0])
                     self.installs[k]['install'] = install_path.abspath()
-                    exe = install_path.joinpath('run.exe')
+                    exe = Path(install_path.joinpath('run.exe'))
                     if exe.exists():
-                        self.installs[k]['version'] = exe.get_version_info()
+                        self.installs[k]['version'] = exe.get_win32_file_info().file_version
                     logger.debug('{}: install found: {}'.format(k, install_path.abspath()))
                 logger.debug('{}: looking for "Saved Games" path'.format(k))
                 variant_path = Path(install_path.joinpath('dcs_variant.txt'))
