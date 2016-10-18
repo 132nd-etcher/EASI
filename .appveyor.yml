@@ -201,7 +201,7 @@ deploy:
       branch: master
       appveyor_repo_tag: false
 
-skip_tags: true
+skip_tags: false
 
 skip_commits:
   files:
