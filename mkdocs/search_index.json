@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/",
-            "text": "Welcome to MkDocs\n\n\nFor full documentation visit \nmkdocs.org\n.\n\n\nCommands\n\n\n\n\nmkdocs new [dir-name]\n - Create a new project.\n\n\nmkdocs serve\n - Start the live-reloading docs server.\n\n\nmkdocs build\n - Build the documentation site.\n\n\nmkdocs help\n - Print this help message.\n\n\n\n\nProject layout\n\n\nmkdocs.yml    # The configuration file.\ndocs/\n    index.md  # The documentation homepage.\n    requirements.md\n    ...       # Other markdown pages, images and other files.",
+            "text": "Welcome to MkDocs\n\u00b6\n\n\nFor full documentation visit \nmkdocs.org\n.\n\n\nCommands\n\u00b6\n\n\n\n\nmkdocs new [dir-name]\n - Create a new project.\n\n\nmkdocs serve\n - Start the live-reloading docs server.\n\n\nmkdocs build\n - Build the documentation site.\n\n\nmkdocs help\n - Print this help message.\n\n\n\n\nProject layout\n\u00b6\n\n\nmkdocs.yml    # The configuration file.\ndocs/\n    index.md  # The documentation homepage.\n    requirements.md\n    tests.md\n    ...       # Other markdown pages, images and other files.",
             "title": "Home"
         },
         {
@@ -17,43 +17,73 @@
         },
         {
             "location": "/#project-layout",
-            "text": "mkdocs.yml    # The configuration file.\ndocs/\n    index.md  # The documentation homepage.\n    requirements.md\n    ...       # Other markdown pages, images and other files.",
+            "text": "mkdocs.yml    # The configuration file.\ndocs/\n    index.md  # The documentation homepage.\n    requirements.md\n    tests.md\n    ...       # Other markdown pages, images and other files.",
             "title": "Project layout"
         },
         {
             "location": "/requirements/",
-            "text": "Packages used\n\n\nNote: the version shown on the packages badges may not be the one used in this project; this list is only intended as an index linking to everyone else's hard work.\n\n\nFor an up-to-date list of the packages actually used, see the different \"requirement*.txt files at the root fo the project. Alternatively, you may refer to the \nVersion Eye page of this project\n.\n\n\nDependencies:\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nargh\n\n\n\n\n\n\n\n\nblinker\n\n\n\n\n\n\n\n\ncertifi\n\n\n\n\n\n\n\n\ncffi\n\n\n\n\n\n\n\n\ncontextlib2\n\n\n\n\n\n\n\n\ncoverage\n\n\n\n\n\n\n\n\ndropbox\n\n\n\n\n\n\n\n\nfuture\n\n\n\n\n\n\n\n\ngitdb\n\n\n\n\n\n\n\n\ngithub3.py\n\n\n\n\n\n\n\n\nhumanize\n\n\n\n\n\n\n\n\nhypothesis\n\n\n\n\n\n\n\n\nntplib\n\n\n\n\n\n\n\n\npasslib\n\n\n\n\n\n\n\n\npath.py\n\n\n\n\n\n\n\n\npathtools\n\n\n\n\n\n\n\n\npendulum\n\n\n\n\n\n\n\n\npycparser\n\n\n\n\n\n\n\n\npycrypto\n\n\n\n\n\n\n\n\nPyQt5\n\n\n\n\n\n\n\n\npython-dateutil\n\n\n\n\n\n\n\n\npytz\n\n\n\n\n\n\n\n\nPyYAML\n\n\n\n\n\n\n\n\nraven\n\n\n\n\n\n\n\n\nrequests\n\n\n\n\n\n\n\n\nruamel.yaml\n\n\n\n\n\n\n\n\nsemver\n\n\n\n\n\n\n\n\nshortuuid\n\n\n\n\n\n\n\n\nsip\n\n\n\n\n\n\n\n\nsmmap\n\n\n\n\n\n\n\n\nspark-parser\n\n\n\n\n\n\n\n\ntyping\n\n\n\n\n\n\n\n\ntzlocal\n\n\n\n\n\n\n\n\nuncompyle6\n\n\n\n\n\n\n\n\nuritemplate\n\n\n\n\n\n\n\n\nuritemplate.py\n\n\n\n\n\n\n\n\nurllib3\n\n\n\n\n\n\n\n\nwatchdog\n\n\n\n\n\n\n\n\nWMI\n\n\n\n\n\n\n\n\nxdis\n\n\n\n\n\n\n\n\n\n\nDocumented thanks to:\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nclick\n\n\n\n\n\n\n\n\nJinja2\n\n\n\n\n\n\n\n\nlivereload\n\n\n\n\n\n\n\n\nMarkdown\n\n\n\n\n\n\n\n\nMarkupSafe\n\n\n\n\n\n\n\n\nmkdocs-bootstrap\n\n\n\n\n\n\n\n\nmkdocs-bootstrap\n\n\n\n\n\n\n\n\nmkdocs-bootswatch\n\n\n\n\n\n\n\n\nsix\n\n\n\n\n\n\n\n\ntornado\n\n\n\n\n\n\n\n\n\n\nTested with:\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\ncolorama\n\n\n\n\n\n\n\n\nhttmock\n\n\n\n\n\n\n\n\npy\n\n\n\n\n\n\n\n\npytest\n\n\n\n\n\n\n\n\npytest-cov\n\n\n\n\n\n\n\n\npytest-mock\n\n\n\n\n\n\n\n\npytest-qt\n\n\n\n\n\n\n\n\n\n\nBuilt with:\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nCython\n\n\n\n\n\n\n\n\npypiwin32\n\n\n\n\n\n\n\n\n\n\nWheels and custom packages:\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\nUsed for\n\n\n\n\n\n\n\n\n\n\npyinstaller\n\n\n\n\nbuild\n\n\n\n\n\n\npygit2\n\n\n\n\nproject\n\n\n\n\n\n\nmkdocs\n\n\n\n\ndocs",
+            "text": "Packages used\n\u00b6\n\n\nNote: the version shown on the packages badges may not be the one used in this project; this list is only intended as an index linking to everyone else\u2019s hard work.\n\n\nFor an up-to-date list of the packages actually used, see the different \u201crequirement*.txt files at the root fo the project. Alternatively, you may refer to the \nVersion Eye page of this project\n.\n\n\nDependencies\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nargh\n\n\n\n\n\n\n\n\nblinker\n\n\n\n\n\n\n\n\ncertifi\n\n\n\n\n\n\n\n\ncffi\n\n\n\n\n\n\n\n\ncontextlib2\n\n\n\n\n\n\n\n\ncoverage\n\n\n\n\n\n\n\n\ndropbox\n\n\n\n\n\n\n\n\nfuture\n\n\n\n\n\n\n\n\ngitdb\n\n\n\n\n\n\n\n\ngithub3.py\n\n\n\n\n\n\n\n\nhumanize\n\n\n\n\n\n\n\n\nhypothesis\n\n\n\n\n\n\n\n\nntplib\n\n\n\n\n\n\n\n\npasslib\n\n\n\n\n\n\n\n\npath.py\n\n\n\n\n\n\n\n\npathtools\n\n\n\n\n\n\n\n\npendulum\n\n\n\n\n\n\n\n\npycparser\n\n\n\n\n\n\n\n\npycrypto\n\n\n\n\n\n\n\n\nPyQt5\n\n\n\n\n\n\n\n\npython-dateutil\n\n\n\n\n\n\n\n\npytz\n\n\n\n\n\n\n\n\nPyYAML\n\n\n\n\n\n\n\n\nraven\n\n\n\n\n\n\n\n\nrequests\n\n\n\n\n\n\n\n\nruamel.yaml\n\n\n\n\n\n\n\n\nsemver\n\n\n\n\n\n\n\n\nshortuuid\n\n\n\n\n\n\n\n\nsip\n\n\n\n\n\n\n\n\nsmmap\n\n\n\n\n\n\n\n\nspark-parser\n\n\n\n\n\n\n\n\ntyping\n\n\n\n\n\n\n\n\ntzlocal\n\n\n\n\n\n\n\n\nuncompyle6\n\n\n\n\n\n\n\n\nuritemplate\n\n\n\n\n\n\n\n\nuritemplate.py\n\n\n\n\n\n\n\n\nurllib3\n\n\n\n\n\n\n\n\nwatchdog\n\n\n\n\n\n\n\n\nWMI\n\n\n\n\n\n\n\n\nxdis\n\n\n\n\n\n\n\n\n\n\nDocumentation\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nclick\n\n\n\n\n\n\n\n\nJinja2\n\n\n\n\n\n\n\n\nlivereload\n\n\n\n\n\n\n\n\nMarkdown\n\n\n\n\n\n\n\n\nMarkupSafe\n\n\n\n\n\n\n\n\nmkdocs-bootstrap\n\n\n\n\n\n\n\n\nmkdocs-bootstrap\n\n\n\n\n\n\n\n\nmkdocs-bootswatch\n\n\n\n\n\n\n\n\nsix\n\n\n\n\n\n\n\n\ntornado\n\n\n\n\n\n\n\n\n\n\nTests\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\ncolorama\n\n\n\n\n\n\n\n\nhttmock\n\n\n\n\n\n\n\n\npy\n\n\n\n\n\n\n\n\npytest\n\n\n\n\n\n\n\n\npytest-cov\n\n\n\n\n\n\n\n\npytest-mock\n\n\n\n\n\n\n\n\npytest-qt\n\n\n\n\n\n\n\n\n\n\nBuild\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nCython\n\n\n\n\n\n\n\n\npypiwin32\n\n\n\n\n\n\n\n\n\n\nWheels and custom packages\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\nUsed for\n\n\n\n\n\n\n\n\n\n\npyinstaller\n\n\n\n\nbuild\n\n\n\n\n\n\npygit2\n\n\n\n\nproject\n\n\n\n\n\n\nmkdocs\n\n\n\n\ndocs",
             "title": "Requirements"
         },
         {
             "location": "/requirements/#packages-used",
-            "text": "Note: the version shown on the packages badges may not be the one used in this project; this list is only intended as an index linking to everyone else's hard work.  For an up-to-date list of the packages actually used, see the different \"requirement*.txt files at the root fo the project. Alternatively, you may refer to the  Version Eye page of this project .",
+            "text": "Note: the version shown on the packages badges may not be the one used in this project; this list is only intended as an index linking to everyone else\u2019s hard work.  For an up-to-date list of the packages actually used, see the different \u201crequirement*.txt files at the root fo the project. Alternatively, you may refer to the  Version Eye page of this project .",
             "title": "Packages used"
         },
         {
             "location": "/requirements/#dependencies",
             "text": "Package  Version      argh     blinker     certifi     cffi     contextlib2     coverage     dropbox     future     gitdb     github3.py     humanize     hypothesis     ntplib     passlib     path.py     pathtools     pendulum     pycparser     pycrypto     PyQt5     python-dateutil     pytz     PyYAML     raven     requests     ruamel.yaml     semver     shortuuid     sip     smmap     spark-parser     typing     tzlocal     uncompyle6     uritemplate     uritemplate.py     urllib3     watchdog     WMI     xdis",
-            "title": "Dependencies:"
+            "title": "Dependencies"
         },
         {
-            "location": "/requirements/#documented-thanks-to",
+            "location": "/requirements/#documentation",
             "text": "Package  Version      click     Jinja2     livereload     Markdown     MarkupSafe     mkdocs-bootstrap     mkdocs-bootstrap     mkdocs-bootswatch     six     tornado",
-            "title": "Documented thanks to:"
+            "title": "Documentation"
         },
         {
-            "location": "/requirements/#tested-with",
+            "location": "/requirements/#tests",
             "text": "Package  Version      colorama     httmock     py     pytest     pytest-cov     pytest-mock     pytest-qt",
-            "title": "Tested with:"
+            "title": "Tests"
         },
         {
-            "location": "/requirements/#built-with",
+            "location": "/requirements/#build",
             "text": "Package  Version      Cython     pypiwin32",
-            "title": "Built with:"
+            "title": "Build"
         },
         {
             "location": "/requirements/#wheels-and-custom-packages",
             "text": "Package  Version  Used for      pyinstaller   build    pygit2   project    mkdocs   docs",
-            "title": "Wheels and custom packages:"
+            "title": "Wheels and custom packages"
+        },
+        {
+            "location": "/tests/",
+            "text": "Footnotes\n\n\nAdmonition\n\n\nDefinition lists\n\n\nAbbreviations\n\n\nFenced Code Blocks\n\n\n\n\n\n\nFootnotes\n\u00b6\n\n\nFootnotes\n1\n have a label\n2\n and the footnote\u2019s content.\n\n\nAdmonition\n\u00b6\n\n\n\n\noptional explicit title within double quotes\n\n\nAny number of other indented markdown elements.\n\n\nThis is the second paragraph.\n\n\n\n\nDefinition lists\n\u00b6\n\n\n\n\nApple\n\n\nPomaceous fruit of plants of the genus Malus in \n\nthe family Rosaceae.\n\n\n\n\n\n\nNote\n\n\nYou should note that the title will be automatically capitalized.\n\n\n\n\n\n\nDon\u2019t try this at home\n\n\n\u2026\n\n\n\n\n\n\nA title anyway\n\n\nThis is a admonition box without a title.\n\n\n\n\n\n\nOrange\n\n\nThe fruit of an evergreen tree of the genus Citrus.\n\n\n\n\nAbbreviations\n\u00b6\n\n\nThe \nHTML\n specification \n\nis maintained by the \nW3C\n.\n\n\nFenced Code Blocks\n\u00b6\n\n\na one-line code block\n\n\n\n\n# python code\n\n\n\n\n<p>HTML Document</p>\n\n\n\n\n# more python code\n\n\n\n\n# This line is emphasized\n# This line isn't\n# This line is emphasized\n\n\n\n\n# This line is emphasized\n# This line isn't\n# This line is emphasized\n\n\n\n\n\n\n\n\n\n\nFirst Header\n\n\nSecond Header\n\n\n\n\n\n\n\n\n\n\nContent Cell\n\n\nContent Cell\n\n\n\n\n\n\nContent Cell\n\n\nContent Cell\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis is a footnote content.\u00a0\n\u21a9\n\n\n\n\n\n\nA footnote on the label: \u201c@#$%\u201d.\u00a0\n\u21a9",
+            "title": "Tests"
+        },
+        {
+            "location": "/tests/#footnotes",
+            "text": "Footnotes 1  have a label 2  and the footnote\u2019s content.",
+            "title": "Footnotes"
+        },
+        {
+            "location": "/tests/#admonition",
+            "text": "optional explicit title within double quotes  Any number of other indented markdown elements.  This is the second paragraph.",
+            "title": "Admonition"
+        },
+        {
+            "location": "/tests/#definition-lists",
+            "text": "Apple  Pomaceous fruit of plants of the genus Malus in  \nthe family Rosaceae.    Note  You should note that the title will be automatically capitalized.    Don\u2019t try this at home  \u2026    A title anyway  This is a admonition box without a title.    Orange  The fruit of an evergreen tree of the genus Citrus.",
+            "title": "Definition lists"
+        },
+        {
+            "location": "/tests/#abbreviations",
+            "text": "The  HTML  specification  \nis maintained by the  W3C .",
+            "title": "Abbreviations"
+        },
+        {
+            "location": "/tests/#fenced-code-blocks",
+            "text": "a one-line code block  # python code  <p>HTML Document</p>  # more python code  # This line is emphasized\n# This line isn't\n# This line is emphasized  # This line is emphasized\n# This line isn't\n# This line is emphasized     First Header  Second Header      Content Cell  Content Cell    Content Cell  Content Cell         This is a footnote content.\u00a0 \u21a9    A footnote on the label: \u201c@#$%\u201d.\u00a0 \u21a9",
+            "title": "Fenced Code Blocks"
         }
     ]
 }
