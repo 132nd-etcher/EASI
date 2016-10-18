@@ -80,7 +80,7 @@ build_script:
   - set PATH="%APPVEYOR_BUILD_FOLDER%\build\dist_windowed";%PATH%
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY% --log-level=WARN"
   - cmd: .\verpatch\verpatch.exe %APPVEYOR_BUILD_FOLDER%\build\dist_windowed\easi.exe /high %GitVersion_FullSemVer% /va /pv %GitVersion_FullSemVer% /s product EASI /s copyright "2015 etcher" /s build %GitVersion_InformationalVersion% /langid 1033
-  - cmd: iscc inno_setup.iss /Dappname=EASI /Dversion=%GitVersion_AssemblySemVer% /Dversionsem=%GitVersion_SemVer% /Dversionfull=%GitVersion_FullSemVer% /Dversioninfo=%GitVersion_InformationalVersion% /Dappico=src\ui\resources\app.ico /Doutputdir=build\release
+  - cmd: iscc inno_setup.iss /DAppName=EASI /DAssemblySemVer=%GitVersion_AssemblySemVer% /DSemVer=%GitVersion_SemVer% /DFullSemVer=%GitVersion_FullSemVer% /DInformationalVersion=%GitVersion_InformationalVersion% /DAppIco=src\ui\resources\app.ico /DOutputDir=build\release
 
 artifacts:
   - path: ./build/release/*.exe
@@ -138,20 +138,20 @@ deploy:
       branch: /feature/.*/
       appveyor_repo_tag: false
 
-#  - provider: BinTray
-#    username: 132nd-etcher
-#    api_key:
-#      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
-#    subject: 132nd-etcher
-#    repo: EASI
-#    package: alpha
-#    version: "%APPVEYOR_BUILD_VERSION%"
-#    publish: true
-#    override: false
-#    explode: false
-#    on:
-#      branch: develop
-#      appveyor_repo_tag: false
+  - provider: BinTray
+    username: 132nd-etcher
+    api_key:
+      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
+    subject: 132nd-etcher
+    repo: EASI
+    package: alpha
+    version: "%APPVEYOR_BUILD_VERSION%"
+    publish: true
+    override: false
+    explode: false
+    on:
+      branch: develop
+      appveyor_repo_tag: false
 
   - provider: BinTray
     username: 132nd-etcher

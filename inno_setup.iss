@@ -1,20 +1,20 @@
 [Setup]
-AppName={#appname}
-AppVersion={#version}
-AppVerName={#versionfull}
+AppName={#AppName}
+AppVersion={#AssemblySemVer}
+AppVerName={#FullSemVer}
 AppUpdatesURL=https://github.com/132nd-etcher/EASI/releases
 AppSupportURL=https://github.com/132nd-etcher/EASI/issues
-VersionInfoVersion={#version}
-SetupIconFile={#SourcePath}{#appico}
-DefaultDirName={pf}\{#appname}
+VersionInfoVersion={#AssemblySemVer}
+SetupIconFile={#SourcePath}{#AppIco}
+DefaultDirName={pf}\{#AppName}
 AppId={{5b6dab14-577b-48b8-953a-80c0112a2aee}
-UninstallDisplayName={#appname}
-OutputDir={#SourcePath}{#outputdir}
-OutputBaseFilename={#appname}_setup_{#versionfull}
+UninstallDisplayName={#AppName}
+OutputDir={#SourcePath}{#OutputDir}
+OutputBaseFilename={#AppName}_setup_{#FullSemVer}
 ShowTasksTreeLines=True
 AppPublisher=etcher
 AppPublisherURL=etcher
-DefaultGroupName={#appname}
+DefaultGroupName={#AppName}
 AlwaysShowGroupOnReadyPage=True
 AlwaysShowDirOnReadyPage=True
 DisableProgramGroupPage=auto
@@ -26,11 +26,11 @@ ShowLanguageDialog=no
 MinVersion=0,6.1
 VersionInfoCompany=etcher
 VersionInfoDescription=Etcher's Automated Skin Installer
-VersionInfoTextVersion={#versionfull}
+VersionInfoTextVersion={#FullSemVer}
 VersionInfoCopyright=Copyright (C) 2016  etcher
-VersionInfoProductName={#appname}
-VersionInfoProductVersion={#version}
-VersionInfoProductTextVersion={#versioninfo}
+VersionInfoProductName={#AppName}
+VersionInfoProductVersion={#AssemblySemVer}
+VersionInfoProductTextVersion={#InformationalVersion}
 DisableReadyPage=True
 
 [Files]
