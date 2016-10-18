@@ -27,8 +27,8 @@ matrix:
     fast_finish: true
 
 init:
-  - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
-  - cmd: appveyor UpdateBuild -Version "%APPVEYOR_REPO_BRANCH%.%APPVEYOR_REPO_COMMIT%"
+  - cmd: echo %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%
+  - cmd: appveyor UpdateBuild -Version "%APPVEYOR_REPO_BRANCH%.%APPVEYOR_REPO_COMMIT%.%APPVEYOR_BUILD_NUMBER%"
 
 cache:
   - "%PYTHON%"
@@ -48,13 +48,16 @@ install:
   - "%PYTHON%/Scripts/pip.exe install -r requirements-test.txt"
   - choco install gitversion.portable -pre -y
   - nuget install secure-file -ExcludeVersion
-#  - nuget install GitInfo
   - choco install -y InnoSetup curl
   - curl -O http://esrg.sourceforge.net/utils_win_up/md5sum/crc32.exe
   - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
   - choco install gitversion.portable -y
   - git clone https://github.com/132nd-etcher/verpatch.git
+  - cmd: mkdir C:\projects\verpatch
+  - git clone -q --branch=master https://github.com/132nd-etcher/EASI.git C:\projects\verpatch
+  - set PATH="c:\project\verpatch";%PATH%
   - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
+
 
 before_build:
   - ps: gitversion /l console /output buildserver /updateassemblyinfo /b (get-item env:APPVEYOR_REPO_BRANCH).Value
@@ -62,7 +65,7 @@ before_build:
   - cmd: echo SemVer %GitVersion_SemVer%
   - cmd: echo AssemblySemVer %GitVersion_AssemblySemVer%
   - cmd: echo InformationalVersion %GitVersion_InformationalVersion%
-  - cmd: appveyor UpdateBuild -Version %GitVersion_InformationalVersion%
+  - cmd: appveyor UpdateBuild -Version %GitVersion_InformationalVersion%.%APPVEYOR_BUILD_NUMBER%
   - "%PYTHON%/Scripts/pytest.exe --cov=src --cov-config .coveragerc --cov-report xml -c .pytest"
   - "%PYTHON%/Scripts/pip.exe install git+https://github.com/132nd-etcher/ocular.py.git"
   - "%PYTHON%/Scripts/ocular.exe --access-token %SCRUTINIZER%"
@@ -79,7 +82,7 @@ build_script:
   - easi.exe test_and_exit
   - set PATH="%APPVEYOR_BUILD_FOLDER%\build\dist_windowed";%PATH%
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY% --log-level=WARN"
-  - cmd: .\verpatch\verpatch.exe %APPVEYOR_BUILD_FOLDER%\build\dist_windowed\easi.exe /high %GitVersion_FullSemVer% /va /pv %GitVersion_FullSemVer% /s product EASI /s copyright "2015 etcher" /s build %GitVersion_InformationalVersion% /langid 1033
+  - cmd: verpatch.exe %APPVEYOR_BUILD_FOLDER%\build\dist_windowed\easi.exe /high %GitVersion_FullSemVer% /va /pv %GitVersion_FullSemVer% /s product EASI /s copyright "2015 etcher" /s build %GitVersion_InformationalVersion% /langid 1033
   - cmd: iscc inno_setup.iss /DAppName=EASI /DAssemblySemVer=%GitVersion_AssemblySemVer% /DSemVer=%GitVersion_SemVer% /DFullSemVer=%GitVersion_FullSemVer% /DInformationalVersion=%GitVersion_InformationalVersion% /DAppIco=src\ui\resources\app.ico /DOutputDir=build\release
 
 artifacts:
