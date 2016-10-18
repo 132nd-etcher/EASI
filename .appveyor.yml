@@ -28,8 +28,9 @@ matrix:
 
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
-  - cmd: "set appVeyorBuildVersion=%appveyor_build_version%\necho appVeyorBuildVersion:%appVeyorBuildVersion% \n\nset branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\n\nset gitVersion=%branch:~-3%\necho gitversion:%gitVersion%\n\nset newVersion=%branch%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%\n\n"
-  - cmd: appveyor UpdateBuild -Version "%newVersion%"
+#  - cmd: "set appVeyorBuildVersion=%appveyor_build_version%\necho appVeyorBuildVersion:%appVeyorBuildVersion% \n\nset branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\n\nset gitVersion=%branch:~-3%\necho gitversion:%gitVersion%\n\nset newVersion=%branch%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%\n\n"
+  - cmd: appveyor UpdateBuild -Version "%APPVEYOR_REPO_BRANCH%.%APPVEYOR_REPO_COMMIT%"
+#  - cmd: appveyor UpdateBuild -Version "%newVersion%"
 
 cache:
   - "%PYTHON%"
@@ -60,6 +61,10 @@ install:
 
 before_build:
   - ps: gitversion /l console /output buildserver /updateassemblyinfo /b (get-item env:APPVEYOR_REPO_BRANCH).Value
+  - cmd: "echo FullSemVer %GitVersion_FullSemVer%"
+  - cmd: "echo SemVer %GitVersion_SemVer%"
+  - cmd: "echo AssemblySemVer %GitVersion_AssemblySemVer%"
+  - cmd: "echo InformationalVersion %GitVersion_InformationalVersion%"
   - "%PYTHON%/Scripts/pytest.exe --cov=src --cov-config .coveragerc --cov-report xml -c .pytest"
   - "%PYTHON%/Scripts/pip.exe install git+https://github.com/132nd-etcher/ocular.py.git"
   - "%PYTHON%/Scripts/ocular.exe --access-token %SCRUTINIZER%"
