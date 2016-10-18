@@ -34,16 +34,13 @@ cache:
   - "%PYTHON%"
   - C:\Program Files (x86)\Inno Setup 5
   - C:\Users\appveyor\AppData\Local\pip\cache
-#  - C:\ProgramData\chocolatey
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 install:
   - "%PYTHON%/Scripts/pip.exe install --disable-pip-version-check --user --upgrade pip"
-  - "%PYTHON%/Scripts/pip.exe install nose"
-  - "%PYTHON%/Scripts/pip.exe install coverage"
+  - "%PYTHON%/Scripts/pip.exe install --upgrade coverage"
   - "%PYTHON%/Scripts/pip.exe install -r requirements.txt"
-#  - "%PYTHON%/Scripts/pip.exe install -r requirements-extra.txt"
   - "%PYTHON%/Scripts/pip.exe install -r requirements-build.txt"
   - "%PYTHON%/Scripts/pip.exe install -r requirements-test.txt"
   - "%PYTHON%/Scripts/pip.exe install -r requirements-docs.txt"
