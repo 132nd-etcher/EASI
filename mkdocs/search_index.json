@@ -1,0 +1,59 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "Welcome to MkDocs\n\n\nFor full documentation visit \nmkdocs.org\n.\n\n\nCommands\n\n\n\n\nmkdocs new [dir-name]\n - Create a new project.\n\n\nmkdocs serve\n - Start the live-reloading docs server.\n\n\nmkdocs build\n - Build the documentation site.\n\n\nmkdocs help\n - Print this help message.\n\n\n\n\nProject layout\n\n\nmkdocs.yml    # The configuration file.\ndocs/\n    index.md  # The documentation homepage.\n    requirements.md\n    ...       # Other markdown pages, images and other files.",
+            "title": "Home"
+        },
+        {
+            "location": "/#welcome-to-mkdocs",
+            "text": "For full documentation visit  mkdocs.org .",
+            "title": "Welcome to MkDocs"
+        },
+        {
+            "location": "/#commands",
+            "text": "mkdocs new [dir-name]  - Create a new project.  mkdocs serve  - Start the live-reloading docs server.  mkdocs build  - Build the documentation site.  mkdocs help  - Print this help message.",
+            "title": "Commands"
+        },
+        {
+            "location": "/#project-layout",
+            "text": "mkdocs.yml    # The configuration file.\ndocs/\n    index.md  # The documentation homepage.\n    requirements.md\n    ...       # Other markdown pages, images and other files.",
+            "title": "Project layout"
+        },
+        {
+            "location": "/requirements/",
+            "text": "Packages used\n\n\nNote: the version shown on the packages badges may not be the one used in this project; this list is only intended as an index linking to everyone else's hard work.\n\n\nFor an up-to-date list of the packages actually used, see the different \"requirement*.txt files at the root fo the project. Alternatively, you may refer to the \nVersion Eye page of this project\n.\n\n\nDependencies:\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nargh\n\n\n\n\n\n\n\n\nblinker\n\n\n\n\n\n\n\n\ncertifi\n\n\n\n\n\n\n\n\ncffi\n\n\n\n\n\n\n\n\ncontextlib2\n\n\n\n\n\n\n\n\ncoverage\n\n\n\n\n\n\n\n\ndropbox\n\n\n\n\n\n\n\n\nfuture\n\n\n\n\n\n\n\n\ngitdb\n\n\n\n\n\n\n\n\ngithub3.py\n\n\n\n\n\n\n\n\nhumanize\n\n\n\n\n\n\n\n\nhypothesis\n\n\n\n\n\n\n\n\nntplib\n\n\n\n\n\n\n\n\npasslib\n\n\n\n\n\n\n\n\npath.py\n\n\n\n\n\n\n\n\npathtools\n\n\n\n\n\n\n\n\npendulum\n\n\n\n\n\n\n\n\npycparser\n\n\n\n\n\n\n\n\npycrypto\n\n\n\n\n\n\n\n\nPyQt5\n\n\n\n\n\n\n\n\npython-dateutil\n\n\n\n\n\n\n\n\npytz\n\n\n\n\n\n\n\n\nPyYAML\n\n\n\n\n\n\n\n\nraven\n\n\n\n\n\n\n\n\nrequests\n\n\n\n\n\n\n\n\nruamel.yaml\n\n\n\n\n\n\n\n\nsemver\n\n\n\n\n\n\n\n\nshortuuid\n\n\n\n\n\n\n\n\nsip\n\n\n\n\n\n\n\n\nsmmap\n\n\n\n\n\n\n\n\nspark-parser\n\n\n\n\n\n\n\n\ntyping\n\n\n\n\n\n\n\n\ntzlocal\n\n\n\n\n\n\n\n\nuncompyle6\n\n\n\n\n\n\n\n\nuritemplate\n\n\n\n\n\n\n\n\nuritemplate.py\n\n\n\n\n\n\n\n\nurllib3\n\n\n\n\n\n\n\n\nwatchdog\n\n\n\n\n\n\n\n\nWMI\n\n\n\n\n\n\n\n\nxdis\n\n\n\n\n\n\n\n\n\n\nDocumented thanks to:\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nclick\n\n\n\n\n\n\n\n\nJinja2\n\n\n\n\n\n\n\n\nlivereload\n\n\n\n\n\n\n\n\nMarkdown\n\n\n\n\n\n\n\n\nMarkupSafe\n\n\n\n\n\n\n\n\nmkdocs-bootstrap\n\n\n\n\n\n\n\n\nmkdocs-bootstrap\n\n\n\n\n\n\n\n\nmkdocs-bootswatch\n\n\n\n\n\n\n\n\nsix\n\n\n\n\n\n\n\n\ntornado\n\n\n\n\n\n\n\n\n\n\nTested with:\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\ncolorama\n\n\n\n\n\n\n\n\nhttmock\n\n\n\n\n\n\n\n\npy\n\n\n\n\n\n\n\n\npytest\n\n\n\n\n\n\n\n\npytest-cov\n\n\n\n\n\n\n\n\npytest-mock\n\n\n\n\n\n\n\n\npytest-qt\n\n\n\n\n\n\n\n\n\n\nBuilt with:\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nCython\n\n\n\n\n\n\n\n\npypiwin32\n\n\n\n\n\n\n\n\n\n\nWheels and custom packages:\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\nUsed for\n\n\n\n\n\n\n\n\n\n\npyinstaller\n\n\n\n\nbuild\n\n\n\n\n\n\npygit2\n\n\n\n\nproject\n\n\n\n\n\n\nmkdocs\n\n\n\n\ndocs",
+            "title": "Requirements"
+        },
+        {
+            "location": "/requirements/#packages-used",
+            "text": "Note: the version shown on the packages badges may not be the one used in this project; this list is only intended as an index linking to everyone else's hard work.  For an up-to-date list of the packages actually used, see the different \"requirement*.txt files at the root fo the project. Alternatively, you may refer to the  Version Eye page of this project .",
+            "title": "Packages used"
+        },
+        {
+            "location": "/requirements/#dependencies",
+            "text": "Package  Version      argh     blinker     certifi     cffi     contextlib2     coverage     dropbox     future     gitdb     github3.py     humanize     hypothesis     ntplib     passlib     path.py     pathtools     pendulum     pycparser     pycrypto     PyQt5     python-dateutil     pytz     PyYAML     raven     requests     ruamel.yaml     semver     shortuuid     sip     smmap     spark-parser     typing     tzlocal     uncompyle6     uritemplate     uritemplate.py     urllib3     watchdog     WMI     xdis",
+            "title": "Dependencies:"
+        },
+        {
+            "location": "/requirements/#documented-thanks-to",
+            "text": "Package  Version      click     Jinja2     livereload     Markdown     MarkupSafe     mkdocs-bootstrap     mkdocs-bootstrap     mkdocs-bootswatch     six     tornado",
+            "title": "Documented thanks to:"
+        },
+        {
+            "location": "/requirements/#tested-with",
+            "text": "Package  Version      colorama     httmock     py     pytest     pytest-cov     pytest-mock     pytest-qt",
+            "title": "Tested with:"
+        },
+        {
+            "location": "/requirements/#built-with",
+            "text": "Package  Version      Cython     pypiwin32",
+            "title": "Built with:"
+        },
+        {
+            "location": "/requirements/#wheels-and-custom-packages",
+            "text": "Package  Version  Used for      pyinstaller   build    pygit2   project    mkdocs   docs",
+            "title": "Wheels and custom packages:"
+        }
+    ]
+}
