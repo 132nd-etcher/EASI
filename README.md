@@ -66,6 +66,14 @@ Building
     pip.exe install -r requirements-build.txt
     ```
 
+1. Run tests
+
+    ```cmd
+    CMD.EXE>
+    pip.exe install -r requirements-test.txt
+    pytests -c pytest
+    ```
+
 1. Build PyQt5 "\*.ui" files
 
     ```python
