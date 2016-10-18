@@ -46,6 +46,7 @@ install:
   - "%PYTHON%/Scripts/pip.exe install -r requirements-extra.txt"
   - "%PYTHON%/Scripts/pip.exe install -r requirements-build.txt"
   - "%PYTHON%/Scripts/pip.exe install -r requirements-test.txt"
+  - "%PYTHON%/Scripts/pip.exe install -r requirements-docs.txt"
   - choco install gitversion.portable -pre -y
   - nuget install secure-file -ExcludeVersion
   - choco install -y InnoSetup curl
