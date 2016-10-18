@@ -43,8 +43,8 @@ def mock_gh_api(url, request):
     try:
         content = GHResource(file_path).get()
     except EnvironmentError:
-        return response(404, {}, HEADERS, None, 5, request)
-    return response(200, content, HEADERS, None, 5, request)
+        return response(404, {}, HEADERS, 'FileNotFound', 5, request)
+    return response(200, content, HEADERS, 'Success', 5, request)
 
 
 @with_httmock(mock_gh_api)
