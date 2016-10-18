@@ -40,6 +40,10 @@ class GHResource:
 @urlmatch(netloc=ENDPOINT, method=GET)
 def mock_gh_api(url, request):
     file_path = url.netloc + url.path + '.json'
+    if not os.path.exists(file_path):
+        print(os.path.abspath(file_path))
+        file_path = 'tests/{}'.format(file_path)
+        print('trying ', os.path.abspath(file_path))
     try:
         content = GHResource(file_path).get()
     except EnvironmentError:
