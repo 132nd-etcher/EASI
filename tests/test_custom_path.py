@@ -30,7 +30,7 @@ class TestCustomPath(ContainedTestCase):
         self.assertTrue(p.exists())
         self.assertTrue(p.get_win32_file_info())
         if os.environ.get('APPVEYOR'):
-            self.assertSequenceEqual(p.get_win32_file_info().file_version, '6.3.9600.18231')
+            self.assertSequenceEqual(p.get_win32_file_info().file_version, '6.3.9600.17031 (winblue_gdr.140221-1952)')
         else:
             self.assertSequenceEqual(p.get_win32_file_info().file_version, '6.1.7600.16385 (win7_rtm.090713-1255)')
         with self.assertRaises(FileNotFoundError):
