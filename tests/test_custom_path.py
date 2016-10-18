@@ -28,17 +28,17 @@ class TestCustomPath(ContainedTestCase):
         p = Path(r'c:\windows\explorer.exe')
         self.assertTrue(p.isfile())
         self.assertTrue(p.exists())
-        self.assertTrue(p.get_version_info())
+        self.assertTrue(p.get_win32_file_info())
         if os.environ.get('APPVEYOR'):
-            self.assertSequenceEqual(p.get_version_info(), '6.3.9600.18231')
+            self.assertSequenceEqual(p.get_win32_file_info().file_version, '6.3.9600.18231')
         else:
-            self.assertSequenceEqual(p.get_version_info(), '6.1.7601.17514')
+            self.assertSequenceEqual(p.get_win32_file_info().file_version, '6.1.7600.16385 (win7_rtm.090713-1255)')
         with self.assertRaises(FileNotFoundError):
-            Path('c:\explorer.exe').get_version_info()
+            Path('c:\explorer.exe').get_win32_file_info()
         with self.assertRaises(TypeError):
-            Path('c:\windows').get_version_info()
+            Path('c:\windows').get_win32_file_info()
         with self.assertRaises(ValueError):
-            Path('src/main.py').get_version_info()
+            Path('src/main.py').get_win32_file_info()
 
     def test_human_size(self):
 

@@ -1,13 +1,102 @@
 # coding=utf-8
 
-import shutil
 import binascii
 import os
+import shutil
 import tempfile
+import win32api
+import pywintypes
 
 import path
-import pefile
 from humanize import filesize
+
+
+class Win32FileInfo:
+    def __init__(self, path: str or Path):
+        self.__path = str(Path(path).abspath())
+        self.__props = None
+        self.__read_props()
+
+    @property
+    def comments(self):
+        return self.__props.get('Comments')
+
+    @property
+    def comments(self):
+        return self.__props.get('Comments')
+
+    @property
+    def internal_name(self):
+        return self.__props.get('InternalName')
+
+    @property
+    def product_name(self):
+        return self.__props.get('ProductName')
+
+    @property
+    def company_name(self):
+        return self.__props.get('CompanyName')
+
+    @property
+    def copyright(self):
+        return self.__props.get('LegalCopyright')
+
+    @property
+    def product_version(self):
+        return self.__props.get('ProductVersion')
+
+    @property
+    def file_description(self):
+        return self.__props.get('FileDescription')
+
+    @property
+    def trademark(self):
+        return self.__props.get('LegalTrademarks')
+
+    @property
+    def private_build(self):
+        return self.__props.get('PrivateBuild')
+
+    @property
+    def file_version(self):
+        return self.__props.get('FileVersion')
+
+    @property
+    def fixed_version(self):
+        return self.__props.get('fixed_version')
+
+    @property
+    def original_filename(self):
+        return self.__props.get('OriginalFilename')
+
+    @property
+    def special_build(self):
+        return self.__props.get('SpecialBuild')
+
+    def __read_props(self):
+        prop_names = ('Comments', 'InternalName', 'ProductName',
+                      'CompanyName', 'LegalCopyright', 'ProductVersion',
+                      'FileDescription', 'LegalTrademarks', 'PrivateBuild',
+                      'FileVersion', 'OriginalFilename', 'SpecialBuild')
+        self.__props = {}
+        try:
+            fixed_info = win32api.GetFileVersionInfo(self.__path, '\\')
+            self.__props['fixed_version'] = "%d.%d.%d.%d" % (fixed_info['FileVersionMS'] / 65536,
+                                                             fixed_info['FileVersionMS'] % 65536,
+                                                             fixed_info['FileVersionLS'] / 65536,
+                                                             fixed_info['FileVersionLS'] % 65536)
+            lang, codepage = win32api.GetFileVersionInfo(self.__path, '\\VarFileInfo\\Translation')[0]
+            for name in prop_names:
+                try:
+                    self.__props[name] = str(win32api.GetFileVersionInfo(
+                        self.__path,
+                        u'\\StringFileInfo\\%04X%04X\\%s' % (lang, codepage, name)
+                    )).strip(' ')
+                except:
+                    raise
+        except getattr(pywintypes, 'error') as e:
+            if e.winerror == 1812:
+                raise ValueError('Win32FileInfo: {}: {}'.format(self.__path, e.strerror.lower()))
 
 
 # noinspection PyAbstractClass
@@ -30,7 +119,14 @@ class Path(path.Path):
     def normalize(self) -> str:
         return self.abspath().replace('\\', '/').lower()
 
-    def get_version_info(self) -> str:
+    def get_win32_file_info(self) -> Win32FileInfo:
+        if not self.exists():
+            raise FileNotFoundError(self.abspath())
+        elif not self.isfile():
+            raise TypeError(self.abspath())
+        return Win32FileInfo(self)
+
+    def get_version_info_pefile(self) -> str:
         if not self.exists():
             raise FileNotFoundError(self.abspath())
         if not self.isfile():
