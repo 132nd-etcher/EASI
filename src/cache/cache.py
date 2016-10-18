@@ -99,7 +99,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         if rel_path is None:
             logger.info('re-building whole cache folder')
             self.meta = {}
-            for root, folder, file in os.walk(self.path):
+            for root, folder, _ in os.walk(self.path):
                 for entry in os.scandir(root):
                     if entry.is_dir():
                         continue
@@ -148,7 +148,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
 
     def __str__(self):
         out = ['cache object']
-        for k, meta in self.meta.items():
+        for k in self.meta.keys():
             out.append('{}: {}'.format(k, self.meta[k]))
         return '\n\t'.join(out)
 
