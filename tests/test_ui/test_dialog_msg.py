@@ -22,6 +22,7 @@ def test_show(qtbot, mock_main_ui, title, text):
 
 # noinspection PyUnusedLocal
 def test_adjust_size(qtbot, mock_main_ui):
+    assert hasattr(mock_main_ui, 'some_obj')
     dialog = MsgDialog(None, 'msgbox')
     qtbot.add_widget(dialog.qobj)
     for i in range(1, 40):

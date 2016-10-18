@@ -26,22 +26,22 @@ def test_connected_object(mocker, mock_main_ui):
     mock_main_ui.sig_proc.do.assert_called_with('some_obj', 'some_func')
 
 
-# noinspection PyUnusedLocal
 def test_missing_op(mock_main_ui):
+    assert hasattr(mock_main_ui, 'some_obj')
     with pytest.raises(AttributeError):
         C(sig, 'some_obj')
         sig.send(op='missing_op')
 
 
-# noinspection PyUnusedLocal
 def test_missing_obj(mock_main_ui):
+    assert hasattr(mock_main_ui, 'some_obj')
     with pytest.raises(AttributeError):
         C(sig, 'missing_obj')
         sig.send(op='some_func')
 
 
-# noinspection PyUnusedLocal
 def test_not_a_signal(mock_main_ui):
+    assert hasattr(mock_main_ui, 'some_obj')
     with pytest.raises(TypeError):
         C('not_a_sig', 'some_obj')
         sig.send(op='some_func')
