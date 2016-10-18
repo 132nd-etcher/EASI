@@ -53,8 +53,6 @@ install:
   - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
   - choco install gitversion.portable -y
   - git clone --branch=master https://github.com/132nd-etcher/verpatch.git C:\projects\verpatch
-  - dir C:\projects
-  - dir C:\projects\verpatch
   - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
 
 
