@@ -62,9 +62,9 @@ def main():
         if constants.TESTING:
             logger.info('disclaimer: skipping (testing mode)')
         else:
-            from PyQt5.QtGui import QFontDatabase
+            # from PyQt5.QtGui import QFontDatabase
             from PyQt5.QtWidgets import QApplication
-            from src.qt import qt_resources
+            # from src.qt import qt_resources
             from src.ui import MainUi, DisclaimerDialog
 
             logger.info('QApplication: starting')
