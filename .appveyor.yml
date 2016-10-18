@@ -89,6 +89,9 @@ branches:
     - master
     - develop
     - /release/.*/
+    - /pull/.*/
+    - /hotfix/.*/
+    - /feature/.*/
 
   except:
     - gh-pages
