@@ -15,4 +15,5 @@ For full documentation visit [mkdocs.org](http://mkdocs.org).
     docs/
         index.md  # The documentation homepage.
         requirements.md
+        tests.md
         ...       # Other markdown pages, images and other files.

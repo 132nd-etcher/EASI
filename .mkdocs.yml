@@ -1,7 +1,26 @@
 site_name: Etcher's Automated Skins Installer
+site_favicon: app.ico
+repo_url: https://github.com/132nd-etcher/EASI
 pages:
 - Home: index.md
 - Requirements: requirements.md
+- Tests: tests.md
 theme: readthedocs
+
+# https://github.com/waylan/Python-Markdown/wiki/Third-Party-Extensions
 markdown_extensions:
     - smarty
+    - extra
+    - abbr
+    - tables
+    - attr_list
+    - def_list
+    - fenced_code
+    - footnotes
+    - smart_strong
+    - admonition
+    - nl2br
+    - sane_lists
+    - toc:
+        permalink: True
+        anchorlink: True
