@@ -1,0 +1,5 @@
+site_name: Etcher's Automated Skins Installer
+pages:
+- Home: index.md
+- Requirements: requirements.md
+theme: readthedocs
