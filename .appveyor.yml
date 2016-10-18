@@ -32,6 +32,8 @@ matrix:
 
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
+  - cmd: "set appVeyorBuildVersion=%appveyor_build_version%\necho appVeyorBuildVersion:%appVeyorBuildVersion% \n\nset branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\n\nset gitVersion=%branch:~-3%\necho gitversion:%gitVersion%\n\nset newVersion=%gitVersion%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%\n\n"
+  - cmd: appveyor UpdateBuild -Version "%newVersion%"
 
 cache:
   - "%PYTHON%"
@@ -61,13 +63,7 @@ install:
   - git clone git@github.com:132nd-etcher/verpatch.git
 
 before_build:
-  - ps: gitversion /l console /output buildserver /b (get-item env:APPVEYOR_REPO_BRANCH).Value
-  - ps: $Output = Gitversion.exe /nofetch | Out-String
-  - ps: $version = $output | ConvertFrom-Json
-  - ps: $env: AssemblySemVer=$version.AssemblySemVer
-  - ps: $env: InformationalVersion=$version.InformationalVersion
-  - ps: $env: SemVer=$version.SemVer
-  - ps: $env: FullSemVer=$version.FullSemVer
+  - ps: gitversion /l console /output buildserver /updateassemblyinfo /b (get-item env:APPVEYOR_REPO_BRANCH).Value
   - "%PYTHON%/Scripts/pytest.exe --cov=src --cov-config .coveragerc --cov-report xml -c .pytest"
   - "%PYTHON%/Scripts/pip.exe install git+https://github.com/132nd-etcher/ocular.py.git"
   - "%PYTHON%/Scripts/ocular.exe --access-token %SCRUTINIZER%"
@@ -84,8 +80,8 @@ build_script:
   - easi.exe test_and_exit
   - set PATH="%APPVEYOR_BUILD_FOLDER%\build\dist_windowed";%PATH%
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY% --log-level=WARN"
-  - "./verpatch/verpatch.exe"
-  - "iscc inno_setup.iss /Dappname=EASI /Dversion=%AssemblySemVer% /Dversionsem=%SemVer% /Dversionfull=%FullSemVer% /Dversioninfo=%InformationalVersion% /Dappico=src\ui\resources\app.ico /Doutputdir=build\release"
+  - ps: ./verpatch/verpatch.exe /high (get-item env:GitVersion_FullSemVer) /va /pv (get-item env:GitVersion_FullSemVer) /s product EASI /s copyright "2015 etcher" /s build (get-item env:GitVersion_InformationalVersion) /langid 1033
+  - ps: iscc inno_setup.iss /Dappname=EASI /Dversion=(get-item env:GitVersion_AssemblySemVer) /Dversionsem=(get-item env:GitVersion_SemVer) /Dversionfull=(get-item env:GitVersion_FullSemVer) /Dversioninfo=(get-item env:GitVersion_InformationalVersion) /Dappico=src\ui\resources\app.ico /Doutputdir=build\release
 
 artifacts:
   - path: ./build/release/*.exe
