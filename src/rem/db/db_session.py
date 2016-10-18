@@ -27,9 +27,7 @@ class DBSession(metaclass=Singleton):
     )
 
     def __init__(self, token=None):
-        d = semver.parse(__version__)
-        self.abbrev_version = '.'.join([str(d['major']), str(d['minor']), str(d['patch'])])
-        self.agent = '{}/{}'.format(constants.APP_SHORT_NAME, self.abbrev_version)
+        self.agent = '{}/{}'.format(constants.APP_SHORT_NAME, __version__)
         self.session = None
         self.account = None
         if token is None:
