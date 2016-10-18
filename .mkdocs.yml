@@ -3,3 +3,5 @@ pages:
 - Home: index.md
 - Requirements: requirements.md
 theme: readthedocs
+markdown_extensions:
+    - smarty
