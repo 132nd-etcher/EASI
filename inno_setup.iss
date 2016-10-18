@@ -1,26 +1,20 @@
-#define ApplicationName 'EASI'
-#define ApplicationVersion '0.0.11.11308'
-#define ApplicationVersionStr '0.0.11-alpha.1+11308'
-#define AppIco SourcePath + "\src\ui\resources\app.ico"
-#define OutputDir SourcePath + "\build\release"
-
 [Setup]
-AppName={#ApplicationName}
-AppVersion={#ApplicationVersion}
-AppVerName={#ApplicationName} {#ApplicationVersionStr}
+AppName={#appname}
+AppVersion={#version}
+AppVerName={#versionfull}
 AppUpdatesURL=https://github.com/132nd-etcher/EASI/releases
 AppSupportURL=https://github.com/132nd-etcher/EASI/issues
-VersionInfoVersion={#ApplicationVersion}
-SetupIconFile={#AppIco}
-DefaultDirName={pf}\{#ApplicationName}
+VersionInfoVersion={#version}
+SetupIconFile={#SourcePath}{#appico}
+DefaultDirName={pf}\{#appname}
 AppId={{5b6dab14-577b-48b8-953a-80c0112a2aee}
-UninstallDisplayName={#ApplicationName}
-OutputDir={#OutputDir}
-OutputBaseFilename={#ApplicationName}_setup_{#ApplicationVersionStr}
+UninstallDisplayName={#appname}
+OutputDir={#SourcePath}{#outputdir}
+OutputBaseFilename={#appname}_setup_{#versionfull}
 ShowTasksTreeLines=True
 AppPublisher=etcher
 AppPublisherURL=etcher
-DefaultGroupName={#ApplicationName}
+DefaultGroupName={#appname}
 AlwaysShowGroupOnReadyPage=True
 AlwaysShowDirOnReadyPage=True
 DisableProgramGroupPage=auto
@@ -32,11 +26,11 @@ ShowLanguageDialog=no
 MinVersion=0,6.1
 VersionInfoCompany=etcher
 VersionInfoDescription=Etcher's Automated Skin Installer
-VersionInfoTextVersion={#ApplicationName} {#ApplicationVersion}
+VersionInfoTextVersion={#versionfull}
 VersionInfoCopyright=Copyright (C) 2016  etcher
-VersionInfoProductName={#ApplicationName}
-VersionInfoProductVersion={#ApplicationVersion}
-VersionInfoProductTextVersion={#ApplicationName} {#ApplicationVersionStr}
+VersionInfoProductName={#appname}
+VersionInfoProductVersion={#version}
+VersionInfoProductTextVersion={#versioninfo}
 DisableReadyPage=True
 
 [Files]

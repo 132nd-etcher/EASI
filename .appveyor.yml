@@ -33,33 +33,41 @@ matrix:
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
 
-install:
-  - choco install gitversion.portable -pre -y
-  - nuget install secure-file -ExcludeVersion
-  - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
-  - "%PYTHON%/Scripts/pip.exe install --disable-pip-version-check --user --upgrade pip"
-  - "%PYTHON%/Scripts/pip.exe install nose"
-  - "%PYTHON%/Scripts/pip.exe install coverage"
-  # Upgrade to the latest version of pip to avoid it displaying warnings
-  # about it being out of date.
-  - "%PYTHON%/Scripts/pip.exe install -r requirements.txt"
-  - "%PYTHON%/Scripts/pip.exe install -r requirements-extra.txt"
-  - "%PYTHON%/Scripts/pip.exe install -r requirements-build.txt"
-  - "%PYTHON%/Scripts/pip.exe install -r requirements-test.txt"
-
-  # Installing various utilities
-  - choco install -y InnoSetup curl
-  - curl -O http://esrg.sourceforge.net/utils_win_up/md5sum/crc32.exe
-  - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
-
 cache:
   - "%PYTHON%"
   - C:\Program Files (x86)\Inno Setup 5
   - C:\Users\appveyor\AppData\Local\pip\cache
   - C:\ProgramData\chocolatey
+  - packages -> **\packages.config
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+
+install:
+  - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
+  - "%PYTHON%/Scripts/pip.exe install --disable-pip-version-check --user --upgrade pip"
+  - "%PYTHON%/Scripts/pip.exe install nose"
+  - "%PYTHON%/Scripts/pip.exe install coverage"
+  - "%PYTHON%/Scripts/pip.exe install -r requirements.txt"
+  - "%PYTHON%/Scripts/pip.exe install -r requirements-extra.txt"
+  - "%PYTHON%/Scripts/pip.exe install -r requirements-build.txt"
+  - "%PYTHON%/Scripts/pip.exe install -r requirements-test.txt"
+  - choco install gitversion.portable -pre -y
+  - nuget install secure-file -ExcludeVersion
+#  - nuget install GitInfo
+  - choco install -y InnoSetup curl
+  - curl -O http://esrg.sourceforge.net/utils_win_up/md5sum/crc32.exe
+  - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
+  - choco install gitversion.portable -y
+  - git clone git@github.com:132nd-etcher/verpatch.git
 
 before_build:
   - ps: gitversion /l console /output buildserver /b (get-item env:APPVEYOR_REPO_BRANCH).Value
+  - ps: $Output = Gitversion.exe /nofetch | Out-String
+  - ps: $version = $output | ConvertFrom-Json
+  - ps: $env: AssemblySemVer=$version.AssemblySemVer
+  - ps: $env: InformationalVersion=$version.InformationalVersion
+  - ps: $env: SemVer=$version.SemVer
+  - ps: $env: FullSemVer=$version.FullSemVer
   - "%PYTHON%/Scripts/pytest.exe --cov=src --cov-config .coveragerc --cov-report xml -c .pytest"
   - "%PYTHON%/Scripts/pip.exe install git+https://github.com/132nd-etcher/ocular.py.git"
   - "%PYTHON%/Scripts/ocular.exe --access-token %SCRUTINIZER%"
@@ -74,8 +82,10 @@ build_script:
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_console --key %COMPILEKEY% --log-level=WARN"
   - set PATH="%APPVEYOR_BUILD_FOLDER%\build\dist_console";%PATH%
   - easi.exe test_and_exit
+  - set PATH="%APPVEYOR_BUILD_FOLDER%\build\dist_windowed";%PATH%
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY% --log-level=WARN"
-  - iscc inno_setup.iss
+  - "./verpatch/verpatch.exe"
+  - "iscc inno_setup.iss /Dappname=EASI /Dversion=%AssemblySemVer% /Dversionsem=%SemVer% /Dversionfull=%FullSemVer% /Dversioninfo=%InformationalVersion% /Dappico=src\ui\resources\app.ico /Doutputdir=build\release"
 
 artifacts:
   - path: ./build/release/*.exe
