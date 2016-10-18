@@ -65,7 +65,7 @@ before_build:
   - cmd: echo SemVer %GitVersion_SemVer%
   - cmd: echo AssemblySemVer %GitVersion_AssemblySemVer%
   - cmd: echo InformationalVersion %GitVersion_InformationalVersion%
-#  - cmd: appveyor UpdateBuild -Version %GitVersion_InformationalVersion%
+  - cmd: appveyor UpdateBuild -Version %GitVersion_InformationalVersion%
   - "%PYTHON%/Scripts/pytest.exe --cov=src --cov-config .coveragerc --cov-report xml -c .pytest"
   - "%PYTHON%/Scripts/pip.exe install git+https://github.com/132nd-etcher/ocular.py.git"
   - "%PYTHON%/Scripts/ocular.exe --access-token %SCRUTINIZER%"
@@ -82,8 +82,8 @@ build_script:
   - easi.exe test_and_exit
   - set PATH="%APPVEYOR_BUILD_FOLDER%\build\dist_windowed";%PATH%
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY% --log-level=WARN"
-  - ps: ./verpatch/verpatch.exe /high (get-item env:GitVersion_FullSemVer) /va /pv (get-item env:GitVersion_FullSemVer) /s product EASI /s copyright "2015 etcher" /s build (get-item env:GitVersion_InformationalVersion) /langid 1033
-  - ps: iscc inno_setup.iss /Dappname=EASI /Dversion=(get-item env:GitVersion_AssemblySemVer) /Dversionsem=(get-item env:GitVersion_SemVer) /Dversionfull=(get-item env:GitVersion_FullSemVer) /Dversioninfo=(get-item env:GitVersion_InformationalVersion) /Dappico=src\ui\resources\app.ico /Doutputdir=build\release
+  - cmd: ./verpatch/verpatch.exe /high %GitVersion_FullSemVer% /va /pv %GitVersion_FullSemVer% /s product EASI /s copyright "2015 etcher" /s build %GitVersion_InformationalVersion% /langid 1033
+  - cmd: iscc inno_setup.iss /Dappname=EASI /Dversion=%GitVersion_AssemblySemVer% /Dversionsem=%GitVersion_SemVer% /Dversionfull=%GitVersion_FullSemVer% /Dversioninfo=%GitVersion_InformationalVersion% /Dappico=src\ui\resources\app.ico /Doutputdir=build\release
 
 artifacts:
   - path: ./build/release/*.exe
