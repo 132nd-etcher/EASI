@@ -53,8 +53,7 @@ install:
   - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
   - choco install gitversion.portable -y
 #  - git clone https://github.com/132nd-etcher/verpatch.git
-  - git clone --branch=master https://github.com/132nd-etcher/EASI.git C:\projects
-  - set PATH="c:\projects\verpatch";%PATH%
+  - git clone --branch=master https://github.com/132nd-etcher/EASI.git C:\projects\verpatch
   - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
 
 
@@ -76,12 +75,13 @@ before_build:
   - "%PYTHON%/Scripts/codecov.exe"
 
 build_script:
+  - set PATH="c:\projects\verpatch";%PATH%
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_console --key %COMPILEKEY% --log-level=WARN"
   - set PATH="%APPVEYOR_BUILD_FOLDER%\build\dist_console";%PATH%
   - easi.exe test_and_exit
   - set PATH="%APPVEYOR_BUILD_FOLDER%\build\dist_windowed";%PATH%
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY% --log-level=WARN"
-  - cmd: verpatch.exe %APPVEYOR_BUILD_FOLDER%\build\dist_windowed\easi.exe /high %GitVersion_FullSemVer% /va /pv %GitVersion_FullSemVer% /s product EASI /s copyright "2015 etcher" /s build %GitVersion_Sha% /langid 1033
+  - cmd: verpatch.exe %APPVEYOR_BUILD_FOLDER%\build\dist_windowed\easi.exe /high %GitVersion_FullSemVer% /va /pv %GitVersion_FullSemVer% /s product EASI /s copyright "2015 etcher" /s build %GitVersion_Sha% /langid 1033 /s PrivateBuild %APPVEYOR_BUILD_NUMBER%
   - cmd: iscc inno_setup.iss /DAppName=EASI /DAssemblySemVer=%GitVersion_AssemblySemVer% /DSemVer=%GitVersion_SemVer% /DFullSemVer=%GitVersion_FullSemVer% /DInformationalVersion=%GitVersion_InformationalVersion% /DSha=%GitVersion_Sha% /DAppIco=src\ui\resources\app.ico /DOutputDir=build\release
 
 artifacts:
