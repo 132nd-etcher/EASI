@@ -59,7 +59,7 @@ install:
 
 before_build:
   - git config --global credential.helper store
-  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GH_PAGES_TOKEN):x-oauth-basic@github.com`n"
   - "%PYTHON%/Scripts/mkdocs.exe build --clean --strict -v"
   - "git config --global user.email %GH_MAIL%"
   - "git config --global user.name 132nd-etcher"
