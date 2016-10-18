@@ -52,7 +52,7 @@ install:
   - curl -O http://esrg.sourceforge.net/utils_win_up/md5sum/crc32.exe
   - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
   - choco install gitversion.portable -y
-  - git clone --branch=master https://github.com/132nd-etcher/EASI.git C:\projects\verpatch
+  - git clone --branch=master https://github.com/132nd-etcher/verpatch.git C:\projects\verpatch
   - dir C:\projects
   - dir C:\projects\verpatch
   - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
@@ -60,11 +60,7 @@ install:
 
 before_build:
   - ps: gitversion /l console /output buildserver /updateassemblyinfo /b (get-item env:APPVEYOR_REPO_BRANCH).Value
-#  - cmd: echo FullSemVer %GitVersion_FullSemVer%
-#  - cmd: echo SemVer %GitVersion_SemVer%
-#  - cmd: echo AssemblySemVer %GitVersion_AssemblySemVer%
-#  - cmd: echo InformationalVersion %GitVersion_InformationalVersion%
-#  - cmd: appveyor UpdateBuild -Version %GitVersion_InformationalVersion%.%APPVEYOR_BUILD_NUMBER%
+  - cmd: appveyor UpdateBuild -Version %GitVersion_InformationalVersion%.%APPVEYOR_BUILD_NUMBER%
 #  - "%PYTHON%/Scripts/pytest.exe --cov=src --cov-config .coveragerc --cov-report xml -c .pytest"
 #  - "%PYTHON%/Scripts/pip.exe install git+https://github.com/132nd-etcher/ocular.py.git"
 #  - "%PYTHON%/Scripts/ocular.exe --access-token %SCRUTINIZER%"
