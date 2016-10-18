@@ -3,7 +3,7 @@ Note: the version shown on the packages badges may not be the one used in this p
 
 For an up-to-date list of the packages actually used, see the different "requirement*.txt files at the root fo the project. Alternatively, you may refer to the [Version Eye page of this project][version_eye_project_page].
 
-### Dependencies:
+### Dependencies
 | Package | Version |
 | ---------------------: | --------------------- |
 | argh | [![PyPI version](https://badge.fury.io/py/argh.svg)](https://badge.fury.io/py/argh) |
@@ -48,7 +48,7 @@ For an up-to-date list of the packages actually used, see the different "require
 | xdis | [![PyPI version](https://badge.fury.io/py/xdis.svg)](https://badge.fury.io/py/xdis) |
 
 
-### Documented thanks to:
+### Documentation
 | Package | Version |
 | ---------------------: | --------------------- |
 | click | [![PyPI version](https://badge.fury.io/py/click.svg)](https://badge.fury.io/py/click) |
@@ -63,7 +63,7 @@ For an up-to-date list of the packages actually used, see the different "require
 | tornado | [![PyPI version](https://badge.fury.io/py/tornado.svg)](https://badge.fury.io/py/tornado) |
 
 
-### Tested with:
+### Tests
 | Package | Version |
 | ---------------------: | --------------------- |
 | colorama | [![PyPI version](https://badge.fury.io/py/colorama.svg)](https://badge.fury.io/py/colorama) |
@@ -75,17 +75,17 @@ For an up-to-date list of the packages actually used, see the different "require
 | pytest-qt | [![PyPI version](https://badge.fury.io/py/pytest-qt.svg)](https://badge.fury.io/py/pytest-qt) |
 
 
-### Built with:
+### Build
 |                Package | Version               |
 | ---------------------: | --------------------- |
 | Cython | [![PyPI version](https://badge.fury.io/py/Cython.svg)](https://badge.fury.io/py/Cython) |
 | pypiwin32 | [![PyPI version](https://badge.fury.io/py/pypiwin32.svg)](https://badge.fury.io/py/pypiwin32) |
 
 
-### Wheels and custom packages:
+### Wheels and custom packages
 |                Package | Version               | Used for |
 | ---------------------: | --------------------- | --- |
 | pyinstaller | [![PyPI version](https://badge.fury.io/py/pyinstaller.svg)](https://github.com/132nd-etcher/pyinstaller) | build |
 | pygit2 | [![PyPI version](https://badge.fury.io/py/pygit2.svg)](https://github.com/132nd-etcher/pygit2_wheel) | project |
-| mkdocs | [![PyPI version](https://badge.fury.io/py/mkdocs.svg)](git+https://github.com/mkdocs/mkdocs.git) | docs |
+| mkdocs | [![PyPI version](https://badge.fury.io/py/mkdocs.svg)](https://github.com/132nd-etcher/mkdocs.git) | docs |
 [version_eye_project_page]: https://www.versioneye.com/user/projects/57ff67d90676c900486e4f8d?child=summary
