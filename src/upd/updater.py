@@ -6,8 +6,8 @@ from src.__version__ import __version__
 from src.cfg import config
 from src.low import constants
 from src.low.custom_logging import make_logger
-from src.rem.gh import GHAnonymousSession
-from src.rem.gh.gh_objects import GHRelease
+from src.rem.gh.gh_session import GHAnonymousSession
+from src.rem.gh.gh_objects.gh_release import GHRelease
 from src.sig import sig_main_ui_states, sig_splash, sig_long_op_dialog, sig_main_ui, sig_interrupt_startup
 from src.dld.download import downloader, FileDownload
 from src.low.custom_path import create_temp_file
