@@ -124,7 +124,7 @@ deploy:
     explode: false
     on:
       branch: /pull/.*/
-      appveyor_repo_tag: true
+      appveyor_repo_tag: false
 
   - provider: BinTray
     username: 132nd-etcher
@@ -139,7 +139,7 @@ deploy:
     explode: false
     on:
       branch: /feature/.*/
-      appveyor_repo_tag: true
+      appveyor_repo_tag: false
 
   - provider: BinTray
     username: 132nd-etcher
@@ -154,7 +154,7 @@ deploy:
     explode: false
     on:
       branch: develop
-      appveyor_repo_tag: true
+      appveyor_repo_tag: false
 
   - provider: BinTray
     username: 132nd-etcher
