@@ -30,7 +30,7 @@ VersionInfoTextVersion={#FullSemVer}
 VersionInfoCopyright=Copyright (C) 2016  etcher
 VersionInfoProductName={#AppName}
 VersionInfoProductVersion={#AssemblySemVer}
-VersionInfoProductTextVersion={#InformationalVersion}
+VersionInfoProductTextVersion={#Sha}
 DisableReadyPage=True
 
 [Files]
