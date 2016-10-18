@@ -2,11 +2,22 @@
 
 # Etcher's Automated Skins Installer
 
-![][project_status] ![][license] ![][pun] ![][gh_download] ![][semver]
+[![Pun][pun]][pun_link]
 
+[![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.][project_status]](http://www.repostatus.org/#wip)
+[![GitHub version][project_version]][project_link]
+[![Download count][gh_download]][download_link]
+
+[![Semver 2.0.0][semver]][semver_link]
+[![Python version][python_version]](https://www.python.org/)
+[![GPL v3][license]] [gpl_link]
+
+## Table of content
   - [Documentation](#documentation)
-  - [Building](#building)
+  * [Building](#building)
   - [License](#license)
+
+
 
 |                  | Master                                      | Develop                                     |
 | ---------------- | ------------------------------------------- | ------------------------------------------- |
@@ -27,15 +38,23 @@
 
 [![throughput]] [waffle_link]
 
-![][gh_issues]
-![][gh_issues_closed]
-![][gh_pr]
-![][gh_pr_closed]
+[![gh_issues]] [issues_link]
+[![gh_issues_closed]] [issues_closed_link]
+
+[![gh_pr]] [pr_link]
+[![gh_pr_closed]] [pr_closed_link]
 
 Documentation
 =============
 
-[Project documentation](https://132nd-etcher.github.io/EASI/)
+[Project documentation][doc_link]
+
+Requirements
+============
+
+This project's dependencies are managed by [VersionEye][versioneye_link]
+
+See `REQUIREMENTS.md` file for a list of links to the packages used by this project.
 
 Building
 ========
@@ -43,14 +62,16 @@ Building
 1. Install requirements
 
     ```cmd
-    > pip.exe install -r requirements.txt
-    > pip.exe install -r requirements-extra.txt
-    > pip.exe install -r requirements-build.txt
+    CMD.EXE>
+    pip.exe install -r requirements.txt
+    pip.exe install -r requirements-extra.txt
+    pip.exe install -r requirements-build.txt
     ```
 
 1. Build PyQt5 "\*.ui" files
 
     ```python
+    Python 3.5>
     from PyQt5 import uic
     uic.compileUiDir(<qt_skeleton_dir>, from_imports=True, import_from='src.ui.resources')
     ```
@@ -58,20 +79,25 @@ Building
 1. Build PyQt5 resource files
 
     ```cmd
-    > pyrcc5.exe qt_resource.qrc -o qt_resource_rc.py
+    CMD.EXE>
+    pyrcc5.exe qt_resource.qrc -o qt_resource_rc.py
     ```
 
 1. Build with PyInstaller
 
+    `%PYTHON%` is the path to your Python 3.5 executable.
+
+    `%COMPILEKEY%` is the key used to encrypt resulting executable.
+    (if you don't want to encrypt the executable, skip the `--key` parameter)
+
     ```cmd
-    > "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY%"
+    CMD.EXE>
+    "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY%"
     ```
-    
+
 ## License
 
 EASI is released under the [GPLv3 License][gpl_link].
-
-![license]
 
 [waffle]:             https://img.shields.io/waffle/label/132nd-etcher/easi/in%20progress.svg?maxAge=3600
 [waffle_link]:        https://waffle.io/132nd-etcher/EASI
@@ -116,11 +142,24 @@ EASI is released under the [GPLv3 License][gpl_link].
 [easi]:               https://i.imgsafe.org/00192c67ea.png
 [project_status]:     http://www.repostatus.org/badges/latest/wip.svg
 [pun]:                https://img.shields.io/badge/Author%20skill-Script%20kiddie-red.svg?style=flat
+[pun_link]:           http://users.telenet.be/mydotcom/graph/geek.jpg
 [semver]:             https://img.shields.io/badge/semver-2.0.0-blue.svg
+[semver_link]:        http://semver.org/
+[doc_link]:           http://semver.org/
+[issues_link]:        https://github.com/132nd-etcher/EASI/issues
+[issues_closed_link]: https://github.com/132nd-etcher/EASI/issues?q=is%3Aissue+is%3Aclosed
+[pr_link]:            https://github.com/132nd-etcher/EASI/pulls
+[pr_closed_link]:     https://github.com/132nd-etcher/EASI/pulls?q=is%3Apr+is%3Aclosed
+
+
 
 [gh_download]:        https://img.shields.io/github/downloads/132nd-etcher/easi/total.svg?maxAge=3600
+[download_link]:      https://github.com/132nd-etcher/EASI/releases
 [gh_issues]:          https://img.shields.io/github/issues/132nd-etcher/easi.svg?maxAge=3600
 [gh_issues_closed]:   https://img.shields.io/github/issues-closed/132nd-etcher/easi.svg?maxAge=3600
 [gh_pr]:              https://img.shields.io/github/issues-pr/132nd-etcher/easi.svg?maxAge=3600
 [gh_pr_closed]:       https://img.shields.io/github/issues-pr-closed/132nd-etcher/easi.svg?maxAge=3600
 [gh_release]:         https://img.shields.io/github/release/132nd-etcher/easi.svg?maxAge=3600
+[project_version]:    https://badge.fury.io/gh/132nd-etcher%2Feasi.svg
+[project_link]:        https://github.com/132nd-etcher/EASI
+[python_version]:     https://img.shields.io/badge/python-3.5-blue.svg
