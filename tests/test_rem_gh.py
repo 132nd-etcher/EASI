@@ -5,10 +5,12 @@ import os
 from unittest import TestCase, mock, skipUnless, skipIf
 
 from hypothesis import strategies as st
+from httmock import response, urlmatch, with_httmock
 
 from src.low.singleton import Singleton
-from src.rem.gh import GHAnonymousSession, GHSession
-from src.rem.gh.gh_objects import GHRepo, GHRepoList, GHRelease
+from src.rem.gh.gh_session import GHAnonymousSession, GHSession
+from src.rem.gh.gh_objects.gh_repo import GHRepo, GHRepoList
+from src.rem.gh.gh_objects.gh_release import GHRelease
 
 try:
     # noinspection PyUnresolvedReferences
@@ -17,6 +19,49 @@ try:
     token = Secret.gh_test_token
 except ImportError:
     token = False
+
+
+ENDPOINT = r'(.*\.)?api\.github\.com$'
+HEADERS = {'content-type': 'application/json'}
+GET = 'get'
+
+
+class GHResource:
+
+    def __init__(self, path):
+        self.path = path
+
+    def get(self):
+        with open(self.path, 'r') as f:
+            content = f.read()
+        return content
+
+
+@urlmatch(netloc=ENDPOINT, method=GET)
+def mock_gh_api(url, request):
+    file_path = url.netloc + url.path + '.json'
+    try:
+        content = GHResource(file_path).get()
+    except EnvironmentError:
+        return response(404, {}, HEADERS, None, 5, request)
+    return response(200, content, HEADERS, None, 5, request)
+
+
+@with_httmock(mock_gh_api)
+def test_get_repo():
+    repo = GHAnonymousSession().get_repo('132nd-etcher', 'EASI')
+
+    assert repo is not None
+    assert isinstance(repo, GHRepo)
+    assert repo.name == 'EASI'
+
+
+@with_httmock(mock_gh_api)
+def test_get_user():
+    user = GHAnonymousSession().get_user('octocat')
+
+    assert user.login == 'octocat'
+    assert user.email == 'octocat@github.com'
 
 
 # noinspection PyPep8Naming
@@ -97,6 +142,9 @@ class TestGHSession(TestCase):
         m.assert_called_with()
         Singleton.wipe_instances()
         self.s = GHSession(token)
+
+    def test_primary_email(self):
+        assert Secret.gh_usermail == self.s.primary_email.email
 
     def test_create_repo(self):
         name = 'test_repo'
