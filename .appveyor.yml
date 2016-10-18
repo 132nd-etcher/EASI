@@ -118,7 +118,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: nightly
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
@@ -133,7 +133,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: nightly
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
@@ -148,7 +148,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: alpha
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
@@ -163,7 +163,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: beta
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
@@ -178,7 +178,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: beta
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
@@ -193,7 +193,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: stable
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
