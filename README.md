@@ -54,8 +54,6 @@ Requirements
 
 This project's dependencies are managed by [VersionEye][versioneye_link]
 
-See `REQUIREMENTS.md` file for a list of links to the packages used by this project.
-
 Building
 ========
 
