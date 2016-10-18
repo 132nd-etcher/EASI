@@ -1,7 +1,3 @@
-# CI on Windows via appveyor
-
-#version: 0.0.11-alpha.1+11312-AV_{branch}_{build}
-
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
     CYGWIN_GIT_PATH:   "C:\\cygwin\\bin;%GIT_DAEMON_PATH%"
@@ -59,7 +55,7 @@ install:
   - curl -O http://esrg.sourceforge.net/utils_win_up/md5sum/crc32.exe
   - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
   - choco install gitversion.portable -y
-  - git clone git@github.com:132nd-etcher/verpatch.git
+  - git clone https://github.com/132nd-etcher/verpatch.git
   - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
 
 before_build:
