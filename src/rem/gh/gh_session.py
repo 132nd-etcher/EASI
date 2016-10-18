@@ -5,8 +5,12 @@ import requests
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
-from src.rem.gh.gh_objects import GHAllReleases, GHUser, GHRepoList, GHRepo, GHAuthorization, GHRelease
 from src.sig import sig_gh_token_status_changed
+from .gh_objects.gh_authorization import GHAuthorization
+from .gh_objects.gh_release import GHAllReleases, GHRelease
+from .gh_objects.gh_repo import GHRepoList, GHRepo
+from .gh_objects.gh_user import GHUser
+from .gh_objects.gh_mail import GHMail, GHMailList
 
 try:
     from vault.secret import Secret
@@ -22,6 +26,22 @@ class GHSessionError(Exception):
         Exception.__init__(self, msg)
 
 
+class RequestFailedError(GHSessionError):
+    pass
+
+
+class AuthenticationError(GHSessionError):
+    pass
+
+
+class RateLimitationError(GHSessionError):
+    pass
+
+
+class GithubAPIError(GHSessionError):
+    pass
+
+
 # TODO: https://github.com/github/choosealicense.com/tree/gh-pages/_licenses
 # TODO https://developer.github.com/v3/licenses/
 
@@ -30,34 +50,51 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
     def __init__(self):
         requests.Session.__init__(self)
         self.base = ['https://api.github.com']
-        self.resp = None
+        self.__resp = None
         self.req = None
+
+    @property
+    def resp(self) -> requests.models.Response:
+        return self.__resp
 
     def build_req(self, *args):
         self.req = '/'.join(self.base + list(args))
         return self.req
 
-    def __parse_resp(self) -> requests.models.Response:
-        if self.resp is None or not self.resp.ok:
-            if self.resp.status_code >= 500:
-                logger.error(r'Github API seems to be down, check https://status.github.com/')
+    def __parse_resp_error(self):
+        if self.resp.status_code >= 500:
+            raise GithubAPIError(r'Github API seems to be down, check https://status.github.com/')
+        else:
+            code = self.resp.status_code
+            reason = self.resp.reason
+            msg = [str(code), reason]
+            json = self.resp.json()
+            if json:
+                msg.append('GH_MSG: {}'.format(json.get('message')))
+                msg.append('GH_DOC: {}'.format(json.get('documentation_url')))
+                if code == 403 and json.get('message').startswith('API rate limit exceeded for '):
+                    raise RateLimitationError(': '.join(msg))
+            if code == 401:
+                raise AuthenticationError(': '.join(msg))
             else:
-                if self.resp.status_code == 401:
-                    raise GHSessionError('Unauthorized: wrong password and/or username')
-                else:
-                    raise GHSessionError('request failed: {}: {}: {}'.format(
-                        self.req, self.resp.status_code, self.resp.reason))
+                raise GHSessionError(': '.join(msg))
+
+    def __parse_resp(self) -> requests.models.Response:
+        if self.resp is None:
+            raise RequestFailedError('did not get any response from: {}'.format(self.req))
+        if not self.resp.ok:
+            self.__parse_resp_error()
         logger.debug(self.resp.reason)
         return self.resp
 
     def _get(self, **kwargs) -> requests.models.Response:
         logger.debug(self.req)
-        self.resp = super(GHAnonymousSession, self).get(self.req, **kwargs)
+        self.__resp = super(GHAnonymousSession, self).get(self.req, **kwargs)
         return self.__parse_resp()
 
     def _put(self, **kwargs) -> requests.models.Response:
         logger.debug(self.req)
-        self.resp = super(GHAnonymousSession, self).put(self.req, **kwargs)
+        self.__resp = super(GHAnonymousSession, self).put(self.req, **kwargs)
         return self.__parse_resp()
 
     def _get_json(self, **kwargs) -> requests.models.Response:
@@ -66,17 +103,17 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
 
     def _post(self, data=None, json: dict = None, **kwargs) -> requests.models.Response:
         logger.debug(self.req)
-        self.resp = super(GHAnonymousSession, self).post(self.req, data, json, **kwargs)
+        self.__resp = super(GHAnonymousSession, self).post(self.req, data, json, **kwargs)
         return self.__parse_resp()
 
     def _patch(self, data=None, **kwargs) -> requests.models.Response:
         logger.debug(self.req)
-        self.resp = super(GHAnonymousSession, self).patch(self.req, data, **kwargs)
+        self.__resp = super(GHAnonymousSession, self).patch(self.req, data, **kwargs)
         return self.__parse_resp()
 
     def _delete(self, **kwargs) -> requests.models.Response:
         logger.debug(self.req)
-        self.resp = super(GHAnonymousSession, self).delete(self.req, **kwargs)
+        self.__resp = super(GHAnonymousSession, self).delete(self.req, **kwargs)
         return self.__parse_resp()
 
     def get_latest_release(self, user: str, repo: str) -> GHRelease:
@@ -170,7 +207,20 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
     def rate_limit(self):
         self.build_req('rate_limit')
         req = self._get()
-        return req.json().get('resources', {}).get('core', {}).get('limit', 0)
+        return req.json().get('resources', {}).get('core', {}).get('remaining', 0)
+
+    @property
+    def email_addresses(self) -> GHMailList:
+        self.build_req('user', 'emails')
+        return GHMailList(self._get_json())
+
+    @property
+    def primary_email(self) -> GHMail or None:
+        for mail in self.email_addresses:
+            assert isinstance(mail, GHMail)
+            if mail.primary and mail.verified:
+                return mail
+        return None
 
     def create_repo(self,
                     name: str,
