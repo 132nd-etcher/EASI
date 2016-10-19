@@ -40,7 +40,7 @@ def test_get_version():
     with pytest.raises(TypeError):
         Path('c:\windows').get_win32_file_info()
     with pytest.raises(ValueError):
-        p = Path('src/main.py.py')
+        p = Path('src/main.py')
         if not p.exists():
             p = Path('../src/main.py')
         p.get_win32_file_info()
