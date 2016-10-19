@@ -94,7 +94,7 @@ branches:
     - /pull/.*/
     - /hotfix/.*/
     - /feature/.*/
-    
+
   except:
     - gh-pages
 
@@ -202,6 +202,8 @@ deploy:
       appveyor_repo_tag: false
 
 skip_tags: false
+
+skip_branch_with_pr: true
 
 skip_commits:
   files:
