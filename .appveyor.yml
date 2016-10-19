@@ -93,8 +93,8 @@ branches:
     - /release/.*/
     - /pull/.*/
     - /hotfix/.*/
-#    - /feature/.*/ 
-
+    - /feature/.*/
+    
   except:
     - gh-pages
 
