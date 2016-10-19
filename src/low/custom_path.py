@@ -12,8 +12,8 @@ from humanize import filesize
 
 
 class Win32FileInfo:
-    def __init__(self, path: str or Path):
-        self.__path = str(Path(path).abspath())
+    def __init__(self, _path: str or Path):
+        self.__path = str(Path(_path).abspath())
         self.__props = None
         self.__read_props()
 
@@ -123,24 +123,6 @@ class Path(path.Path):
         elif not self.isfile():
             raise TypeError(self.abspath())
         return Win32FileInfo(self)
-
-    def get_version_info_pefile(self) -> str:
-        if not self.exists():
-            raise FileNotFoundError(self.abspath())
-        if not self.isfile():
-            raise TypeError('not a file: {}'.format(self.abspath()))
-        try:
-            pe = pefile.PE(self.abspath())
-        except pefile.PEFormatError:
-            raise ValueError('file has no version: {}'.format(self.abspath()))
-        if 'VS_FIXEDFILEINFO' not in pe.__dict__ or not pe.VS_FIXEDFILEINFO:
-            raise ValueError('file has no version: {}'.format(self.abspath()))
-        verinfo = pe.VS_FIXEDFILEINFO
-        file_ver = (verinfo.FileVersionMS >> 16, verinfo.FileVersionMS & 0xFFFF, verinfo.FileVersionLS >> 16,
-                    verinfo.FileVersionLS & 0xFFFF)
-        # prod_ver = (verinfo.ProductVersionMS >> 16, verinfo.ProductVersionMS & 0xFFFF,
-        # verinfo.ProductVersionLS >> 16, verinfo.ProductVersionLS & 0xFFFF)
-        return '%d.%d.%d.%d' % file_ver
 
     def abspath(self):
         return path.Path.abspath(self)

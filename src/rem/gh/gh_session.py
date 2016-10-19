@@ -134,7 +134,7 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
         self.build_req('repos', user, repo, 'releases', str(release_id), 'assets')
         return GHAllAssets(self._get_json())
 
-    def get_asset(self,user: str, repo: str, release_id: int, asset_id: int):
+    def get_asset(self, user: str, repo: str, release_id: int, asset_id: int):
         self.build_req('repos', user, repo, 'releases', str(release_id), 'assets', str(asset_id))
         return GHAsset(self._get_json())
 

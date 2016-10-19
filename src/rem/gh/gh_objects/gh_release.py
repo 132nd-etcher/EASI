@@ -1,6 +1,6 @@
 # coding=utf-8
 from src.rem.gh.gh_objects.base_gh_object import BaseGHObject, json_property
-from src.rem.gh.gh_objects.gh_asset import GHAllAssets, GHAsset
+from src.rem.gh.gh_objects.gh_asset import GHAllAssets
 from src.rem.gh.gh_objects.gh_user import GHUser
 
 

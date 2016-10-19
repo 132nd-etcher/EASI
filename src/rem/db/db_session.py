@@ -2,7 +2,6 @@
 
 import webbrowser
 
-import semver
 from dropbox import Dropbox as BaseDropbox, DropboxOAuth2FlowNoRedirect
 from dropbox.exceptions import AuthError
 
