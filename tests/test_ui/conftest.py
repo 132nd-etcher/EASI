@@ -1,8 +1,27 @@
 # coding=utf-8
 
 import pytest
+from src.cfg.cfg import config
+from src.ui.dialog_config.dialog import ConfigDialog
 
 from src.ui.main_ui.main_ui import MainUi
+
+
+@pytest.fixture()
+def config_dialog(tmpdir):
+    sg = str(tmpdir.mkdir('sg'))
+    cache = str(tmpdir.mkdir('cache'))
+    kdiff = tmpdir.join('kdiff3.exe')
+    kdiff.write('')
+    kdiff = str(kdiff)
+    config.saved_games_path = sg
+    config.cache_path = cache
+    config.kdiff_path = kdiff
+    dialog = ConfigDialog()
+    dialog.show()
+    dialog.setup()
+    yield dialog, sg, cache, kdiff
+    dialog.close()
 
 
 @pytest.fixture()

@@ -4,6 +4,7 @@
 
 [![Pun][pun]][pun_link]
 
+
 [![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.][project_status]](http://www.repostatus.org/#wip)
 [![GitHub version][project_version]][project_link]
 [![Download count][gh_download]][download_link]
@@ -54,8 +55,6 @@ Requirements
 
 This project's dependencies are managed by [VersionEye][versioneye_link]
 
-See `REQUIREMENTS.md` file for a list of links to the packages used by this project.
-
 Building
 ========
 
@@ -66,6 +65,14 @@ Building
     pip.exe install -r requirements.txt
     pip.exe install -r requirements-extra.txt
     pip.exe install -r requirements-build.txt
+    ```
+
+1. Run tests
+
+    ```cmd
+    CMD.EXE>
+    pip.exe install -r requirements-test.txt
+    pytests -c pytest
     ```
 
 1. Build PyQt5 "\*.ui" files

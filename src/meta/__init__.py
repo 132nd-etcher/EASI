@@ -1,4 +1,4 @@
 # coding=utf-8
 
-from .decorators import meta_property_with_default
+from .decorators import MetaPropertyWithDefault
 from .meta import Meta

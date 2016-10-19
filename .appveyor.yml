@@ -34,18 +34,16 @@ cache:
   - "%PYTHON%"
   - C:\Program Files (x86)\Inno Setup 5
   - C:\Users\appveyor\AppData\Local\pip\cache
-#  - C:\ProgramData\chocolatey
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 install:
   - "%PYTHON%/Scripts/pip.exe install --disable-pip-version-check --user --upgrade pip"
-  - "%PYTHON%/Scripts/pip.exe install nose"
-  - "%PYTHON%/Scripts/pip.exe install coverage"
+  - "%PYTHON%/Scripts/pip.exe install --upgrade coverage"
   - "%PYTHON%/Scripts/pip.exe install -r requirements.txt"
-  - "%PYTHON%/Scripts/pip.exe install -r requirements-extra.txt"
   - "%PYTHON%/Scripts/pip.exe install -r requirements-build.txt"
   - "%PYTHON%/Scripts/pip.exe install -r requirements-test.txt"
+  - "%PYTHON%/Scripts/pip.exe install -r requirements-docs.txt"
   - choco install gitversion.portable -pre -y
   - nuget install secure-file -ExcludeVersion
   - choco install -y InnoSetup curl
@@ -53,8 +51,6 @@ install:
   - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
   - choco install gitversion.portable -y
   - git clone --branch=master https://github.com/132nd-etcher/verpatch.git C:\projects\verpatch
-  - dir C:\projects
-  - dir C:\projects\verpatch
   - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
 
 
@@ -79,6 +75,12 @@ build_script:
   - "%PYTHON%/python.exe -m PyInstaller ./src/main.py --noconfirm --onefile --clean --icon src/ui/resources/app.ico --workpath ./build/build --paths %PYTHON%/Lib/site-packages/PyQt5/Qt/bin --name EASI --distpath ./build/dist_windowed --windowed --key %COMPILEKEY% --log-level=WARN"
   - cmd: verpatch.exe %APPVEYOR_BUILD_FOLDER%\build\dist_windowed\easi.exe /high %GitVersion_FullSemVer% /va /pv %GitVersion_FullSemVer% /s product EASI /s copyright "2015 etcher" /s build %GitVersion_Sha% /langid 1033 /s PrivateBuild %APPVEYOR_BUILD_NUMBER%
   - cmd: iscc inno_setup.iss /DAppName=EASI /DAssemblySemVer=%GitVersion_AssemblySemVer% /DSemVer=%GitVersion_SemVer% /DFullSemVer=%GitVersion_FullSemVer% /DInformationalVersion=%GitVersion_InformationalVersion% /DSha=%GitVersion_Sha% /DAppIco=src\ui\resources\app.ico /DOutputDir=build\release
+  - git config --global credential.helper store
+  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GH_PAGES_TOKEN):x-oauth-basic@github.com`n"
+  - "%PYTHON%/Scripts/mkdocs.exe build --clean --strict -v -f .mkdocs.yml"
+  - "git config --global user.email %GH_MAIL%"
+  - "git config --global user.name 132nd-etcher"
+  - "%PYTHON%/Scripts/mkdocs.exe gh-deploy --clean -v -f .mkdocs.yml"
 
 artifacts:
   - path: ./build/release/*.exe
@@ -116,13 +118,13 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: nightly
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
     on:
       branch: /pull/.*/
-      appveyor_repo_tag: true
+      appveyor_repo_tag: false
 
   - provider: BinTray
     username: 132nd-etcher
@@ -131,13 +133,13 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: nightly
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
     on:
       branch: /feature/.*/
-      appveyor_repo_tag: true
+      appveyor_repo_tag: false
 
   - provider: BinTray
     username: 132nd-etcher
@@ -146,13 +148,13 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: alpha
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
     on:
       branch: develop
-      appveyor_repo_tag: true
+      appveyor_repo_tag: false
 
   - provider: BinTray
     username: 132nd-etcher
@@ -161,7 +163,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: beta
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
@@ -176,7 +178,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: beta
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
@@ -191,7 +193,7 @@ deploy:
     subject: 132nd-etcher
     repo: EASI
     package: stable
-    version: "%APPVEYOR_BUILD_VERSION%"
+    version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
     explode: false
@@ -199,10 +201,12 @@ deploy:
       branch: master
       appveyor_repo_tag: false
 
-skip_tags: true
+skip_tags: false
+
+skip_branch_with_pr: true
 
 skip_commits:
   files:
     - docs/*
     - '**/*.html'
-  message: /.*(t|T)rivia.*/
+  message: /.*\[nobuild\].*/

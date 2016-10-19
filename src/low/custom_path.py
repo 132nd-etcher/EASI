@@ -12,14 +12,10 @@ from humanize import filesize
 
 
 class Win32FileInfo:
-    def __init__(self, path: str or Path):
-        self.__path = str(Path(path).abspath())
+    def __init__(self, _path: str or Path):
+        self.__path = str(Path(_path).abspath())
         self.__props = None
         self.__read_props()
-
-    @property
-    def comments(self):
-        return self.__props.get('Comments')
 
     @property
     def comments(self):
@@ -92,6 +88,8 @@ class Win32FileInfo:
                         self.__path,
                         u'\\StringFileInfo\\%04X%04X\\%s' % (lang, codepage, name)
                     )).strip(' ')
+                    if self.__props[name] == 'None':
+                        self.__props[name] = None
                 except:
                     raise
         except getattr(pywintypes, 'error') as e:
@@ -126,24 +124,6 @@ class Path(path.Path):
             raise TypeError(self.abspath())
         return Win32FileInfo(self)
 
-    def get_version_info_pefile(self) -> str:
-        if not self.exists():
-            raise FileNotFoundError(self.abspath())
-        if not self.isfile():
-            raise TypeError('not a file: {}'.format(self.abspath()))
-        try:
-            pe = pefile.PE(self.abspath())
-        except pefile.PEFormatError:
-            raise ValueError('file has no version: {}'.format(self.abspath()))
-        if 'VS_FIXEDFILEINFO' not in pe.__dict__ or not pe.VS_FIXEDFILEINFO:
-            raise ValueError('file has no version: {}'.format(self.abspath()))
-        verinfo = pe.VS_FIXEDFILEINFO
-        file_ver = (verinfo.FileVersionMS >> 16, verinfo.FileVersionMS & 0xFFFF, verinfo.FileVersionLS >> 16,
-                    verinfo.FileVersionLS & 0xFFFF)
-        # prod_ver = (verinfo.ProductVersionMS >> 16, verinfo.ProductVersionMS & 0xFFFF,
-        # verinfo.ProductVersionLS >> 16, verinfo.ProductVersionLS & 0xFFFF)
-        return '%d.%d.%d.%d' % file_ver
-
     def abspath(self):
         return path.Path.abspath(self)
 
@@ -171,30 +151,12 @@ class Path(path.Path):
         shutil.rmtree(self.abspath())
 
 
-def create_temp_file(*, suffix=None, prefix=None, create_in_dir=None) -> Path:
-    """
-    Creates a temporary path in the user's temp dir
-    :param suffix: filename suffix
-    :param prefix: filename prefix
-    :param create_in_dir: directory in which the file will be created (defaults to temp)
-    :return: temporary file path as a string
-    """
-    if create_in_dir is None:
-        create_in_dir = tempfile.gettempdir()
-    os_handle, temp_file = tempfile.mkstemp(suffix=suffix, prefix=prefix, dir=create_in_dir)
+def create_temp_file(*, suffix: str = None, prefix: str = None, create_in_dir: str = None) -> Path:
+    os_handle, temp_file = tempfile.mkstemp(suffix=suffix, prefix=prefix, dir=create_in_dir or tempfile.gettempdir())
     os.close(os_handle)
     return Path(temp_file)
 
 
-def create_temp_dir(*, suffix=None, prefix=None, create_in_dir=None) -> Path:
-    """
-    Creates a temporary path in the user's temp dir
-    :param suffix: filename suffix
-    :param prefix: filename prefix
-    :param create_in_dir: directory in which the file will be created (defaults to temp)
-    :return: temporary file path as a string
-    """
-    if create_in_dir is None:
-        create_in_dir = tempfile.gettempdir()
-    temp_dir = tempfile.mkdtemp(suffix=suffix, prefix=prefix, dir=create_in_dir)
+def create_temp_dir(*, suffix: str = None, prefix: str = None, create_in_dir: str = None) -> Path:
+    temp_dir = tempfile.mkdtemp(suffix=suffix, prefix=prefix, dir=create_in_dir or tempfile.gettempdir())
     return Path(temp_dir)

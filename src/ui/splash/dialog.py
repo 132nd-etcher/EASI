@@ -1,7 +1,8 @@
 # coding=utf-8
 
 
-from src.abstract import AbstractConnectedQObject, AbstractSplash
+from src.abstract.ui.connected_qobject import AbstractConnectedQObject
+from src.abstract.ui.splash import AbstractSplash
 from src.low import constants
 from src.qt import QSplashScreen, QPixmap, qt_resources, Qt, QLabel, QFont, QProgressBar
 from src.sig import sig_splash

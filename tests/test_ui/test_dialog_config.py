@@ -2,14 +2,12 @@
 import os
 from unittest import mock
 
-import pytest
 from PyQt5.QtTest import QTest
 from pytestqt.qtbot import QtBot
 
 from src.cfg import config
 from src.low import constants
 from src.qt import Qt
-from src.ui.dialog_config import ConfigDialog
 
 constants.TESTING = True
 
@@ -28,25 +26,8 @@ sig_keyring = k.start()
 sig_cfg_subscribe_to_test_versions = t.start()
 
 
-@pytest.fixture()
-def valid_dialog(tmpdir):
-    sg = str(tmpdir.mkdir('sg'))
-    cache = str(tmpdir.mkdir('cache'))
-    kdiff = tmpdir.join('kdiff3.exe')
-    kdiff.write('')
-    kdiff = str(kdiff)
-    config.saved_games_path = sg
-    config.cache_path = cache
-    config.kdiff_path = kdiff
-    dialog = ConfigDialog()
-    dialog.show()
-    dialog.setup()
-    yield dialog, sg, cache, kdiff
-    dialog.close()
-
-
-def test_config_dialog_signals(qtbot: QtBot, valid_dialog):
-    dialog, _, _, _ = valid_dialog
+def test_config_dialog_signals(qtbot: QtBot, config_dialog):
+    dialog, _, _, _ = config_dialog
     qtbot.addWidget(dialog)
     dialog.save_settings()
 
@@ -63,12 +44,12 @@ def test_config_dialog_signals(qtbot: QtBot, valid_dialog):
     dialog.close()
 
 
-def test_sg_path(qtbot: QtBot, tmpdir, mocker, valid_dialog):
+def test_sg_path(qtbot: QtBot, tmpdir, mocker, config_dialog):
     assert isinstance(qtbot, (QtBot, QTest))
     test_dir = str(tmpdir.mkdir('t'))
     test_file = tmpdir.join('file')
     test_file.write('')
-    dialog, sg, _, _ = valid_dialog
+    dialog, _, _, _ = config_dialog
 
     assert config.saved_games_path == dialog.sg_line_edit.text()
 
@@ -146,8 +127,19 @@ def test_sg_path(qtbot: QtBot, tmpdir, mocker, valid_dialog):
         )
 
 
-def test_cancel(qtbot, tmpdir, valid_dialog):
-    dialog, sg, cache, kdiff = valid_dialog
+def write_some_value_to_sg_line_edit(tmpdir, dialog, qtbot):
+    test_dir = str(tmpdir.mkdir('moo'))
+    test_file = tmpdir.join('kdiff3.exe')
+    test_file.write('')
+    test_file = str(test_file)
+    dialog.sg_line_edit.setText(test_dir)
+    dialog.cache_line_edit.setText(test_dir)
+    dialog.kdiff_line_edit.setText(test_file)
+    return test_dir, test_file
+
+
+def test_cancel(qtbot, tmpdir, config_dialog):
+    dialog, sg, cache, kdiff = config_dialog
 
     assert config.saved_games_path == sg
     assert dialog.sg_line_edit.text() == sg
@@ -156,16 +148,19 @@ def test_cancel(qtbot, tmpdir, valid_dialog):
     assert config.kdiff_path == kdiff
     assert dialog.kdiff_line_edit.text() == kdiff
 
-    test_dir = str(tmpdir.mkdir('moo'))
-    test_file = tmpdir.join('file')
-    test_file.write('')
-    test_file = str(test_file)
-    dialog.sg_line_edit.setText(test_dir)
-    dialog.cache_line_edit.setText(test_dir)
-    dialog.kdiff_line_edit.setText(test_file)
+    qtbot.wait_until(lambda: not dialog.btn_apply.isEnabled())
+    qtbot.wait_until(lambda: not dialog.btn_reset.isEnabled())
+
+    test_dir, test_file = write_some_value_to_sg_line_edit(tmpdir, dialog, qtbot)
+
+    qtbot.wait_until(lambda: dialog.btn_apply.isEnabled())
+    qtbot.wait_until(lambda: dialog.btn_reset.isEnabled())
+
     qtbot.mouseClick(dialog.btn_cancel, Qt.LeftButton)
 
-    assert dialog.isVisible() is False
+    qtbot.wait_until(lambda: not dialog.btn_apply.isEnabled())
+    qtbot.wait_until(lambda: not dialog.btn_reset.isEnabled())
+    qtbot.wait_until(lambda: not dialog.isVisible())
 
     assert config.saved_games_path == sg
     assert dialog.sg_line_edit.text() == test_dir
@@ -175,8 +170,8 @@ def test_cancel(qtbot, tmpdir, valid_dialog):
     assert dialog.kdiff_line_edit.text() == test_file
 
 
-def test_ok(qtbot, tmpdir, valid_dialog):
-    dialog, sg, cache, kdiff = valid_dialog
+def test_ok(qtbot, tmpdir, config_dialog):
+    dialog, sg, cache, kdiff = config_dialog
 
     assert config.saved_games_path == sg
     assert dialog.sg_line_edit.text() == sg
@@ -185,16 +180,19 @@ def test_ok(qtbot, tmpdir, valid_dialog):
     assert config.kdiff_path == kdiff
     assert dialog.kdiff_line_edit.text() == kdiff
 
-    test_dir = str(tmpdir.mkdir('moo'))
-    test_file = tmpdir.join('kdiff3.exe')
-    test_file.write('')
-    test_file = str(test_file)
-    dialog.sg_line_edit.setText(test_dir)
-    dialog.cache_line_edit.setText(test_dir)
-    dialog.kdiff_line_edit.setText(test_file)
+    qtbot.wait_until(lambda: not dialog.btn_apply.isEnabled())
+    qtbot.wait_until(lambda: not dialog.btn_reset.isEnabled())
+
+    test_dir, test_file = write_some_value_to_sg_line_edit(tmpdir, dialog, qtbot)
+
+    qtbot.wait_until(lambda: dialog.btn_apply.isEnabled())
+    qtbot.wait_until(lambda: dialog.btn_reset.isEnabled())
+
     qtbot.mouseClick(dialog.btn_ok, Qt.LeftButton)
 
-    assert dialog.isVisible() is False
+    qtbot.wait_until(lambda: not dialog.btn_apply.isEnabled())
+    qtbot.wait_until(lambda: not dialog.btn_reset.isEnabled())
+    qtbot.wait_until(lambda: not dialog.isVisible())
 
     assert config.saved_games_path == test_dir
     assert dialog.sg_line_edit.text() == test_dir
@@ -204,8 +202,8 @@ def test_ok(qtbot, tmpdir, valid_dialog):
     assert dialog.kdiff_line_edit.text() == test_file
 
 
-def test_reset(qtbot, tmpdir, valid_dialog):
-    dialog, sg, cache, kdiff = valid_dialog
+def test_reset(qtbot, tmpdir, config_dialog):
+    dialog, sg, cache, kdiff = config_dialog
 
     assert config.saved_games_path == sg
     assert dialog.sg_line_edit.text() == sg
@@ -214,15 +212,16 @@ def test_reset(qtbot, tmpdir, valid_dialog):
     assert config.kdiff_path == kdiff
     assert dialog.kdiff_line_edit.text() == kdiff
 
-    test_dir = str(tmpdir.mkdir('moo'))
-    test_file = tmpdir.join('kdiff3.exe')
-    test_file.write('')
-    test_file = str(test_file)
-    dialog.sg_line_edit.setText(test_dir)
-    dialog.cache_line_edit.setText(test_dir)
-    dialog.kdiff_line_edit.setText(test_file)
+    _, _ = write_some_value_to_sg_line_edit(tmpdir, dialog, qtbot)
+
+    qtbot.wait_until(lambda: dialog.btn_apply.isEnabled())
+    qtbot.wait_until(lambda: dialog.btn_reset.isEnabled())
+
     qtbot.mouseClick(dialog.btn_reset, Qt.LeftButton)
 
+    qtbot.wait_until(lambda: not dialog.btn_reset.isEnabled())
+    qtbot.wait_until(lambda: not dialog.btn_apply.isEnabled())
+
     assert config.saved_games_path == sg
     assert dialog.sg_line_edit.text() == sg
     assert config.cache_path == cache
@@ -231,8 +230,8 @@ def test_reset(qtbot, tmpdir, valid_dialog):
     assert dialog.kdiff_line_edit.text() == kdiff
 
 
-def test_directory_does_not_exist(qtbot, tmpdir, mocker, valid_dialog):
-    dialog, sg, cache, _ = valid_dialog
+def test_directory_does_not_exist(qtbot, tmpdir, mocker, config_dialog):
+    dialog, sg, cache, _ = config_dialog
 
     p = str(tmpdir.join('dir'))
 
@@ -262,8 +261,8 @@ def test_directory_does_not_exist(qtbot, tmpdir, mocker, valid_dialog):
         show_error_balloon.assert_called_with('Directory does not exist')
 
 
-def test_not_a_directory(qtbot, tmpdir, mocker, valid_dialog):
-    dialog, sg, cache, _ = valid_dialog
+def test_not_a_directory(qtbot, tmpdir, mocker, config_dialog):
+    dialog, sg, cache, _ = config_dialog
 
     p = tmpdir.join('dir')
     p.write('')

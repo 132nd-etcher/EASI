@@ -1,16 +1,19 @@
 # coding=utf-8
 
-import time
 import os
+import time
 from unittest import TestCase, mock, skipUnless, skipIf
 
-from hypothesis import strategies as st
+import pytest
 from httmock import response, urlmatch, with_httmock
+from hypothesis import strategies as st
 
 from src.low.singleton import Singleton
-from src.rem.gh.gh_session import GHAnonymousSession, GHSession
-from src.rem.gh.gh_objects.gh_repo import GHRepo, GHRepoList
+from src.rem.gh.gh_objects.gh_release import GHAllAssets
 from src.rem.gh.gh_objects.gh_release import GHRelease
+from src.rem.gh.gh_objects.gh_repo import GHRepo, GHRepoList
+from src.rem.gh.gh_objects.gh_user import GHUser
+from src.rem.gh.gh_session import GHAnonymousSession, GHSession
 
 try:
     # noinspection PyUnresolvedReferences
@@ -21,13 +24,21 @@ except ImportError:
     token = False
 
 
+def test_build_req():
+    s = GHAnonymousSession()
+    assert s.build_req('test', 'test') == 'https://api.github.com/test/test'
+    with pytest.raises(ValueError):
+        s.build_req()
+    with pytest.raises(TypeError):
+        s.build_req(1)
+
+
 ENDPOINT = r'(.*\.)?api\.github\.com$'
 HEADERS = {'content-type': 'application/json'}
 GET = 'get'
 
 
 class GHResource:
-
     def __init__(self, path):
         self.path = path
 
@@ -40,11 +51,13 @@ class GHResource:
 @urlmatch(netloc=ENDPOINT, method=GET)
 def mock_gh_api(url, request):
     file_path = url.netloc + url.path + '.json'
+    if not os.path.exists(file_path):
+        file_path = 'tests/{}'.format(file_path)
     try:
         content = GHResource(file_path).get()
     except EnvironmentError:
-        return response(404, {}, HEADERS, None, 5, request)
-    return response(200, content, HEADERS, None, 5, request)
+        return response(404, {}, HEADERS, 'FileNotFound', 5, request)
+    return response(200, content, HEADERS, 'Success', 5, request)
 
 
 @with_httmock(mock_gh_api)
@@ -64,6 +77,48 @@ def test_get_user():
     assert user.email == 'octocat@github.com'
 
 
+@with_httmock(mock_gh_api)
+def test_get_latest_release():
+    latest = GHAnonymousSession().get_latest_release('132nd-etcher', 'EASI')
+    assert latest.assets_url == 'https://api.github.com/repos/octocat/Hello-World/releases/1/assets'
+    assert isinstance(latest.assets(), GHAllAssets)
+    assert len(latest.assets()) == 1
+    assert isinstance(latest.author(), GHUser)
+    assert latest.body == 'Description of the release'
+    assert latest.created_at == '2013-02-27T19:35:32Z'
+    assert latest.draft is False
+    assert latest.html_url == 'https://github.com/octocat/Hello-World/releases/v1.0.0'
+    assert latest.name == 'v1.0.0'
+    assert latest.prerelease is False
+    assert latest.published_at == '2013-02-27T19:35:32Z'
+    assert latest.version == 'v1.0.0'
+    assert latest.url == 'https://api.github.com/repos/octocat/Hello-World/releases/1'
+
+
+@with_httmock(mock_gh_api)
+def test_gh_asset():
+    asset = GHAnonymousSession().get_asset('132nd-etcher', 'EASI', 1, 1)
+    assert asset.url == 'https://api.github.com/repos/octocat/Hello-World/releases/assets/1'
+    assert asset.id == 1
+    assert asset.name == 'example.zip'
+    assert asset.label == 'short description'
+    assert isinstance(asset.uploader(), GHUser)
+    assert asset.content_type == 'application/zip'
+    assert asset.state == 'uploaded'
+    assert asset.size == 1024
+    assert asset.download_count == 42
+    assert asset.created_at == '2013-02-27T19:35:32Z'
+    assert asset.updated_at == '2013-02-27T19:35:32Z'
+    assert asset.browser_download_url == 'https://github.com/octocat/Hello-World/releases/download/v1.0.0/example.zip'
+
+
+@with_httmock(mock_gh_api)
+def test_get_all_asset():
+    all_assets = GHAnonymousSession().get_all_assets('132nd-etcher', 'EASI', 1)
+    assert isinstance(all_assets, GHAllAssets)
+    assert len(all_assets) == 1
+
+
 # noinspection PyPep8Naming
 @skipIf(os.getenv('APPVEYOR'), 'AppVeyor gets 403 from GH all the time')
 class TestGHAnonymousSession(TestCase):
@@ -81,13 +136,17 @@ class TestGHAnonymousSession(TestCase):
 
     def test_user(self):
         usr = self.s.get_user('132nd-etcher')
+        print(usr.get_all())
         self.assertSequenceEqual(
             usr.get_all(),
             {
-                ('url', 'https://api.github.com/users/132nd-etcher'),
-                ('login', '132nd-etcher'),
-                ('html_url', 'https://github.com/132nd-etcher'),
-                ('id', 21277151)
+                ('public_gists', 0), ('blog', None), ('bio', None), ('public_repos', 36), ('company', None),
+                ('location', None), ('avatar_url', 'https://avatars.githubusercontent.com/u/21277151?v=3'),
+                ('id', 21277151), ('login', '132nd-etcher'), ('html_url', 'https://github.com/132nd-etcher'),
+                ('type', 'User'), ('updated_at', '2016-10-18T22:43:35Z'),
+                ('repos_url', 'https://api.github.com/users/132nd-etcher/repos'),
+                ('created_at', '2016-08-27T11:20:43Z'),
+                ('email', None), ('url', 'https://api.github.com/users/132nd-etcher')
             }
         )
 

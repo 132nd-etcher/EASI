@@ -54,6 +54,7 @@ class ConfigDialog(Ui_Settings, QDialog):
 
     def __set_apply_btn_enabled(self, value: bool):
         self.btn_apply.setEnabled(value)
+        self.btn_reset.setEnabled(value)
 
     @staticmethod
     def __check_for_update():
@@ -108,6 +109,7 @@ class ConfigDialog(Ui_Settings, QDialog):
         return True
 
     def reject(self):
+        self.__set_apply_btn_enabled(False)
         super(ConfigDialog, self).reject()
         self.hide()
 

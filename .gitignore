@@ -107,3 +107,5 @@ unittest_secret.py
 /ssh.key
 /ssh.pub
 /prof/
+/site
+/Project_Default_copy.xml

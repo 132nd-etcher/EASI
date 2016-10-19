@@ -1,5 +1,6 @@
 # coding=utf-8
-from src.abstract import AbstractMainUiInterface, AbstractMainUiState
+from src.abstract.ui.main_ui_interface import AbstractMainUiInterface
+from src.abstract.ui.main_ui_state import AbstractMainUiState
 from .interface import interfaced_method, InterfacedSignal
 
 
