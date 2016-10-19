@@ -22,10 +22,6 @@ class Win32FileInfo:
         return self.__props.get('Comments')
 
     @property
-    def comments(self):
-        return self.__props.get('Comments')
-
-    @property
     def internal_name(self):
         return self.__props.get('InternalName')
 
@@ -92,6 +88,8 @@ class Win32FileInfo:
                         self.__path,
                         u'\\StringFileInfo\\%04X%04X\\%s' % (lang, codepage, name)
                     )).strip(' ')
+                    if self.__props[name] == 'None':
+                        self.__props[name] = None
                 except:
                     raise
         except getattr(pywintypes, 'error') as e:

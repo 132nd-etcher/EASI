@@ -1,6 +1,6 @@
 # coding=utf-8
 from src.rem.gh.gh_objects.base_gh_object import BaseGHObject, json_property
-from src.rem.gh.gh_objects.gh_asset import GHAllReleaseAssets
+from src.rem.gh.gh_objects.gh_asset import GHAllAssets, GHAsset
 from src.rem.gh.gh_objects.gh_user import GHUser
 
 
@@ -49,17 +49,13 @@ class GHRelease(BaseGHObject):
         return GHUser(self.json['author'])
 
     def assets(self):
-        return GHAllReleaseAssets(self.json['assets'])
+        return GHAllAssets(self.json['assets'])
 
     @property
     def version(self):
         if self.tag_name is None:
             return None
         return self.tag_name
-
-    @property
-    def setup_download_url(self):
-        return self.assets()[0].browser_download_url
 
 
 class GHAllReleases(BaseGHObject):

@@ -8,6 +8,7 @@ from src.low.singleton import Singleton
 from src.sig import sig_gh_token_status_changed
 from .gh_objects.gh_authorization import GHAuthorization
 from .gh_objects.gh_release import GHAllReleases, GHRelease
+from .gh_objects.gh_asset import GHAsset, GHAllAssets
 from .gh_objects.gh_repo import GHRepoList, GHRepo
 from .gh_objects.gh_user import GHUser
 from .gh_objects.gh_mail import GHMail, GHMailList
@@ -58,6 +59,11 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
         return self.__resp
 
     def build_req(self, *args):
+        if not args:
+            raise ValueError('request is empty')
+        for x in args:
+            if not isinstance(x, str):
+                raise TypeError('expected a string, got: {} ({})'.format(x, args))
         self.req = '/'.join(self.base + list(args))
         return self.req
 
@@ -123,6 +129,14 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
     def get_all_releases(self, user: str, repo: str):
         self.build_req('repos', user, repo, 'releases')
         return GHAllReleases(self._get_json())
+
+    def get_all_assets(self, user: str, repo: str, release_id: int):
+        self.build_req('repos', user, repo, 'releases', str(release_id), 'assets')
+        return GHAllAssets(self._get_json())
+
+    def get_asset(self,user: str, repo: str, release_id: int, asset_id: int):
+        self.build_req('repos', user, repo, 'releases', str(release_id), 'assets', str(asset_id))
+        return GHAsset(self._get_json())
 
     def list_user_repos(self, user: str):
         self.build_req('users', user, 'repos')

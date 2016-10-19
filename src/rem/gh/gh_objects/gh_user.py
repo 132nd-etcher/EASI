@@ -26,14 +26,6 @@ class GHUser(BaseGHObject):
         """"""
 
     @json_property
-    def url(self):
-        """"""
-
-    @json_property
-    def html_url(self):
-        """"""
-
-    @json_property
     def repos_url(self):
         """"""
 

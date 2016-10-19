@@ -1,12 +1,50 @@
 # coding=utf-8
 
 import string
+import pytest
 import subprocess
 
 from hypothesis import strategies as st, given
 
 from src.low.custom_path import Path
 from .utils import ContainedTestCase
+
+
+def test_get_version():
+    import os
+    p = Path(r'c:\windows\explorer.exe')
+    assert p.isfile()
+    assert p.exists()
+    assert p.get_win32_file_info()
+    info = p.get_win32_file_info()
+    if os.environ.get('APPVEYOR'):
+        assert p.get_win32_file_info().file_version == '6.3.9600.17031 (winblue_gdr.140221-1952)'
+        assert info.file_version == '6.1.7600.16385 (win7_rtm.090713-1255)'
+        assert info.fixed_version == '6.1.7601.23537'
+        assert info.product_version == '6.3.9600.17031'
+    else:
+        assert info.file_version == '6.1.7600.16385 (win7_rtm.090713-1255)'
+        assert info.fixed_version == '6.1.7601.23537'
+        assert info.product_version == '6.1.7600.16385'
+    assert info.comments is None
+    assert info.company_name == 'Microsoft Corporation'
+    assert info.copyright == '© Microsoft Corporation. All rights reserved.'
+    assert info.file_description == 'Windows Explorer'
+    assert info.internal_name == 'explorer'
+    assert info.private_build is None
+    assert info.original_filename == 'EXPLORER.EXE.MUI'
+    assert info.product_name == 'Microsoft® Windows® Operating System'
+    assert info.special_build is None
+    assert info.trademark is None
+    with pytest.raises(FileNotFoundError):
+        Path('c:\explorer.exe').get_win32_file_info()
+    with pytest.raises(TypeError):
+        Path('c:\windows').get_win32_file_info()
+    with pytest.raises(ValueError):
+        p = Path('src/main.py.py')
+        if not p.exists():
+            p = Path('../src/main.py')
+        p.get_win32_file_info()
 
 
 class TestCustomPath(ContainedTestCase):
@@ -22,23 +60,6 @@ class TestCustomPath(ContainedTestCase):
             else:
                 with self.assertRaises(TypeError):
                     p.crc32()
-
-    def test_get_version(self):
-        import os
-        p = Path(r'c:\windows\explorer.exe')
-        self.assertTrue(p.isfile())
-        self.assertTrue(p.exists())
-        self.assertTrue(p.get_win32_file_info())
-        if os.environ.get('APPVEYOR'):
-            self.assertSequenceEqual(p.get_win32_file_info().file_version, '6.3.9600.17031 (winblue_gdr.140221-1952)')
-        else:
-            self.assertSequenceEqual(p.get_win32_file_info().file_version, '6.1.7600.16385 (win7_rtm.090713-1255)')
-        with self.assertRaises(FileNotFoundError):
-            Path('c:\explorer.exe').get_win32_file_info()
-        with self.assertRaises(TypeError):
-            Path('c:\windows').get_win32_file_info()
-        with self.assertRaises(ValueError):
-            Path('src/main.py').get_win32_file_info()
 
     def test_human_size(self):
 
