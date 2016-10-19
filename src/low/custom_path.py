@@ -151,30 +151,12 @@ class Path(path.Path):
         shutil.rmtree(self.abspath())
 
 
-def create_temp_file(*, suffix=None, prefix=None, create_in_dir=None) -> Path:
-    """
-    Creates a temporary path in the user's temp dir
-    :param suffix: filename suffix
-    :param prefix: filename prefix
-    :param create_in_dir: directory in which the file will be created (defaults to temp)
-    :return: temporary file path as a string
-    """
-    if create_in_dir is None:
-        create_in_dir = tempfile.gettempdir()
-    os_handle, temp_file = tempfile.mkstemp(suffix=suffix, prefix=prefix, dir=create_in_dir)
+def create_temp_file(*, suffix: str = None, prefix: str = None, create_in_dir: str = None) -> Path:
+    os_handle, temp_file = tempfile.mkstemp(suffix=suffix, prefix=prefix, dir=create_in_dir or tempfile.gettempdir())
     os.close(os_handle)
     return Path(temp_file)
 
 
-def create_temp_dir(*, suffix=None, prefix=None, create_in_dir=None) -> Path:
-    """
-    Creates a temporary path in the user's temp dir
-    :param suffix: filename suffix
-    :param prefix: filename prefix
-    :param create_in_dir: directory in which the file will be created (defaults to temp)
-    :return: temporary file path as a string
-    """
-    if create_in_dir is None:
-        create_in_dir = tempfile.gettempdir()
-    temp_dir = tempfile.mkdtemp(suffix=suffix, prefix=prefix, dir=create_in_dir)
+def create_temp_dir(*, suffix: str = None, prefix: str = None, create_in_dir: str = None) -> Path:
+    temp_dir = tempfile.mkdtemp(suffix=suffix, prefix=prefix, dir=create_in_dir or tempfile.gettempdir())
     return Path(temp_dir)
