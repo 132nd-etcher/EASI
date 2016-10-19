@@ -7,7 +7,7 @@ import certifi
 import raven.breadcrumbs
 
 from src.__version__ import __version__
-from src.abstract import SentryContextInterface
+from src.abstract.abstract_sentry import SentryContextInterface
 from src.cfg import config
 from src.rem.gh.gh_session import GHSession
 from src.low import constants

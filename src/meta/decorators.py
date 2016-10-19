@@ -2,7 +2,7 @@
 
 
 # noinspection PyPep8Naming
-class meta_property:
+class MetaProperty:
     """Decorator used to define a property of a Meta class
 
     This is a simple descriptor wrapper to read/write the name of the property to/from the Meta file.
@@ -33,7 +33,7 @@ class meta_property:
 
 
 # noinspection PyPep8Naming
-class meta_property_with_default:
+class MetaPropertyWithDefault:
     """Decorator used to define a property of a Meta class that also has a default value"""
 
     def __init__(self, default, _type):
@@ -43,5 +43,5 @@ class meta_property_with_default:
 
     def __call__(self, f):
         # print('__call__', f)
-        dec = meta_property(f, self.default, self.type)
+        dec = MetaProperty(f, self.default, self.type)
         return dec

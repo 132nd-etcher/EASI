@@ -1,5 +1,5 @@
 # coding=utf-8
-from src.abstract import AbstractLongOp
+from src.abstract.ui.long_op import AbstractLongOp
 from .interface import interfaced_method, InterfacedSignal
 
 

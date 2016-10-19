@@ -1,6 +1,7 @@
 # coding=utf-8
 
-from src.abstract import AbstractModMetaFull, AbstractMod
+from src.abstract.mod.abstract_mod_meta import AbstractModMetaFull
+from src.abstract.mod.abstract_mod import AbstractMod
 from src.mod.meta import ModDraftMeta
 from src.ui import MsgDialog
 
