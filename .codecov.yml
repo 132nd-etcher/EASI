@@ -15,6 +15,9 @@ coverage:
           - master
           - develop
           - feature/*
+          - pull/*
+          - hotfix/*
+          - release/*
         attachments: "sunburst, diff"
 
   ignore:
