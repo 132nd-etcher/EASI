@@ -49,7 +49,7 @@ def test_sg_path(qtbot: QtBot, tmpdir, mocker, config_dialog):
     test_dir = str(tmpdir.mkdir('t'))
     test_file = tmpdir.join('file')
     test_file.write('')
-    dialog, sg, _, _ = config_dialog
+    dialog, _, _, _ = config_dialog
 
     assert config.saved_games_path == dialog.sg_line_edit.text()
 
