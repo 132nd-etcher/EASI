@@ -1,3 +1,7 @@
+version: pending.{build}
+max_jobs: 1
+
+
 environment:
     GIT_DAEMON_PATH:   "C:\\Program Files\\Git\\mingw64\\libexec\\git-core"
     CYGWIN_GIT_PATH:   "C:\\cygwin\\bin;%GIT_DAEMON_PATH%"
@@ -21,6 +25,8 @@ environment:
       secure: Wn4FCPRsCJUZy0bnpVt2ClZSp9XsrT0rocBBNDOFGPvmcCZq4fPNDWI1FfoO08zV
     GH_MAIL:
       secure: 9bVWUcCZXTNmCwwwQ9c/LY+ZxQWBTzzEJoojPZbp4Qk=
+    SLACK_WH:
+      secure: p1idoXvyTKGt+M275CXYRodSAnnmbkDnLHoZJ5K0pwlCPXhC3z6UfTyzW21XYIdPm7EA6DIef5Ys9dvEp9Ij9rgbnYgIq9CsgYdfVeBpVyA=
 
 
 matrix:
@@ -97,8 +103,6 @@ branches:
 
   except:
     - gh-pages
-
-max_jobs: 1
 
 deploy:
 #  - provider: GitHub
@@ -210,3 +214,13 @@ skip_commits:
     - docs/*
     - '**/*.html'
   message: /.*\[nobuild\].*/
+
+
+notifications:
+- provider: Slack
+  incoming_webhook: "%SLACK_WH%"
+  channel: '#easi'
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true
+

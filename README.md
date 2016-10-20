@@ -109,9 +109,9 @@ EASI is released under the [GPLv3 License][gpl_link].
 [waffle]:             https://img.shields.io/waffle/label/132nd-etcher/easi/in%20progress.svg?maxAge=3600
 [waffle_link]:        https://waffle.io/132nd-etcher/EASI
 [throughput]:         https://graphs.waffle.io/132nd-etcher/EASI/throughput.svg
-[appveyor]:           https://img.shields.io/appveyor/ci/132nd-etcher/easi/master.svg?maxAge=3600
-[appveyor_dev]:       https://img.shields.io/appveyor/ci/132nd-etcher/easi/develop.svg?maxAge=3600
-[appveyor_link]:      https://ci.appveyor.com/project/132nd-etcher/easi
+[appveyor]:           https://img.shields.io/appveyor/ci/132nd-etcher/easi-t0k6c/master.svg?maxAge=3600
+[appveyor_dev]:       https://img.shields.io/appveyor/ci/132nd-etcher/easi-t0k6c/develop.svg?maxAge=3600
+[appveyor_link]:      https://ci.appveyor.com/project/132nd-etcher/easi-t0k6c
 [codacy_grade]:       https://img.shields.io/codacy/grade/3a1f938dbe5545ad9cfa29b8df61e6ac/master.svg?maxAge=3600
 [codacy_grade_dev]:   https://img.shields.io/codacy/grade/3a1f938dbe5545ad9cfa29b8df61e6ac/develop.svg?maxAge=3600
 [codacy_cover]:       https://img.shields.io/codacy/coverage/3a1f938dbe5545ad9cfa29b8df61e6ac/master.svg?maxAge=3600
