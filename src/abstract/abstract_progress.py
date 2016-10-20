@@ -3,13 +3,6 @@ import abc
 
 
 class ProgressInterface(metaclass=abc.ABCMeta):
-    """
-    Interface to an object that has:
-
-        - a progress bar
-        - a progress label
-
-    """
 
     @abc.abstractmethod
     def set_progress(self, value: int):

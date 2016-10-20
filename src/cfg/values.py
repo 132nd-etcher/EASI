@@ -4,7 +4,7 @@ import os
 
 import path
 
-from src.meta import MetaPropertyWithDefault
+from src.meta.decorators import MetaPropertyWithDefault
 from src.sig import sig_cfg_author_mode, sig_cfg_sg_path, sig_cfg_cache_path, sig_cfg_kdiff_path,\
     sig_cfg_keyring_encrypt, sig_cfg_active_dcs_install, sig_cfg_user_name, sig_cfg_user_mail,\
     sig_cfg_subscribe_to_test_versions

@@ -5,7 +5,7 @@ Convenience module for storing/restoring per-user configuration values
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
-from src.meta import Meta
+from src.meta.meta import Meta
 from .values import ConfigValues
 
 logger = make_logger(__name__)

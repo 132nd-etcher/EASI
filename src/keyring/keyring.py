@@ -9,7 +9,7 @@ from src.cfg import config
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
-from src.meta import Meta
+from src.meta.meta import Meta
 from src.sig import SignalReceiver, sig_cfg_keyring_encrypt
 from .values import KeyringValues
 

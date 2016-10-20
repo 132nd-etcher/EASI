@@ -3,11 +3,9 @@ import time
 
 from ruamel.yaml import dump as ydump, load as yload, RoundTripDumper
 
-from src.abstract.abstract_meta import AbstractMeta
+from src.meta.abstract import AbstractMeta
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
-
-# from ..custom_logging import make_logger, ParasiteLogger
 
 logger = make_logger(__name__)
 
