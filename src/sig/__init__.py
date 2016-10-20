@@ -5,7 +5,7 @@ from .interface import interfaced_method, InterfacedSignal
 from .sig_rem import RemSig
 from .sig_ui_splash import SplashSig
 from .sig_ui_main import MainUiSig, MainUiStatesSig
-from .sig_ui_long_op import LongOpSig
+from .sig_progress import ProgressSig
 from .sig_ui_msgbox import MsgboxSig
 from .sig_config_value import ConfigValueSig
 
@@ -21,7 +21,7 @@ sig_cfg_subscribe_to_test_versions = ConfigValueSig()
 
 sig_main_ui_states = MainUiStatesSig()
 sig_main_ui = MainUiSig()
-sig_long_op = LongOpSig()
+sig_progress = ProgressSig()
 sig_splash = SplashSig()
 sig_gh_token_status_changed = RemSig()
 sig_db_token_status_changed = RemSig()
