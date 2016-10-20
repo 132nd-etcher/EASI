@@ -3,14 +3,14 @@
 import pytest
 
 import src.ui.base.with_signal
-from src.abstract.ui.connected_qobject import AbstractConnectedObject
+from src.ui.base.with_signal import WithSignal
 
 from src.sig import CustomSignal
 
 sig = CustomSignal()
 
 
-class C(AbstractConnectedObject):
+class C(WithSignal):
     pass
 
 
