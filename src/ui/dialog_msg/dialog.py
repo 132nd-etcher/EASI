@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from src.abstract.ui.connected_dialog import AbstractConnectedDialog
+from src.ui.base.qdialog import BaseDialog
 from src.qt import QDialog, Qt
 from src.sig import sig_msgbox
 from src.ui.skeletons.msg_dialog import Ui_Dialog
@@ -14,13 +14,19 @@ class _MsgDialog(Ui_Dialog, QDialog):
         self.setupUi(self)
 
 
-class MsgDialog(AbstractConnectedDialog, MsgboxInterface):
+class MsgDialog(BaseDialog, MsgboxInterface):
     def __init__(self, parent, main_ui_obj_name):
-        AbstractConnectedDialog.__init__(self, sig_msgbox, main_ui_obj_name, _MsgDialog(parent))
+        BaseDialog.__init__(self, sig_msgbox, main_ui_obj_name, _MsgDialog(parent))
+
+    @property
+    def qobj(self) -> _MsgDialog:
+        return super(MsgDialog, self).qobj
 
     # noinspection PyMethodOverriding
     def show(self, title: str, text: str):
         text = text.replace('\n', '<br>')
         self.qobj.setWindowTitle(title)
         self.qobj.label.setText(text)
-        super(MsgDialog, self).show()
+        self.adjust_size()
+        self.qobj.show()
+        # super(MsgDialog, self).show()
