@@ -24,7 +24,6 @@ class ConfigDialog(Ui_Settings, QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent, flags=Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint)
         Ui_Settings.__init__(self)
-        self.main_ui = parent
         self.setupUi(self)
         self.btn_apply = self.buttonBox.button(self.buttonBox.Apply)
         self.btn_reset = self.buttonBox.button(self.buttonBox.Reset)
