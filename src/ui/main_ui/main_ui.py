@@ -11,6 +11,7 @@ from .main_ui_mod_author import MainUiModAuthor
 from .main_ui_threading import MainGuiThreading
 from .states import MainUiStateManager
 from ..dialog_config.dialog import ConfigDialog
+from ..dialog_input.dialog import InputDialog
 from ..dialog_feedback.dialog import FeedbackDialog
 from ..dialog_progress.dialog import ProgressDialog
 from ..dialog_msg.dialog import MsgDialog

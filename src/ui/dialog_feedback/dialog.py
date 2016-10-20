@@ -7,7 +7,7 @@ from src.ui.skeletons.dialog_feedback import Ui_Dialog
 from src.sentry import crash_reporter
 
 
-class _FeedbackDialog(Ui_Dialog, QDialog):
+class FeedbackDialog(Ui_Dialog, QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent, flags=Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint)
         self.setupUi(self)
@@ -54,11 +54,6 @@ class _FeedbackDialog(Ui_Dialog, QDialog):
         )
         sig_msgbox.show('Thank you', 'Thank you for your feedback !')
         super(_FeedbackDialog, self).accept()
-
-
-class FeedbackDialog:
-    def __init__(self, parent=None):
-        self.dialog = _FeedbackDialog(parent)
 
     @staticmethod
     def make(parent=None):
