@@ -6,10 +6,10 @@ from .qwidget import BaseQWidget
 
 
 class BaseDialog(BaseQWidget, metaclass=abc.ABCMeta):
-    def __init__(self, dialog: QDialog):
-        if not isinstance(dialog, QDialog):
-            raise TypeError('dialog should be an instance of QDialog, got: {}'.format(type(dialog)))
-        super(BaseDialog, self).__init__(dialog)
+    def __init__(self, sig, main_ui_obj_name, qobj: QDialog):
+        if not isinstance(qobj, QDialog):
+            raise TypeError('dialog should be an instance of QDialog, got: {}'.format(type(qobj)))
+        super(BaseDialog, self).__init__(sig, main_ui_obj_name, qobj)
 
     @property
     def qobj(self) -> QDialog:
