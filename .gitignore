@@ -93,7 +93,6 @@ easi.credentials
 /tests/cover/
 .hypothesis
 /tests/.noserc
-/.idea/*
 /src/ui/skeletons/*.autosave
 /cache/
 /docs/build/
