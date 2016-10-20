@@ -127,7 +127,7 @@ def test_sg_path(qtbot: QtBot, tmpdir, mocker, config_dialog):
         )
 
 
-def write_some_value_to_sg_line_edit(tmpdir, dialog, qtbot):
+def write_some_value_to_sg_line_edit(tmpdir, dialog):
     test_dir = str(tmpdir.mkdir('moo'))
     test_file = tmpdir.join('kdiff3.exe')
     test_file.write('')
@@ -151,7 +151,7 @@ def test_cancel(qtbot, tmpdir, config_dialog):
     qtbot.wait_until(lambda: not dialog.btn_apply.isEnabled())
     qtbot.wait_until(lambda: not dialog.btn_reset.isEnabled())
 
-    test_dir, test_file = write_some_value_to_sg_line_edit(tmpdir, dialog, qtbot)
+    test_dir, test_file = write_some_value_to_sg_line_edit(tmpdir, dialog)
 
     qtbot.wait_until(lambda: dialog.btn_apply.isEnabled())
     qtbot.wait_until(lambda: dialog.btn_reset.isEnabled())
@@ -183,7 +183,7 @@ def test_ok(qtbot, tmpdir, config_dialog):
     qtbot.wait_until(lambda: not dialog.btn_apply.isEnabled())
     qtbot.wait_until(lambda: not dialog.btn_reset.isEnabled())
 
-    test_dir, test_file = write_some_value_to_sg_line_edit(tmpdir, dialog, qtbot)
+    test_dir, test_file = write_some_value_to_sg_line_edit(tmpdir, dialog)
 
     qtbot.wait_until(lambda: dialog.btn_apply.isEnabled())
     qtbot.wait_until(lambda: dialog.btn_reset.isEnabled())
@@ -212,7 +212,7 @@ def test_reset(qtbot, tmpdir, config_dialog):
     assert config.kdiff_path == kdiff
     assert dialog.kdiff_line_edit.text() == kdiff
 
-    _, _ = write_some_value_to_sg_line_edit(tmpdir, dialog, qtbot)
+    _, _ = write_some_value_to_sg_line_edit(tmpdir, dialog)
 
     qtbot.wait_until(lambda: dialog.btn_apply.isEnabled())
     qtbot.wait_until(lambda: dialog.btn_reset.isEnabled())

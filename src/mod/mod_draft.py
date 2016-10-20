@@ -3,7 +3,7 @@
 from src.abstract.mod.abstract_mod_meta import AbstractModMetaFull
 from src.abstract.mod.abstract_mod import AbstractMod
 from src.mod.meta import ModDraftMeta
-from src.ui import MsgDialog
+# from src.ui import MsgDialog
 
 
 class ModDraft(AbstractMod):
@@ -21,7 +21,7 @@ class ModDraft(AbstractMod):
 
     def write(self):
         if not self.is_ready():
-            MsgDialog.make('Missing fields: ', 'Oops')
+            # MsgDialog.make('Missing fields: ', 'Oops')
             return
         else:
             self.__meta.write()
