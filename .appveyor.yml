@@ -38,6 +38,7 @@ init:
   - cmd: appveyor UpdateBuild -Version "%APPVEYOR_REPO_BRANCH%.%APPVEYOR_REPO_COMMIT%.%APPVEYOR_BUILD_NUMBER%"
 
 cache:
+  - "%PYTHON%" -> requirement*.txt
   - C:\Program Files (x86)\Inno Setup 5
   - C:\Users\appveyor\AppData\Local\pip\cache
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
