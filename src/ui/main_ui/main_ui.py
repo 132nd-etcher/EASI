@@ -12,8 +12,9 @@ from .main_ui_threading import MainGuiThreading
 from .states import MainUiStateManager
 from ..dialog_config.dialog import ConfigDialog
 from ..dialog_feedback.dialog import FeedbackDialog
-from ..dialog_long_op.dialog import LongOpDialog
+from ..dialog_progress.dialog import ProgressDialog
 from ..dialog_msg.dialog import MsgDialog
+from ..dialog_testing.dialog import TestingDialog
 from ..skeletons.main import Ui_MainWindow
 
 
@@ -41,8 +42,9 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         src.ui.base.qwidget.main_ui = self
 
         self.sig_proc = MainUiSigProcessor(self)
+        self.testing_dialog = TestingDialog(self, 'test_dialog')
         self.splash = MainUiSplash(self, 'splash')
-        self.long_op = LongOpDialog(self, 'long_op')
+        self.long_op = ProgressDialog(self, 'long_op')
         self.msgbox = MsgDialog(self, 'msgbox')
         self.config_dialog = ConfigDialog(self)
         self.active_dcs_installation = MainUiActiveDCSInstallation(self)
@@ -64,6 +66,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.actionExit.triggered.connect(self.exit)
         self.actionEASI_Settings.triggered.connect(self.config_dialog.show)
         self.actionFeedback.triggered.connect(lambda x: FeedbackDialog.make(self))
+        self.actionTest_dialog.triggered.connect(self.testing_dialog.show)
 
     def setup_children_dialogs(self):
         self.active_dcs_installation.setup()
