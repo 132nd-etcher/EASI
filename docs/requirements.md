@@ -68,7 +68,6 @@ For an up-to-date list of the packages actually used, see the different "require
 | Package | Version |
 | ---------------------: | --------------------- |
 | colorama | [![PyPI version](https://badge.fury.io/py/colorama.svg)](https://badge.fury.io/py/colorama) |
-| httmock | [![PyPI version](https://badge.fury.io/py/httmock.svg)](https://badge.fury.io/py/httmock) |
 | py | [![PyPI version](https://badge.fury.io/py/py.svg)](https://badge.fury.io/py/py) |
 | pytest | [![PyPI version](https://badge.fury.io/py/pytest.svg)](https://badge.fury.io/py/pytest) |
 | pytest-cov | [![PyPI version](https://badge.fury.io/py/pytest-cov.svg)](https://badge.fury.io/py/pytest-cov) |
@@ -89,4 +88,5 @@ For an up-to-date list of the packages actually used, see the different "require
 | pyinstaller | [![PyPI version](https://badge.fury.io/py/pyinstaller.svg)](https://github.com/132nd-etcher/pyinstaller) | build |
 | pygit2 | [![PyPI version](https://badge.fury.io/py/pygit2.svg)](https://github.com/132nd-etcher/pygit2_wheel) | project |
 | mkdocs | [![PyPI version](https://badge.fury.io/py/mkdocs.svg)](https://github.com/132nd-etcher/mkdocs.git) | docs |
+| httmock | [![PyPI version](https://badge.fury.io/py/httmock.svg)](https://github.com/132nd-etcher/httmock.git) | test |
 [version_eye_project_page]: https://www.versioneye.com/user/projects/57ff67d90676c900486e4f8d?child=summary
