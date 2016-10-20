@@ -2,8 +2,8 @@
 
 import pytest
 
-import src.abstract.ui.connected_object
-from src.abstract.ui.connected_object import AbstractConnectedObject
+import src.abstract.ui.connected_qobject
+from src.abstract.ui.connected_qobject import AbstractConnectedObject
 from src.sig import CustomSignal
 
 sig = CustomSignal()
@@ -14,7 +14,7 @@ class C(AbstractConnectedObject):
 
 
 def test_mock_main_ui_not_initialized():
-    src.abstract.ui.connected_object.main_ui = None
+    src.abstract.ui.connected_qobject.main_ui = None
     with pytest.raises(RuntimeError):
         C(sig, 'some_obj')
 

@@ -5,6 +5,6 @@ from unittest import skipIf
 import pytest
 
 
-@skipIf(os.getenv('APPVEYOR'), 'AppVeyor gets 403 from GH all the time')
+@skipIf(os.getenv('APPVEYOR'), 'WIP')
 def test_config_init():
     pytest.fail()

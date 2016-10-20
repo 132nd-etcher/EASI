@@ -7,7 +7,7 @@ from unittest import mock
 from hypothesis import strategies as st, given
 
 from src.cfg.values import ConfigValues
-from src.meta import Meta
+from src.meta.meta import Meta
 from .utils import ContainedTestCase
 
 
