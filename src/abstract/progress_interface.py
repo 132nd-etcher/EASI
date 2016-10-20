@@ -35,3 +35,11 @@ class ProgressInterface(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def set_current_text(self, value: str):
         """Sets the progress bar to 'value' """
+
+    @abc.abstractmethod
+    def show(self, title: str, text: str, auto_close: bool = True):
+        """Sets the progress bar to 'value' """
+
+    @abc.abstractmethod
+    def hide(self):
+        """Sets the progress bar to 'value' """

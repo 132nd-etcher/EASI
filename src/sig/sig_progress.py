@@ -1,9 +1,10 @@
 # coding=utf-8
-from src.abstract.ui.long_op import AbstractLongOp
+
+from src.abstract.progress_interface import ProgressInterface
 from .interface import interfaced_method, InterfacedSignal
 
 
-class LongOpSig(InterfacedSignal, AbstractLongOp):
+class ProgressSig(InterfacedSignal, ProgressInterface):
     @interfaced_method
     def set_progress_title(self, value: str):
         pass
@@ -21,7 +22,7 @@ class LongOpSig(InterfacedSignal, AbstractLongOp):
         """"""
 
     @interfaced_method
-    def show(self, title: str, text: str):
+    def show(self, title: str, text: str, auto_close: bool = True):
         """"""
 
     @interfaced_method
