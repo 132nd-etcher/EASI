@@ -5,7 +5,7 @@ import time
 from unittest import TestCase, mock, skipUnless, skipIf
 
 import pytest
-from httmock import response, urlmatch, with_httmock
+from httmock import response, urlmatch, with_httmock, all_requests, HTTMock
 from hypothesis import strategies as st
 
 from src.low.singleton import Singleton
@@ -13,7 +13,11 @@ from src.rem.gh.gh_objects.gh_release import GHAllAssets
 from src.rem.gh.gh_objects.gh_release import GHRelease
 from src.rem.gh.gh_objects.gh_repo import GHRepo, GHRepoList
 from src.rem.gh.gh_objects.gh_user import GHUser
-from src.rem.gh.gh_session import GHAnonymousSession, GHSession
+from src.rem.gh.gh_session import GHAnonymousSession, GHSession, GithubAPIError, RateLimitationError, GHSessionError, \
+    RequestFailedError
+
+p = mock.patch('requests.sessions.Session.get')
+# p.start()
 
 try:
     # noinspection PyUnresolvedReferences
@@ -36,6 +40,7 @@ def test_build_req():
 ENDPOINT = r'(.*\.)?api\.github\.com$'
 HEADERS = {'content-type': 'application/json'}
 GET = 'get'
+PATCH = 'patch'
 
 
 class GHResource:
@@ -47,17 +52,60 @@ class GHResource:
             content = f.read()
         return content
 
+    def patch(self, json):
+        print(json)
+
+
+current_user = 'octocat'
+
 
 @urlmatch(netloc=ENDPOINT, method=GET)
 def mock_gh_api(url, request):
-    file_path = url.netloc + url.path + '.json'
+    print(url.path)
+    if url.path.endswith('le_resp_is_empty'):
+        return None
+    if url.path.endswith('le_api_is_down'):
+        return response(500, None, HEADERS, 'Error', 5, request)
+    if url.path.endswith('le_rate_is_exceeded'):
+        return response(403, {'message': 'API rate limit exceeded for '}, HEADERS, 'Error', 5, request)
+    if url.path.endswith('le_random_error'):
+        return response(402, {'message': 'Random message'}, HEADERS, 'Error', 5, request)
+    if '/user/' in url.path:
+        file_path = url.netloc + url.path.replace('/user/', '/user/{}/'.format(current_user)) + '.json'
+    else:
+        file_path = url.netloc + url.path + '.json'
     if not os.path.exists(file_path):
         file_path = 'tests/{}'.format(file_path)
     try:
         content = GHResource(file_path).get()
     except EnvironmentError:
-        return response(404, {}, HEADERS, 'FileNotFound', 5, request)
+        print('not found: ', file_path)
+        return response(404, {}, HEADERS, 'FileNotFound: {}'.format(file_path), 5, request)
     return response(200, content, HEADERS, 'Success', 5, request)
+
+
+@with_httmock(mock_gh_api)
+def test_api_down():
+    with pytest.raises(GithubAPIError):
+        GHAnonymousSession().get_user('le_api_is_down')
+
+
+@with_httmock(mock_gh_api)
+def test_rate_exceeded():
+    with pytest.raises(RateLimitationError):
+        GHAnonymousSession().get_user('le_rate_is_exceeded')
+
+
+@with_httmock(mock_gh_api)
+def test_other_error():
+    with pytest.raises(GHSessionError):
+        GHAnonymousSession().get_user('le_random_error')
+
+
+@with_httmock(mock_gh_api)
+def test_request_failed():
+    with pytest.raises(RequestFailedError):
+        GHAnonymousSession().get_user('le_resp_is_empty')
 
 
 @with_httmock(mock_gh_api)
@@ -75,6 +123,39 @@ def test_get_user():
 
     assert user.login == 'octocat'
     assert user.email == 'octocat@github.com'
+
+
+@with_httmock(mock_gh_api)
+def test_primary_email():
+    global current_user
+    current_user = 'octocat'
+    mail = GHSession().primary_email
+    assert mail.email == 'octocat@github.com'
+    current_user = 'octodog'
+    mail = GHSession().primary_email
+    assert mail is None
+    current_user = 'octocub'
+    mail = GHSession().primary_email
+    assert mail is None
+    current_user = 'octocat'
+
+
+@with_httmock(mock_gh_api)
+def test_get_repos():
+    global current_user
+    current_user = 'octocat'
+    repos = GHSession().list_own_repos()
+    assert len(repos) == 1
+    r = repos['Hello-World']
+    assert r.name == 'Hello-World'
+    assert r.full_name == 'octocat/Hello-World'
+
+
+@with_httmock(mock_gh_api)
+def test_edit_repo():
+    global current_user
+    current_user = 'octocat'
+    GHSession().edit_repo('octocat', 'ze_repo', new_name='ze_other_repo')
 
 
 @with_httmock(mock_gh_api)
@@ -127,7 +208,10 @@ class TestGHAnonymousSession(TestCase):
         self.s = GHAnonymousSession()
 
     def test_users_repos(self):
-        repos = self.s.list_user_repos('easitest')
+        try:
+            repos = self.s.list_user_repos('easitest')
+        except RateLimitationError:
+            return
         self.assertIsInstance(repos, GHRepoList)
         self.assertTrue('unittests' in repos)
         self.assertFalse('some_repo' in repos)
@@ -135,7 +219,10 @@ class TestGHAnonymousSession(TestCase):
         self.assertIsInstance(repo, GHRepo)
 
     def test_user(self):
-        usr = self.s.get_user('132nd-etcher')
+        try:
+            usr = self.s.get_user('132nd-etcher')
+        except RateLimitationError:
+            return
         print(usr.get_all())
         self.assertSequenceEqual(
             usr.get_all(),
@@ -151,7 +238,10 @@ class TestGHAnonymousSession(TestCase):
         )
 
     def test_latest_release(self):
-        latest = self.s.get_latest_release('132nd-etcher', 'unittests')
+        try:
+            latest = self.s.get_latest_release('132nd-etcher', 'unittests')
+        except RateLimitationError:
+            return
         self.assertIsInstance(latest, GHRelease)
         self.assertSequenceEqual(latest.author().login, '132nd-etcher')
         self.assertFalse(latest.prerelease)

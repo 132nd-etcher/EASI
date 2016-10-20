@@ -296,3 +296,13 @@ def test_not_a_directory(qtbot, tmpdir, mocker, config_dialog):
             show_error_balloon.assert_called_with('Not a directory')
 
         qtbot.wait_until(show_error_called)
+
+
+def test_check_for_update(qtbot, mocker, config_dialog):
+    m = mocker.patch('src.ui.dialog_config.dialog.check_for_update')
+    s = mocker.patch('src.ui.dialog_config.dialog.sig_msgbox.send')
+    dialog, _, _, _ = config_dialog
+    qtbot.mouseClick(dialog.btn_update_check, Qt.LeftButton)
+    qtbot.wait_until(m.assert_called_with)
+    qtbot.wait_until(lambda: s.assert_called_with(
+        'show', 'Check done', 'Already running latest version of {}'.format(constants.APP_SHORT_NAME)))

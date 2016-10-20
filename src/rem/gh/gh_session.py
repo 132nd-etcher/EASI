@@ -68,6 +68,7 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
         return self.req
 
     def __parse_resp_error(self):
+        logger.error(self.req)
         if self.resp.status_code >= 500:
             raise GithubAPIError(r'Github API seems to be down, check https://status.github.com/')
         else:
@@ -86,12 +87,12 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
                 raise GHSessionError(': '.join(msg))
 
     def __parse_resp(self) -> requests.models.Response:
-        if self.resp is None:
+        if self.__resp is None:
             raise RequestFailedError('did not get any response from: {}'.format(self.req))
-        if not self.resp.ok:
+        if not self.__resp.ok:
             self.__parse_resp_error()
-        logger.debug(self.resp.reason)
-        return self.resp
+        logger.debug(self.__resp.reason)
+        return self.__resp
 
     def _get(self, **kwargs) -> requests.models.Response:
         logger.debug(self.req)
@@ -253,7 +254,7 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
         self._post(json=json)
 
     def edit_repo(self,
-                  name: str,
+                  user, repo,
                   new_name: str = None,
                   description: str = None,
                   homepage: str = None,
@@ -261,8 +262,8 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
                   # license_template: str = None  # TODO GH licenses
                   ):
         if new_name is None:
-            new_name = name
-        self.build_req('repos', self.user.login, name)
+            new_name = repo
+        self.build_req('repos', user, repo)
         json = dict(name=new_name)
         if description:
             json['body'] = description
