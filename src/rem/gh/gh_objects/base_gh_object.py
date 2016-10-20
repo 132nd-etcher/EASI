@@ -1,8 +1,5 @@
 # coding=utf-8
 
-# from requests.models import Response
-
-
 class BaseGHObject:
     def __init__(self, json):
         self._json = json
@@ -25,7 +22,6 @@ class BaseGHObject:
             else:
                 ret.add((k, getattr(self, k)))
         return ret
-        # return [getattr(self, k)  if not k.startswith('__')]
 
 
 # noinspection PyPep8Naming
