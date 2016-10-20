@@ -7,7 +7,7 @@ from .base_dialog import AbstractBaseDialog
 from .connected_qobject import AbstractConnectedQObject
 
 
-class AbstractConnectedDialog(AbstractConnectedQObject, AbstractBaseDialog, metaclass=abc.ABCMeta):
+class AbstractConnectedDialog(AbstractConnectedQObject, AbstractBaseDialog):
     """
     Defines a dialog that is connected to the MainUi via a specific signal.
 
@@ -26,7 +26,3 @@ class AbstractConnectedDialog(AbstractConnectedQObject, AbstractBaseDialog, meta
         self.main_ui_obj_name = main_ui_obj_name
         self.receiver = SignalReceiver(self)
         self.receiver[sig] = self.on_sig
-
-    @staticmethod
-    def make(*args, **kwargs):
-        raise NotImplementedError
