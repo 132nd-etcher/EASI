@@ -126,7 +126,8 @@ class TestMeta(ContainedTestCase):
     def test_props(self, d):
         p = Path(self.create_temp_file())
         m = Meta(p, init_dict=d, auto_read=False)
-        self.assertIs(p, m.path)
+        assert p.abspath() == m.path.abspath()
+        # self.assertIs p.abspath() == m.path.abspath())
         self.assertIs(d, m.data)
         self.assertIs(d.__len__(), m.__len__())
 

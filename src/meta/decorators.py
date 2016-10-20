@@ -1,5 +1,7 @@
 # coding=utf-8
 
+from blinker import signal
+
 
 # noinspection PyPep8Naming
 class MetaProperty:
@@ -30,6 +32,7 @@ class MetaProperty:
             return self
         self.func(obj, value)
         obj.__setitem__(self.key, value)
+        signal('{}_value_changed'.format(self.func.__name__)).send('meta', value=value)
 
 
 # noinspection PyPep8Naming

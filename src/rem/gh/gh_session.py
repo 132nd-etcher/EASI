@@ -271,7 +271,7 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
             json['homepage'] = homepage
         if auto_init:
             json['auto_init'] = auto_init
-        self._patch(json=json)
+        return self._patch(json=json)
 
     def delete_repo(self, name: str):
         self.build_req('repos', self.user.login, name)

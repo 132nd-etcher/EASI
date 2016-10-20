@@ -12,10 +12,10 @@ logger = make_logger(__name__)
 
 
 class Config(Meta, ConfigValues, metaclass=Singleton):
-    def __init__(self, config_file=None):
-        if config_file is None:
-            config_file = constants.PATH_CONFIG_FILE
-        Meta.__init__(self, path=config_file)
+    def __init__(self, config_file_path=None):
+        if config_file_path is None:
+            config_file_path = constants.PATH_CONFIG_FILE
+        Meta.__init__(self, path=config_file_path)
         ConfigValues.__init__(self)
 
     def __getitem__(self, key):

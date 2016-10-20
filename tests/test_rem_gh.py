@@ -2,12 +2,15 @@
 
 import os
 import time
+from json import loads, dumps
 from unittest import TestCase, mock, skipUnless, skipIf
 
 import pytest
-from httmock import response, urlmatch, with_httmock, all_requests, HTTMock
+import requests
+from httmock import response, urlmatch, with_httmock
 from hypothesis import strategies as st
 
+from src.low.custom_path import Path
 from src.low.singleton import Singleton
 from src.rem.gh.gh_objects.gh_release import GHAllAssets
 from src.rem.gh.gh_objects.gh_release import GHRelease
@@ -48,20 +51,23 @@ class GHResource:
         self.path = path
 
     def get(self):
-        with open(self.path, 'r') as f:
-            content = f.read()
-        return content
+        return Path(self.path).text()
 
-    def patch(self, json):
-        print(json)
+    def patch(self, request):
+        req_j = request.body.decode()
+        req_d = loads(req_j)
+        local_j = Path(self.path).text()
+        local_d = loads(local_j)
+        assert isinstance(local_d, dict)
+        local_d.update(req_d)
+        local_j = dumps(local_d)
+        return response(200, local_j, HEADERS, 'OK', 5, request)
 
 
 current_user = 'octocat'
 
 
-@urlmatch(netloc=ENDPOINT, method=GET)
-def mock_gh_api(url, request):
-    print(url.path)
+def check_fail(url, request):
     if url.path.endswith('le_resp_is_empty'):
         return None
     if url.path.endswith('le_api_is_down'):
@@ -70,16 +76,34 @@ def mock_gh_api(url, request):
         return response(403, {'message': 'API rate limit exceeded for '}, HEADERS, 'Error', 5, request)
     if url.path.endswith('le_random_error'):
         return response(402, {'message': 'Random message'}, HEADERS, 'Error', 5, request)
+    return 'ok'
+
+
+def get_file_path(url):
     if '/user/' in url.path:
         file_path = url.netloc + url.path.replace('/user/', '/user/{}/'.format(current_user)) + '.json'
     else:
         file_path = url.netloc + url.path + '.json'
     if not os.path.exists(file_path):
         file_path = 'tests/{}'.format(file_path)
+    return file_path
+
+
+@urlmatch(netloc=ENDPOINT)
+def mock_gh_api(url, request):
+    assert isinstance(request, requests.models.PreparedRequest)
+    fail = check_fail(url, request)
+    if not fail == 'ok':
+        return fail
+    file_path = get_file_path(url)
     try:
-        content = GHResource(file_path).get()
+        if request.method == 'GET':
+            content = GHResource(file_path).get()
+        elif request.method == 'PATCH':
+            content = GHResource(file_path).patch(request)
+        else:
+            raise ValueError('request not handled: {}'.format(request.method))
     except EnvironmentError:
-        print('not found: ', file_path)
         return response(404, {}, HEADERS, 'FileNotFound: {}'.format(file_path), 5, request)
     return response(200, content, HEADERS, 'Success', 5, request)
 
@@ -153,9 +177,35 @@ def test_get_repos():
 
 @with_httmock(mock_gh_api)
 def test_edit_repo():
-    global current_user
-    current_user = 'octocat'
-    GHSession().edit_repo('octocat', 'ze_repo', new_name='ze_other_repo')
+    s = GHSession()
+    s.user = mock.MagicMock(login='octocat')
+    repo = s.get_repo('ze_repo')
+    assert repo.name == 'Hello-World'
+    resp = GHSession().edit_repo('octocat', 'ze_repo', new_name='ze_other_repo')
+    assert isinstance(resp, requests.models.Response)
+    assert resp.status_code == 200
+    repo = s.get_repo('ze_repo')
+    d = loads(resp.content.content.decode())
+    for k in d.keys():
+        if k == 'name':
+            assert d[k] == 'ze_other_repo'
+        else:
+            try:
+                x = getattr(repo, k)
+                if callable(x):
+                    continue
+                assert d[k] == x
+            except AttributeError:
+                pass
+
+
+@with_httmock(mock_gh_api)
+def test_list_own_repos():
+    s = GHSession()
+    s.user = mock.MagicMock(login='octocat')
+    repos = s.list_own_repos()
+    assert len(repos) == 1
+    assert 'Hello-World' in repos
 
 
 @with_httmock(mock_gh_api)
@@ -223,7 +273,6 @@ class TestGHAnonymousSession(TestCase):
             usr = self.s.get_user('132nd-etcher')
         except RateLimitationError:
             return
-        print(usr.get_all())
         self.assertSequenceEqual(
             usr.get_all(),
             {
@@ -296,6 +345,11 @@ class TestGHSession(TestCase):
         assert Secret.gh_usermail == self.s.primary_email.email
 
     def test_create_repo(self):
+        # noinspection PyBroadException
+        try:
+            self.s.delete_repo(name='test_repo')
+        except:
+            pass
         name = 'test_repo'
         desc = 'some description'
         self.s.create_repo(name=name, description=desc, auto_init=False)

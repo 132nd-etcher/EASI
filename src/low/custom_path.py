@@ -99,6 +99,7 @@ class Win32FileInfo:
 
 # noinspection PyAbstractClass
 class Path(path.Path):
+
     def crc32(self):
 
         if not self.isfile():
