@@ -1,8 +1,19 @@
-mode: ContinuousDelivery
+mode: ContinuousDeployment
 branches:
-  (pull|pull\-requests|pr)[/-]: {}
+  (pull|pull\-requests|pr)[/-]:
+    mode: ContinuousDeployment
+    tag: beta
   dev(elop)?(ment)?$:
-    mode: ContinuousDelivery
+    mode: ContinuousDeployment
+    tag: dev
+  features?[/-]:
+    mode: ContinuousDeployment
     tag: alpha
+  hotfix(es)?[/-]:
+    mode: ContinuousDeployment
+    tag: patch
+  releases?[/-]:
+    mode: ContinuousDeployment
+    tag: rc
 ignore:
   sha: []
