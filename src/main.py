@@ -116,7 +116,7 @@ def main():
             logger.debug('testing mode, skipping helpers download')
         else:
             pool.queue_task(init_helpers)
-        pool.queue_task(sig_splash.kill)
+        pool.queue_task(sig_splash.hide)
         pool.queue_task(sig_main_ui.show)
         pool.queue_task(sig_main_ui_states.set_current_state, ['running'])
         pool.queue_task(logger.info, ['startup: all done!'])
