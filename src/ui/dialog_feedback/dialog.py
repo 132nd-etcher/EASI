@@ -53,7 +53,7 @@ class FeedbackDialog(Ui_Dialog, QDialog):
             }
         )
         sig_msgbox.show('Thank you', 'Thank you for your feedback !')
-        super(_FeedbackDialog, self).accept()
+        super(FeedbackDialog, self).accept()
 
     @staticmethod
     def make(parent=None):

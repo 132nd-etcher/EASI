@@ -18,8 +18,8 @@ def test_dialog_feedback_field_population(qtbot: QtBot, usr_name, usr_mail):
     config.usr_email = usr_mail
     dialog = FeedbackDialog()
     qtbot.add_widget(dialog)
-    assert dialog.dialog.nameLineEdit.text() == usr_name
-    assert dialog.dialog.emailLineEdit.text() == usr_mail
+    assert dialog.nameLineEdit.text() == usr_name
+    assert dialog.emailLineEdit.text() == usr_mail
 
 
 @given(some_text=st.text(max_size=200))
@@ -31,21 +31,21 @@ def test_feedback(qtbot: QtBot, mocker, some_text):
     crash_reporter = mocker.patch('src.ui.dialog_feedback.dialog.crash_reporter', captureMessage=mock.MagicMock())
     dialog = FeedbackDialog()
     qtbot.add_widget(dialog)
-    dialog.dialog.show()
-    qtbot.wait_for_window_shown(dialog.dialog)
-    dialog.dialog.textEdit.setText(some_text)
-    dialog.dialog.comboBox.setCurrentIndex(random.randint(0, dialog.dialog.comboBox.count()))
+    dialog.show()
+    qtbot.wait_for_window_shown(dialog)
+    dialog.textEdit.setText(some_text)
+    dialog.comboBox.setCurrentIndex(random.randint(0, dialog.comboBox.count()))
 
-    qtbot.mouseClick(dialog.dialog.btn_ok, Qt.LeftButton)
+    qtbot.mouseClick(dialog.btn_ok, Qt.LeftButton)
 
     crash_reporter.captureMessage.assert_called_with(
         level='debug',
         message='{}\n{}'.format(
-            dialog.dialog.comboBox.currentText(),
+            dialog.comboBox.currentText(),
             some_text.replace('\r\n', '\n').replace('\r', '\n').replace('\xa0', ' ')
         ),
         tags={
-            'message': dialog.dialog.comboBox.currentText(),
+            'message': dialog.comboBox.currentText(),
             'type': 'message'
         }
     )
