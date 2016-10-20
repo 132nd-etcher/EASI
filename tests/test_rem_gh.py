@@ -268,25 +268,6 @@ class TestGHAnonymousSession(TestCase):
         repo = repos['unittests']
         self.assertIsInstance(repo, GHRepo)
 
-    def test_user(self):
-        try:
-            usr = self.s.get_user('132nd-etcher')
-        except RateLimitationError:
-            return
-        self.maxDiff = None
-        self.assertSequenceEqual(
-            usr.get_all(),
-            {
-                ('public_gists', 0), ('blog', None), ('bio', None), ('public_repos', 37), ('company', None),
-                ('location', None), ('avatar_url', 'https://avatars.githubusercontent.com/u/21277151?v=3'),
-                ('id', 21277151), ('login', '132nd-etcher'), ('html_url', 'https://github.com/132nd-etcher'),
-                ('type', 'User'), ('updated_at', '2016-10-20T08:09:48Z'),
-                ('repos_url', 'https://api.github.com/users/132nd-etcher/repos'),
-                ('created_at', '2016-08-27T11:20:43Z'),
-                ('email', None), ('url', 'https://api.github.com/users/132nd-etcher')
-            }
-        )
-
     def test_latest_release(self):
         try:
             latest = self.s.get_latest_release('132nd-etcher', 'unittests')
@@ -372,3 +353,13 @@ class TestGHSession(TestCase):
         for x, y in c:
             self.assertSequenceEqual(x, y)
         self.s.delete_repo(name='test_repo')
+
+
+def test_user(gh_anon):
+    try:
+        usr = gh_anon.get_user('132nd-etcher')
+    except RateLimitationError:
+        return
+    assert isinstance(usr, GHUser)
+    assert usr.id == 21277151
+    assert usr.type == 'User'
