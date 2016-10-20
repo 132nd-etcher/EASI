@@ -35,6 +35,11 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         # Setup link with all connected objects
         import src.abstract.ui.connected_object
         src.abstract.ui.connected_object.main_ui = self
+
+        # Give a heads-up to all child QWidgets that the MainUi is up and running
+        import src.ui.base.qwidget
+        src.ui.base.qwidget.main_ui = self
+
         self.sig_proc = MainUiSigProcessor(self)
         self.splash = MainUiSplash(self, 'splash')
         self.long_op = LongOpDialog(self, 'long_op')
