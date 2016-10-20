@@ -12,7 +12,7 @@ class AbstractConnectedDialog(AbstractConnectedQObject, AbstractBaseDialog):
     Defines a dialog that is connected to the MainUi via a specific signal.
 
     Whenever this signal is sent, the first arg of the signal is assumed to be a valid method
-    if the receiving AbstractConnectedDialog.
+    of the receiving AbstractConnectedDialog.
     """
 
     def __init__(self, sig, main_ui_obj_name, dialog: QDialog):
