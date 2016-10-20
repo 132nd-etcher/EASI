@@ -1,11 +1,29 @@
 # coding=utf-8
-from src.abstract.ui.splash import AbstractSplash
+from src.abstract.progress_interface import ProgressInterface
 from .interface import interfaced_method, InterfacedSignal
 
 
-class SplashSig(InterfacedSignal, AbstractSplash):
+class SplashSig(InterfacedSignal, ProgressInterface):
+    def set_current_text(self, value: str):
+        pass
+
+    def set_current_progress(self, value: int):
+        pass
+
+    def add_progress(self, value: int):
+        pass
+
+    def add_current_progress(self, value: int):
+        pass
+
+    def set_progress_title(self, value: str):
+        pass
+
+    def set_current_enabled(self, value: bool):
+        pass
+
     @interfaced_method
-    def kill(self):
+    def hide(self):
         """"""
 
     @interfaced_method
@@ -25,7 +43,7 @@ class SplashSig(InterfacedSignal, AbstractSplash):
         """"""
 
     @interfaced_method
-    def show(self):
+    def show(self, title: str = None, text: str = None, auto_close: bool = True):
         """"""
 
     @interfaced_method

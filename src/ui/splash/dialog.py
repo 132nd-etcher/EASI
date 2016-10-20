@@ -3,12 +3,14 @@
 
 from src.abstract.ui.connected_qobject import AbstractConnectedQObject
 from src.abstract.ui.splash import AbstractSplash
+from src.abstract.progress_interface import ProgressInterface
 from src.low import constants
 from src.qt import QSplashScreen, QPixmap, qt_resources, Qt, QLabel, QFont, QProgressBar
 from src.sig import sig_splash
+from src.ui.base.qwidget import BaseQWidget
 
 
-class CustomSplash(QSplashScreen):
+class _MainUiSplash(QSplashScreen):
     def __init__(self, parent):
         QSplashScreen.__init__(self, parent, QPixmap(qt_resources.splash_banner), Qt.WindowStaysOnTopHint)
         self.colors = {
@@ -79,35 +81,42 @@ class CustomSplash(QSplashScreen):
 
 
 # class MainUiSplash(AbstractConnectedQObject, SplashInterface):
-class MainUiSplash(AbstractConnectedQObject, AbstractSplash):
+class MainUiSplash(BaseQWidget, ProgressInterface):
+
     def __init__(self, parent, main_ui_obj_name):
-        AbstractConnectedQObject.__init__(self, sig_splash, main_ui_obj_name, CustomSplash(parent))
+        BaseQWidget.__init__(self, sig_splash, main_ui_obj_name, _MainUiSplash(parent))
 
-    def get(self) -> QSplashScreen:
-        s = self.qobj
-        assert isinstance(s, QSplashScreen)
-        return s
+    @property
+    def qobj(self) -> _MainUiSplash:
+        return super(MainUiSplash, self).qobj
 
-    def get_progress(self) -> QProgressBar:
-        p = self.qobj.progress
-        assert isinstance(p, QProgressBar)
-        return p
-
-    def current_progress(self):
-        return self.get_progress().value()
-
-    def add_to_progress(self, value: int):
-        self.set_progress(self.current_progress() + value)
-
-    def show(self):
+    def show(self, title: str = None, text: str = None, auto_close: bool = True):
         self.set_progress(0)
         self.qobj.show()
 
-    def kill(self):
+    def hide(self):
         self.qobj.finish(self.qobj)
 
     def set_progress(self, value: int):
-        self.get_progress().setValue(value)
+        self.qobj.progress.setValue(value)
 
     def set_progress_text(self, value: str):
-        self.get_progress().setFormat(value)
+        self.qobj.progress.setFormat(value)
+
+    def add_progress(self, value: int):
+        self.set_progress(self.qobj.progress.value() + value)
+
+    def set_current_text(self, value: str):
+        pass
+
+    def set_current_progress(self, value: int):
+        pass
+
+    def add_current_progress(self, value: int):
+        pass
+
+    def set_progress_title(self, value: str):
+        pass
+
+    def set_current_enabled(self, value: bool):
+        pass

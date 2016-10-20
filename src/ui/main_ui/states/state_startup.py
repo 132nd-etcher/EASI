@@ -28,4 +28,4 @@ class UiStateStartup(AbstractMainUiState):
 
     @staticmethod
     def add_progress(state_manager, value: int):
-        sig_splash.add_to_progress(value)
+        sig_splash.add_progress(value)
