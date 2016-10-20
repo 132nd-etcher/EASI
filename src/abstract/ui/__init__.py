@@ -14,4 +14,4 @@ from .main_ui_interface import AbstractMainUiInterface
 from .main_ui_state import AbstractMainUiState
 from .progress_dialog import BaseProgressDialog
 from .splash import AbstractSplash
-from .msgbox import AbstractMsgbox
+from .msgbox import MsgboxInterface

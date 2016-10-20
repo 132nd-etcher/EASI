@@ -13,4 +13,4 @@ class BaseDialog(BaseQWidget, metaclass=abc.ABCMeta):
 
     @property
     def qobj(self) -> QDialog:
-        return self.__qobj
+        return super(BaseDialog, self).qobj

@@ -4,7 +4,7 @@ from src.abstract.ui.connected_dialog import AbstractConnectedDialog
 from src.qt import QDialog, Qt
 from src.sig import sig_msgbox
 from src.ui.skeletons.msg_dialog import Ui_Dialog
-from src.abstract.ui import AbstractMsgbox
+from src.abstract.ui import MsgboxInterface
 
 
 class _MsgDialog(Ui_Dialog, QDialog):
@@ -14,7 +14,7 @@ class _MsgDialog(Ui_Dialog, QDialog):
         self.setupUi(self)
 
 
-class MsgDialog(AbstractConnectedDialog, AbstractMsgbox):
+class MsgDialog(AbstractConnectedDialog, MsgboxInterface):
     def __init__(self, parent, main_ui_obj_name):
         AbstractConnectedDialog.__init__(self, sig_msgbox, main_ui_obj_name, _MsgDialog(parent))
 
@@ -24,11 +24,3 @@ class MsgDialog(AbstractConnectedDialog, AbstractMsgbox):
         self.qobj.setWindowTitle(title)
         self.qobj.label.setText(text)
         super(MsgDialog, self).show()
-
-    # noinspection PyMethodOverriding
-    @staticmethod
-    def make(text: str, title: str = ' ', parent=None):
-        dialog = _MsgDialog(parent)
-        dialog.label.setText(text.replace('\n', '<br>'))
-        dialog.setWindowTitle(title)
-        dialog.exec()

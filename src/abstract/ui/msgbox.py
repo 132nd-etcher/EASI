@@ -3,7 +3,7 @@
 import abc
 
 
-class AbstractMsgbox(metaclass=abc.ABCMeta):
+class MsgboxInterface(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def show(self, title: str, text: str, over_splash: bool = False):
         """"""

@@ -4,7 +4,7 @@ from pytestqt.qtbot import QtBot
 from PyQt5.Qt import QTest
 
 from src.qt import Qt
-from src.ui import ConfirmDialog
+from src.ui.dialog_confirm.dialog import ConfirmDialog
 
 question = 'some question'
 title = 'some title'
