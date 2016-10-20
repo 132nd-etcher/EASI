@@ -1,5 +1,6 @@
 argh==0.26.2
 blinker==1.4
+blinker-herald==0.2.0
 certifi==2016.9.26
 cffi==1.8.3
 contextlib2==0.5.4

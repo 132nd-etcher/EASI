@@ -8,6 +8,7 @@ For an up-to-date list of the packages actually used, see the different "require
 | ---------------------: | --------------------- |
 | argh | [![PyPI version](https://badge.fury.io/py/argh.svg)](https://badge.fury.io/py/argh) |
 | blinker | [![PyPI version](https://badge.fury.io/py/blinker.svg)](https://badge.fury.io/py/blinker) |
+| blinker-herald | [![PyPI version](https://badge.fury.io/py/blinker-herald.svg)](https://badge.fury.io/py/blinker-herald) |
 | certifi | [![PyPI version](https://badge.fury.io/py/certifi.svg)](https://badge.fury.io/py/certifi) |
 | cffi | [![PyPI version](https://badge.fury.io/py/cffi.svg)](https://badge.fury.io/py/cffi) |
 | contextlib2 | [![PyPI version](https://badge.fury.io/py/contextlib2.svg)](https://badge.fury.io/py/contextlib2) |
