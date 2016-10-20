@@ -5,7 +5,7 @@ import time
 from requests import head, get
 from requests.exceptions import InvalidURL, MissingSchema
 
-from src.abstract.abstract_progress import ProgressInterface
+from src.abstract.progress_interface import ProgressInterface
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path, create_temp_file, create_temp_dir
 from src.threadpool import ThreadPool
