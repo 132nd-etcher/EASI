@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="CodeInspec" pattern="(file[EASIv0.0.11]:src//*||file[EASIv0.0.11]:tests//*)&amp;&amp;!file[EASIv0.0.11]:src/ui/skeletons//*&amp;&amp;!file[EASIv0.0.11]:src/qt//*&amp;&amp;!file[EASIv0.0.11]:tests/api.github.com//*&amp;&amp;!file[EASIv0.0.11]:tests/coverage//*&amp;&amp;!file[EASIv0.0.11]:tests/.cache//*&amp;&amp;!file[EASIv0.0.11]:src/ui/resources//*" />
+</component>
