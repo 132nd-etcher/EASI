@@ -3,7 +3,7 @@ from src.abstract.ui.long_op import AbstractLongOp
 from .interface import interfaced_method, InterfacedSignal
 
 
-class LongOpDialogSig(InterfacedSignal, AbstractLongOp):
+class LongOpSig(InterfacedSignal, AbstractLongOp):
     @interfaced_method
     def set_progress_title(self, value: str):
         pass

@@ -2,7 +2,7 @@
 
 from src.abstract.ui import AbstractMainUiState
 
-from src.sig import sig_long_op_dialog, sig_msgbox
+from src.sig import sig_long_op, sig_msgbox
 
 
 class UiStateRunning(AbstractMainUiState):
@@ -16,18 +16,18 @@ class UiStateRunning(AbstractMainUiState):
 
     @staticmethod
     def set_progress_title(state_manager, value: str):
-        sig_long_op_dialog.show(title=value, text='')
+        sig_long_op.show(title=value, text='')
 
     @staticmethod
     def set_progress_text(state_manager, value: str):
-        sig_long_op_dialog.set_progress_text(value)
+        sig_long_op.set_progress_text(value)
 
     @staticmethod
     def set_progress(state_manager, value: int):
-        sig_long_op_dialog.set_progress(value)
+        sig_long_op.set_progress(value)
         if value == 100:
-            sig_long_op_dialog.hide()
+            sig_long_op.hide()
 
     @staticmethod
     def add_progress(state_manager, value: int):
-        sig_long_op_dialog.add_progress(value)
+        sig_long_op.add_progress(value)
