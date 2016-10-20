@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from .interface import interfaced_method, InterfacedSignal
-from src.abstract.ui import MsgboxInterface
+from src.ui.dialog_msg.interface import MsgboxInterface
 
 
 class MsgboxSig(InterfacedSignal, MsgboxInterface):

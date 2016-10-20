@@ -6,6 +6,7 @@ from src.low.custom_logging import make_logger
 from src.sig import sig_progress
 from src.ui.skeletons.dialog_progress import Ui_Dialog
 from src.ui.base.qdialog import BaseDialog
+from src.ui.base.with_signal import WithSignal
 
 logger = make_logger(__name__)
 
@@ -20,11 +21,12 @@ class _ProgressDialog(Ui_Dialog, QDialog):
         pass
 
 
-class ProgressDialog(BaseDialog, ProgressInterface):
+class ProgressDialog(BaseDialog, WithSignal, ProgressInterface):
     """Creates the LongOp dialog and transforms Blinker sig to QtSignals via the MainUi Interface"""
 
     def __init__(self, parent, main_ui_obj_name):
-        BaseDialog.__init__(self, sig_progress, main_ui_obj_name, _ProgressDialog(parent))
+        BaseDialog.__init__(self, _ProgressDialog(parent))
+        WithSignal.__init__(self, sig_progress, main_ui_obj_name)
         self.set_current_enabled(False)
         self.__auto_close = True
         self.__current_enabled = False

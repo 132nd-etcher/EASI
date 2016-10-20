@@ -11,10 +11,9 @@ from .main_ui_mod_author import MainUiModAuthor
 from .main_ui_threading import MainGuiThreading
 from .states import MainUiStateManager
 from ..dialog_config.dialog import ConfigDialog
-from ..dialog_input.dialog import InputDialog
 from ..dialog_feedback.dialog import FeedbackDialog
-from ..dialog_progress.dialog import ProgressDialog
 from ..dialog_msg.dialog import MsgDialog
+from ..dialog_progress.dialog import ProgressDialog
 from ..dialog_testing.dialog import TestingDialog
 from ..skeletons.main import Ui_MainWindow
 
@@ -34,13 +33,13 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
 
         self.qt_app = qt_app
 
-        # Setup link with all connected objects
-        import src.abstract.ui.connected_object
-        src.abstract.ui.connected_object.main_ui = self
+        # # Setup link with all connected objects
+        # import src.abstract.ui.connected_object
+        # src.abstract.ui.connected_object.main_ui = self
 
         # Give a heads-up to all child QWidgets that the MainUi is up and running
-        import src.ui.base.qwidget
-        src.ui.base.qwidget.main_ui = self
+        import src.ui.base.with_signal
+        src.ui.base.with_signal.main_ui = self
 
         self.sig_proc = MainUiSigProcessor(self)
         self.testing_dialog = TestingDialog(self, 'test_dialog')
@@ -53,7 +52,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.setup()
         self.connect_actions()
         self.setup_children_dialogs()
-        self.state_manager = MainUiStateManager('state_manager')
+        self.state_manager = MainUiStateManager('state_manager', self)
 
     def setup(self):
         self.setupUi(self)

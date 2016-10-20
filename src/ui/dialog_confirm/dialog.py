@@ -2,7 +2,6 @@
 
 from src.qt import QDialog, Qt
 from src.ui.skeletons.confirm_dialog import Ui_Dialog
-from src.ui.base.qdialog import BaseDialog
 
 
 class ConfirmDialog(Ui_Dialog, QDialog):

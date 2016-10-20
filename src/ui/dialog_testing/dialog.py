@@ -5,6 +5,7 @@ from src.qt import QDialog, Qt
 from src.sig import sig_msgbox, sig_progress
 from src.threadpool import ThreadPool
 from src.ui.base.qdialog import BaseDialog
+from src.ui.base.with_signal import WithSignal
 from src.ui.dialog_input.dialog import InputDialog
 from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.skeletons.dialog_testing import Ui_Dialog
@@ -19,9 +20,10 @@ class _TestingDialog(Ui_Dialog, QDialog):
         self.setupUi(self)
 
 
-class TestingDialog(BaseDialog, TestingDialogInterface):
+class TestingDialog(BaseDialog, WithSignal, TestingDialogInterface):
     def __init__(self, parent, main_ui_obj):
-        BaseDialog.__init__(self, sig_testing_dialog, main_ui_obj, _TestingDialog(parent))
+        BaseDialog.__init__(self, _TestingDialog(parent))
+        WithSignal.__init__(self, sig_testing_dialog, main_ui_obj)
         self.qobj.btn_make_msgbox.clicked.connect(self.test_msg_box)
         self.qobj.btn_make_progress.clicked.connect(self.test_progress)
         self.qobj.btn_make_dual_progress.clicked.connect(self.test_dual_progress)

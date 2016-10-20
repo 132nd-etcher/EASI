@@ -1,13 +1,11 @@
 # coding=utf-8
 
-
-from src.abstract.ui.connected_qobject import AbstractConnectedQObject
-from src.abstract.ui.splash import AbstractSplash
 from src.abstract.progress_interface import ProgressInterface
 from src.low import constants
 from src.qt import QSplashScreen, QPixmap, qt_resources, Qt, QLabel, QFont, QProgressBar
 from src.sig import sig_splash
 from src.ui.base.qwidget import BaseQWidget
+from src.ui.base.with_signal import WithSignal
 
 
 class _MainUiSplash(QSplashScreen):
@@ -80,11 +78,11 @@ class _MainUiSplash(QSplashScreen):
         pass
 
 
-# class MainUiSplash(AbstractConnectedQObject, SplashInterface):
-class MainUiSplash(BaseQWidget, ProgressInterface):
+class MainUiSplash(BaseQWidget, WithSignal, ProgressInterface):
 
     def __init__(self, parent, main_ui_obj_name):
-        BaseQWidget.__init__(self, sig_splash, main_ui_obj_name, _MainUiSplash(parent))
+        BaseQWidget.__init__(self, _MainUiSplash(parent))
+        WithSignal.__init__(self, sig_splash, main_ui_obj_name)
 
     @property
     def qobj(self) -> _MainUiSplash:

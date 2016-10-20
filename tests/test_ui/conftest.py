@@ -26,7 +26,7 @@ def config_dialog(tmpdir):
 
 @pytest.fixture()
 def mock_main_ui(mocker):
-    yield mocker.patch('src.ui.base.qwidget.main_ui',
+    yield mocker.patch('src.ui.base.with_signal.main_ui',
                        spec=MainUi,
                        some_obj=mocker.MagicMock(),
                        sig_proc=mocker.MagicMock(
