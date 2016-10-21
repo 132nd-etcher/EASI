@@ -11,6 +11,13 @@ from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 
+
+if len(sys.argv) > 1:
+    print('sys.argv: ', str(sys.argv))
+    if 'test_and_exit' in sys.argv:
+        constants.TESTING = True
+constants.ARGS = sys.argv
+
 if constants.TESTING:
     # Bypass creation of main logger for tests
     import logging
@@ -18,15 +25,6 @@ if constants.TESTING:
     logger = logging.getLogger('__main__')
 else:
     logger = make_logger(log_file_path=constants.PATH_LOG_FILE)
-
-
-def parse_args():
-    from src.low import constants
-    constants.ARGS = sys.argv
-    if len(sys.argv) > 1:
-        print('sys.argv: ', str(sys.argv))
-        if 'test_and_exit' in sys.argv:
-            constants.TESTING = True
 
 
 def replace_builtins():
@@ -56,11 +54,11 @@ def check_cert():
 
 
 def init_sentry():
-    from src.cfg.cfg import config
+    from src.cfg import Config
     logger.info('sentry: initializing')
     from src.sentry import crash_reporter
     logger.debug('sentry online: {}'.format(crash_reporter.state.ONLINE))
-    crash_reporter.register_context('config', config)
+    crash_reporter.register_context('config', Config())
 
 
 def set_app_wide_font():
@@ -92,14 +90,14 @@ def show_disclaimer():
     if constants.TESTING:
         logger.info('disclaimer: skipping (testing mode)')
     else:
-        from src.cfg.cfg import config
+        from src.cfg import Config
         from src.ui.dialog_disclaimer.dialog import DisclaimerDialog
         logger.info('disclaimer: showing')
         if not DisclaimerDialog.make():
             logger.warning('disclaimer: user declined')
             sys.exit(0)
-        if config.author_mode and not DisclaimerDialog.make_for_mod_authors():
-            config.author_mode = False
+        if Config().author_mode and not DisclaimerDialog.make_for_mod_authors():
+            Config().author_mode = False
         logger.info('disclaimer: done')
 
 
@@ -144,7 +142,6 @@ def start_app():
 
 def main():
     try:
-        parse_args()
         replace_builtins()
         check_cert()
         init_sentry()
