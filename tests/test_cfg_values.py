@@ -8,7 +8,7 @@ from hypothesis import strategies as st, given
 
 from src.cfg.values import ConfigValues
 from src.meta.meta import Meta
-from .utils import ContainedTestCase
+from tests.utils import ContainedTestCase
 
 
 class C(Meta, ConfigValues):
