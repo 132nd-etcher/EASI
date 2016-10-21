@@ -130,7 +130,7 @@ def start_app():
     pool.queue_task(init_modules)
     logger.info('startup: init modules: done')
 
-    if constants.TESTING or 'test_and_exit' in sys.argv:
+    if 'no_qt_app' in sys.argv:
         pool.join_all()
         return True
     else:

@@ -16,7 +16,9 @@ def success(sender, signal_emitter, result):
 
 def test_and_exit(qtbot: QtBot):
     sys.argv.append('test_and_exit')
+    sys.argv.append('no_qt_app')
     from src import main
     main.main()
+    sys.argv.pop()
     sys.argv.pop()
     qtbot.wait_until(lambda: test_succeeded is True, timeout=15000)
