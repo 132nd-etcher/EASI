@@ -7,7 +7,9 @@ from pytestqt.qtbot import QtBot
 
 from src.cfg import config
 from src.low import constants
-from src.qt import Qt
+from src.qt import Qt, QPoint
+from src.ui.dialog_config.dialog import ConfigDialog
+
 
 constants.TESTING = True
 
@@ -122,7 +124,7 @@ def test_sg_path(qtbot: QtBot, tmpdir, mocker, config_dialog):
         dialog.config_settings['sg_path'].browse_for_value()
         m.assert_called_with(
             init_dir=test_dir,
-            title='Select your {} directory'.format(dialog.config_settings['sg_path'].dir_name()),
+            title='Select your {} directory'.format(dialog.config_settings['sg_path'].value_display_name),
             parent=dialog
         )
 
@@ -306,3 +308,75 @@ def test_check_for_update(qtbot, mocker, config_dialog):
     qtbot.wait_until(m.assert_called_with)
     qtbot.wait_until(lambda: sig.assert_called_with(
         'show', 'Check done', 'Already running latest version of {}'.format(constants.APP_SHORT_NAME)))
+
+
+def test_kdiff_path_display_value(qtbot, config_dialog):
+    from src.ui.dialog_config.settings.setting_kdiff_path import KDiffPathSetting
+    dialog, _, _, _ = config_dialog
+    assert isinstance(dialog, ConfigDialog)
+    assert isinstance(dialog.config_settings['kdiff_path'], KDiffPathSetting)
+    assert isinstance(dialog.config_settings['kdiff_path'].value_display_name, str)
+
+
+def test_kdiff_download(qtbot, mocker, config_dialog):
+    from src.ui.dialog_config.settings.setting_kdiff_path import KDiffPathSetting
+    dialog, _, _, _ = config_dialog
+    assert isinstance(dialog, ConfigDialog)
+    kdiff = dialog.config_settings['kdiff_path']
+    assert isinstance(kdiff, KDiffPathSetting)
+    m = mocker.patch('src.ui.dialog_config.settings.setting_kdiff_path.kdiff.install')
+    assert m.call_count == 0
+    kdiff.download_kdiff()
+    m.assert_called_with(wait=False)
+    m.reset()
+    kdiff.q_action_install_kdiff.trigger()
+    m.assert_called_with(wait=False)
+
+def test_kdiff_save_to_meta(qtbot, mocker, config_dialog, config, tmpdir, somefile):
+        from src.ui.dialog_config.settings.setting_kdiff_path import KDiffPathSetting
+        dialog, _, _, kdiff_path = config_dialog
+        assert isinstance(dialog, ConfigDialog)
+        kdiff = dialog.config_settings['kdiff_path']
+        assert isinstance(kdiff, KDiffPathSetting)
+        assert kdiff.get_value_from_dialog() == kdiff_path
+
+        validation_failed = mocker.spy(kdiff, 'validation_fail')
+        validation_success = mocker.spy(kdiff, 'validation_success')
+        show_error_balloon = mocker.spy(kdiff, 'show_error_balloon')
+
+        kdiff.set_dialog_value('')
+        assert kdiff.get_value_from_dialog() is None
+        assert kdiff.save_to_meta() is True
+        assert validation_failed.call_count == 0
+        assert validation_success.call_count == 0
+        assert show_error_balloon.call_count == 0
+        kdiff.set_dialog_value('some_path')
+        assert kdiff.save_to_meta() is False
+        assert validation_failed.call_count == 1
+        assert validation_success.call_count == 0
+        show_error_balloon.assert_called_with('File does not exist')
+
+        kdiff.set_dialog_value(somefile)
+        assert kdiff.save_to_meta() is False
+        show_error_balloon.assert_called_with('Expected a file named "kdiff3.exe"')
+        assert validation_failed.call_count == 2
+        assert validation_success.call_count == 0
+
+        kdiff.set_dialog_value(str(tmpdir))
+        assert kdiff.save_to_meta() is False
+        show_error_balloon.assert_called_with('Not a file')
+        assert validation_failed.call_count == 3
+        assert validation_success.call_count == 0
+
+        with mock.patch(
+                'src.ui.dialog_config.settings.setting_kdiff_path.KDiffPathSetting.store_object',
+                new=mock.PropertyMock(return_value=config)):
+            p = str(tmpdir.join('kdiff3.exe'))
+            with open(p, 'w') as f:
+                f.write('')
+            kdiff.set_dialog_value(p)
+            assert kdiff.save_to_meta() is True
+            assert show_error_balloon.call_count == 3
+            assert validation_failed.call_count == 3
+            assert validation_success.call_count == 1
+            assert config.kdiff_path == p

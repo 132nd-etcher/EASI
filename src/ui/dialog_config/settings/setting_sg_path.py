@@ -16,7 +16,8 @@ class SGPathSetting(AbstractPathSetting):
     def qt_object(self):
         return self.dialog.sg_line_edit
 
-    def dir_name(self) -> str:
+    @property
+    def value_display_name(self) -> str:
         return 'Saved Games'
 
     @property

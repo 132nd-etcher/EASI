@@ -52,6 +52,7 @@ class AbstractConfigSetting(AbstractSetting, metaclass=abc.ABCMeta):
             return True
         else:
             self.validation_fail()
+            return False
 
     def load_from_meta(self) -> bool:
         self.set_dialog_value(self.value)

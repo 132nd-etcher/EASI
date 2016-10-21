@@ -33,7 +33,7 @@ class AbstractPathSetting(AbstractConfigSetting):
             init_dir = 'c:/users'
         path = BrowseDialog.get_directory(
             parent=self.dialog,
-            title='Select your {} directory'.format(self.dir_name()),
+            title='Select your {} directory'.format(self.value_display_name),
             init_dir=init_dir
         )
         if isinstance(path, Path) and path.exists():
@@ -57,8 +57,9 @@ class AbstractPathSetting(AbstractConfigSetting):
     def set_dialog_value(self, value: str):
         self.qt_object.setText(str(value))
 
-    @abc.abstractmethod
-    def dir_name(self) -> str:
+    @property
+    @abc.abstractproperty
+    def value_display_name(self) -> str:
         """"""
 
     @property

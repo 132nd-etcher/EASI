@@ -25,7 +25,8 @@ class KDiffPathSetting(AbstractPathSetting):
     def qt_menu_btn(self) -> QToolButton:
         return self.dialog.btn_kdiff
 
-    def dir_name(self) -> str:
+    @property
+    def value_display_name(self) -> str:
         return 'kdiff3.exe'
 
     @staticmethod
@@ -45,6 +46,8 @@ class KDiffPathSetting(AbstractPathSetting):
                 self.show_error_balloon('File does not exist')
             elif not p.isfile():
                 self.show_error_balloon('Not a file')
+            elif not p.name == 'kdiff3.exe':
+                self.show_error_balloon('Expected a file named "kdiff3.exe"')
             else:
                 return True
         else:
