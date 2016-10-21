@@ -14,8 +14,6 @@
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../release/EASI_0_0_0_11_2.py" />
     <option name="PARAMETERS" value="build_requirements" />
     <option name="SHOW_COMMAND_LINE" value="false" />
-    <method>
-      <option name="RunConfigurationTask" enabled="false" run_configuration_name="build_ui" run_configuration_type="PythonConfigurationType" />
-    </method>
+    <method />
   </configuration>
 </component>
