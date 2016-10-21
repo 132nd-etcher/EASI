@@ -24,3 +24,11 @@ class AbstractMeta(SentryContextInterface, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def write(self):
         """Writes meta to file"""
+
+    @abc.abstractmethod
+    def __getitem__(self, item):
+        """Returns an item's value"""
+
+    @abc.abstractmethod
+    def __setitem__(self, item, value):
+        """Sets an item's value"""

@@ -3,7 +3,7 @@
 import typing
 
 from src.abstract.mod.abstract_mod_meta import AbstractModMetaFull, AbstractModFileRemoteMeta
-from src.meta.decorators import MetaPropertyWithDefault
+from src.meta.decorators import MetaProperty
 from src.meta.meta import Meta
 
 
@@ -11,86 +11,86 @@ class ModMeta(Meta, AbstractModMetaFull):
     def __init__(self):
         Meta.__init__(self, '')
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def depends(self, value) -> typing.List[str]:
         pass
 
-    @MetaPropertyWithDefault(None, list)
+    @MetaProperty(None, list)
     def conflicts(self, value) -> typing.List[str]:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def license(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def identifier(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def help(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def name(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def dcs_version(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def short_desc(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, list)
+    @MetaProperty(None, list)
     def recommends(self, value) -> typing.List[str]:
         pass
 
-    @MetaPropertyWithDefault(None, bool)
+    @MetaProperty(None, bool)
     def dcs_version_strict(self, value) -> bool:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def homepage(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def release_status(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, list)
+    @MetaProperty(None, list)
     def files(self, value) -> typing.List[AbstractModFileRemoteMeta]:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def version(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def repository(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def issues(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def long_description(self):
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def mod_type(self, value) -> str:
         pass
 
-    @MetaPropertyWithDefault(None, int)
+    @MetaProperty(None, int)
     def meta_version(self, value) -> int:
         pass
 
-    @MetaPropertyWithDefault(None, list)
+    @MetaProperty(None, list)
     def provides(self, value) -> typing.List[str]:
         pass
 
-    @MetaPropertyWithDefault(None, str)
+    @MetaProperty(None, str)
     def author(self, value) -> str:
         pass

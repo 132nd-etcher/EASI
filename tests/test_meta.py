@@ -5,7 +5,7 @@ from unittest import mock
 
 from hypothesis import given, settings, example
 from hypothesis import strategies as st
-from src.meta.decorators import MetaProperty, MetaPropertyWithDefault
+from src.meta.decorators import _MetaProperty, MetaProperty
 from src.meta.meta import Meta
 
 from src.low.custom_path import Path
@@ -148,10 +148,10 @@ class TestMeta(ContainedTestCase):
     def test_decorators_basic(self, x):
         f = mock.MagicMock()
         f.__name__ = 'mock'
-        p = MetaProperty(f, None, bool)
+        p = _MetaProperty(f, None, bool)
         p.__set__(None, True)
         with self.assertRaises(TypeError):
-            p.__set__(None, x)
+            p.__set__(self, x)
         self.assertIs(p.__get__(None, None), p)
 
     @given(x=st.one_of(st.booleans(), st.integers(), st.floats(), st.none()))
@@ -161,7 +161,7 @@ class TestMeta(ContainedTestCase):
         f.__name__ = 'mock'
 
         class C(Meta):
-            @MetaPropertyWithDefault('default', str)
+            @MetaProperty('default', str)
             def some_prop(self, _):
                 f('mock called')
 
