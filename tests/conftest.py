@@ -7,6 +7,14 @@ from src.rem.gh.gh_session import GHAnonymousSession
 
 
 @pytest.fixture()
+def somefile(tmpdir):
+    p = str(tmpdir.join('some_file'))
+    with open(p, 'w') as f:
+        f.write('')
+    return p
+
+
+@pytest.fixture()
 def config(tmpdir):
     Singleton.wipe_instances()
     # noinspection PyProtectedMember
