@@ -7,8 +7,9 @@ from src.rem.gh.gh_session import GHAnonymousSession
 
 
 @pytest.fixture()
-def somefile(tmpdir):
-    p = str(tmpdir.join('some_file'))
+def somefile(tmpdir_factory):
+    """Returns an existing file"""
+    p = str(tmpdir_factory.mktemp('some_dir', True).join('some_file'))
     with open(p, 'w') as f:
         f.write('')
     return p
@@ -16,6 +17,7 @@ def somefile(tmpdir):
 
 @pytest.fixture()
 def config(tmpdir):
+    """Creates a new instance of src.cfg.cfg.Config object"""
     Singleton.wipe_instances()
     # noinspection PyProtectedMember
     assert len(Singleton._instances) == 0
@@ -25,4 +27,5 @@ def config(tmpdir):
 
 @pytest.fixture(scope='session')
 def gh_anon():
+    """Returns the Github anonymous request session"""
     return GHAnonymousSession()
