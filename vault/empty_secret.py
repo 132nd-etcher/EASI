@@ -11,3 +11,7 @@ class Secret:
     gh_client_secret = None
     db_app_key = None
     db_app_secret = None
+    gh_test_token = None
+    gh_test_login = None
+    gh_test_usermail = None
+    bt_token = None

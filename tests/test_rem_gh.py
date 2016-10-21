@@ -24,8 +24,7 @@ from src.rem.gh.gh_session import GHAnonymousSession, GHSession, GithubAPIError,
 
 try:
     # noinspection PyUnresolvedReferences
-    from tests.unittest_secret import Secret
-
+    from vault.secret import Secret
     token = Secret.gh_test_token
 except ImportError:
     token = False
@@ -281,7 +280,7 @@ class TestGHAnonymousSession(TestCase):
         self.assertTrue('README.rst' in latest.assets())
 
 
-@skipUnless(token, 'no test token available')
+
 @pytest.mark.usefixtures('config')
 class TestGHSessionAuthentication:
     s = None
@@ -299,9 +298,10 @@ class TestGHSessionAuthentication:
         m.assert_called_with()
 
     @mock.patch('src.sig.sig_gh_token_status_changed.connected')
+    @skipUnless(token, 'no test token available')
     def test_init_correct_token(self, m):
         self.s.authenticate(token)
-        m.assert_called_with(Secret.gh_test_token_login)
+        m.assert_called_with(Secret.gh_test_login)
 
 
 @skipUnless(token, 'no test token available')
@@ -312,13 +312,16 @@ class TestGHSession:
     @pytest.fixture(autouse=True)
     @mock.patch('src.sig.sig_gh_token_status_changed.connected')
     def gh_session(self, m):
-        Singleton.wipe_instances('GHSession')
-        self.s = GHSession(token)
-        m.assert_called_with(Secret.gh_test_token_login)
+        if token:
+            Singleton.wipe_instances('GHSession')
+            self.s = GHSession(token)
+            m.assert_called_with(Secret.gh_test_login)
 
+    @skipUnless(token, 'no test token available')
     def test_primary_email(self):
-        assert Secret.gh_usermail == self.s.primary_email.email
+        assert Secret.gh_test_usermail == self.s.primary_email.email
 
+    @skipUnless(token, 'no test token available')
     def test_create_repo(self):
         # noinspection PyBroadException
         try:
@@ -334,13 +337,13 @@ class TestGHSession:
             (repo.name, name),
             (repo.default_branch, 'master'),
             (repo.archive_url, 'https://api.github.com/repos/{}/{}/{{archive_format}}{{/ref}}'.format(
-                Secret.gh_test_token_login, name)),
+                Secret.gh_test_login, name)),
             (repo.branches_url, 'https://api.github.com/repos/{}/{}/branches{{/branch}}'.format(
-                Secret.gh_test_token_login, name)),
+                Secret.gh_test_login, name)),
             (repo.clone_url, 'https://github.com/{}/{}.git'.format(
-                Secret.gh_test_token_login, name)),
+                Secret.gh_test_login, name)),
             (repo.commits_url, 'https://api.github.com/repos/{}/{}/commits{{/sha}}'.format(
-                Secret.gh_test_token_login, name)),
+                Secret.gh_test_login, name)),
             (repo.description, desc)
         ]
         for x, y in c:
