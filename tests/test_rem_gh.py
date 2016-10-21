@@ -19,7 +19,7 @@ from src.rem.gh.gh_objects.gh_user import GHUser
 from src.rem.gh.gh_session import GHAnonymousSession, GHSession, GithubAPIError, RateLimitationError, GHSessionError, \
     RequestFailedError
 
-p = mock.patch('requests.sessions.Session.get')
+# p = mock.patch('requests.sessions.Session.get')
 # p.start()
 
 try:
@@ -281,47 +281,40 @@ class TestGHAnonymousSession(TestCase):
         self.assertTrue('README.rst' in latest.assets())
 
 
-# noinspection PyPep8Naming
 @skipUnless(token, 'no test token available')
-@skipIf(os.getenv('APPVEYOR'), 'AppVeyor gets 403 from GH all the time')
-class TestGHSession(TestCase):
-    def __init__(self, methodName):
-        Singleton.wipe_instances()
-        TestCase.__init__(self, methodName)
-        self.s = GHSession(token)
+@pytest.mark.usefixtures('config')
+class TestGHSessionAuthentication:
+    s = None
 
-    def setUp(self):
-        self.assertGreater(self.s.rate_limit, 3000)
-
-    def test_singleton(self):
-        self.assertIs(self.s, GHSession())
-
+    @pytest.fixture(autouse=True)
     @mock.patch('src.sig.sig_gh_token_status_changed.not_connected')
-    def test_init_empty(self, m):
-        Singleton.wipe_instances()
-        session = GHSession()
-        self.assertFalse(session is self.s)
+    def new_gh_session(self, m):
+        Singleton.wipe_instances('GHSession')
+        self.s = GHSession()
         m.assert_called_with()
-        Singleton.wipe_instances()
-        self.s = GHSession(token)
-
-    @mock.patch('src.sig.sig_gh_token_status_changed.connected')
-    def test_init_correct_token(self, m):
-        Singleton.wipe_instances()
-        session = GHSession(token)
-        self.assertFalse(session is self.s)
-        m.assert_called_with(Secret.gh_test_token_login)
-        Singleton.wipe_instances()
-        self.s = GHSession(token)
 
     @mock.patch('src.sig.sig_gh_token_status_changed.wrong_token')
     def test_init_wrong_token(self, m):
-        Singleton.wipe_instances()
-        session = GHSession(st.text(min_size=1))
-        self.assertFalse(session is self.s)
+        self.s.authenticate(st.text(min_size=1))
         m.assert_called_with()
-        Singleton.wipe_instances()
+
+    @mock.patch('src.sig.sig_gh_token_status_changed.connected')
+    def test_init_correct_token(self, m):
+        self.s.authenticate(token)
+        m.assert_called_with(Secret.gh_test_token_login)
+
+
+@skipUnless(token, 'no test token available')
+@pytest.mark.usefixtures('config')
+class TestGHSession:
+    s = None
+
+    @pytest.fixture(autouse=True)
+    @mock.patch('src.sig.sig_gh_token_status_changed.connected')
+    def gh_session(self, m):
+        Singleton.wipe_instances('GHSession')
         self.s = GHSession(token)
+        m.assert_called_with(Secret.gh_test_token_login)
 
     def test_primary_email(self):
         assert Secret.gh_usermail == self.s.primary_email.email
@@ -351,7 +344,7 @@ class TestGHSession(TestCase):
             (repo.description, desc)
         ]
         for x, y in c:
-            self.assertSequenceEqual(x, y)
+            assert x == y
         self.s.delete_repo(name='test_repo')
 
 

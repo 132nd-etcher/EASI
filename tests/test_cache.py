@@ -13,12 +13,12 @@ from src.low.singleton import Singleton
 class TestCache:
     @pytest.fixture(autouse=True)
     def wipe_singleton(self):
-        Singleton.wipe_instances()
+        Singleton.wipe_instances('Cache')
         yield
-        Singleton.wipe_instances()
+        Singleton.wipe_instances('Cache')
 
     def test_cache_init(self, tmpdir):
-        Singleton.wipe_instances()
+        Singleton.wipe_instances('Cache')
         with pytest.raises(ValueError):
             Cache()
         td = str(tmpdir)
@@ -96,7 +96,7 @@ class TestCache:
         assert len(c) == 0
         p.write_text('')
         assert os.path.exists(p.abspath())
-        qtbot.wait_until(lambda: signal_caught is True)
+        qtbot.wait_until(lambda: signal_caught is True, timeout=3000)
 
     def test_on_deleted(self, tmpdir, qtbot):
         signal_caught = False

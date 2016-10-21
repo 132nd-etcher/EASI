@@ -17,11 +17,12 @@ def test_type_error(config, x):
         config.saved_games_path = x
 
 
-def test_config_values(config):
-    config.active_dcs_installation = 'test'
-    config.write()
+def test_config_values(config, tmpdir):
+    f = str(tmpdir.join('f'))
+    with open(f, 'w') as _f:
+        _f.write('')
     with pytest.raises(TypeError):
-        config.saved_games_path = config.path
+        config.saved_games_path = f
     with pytest.raises(FileNotFoundError):
         config.saved_games_path = ''
 

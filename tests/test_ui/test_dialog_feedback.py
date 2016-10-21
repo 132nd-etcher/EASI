@@ -13,7 +13,7 @@ from src.ui.dialog_feedback.dialog import FeedbackDialog
 
 
 @given(usr_name=st.text(), usr_mail=st.text())
-def test_dialog_feedback_field_population(qtbot: QtBot, usr_name, usr_mail):
+def test_dialog_feedback_field_population(qtbot: QtBot, config, usr_name, usr_mail):
     Config().usr_name = usr_name
     Config().usr_email = usr_mail
     dialog = FeedbackDialog()
@@ -25,7 +25,7 @@ def test_dialog_feedback_field_population(qtbot: QtBot, usr_name, usr_mail):
 @given(some_text=st.text(max_size=200))
 @example(some_text='\r\n')
 @settings(max_examples=5)
-def test_feedback(qtbot: QtBot, mocker, some_text):
+def test_feedback(qtbot: QtBot, mocker, config, some_text):
     assert isinstance(qtbot, (QtBot, QTest))
     msgbox = mocker.patch('src.ui.dialog_feedback.dialog.sig_msgbox.show')
     crash_reporter = mocker.patch('src.ui.dialog_feedback.dialog.crash_reporter', captureMessage=mock.MagicMock())

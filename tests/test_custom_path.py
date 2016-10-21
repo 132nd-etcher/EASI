@@ -1,13 +1,12 @@
 # coding=utf-8
 
 import string
-import pytest
 import subprocess
 
+import pytest
 from hypothesis import strategies as st, given
 
 from src.low.custom_path import Path
-from .utils import ContainedTestCase
 
 
 def test_get_version():
@@ -47,48 +46,45 @@ def test_get_version():
         p.get_win32_file_info()
 
 
-class TestCustomPath(ContainedTestCase):
-    @staticmethod
-    def hash_file(path):
-        return subprocess.check_output(['crc32', path]).decode().split(' ')[0][2:]
+@given(s=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1)))
+def test_create_temp_file(tmpdir, s):
+    p = Path(str(tmpdir.join(s)))
+    p.write_text('')
+    assert p.exists()
+    assert p.isfile()
 
-    def test_crc32(self):
-        import os
-        for p in [Path(f) for f in os.listdir('.')]:
-            if p.isfile():
-                self.assertEqual(p.crc32(), self.hash_file(p.abspath()))
-            else:
-                with self.assertRaises(TypeError):
-                    p.crc32()
 
-    def test_human_size(self):
+def test_crc32():
+    import os
+    for p in [Path(f) for f in os.listdir('.')]:
+        if p.isfile():
+            assert p.crc32() == subprocess.check_output(['crc32', p.abspath()]).decode().split(' ')[0][2:]
+        else:
+            with pytest.raises(TypeError):
+                p.crc32()
 
-        p = Path(self.create_temp_file())
 
-        def __make_file(_len):
-            with open(p.abspath(), 'wb') as f:
-                if _len == 0:
-                    return
-                f.seek(_len - 1)
-                f.write(b'0')
+def test_human_size(tmpdir):
+    p = Path(str(tmpdir.join('f')))
 
-        __make_file(0)
-        self.assertSequenceEqual(p.human_size(), '0B')
-        __make_file(1)
-        self.assertSequenceEqual(p.human_size(), '1B')
-        __make_file(512)
-        self.assertSequenceEqual(p.human_size(), '512B')
-        __make_file(1024)
-        self.assertSequenceEqual(p.human_size(), '1.0K')
-        __make_file(1024 * 128)
-        self.assertSequenceEqual(p.human_size(), '128.0K')
-        __make_file(1024 * 1024)
-        self.assertSequenceEqual(p.human_size(), '1.0M')
-        __make_file((1024 * 1024 * 32) + (1024 * 128))
-        self.assertSequenceEqual(p.human_size(), '32.1M')
+    def __make_file(_len):
+        with open(p.abspath(), 'wb') as f:
+            if _len == 0:
+                return
+            f.seek(_len - 1)
+            f.write(b'0')
 
-    @given(s=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1), st.none()),
-           p=st.one_of(st.text(alphabet=string.ascii_letters, min_size=1), st.none()), )
-    def test_create_temp_file(self, s, p):
-        p = Path(self.create_temp_file(suffix=s, prefix=p))
-        self.assertTrue(all([p.exists(), p.isfile()]))
+    __make_file(0)
+    assert p.human_size() == '0B'
+    __make_file(1)
+    assert p.human_size() == '1B'
+    __make_file(512)
+    assert p.human_size() == '512B'
+    __make_file(1024)
+    assert p.human_size() == '1.0K'
+    __make_file(1024 * 128)
+    assert p.human_size() == '128.0K'
+    __make_file(1024 * 1024)
+    assert p.human_size() == '1.0M'
+    __make_file((1024 * 1024 * 32) + (1024 * 128))
+    assert p.human_size() == '32.1M'
