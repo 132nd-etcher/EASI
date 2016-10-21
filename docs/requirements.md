@@ -8,7 +8,6 @@ For an up-to-date list of the packages actually used, see the different "require
 | ---------------------: | --------------------- |
 | argh | [![PyPI version](https://badge.fury.io/py/argh.svg)](https://badge.fury.io/py/argh) |
 | blinker | [![PyPI version](https://badge.fury.io/py/blinker.svg)](https://badge.fury.io/py/blinker) |
-| blinker-herald | [![PyPI version](https://badge.fury.io/py/blinker-herald.svg)](https://badge.fury.io/py/blinker-herald) |
 | certifi | [![PyPI version](https://badge.fury.io/py/certifi.svg)](https://badge.fury.io/py/certifi) |
 | cffi | [![PyPI version](https://badge.fury.io/py/cffi.svg)](https://badge.fury.io/py/cffi) |
 | contextlib2 | [![PyPI version](https://badge.fury.io/py/contextlib2.svg)](https://badge.fury.io/py/contextlib2) |
@@ -83,10 +82,32 @@ For an up-to-date list of the packages actually used, see the different "require
 
 
 ### Wheels and custom packages
-|                Package | Version               | Used for |
-| ---------------------: | --------------------- | --- |
-| pyinstaller | [![PyPI version](https://badge.fury.io/py/pyinstaller.svg)](https://github.com/132nd-etcher/pyinstaller) | build |
-| pygit2 | [![PyPI version](https://badge.fury.io/py/pygit2.svg)](https://github.com/132nd-etcher/pygit2_wheel) | project |
-| mkdocs | [![PyPI version](https://badge.fury.io/py/mkdocs.svg)](https://github.com/132nd-etcher/mkdocs.git) | docs |
-| httmock | [![PyPI version](https://badge.fury.io/py/httmock.svg)](https://github.com/132nd-etcher/httmock.git) | test |
+
+Collection of libraries I had to tweak for this project.
+
+|                Package | Version               | Used for | Custom repository |
+| ---------------------: | --------------------- | --- | --- |
+| pygit2 | [![PyPI version](https://badge.fury.io/py/pygit2.svg)](https://badge.fury.io/py/pygit2) | project | [https://github.com/132nd-etcher/pygit2_wheel](https://github.com/132nd-etcher/pygit2_wheel) |
+| blinker-herald | [![PyPI version](https://badge.fury.io/py/blinker-herald.svg)](https://badge.fury.io/py/blinker-herald) | project | [https://github.com/132nd-etcher/blinker_herald](https://github.com/132nd-etcher/blinker_herald) |
+| pyinstaller | [![PyPI version](https://badge.fury.io/py/pyinstaller.svg)](https://badge.fury.io/py/pyinstaller) | build | [https://github.com/132nd-etcher/pyinstaller](https://github.com/132nd-etcher/pyinstaller) |
+| mkdocs | [![PyPI version](https://badge.fury.io/py/mkdocs.svg)](https://badge.fury.io/py/mkdocs) | docs | [https://github.com/132nd-etcher/mkdocs.git](https://github.com/132nd-etcher/mkdocs.git) |
+| httmock | [![PyPI version](https://badge.fury.io/py/httmock.svg)](https://badge.fury.io/py/httmock) | test | [https://github.com/132nd-etcher/httmock.git](https://github.com/132nd-etcher/httmock.git) |
 [version_eye_project_page]: https://www.versioneye.com/user/projects/57ff67d90676c900486e4f8d?child=summary
+
+
+### Additional packages
+
+Collection of libraries used in the making of this project.
+
+|                Package | Version               |
+| ---------------------: | --------------------- |
+| pipdeptree | [![PyPI version](https://badge.fury.io/py/pipdeptree.svg)](https://badge.fury.io/py/pipdeptree) |
+| nose | [![PyPI version](https://badge.fury.io/py/nose.svg)](https://badge.fury.io/py/nose) |
+| docopt | [![PyPI version](https://badge.fury.io/py/docopt.svg)](https://badge.fury.io/py/docopt) |
+| feedparser | [![PyPI version](https://badge.fury.io/py/feedparser.svg)](https://badge.fury.io/py/feedparser) |
+| gitsome | [![PyPI version](https://badge.fury.io/py/gitsome.svg)](https://badge.fury.io/py/gitsome) |
+| numpydoc | [![PyPI version](https://badge.fury.io/py/numpydoc.svg)](https://badge.fury.io/py/numpydoc) |
+| ply | [![PyPI version](https://badge.fury.io/py/ply.svg)](https://badge.fury.io/py/ply) |
+| prompt-toolkit | [![PyPI version](https://badge.fury.io/py/prompt-toolkit.svg)](https://badge.fury.io/py/prompt-toolkit) |
+| Pygments | [![PyPI version](https://badge.fury.io/py/Pygments.svg)](https://badge.fury.io/py/Pygments) |
+| wcwidth | [![PyPI version](https://badge.fury.io/py/wcwidth.svg)](https://badge.fury.io/py/wcwidth) |
