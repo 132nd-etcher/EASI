@@ -18,7 +18,7 @@
     <option name="USE_PATTERN" value="false" />
     <option name="testToRun" value="F:\DEV\EASI\EASIv0.0.11" />
     <option name="keywords" value="" />
-    <option name="params" value="--cov=src --cov-config .coveragerc --cov-report xml --cov-report html -c .pytest" />
+    <option name="params" value="--cov=src --cov-config .coveragerc --cov-report xml --cov-report html -c .pytest --durations=10" />
     <option name="USE_PARAM" value="true" />
     <option name="USE_KEYWORD" value="false" />
     <method />
