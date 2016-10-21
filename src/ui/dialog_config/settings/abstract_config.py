@@ -2,7 +2,6 @@
 
 import abc
 
-from src.cfg import config
 from src.cfg.cfg import Config
 from .abstract import AbstractSetting
 
@@ -19,7 +18,7 @@ class AbstractConfigSetting(AbstractSetting, metaclass=abc.ABCMeta):
 
     @property
     def store_object(self):
-        return config
+        return Config()
 
     @property
     def value_type(self):
