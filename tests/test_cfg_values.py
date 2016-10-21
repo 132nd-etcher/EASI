@@ -4,50 +4,36 @@ import sys
 import tempfile
 from unittest import mock
 
+import pytest
+from blinker import signal
 from hypothesis import strategies as st, given
 
-from src.cfg.values import ConfigValues
-from src.meta.meta import Meta
 from tests.utils import ContainedTestCase
 
 
-class C(Meta, ConfigValues):
-    pass
+@given(x=st.one_of(st.booleans(), st.floats(), st.none(), st.integers()))
+def test_type_error(config, x):
+    with pytest.raises(TypeError):
+        config.saved_games_path = x
 
 
-class TestConfigValues(ContainedTestCase):
+def test_config_values(config):
+    config.active_dcs_installation = 'test'
+    config.write()
+    with pytest.raises(TypeError):
+        config.saved_games_path = config.path
+    with pytest.raises(FileNotFoundError):
+        config.saved_games_path = ''
 
-    def __init__(self, *args, **kwargs):
-        super(TestConfigValues, self).__init__(*args, **kwargs)
-        self.test_file = None
+    def dummy(*args, **kwargs):
+        print(args, kwargs)
 
-    def setUp(self):
-        super(TestConfigValues, self).setUp()
-        self.test_file = self.create_temp_file()
-        self.c = C(self.test_file)
+    sig = signal('Config_saved_games_path_value_changed')
+    m = mock.MagicMock(spec=dummy)
+    sig.connect(m)
+    config.saved_games_path = tempfile.gettempdir()
+    m.assert_called_once_with('Config', value=tempfile.gettempdir())
 
-    @given(x=st.one_of(st.booleans(), st.floats(), st.none(), st.integers()))
-    def test_type_error(self, x):
-        with self.assertRaises(TypeError):
-            self.c.saved_games_path = x
-
-    def test_config_values(self):
-
-        c = C(self.test_file)
-        c.active_dcs_installation = 'test'
-        c.write()
-        with self.assertRaises(TypeError):
-            c.saved_games_path = self.test_file
-        with self.assertRaises(FileNotFoundError):
-            c.saved_games_path = ''
-        with mock.patch('src.cfg.values.sig_cfg_sg_path.value_changed') as m:
-            c.saved_games_path = tempfile.gettempdir()
-            m.assert_called_once_with(tempfile.gettempdir())
-
-        with self.assertRaises(TypeError):
-            c.cache_path = sys.executable
-        c.cache_path = tempfile.gettempdir()
-
-
-
-
+    with pytest.raises(TypeError):
+        config.cache_path = sys.executable
+    config.cache_path = tempfile.gettempdir()
