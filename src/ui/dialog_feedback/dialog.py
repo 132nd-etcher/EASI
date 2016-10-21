@@ -32,10 +32,10 @@ class FeedbackDialog(Ui_Dialog, QDialog):
     def accept(self):
         mail = self.emailLineEdit.text()
         if mail:
-            config.usr_email = mail
+            Config().usr_email = mail
         name = self.nameLineEdit.text()
         if name:
-            config.usr_name = name
+            Config().usr_name = name
         text = self.textEdit.toPlainText()
         crash_reporter.extra_context(
             data={
