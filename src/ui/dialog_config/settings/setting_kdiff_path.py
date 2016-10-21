@@ -46,7 +46,7 @@ class KDiffPathSetting(AbstractPathSetting):
                 self.show_error_balloon('File does not exist')
             elif not p.isfile():
                 self.show_error_balloon('Not a file')
-            elif not p.name == 'kdiff3.exe':
+            elif not p.basename() == 'kdiff3.exe':
                 self.show_error_balloon('Expected a file named "kdiff3.exe"')
             else:
                 return True
