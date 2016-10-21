@@ -31,6 +31,7 @@ class AbstractPalette(metaclass=abc.ABCMeta):
 
 
 class PaletteBalloon(AbstractPalette):
+    __slots__ = []
     note = 'rgb(236, 208, 120)'
     warning = 'rgb(217, 91, 67)'
     error = 'rgb(192, 41, 66)'
@@ -39,6 +40,7 @@ class PaletteBalloon(AbstractPalette):
 
 
 class PaletteBalloonFive(AbstractPalette):
+    __slots__ = []
     note = 'rgb(237, 201, 81)'
     warning = 'rgb(235, 104, 65)'
     error = 'rgb(204, 51, 63)'
