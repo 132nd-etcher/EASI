@@ -2,10 +2,9 @@
 
 import sys
 
-from src import main
-
 
 def test_and_exit():
     sys.argv.append('test_and_exit')
+    from src import main
     main.main()
     sys.argv.pop()
