@@ -1,8 +1,10 @@
 # coding=utf-8
 
+import abc
 import os
 import stat
 
+from blinker_herald import emit, signals
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
@@ -12,6 +14,22 @@ from src.low.singleton import Singleton
 from src.sig import SignalReceiver, sig_cfg_cache_path
 
 logger = make_logger(__name__)
+
+
+class CacheEvent:
+    """
+    Represents an event sent by the Cache when the watched filesystem is changed
+    """
+
+    def __init__(self, event_type: str, src: str, dst: str = None):
+        self.event_type = event_type
+        self.src = src
+        self.dst = dst
+
+    def __str__(self):
+        return '{}: {}'.format(
+            self.event_type, self.src if self.dst is None else '{} -> {}'.format(
+                self.src, self.dst))
 
 
 class CacheFile:
@@ -66,8 +84,8 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         self.observer.schedule(self, self.path, recursive=True)
         self.observer.start()
         self.meta = {}
-        self.build()
-        self.__is_building = True
+        self.__is_building = False
+        self.cache_build()
 
     @property
     def is_building(self):
@@ -75,50 +93,60 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
 
     def on_created(self, event):
         if not event.is_directory:
-            self.build(event.src_path)
             logger.debug('created: {}'.format(event.src_path))
+            self.cache_build(event.src_path)
+            self.cache_changed_event(CacheEvent('created', event.src_path))
 
     def on_modified(self, event):
         if not event.is_directory:
-            self.build(event.src_path)
             logger.debug('modified: {}'.format(event.src_path))
+            self.cache_build(event.src_path)
+            self.cache_changed_event(CacheEvent('modified', event.src_path))
 
     def on_moved(self, event):
         if not event.is_directory:
-            del self.meta[event.src_path]
-            self.build(event.dest_path)
             logger.debug('moved: {} -> {}'.format(event.src_path, event.dest_path))
+            del self.meta[event.src_path]
+            self.cache_build(event.dest_path)
+            self.cache_changed_event(CacheEvent('moved', event.src_path, event.dest_path))
 
     def on_deleted(self, event):
         if not event.is_directory:
-            del self.meta[event.src_path]
             logger.debug('deleted: {}'.format(event.src_path))
+            del self.meta[event.src_path]
+            self.cache_changed_event(CacheEvent('deleted', event.src_path))
 
-    def build(self, rel_path: str = None):
+    @emit(sender='Cache', post_result_name='event')
+    def cache_changed_event(self, event: CacheEvent):
+        return event
+
+    def cache_build(self, rel_path: str = None):
         self.__is_building = True
-        if rel_path is None:
-            logger.info('re-building whole cache folder')
-            self.meta = {}
-            for root, folder, _ in os.walk(self.path):
-                for entry in os.scandir(root):
-                    if entry.is_dir():
-                        continue
-                    path = entry.path
-                    abspath = os.path.join(self.path.dirname(), path)
-                    name = entry.name
-                    meta = CacheFile(name, abspath, path, entry.stat())
-                    self.meta[meta.path] = meta
-            for v in self.meta.values():
-                v.get_crc32()
-        else:
-            logger.debug('re-building cache for path: {}'.format(rel_path))
-            path = rel_path
-            abspath = os.path.abspath(rel_path)
-            name = os.path.basename(rel_path)
-            meta = CacheFile(name, abspath, path, os.stat(abspath))
-            meta.get_crc32()
-            self.meta[meta.path] = meta
-        self.__is_building = False
+        try:
+            if rel_path is None:
+                logger.info('re-building whole cache folder')
+                self.meta = {}
+                for root, folder, _ in os.walk(self.path):
+                    for entry in os.scandir(root):
+                        if entry.is_dir():
+                            continue
+                        path = entry.path
+                        abspath = os.path.join(self.path.dirname(), path)
+                        name = entry.name
+                        meta = CacheFile(name, abspath, path, entry.stat())
+                        self.meta[meta.path] = meta
+                for v in self.meta.values():
+                    v.get_crc32()
+            else:
+                logger.debug('re-building cache for path: {}'.format(rel_path))
+                path = rel_path
+                abspath = os.path.abspath(rel_path)
+                name = os.path.basename(rel_path)
+                meta = CacheFile(name, abspath, path, os.stat(abspath))
+                meta.get_crc32()
+                self.meta[meta.path] = meta
+        finally:
+            self.__is_building = False
 
     def cache_path_changed(self, value):
         self.path = value
@@ -132,6 +160,9 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         if isinstance(value, str):
             value = Path(value)
         self.__path = value
+
+    def __len__(self):
+        return len(self.meta)
 
     def __getitem__(self, item) -> CacheFile:
         try:
@@ -155,3 +186,11 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
     def __iter__(self):
         for item in self.meta.values():
             yield item
+
+
+class CacheEventCatcher(metaclass=abc.ABCMeta):
+    @staticmethod
+    @abc.abstractstaticmethod
+    @signals.post_cache_changed_event.connect
+    def got_signal(sender: str, signal_emitter: Cache, event: CacheEvent):
+        pass
