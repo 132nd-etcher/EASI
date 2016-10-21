@@ -63,6 +63,9 @@ class Sentry(raven.Client):
             kwargs['data'] = {}
         if kwargs['data'].get('level') is None:
             kwargs['data']['level'] = logging.DEBUG
+        for k, context_provider in self.registered_contexts.items():
+            assert isinstance(context_provider, SentryContextInterface)
+            crash_reporter.extra_context({k: context_provider.get_context()})
         super(Sentry, self).captureMessage(message, **kwargs)
 
     def captureException(self, exc_info=None, **kwargs):
