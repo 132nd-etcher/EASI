@@ -5,7 +5,7 @@ from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, KEY_READ, KEY_WOW64_64KE
 from Crypto.Cipher import AES
 from base64 import b64encode, b64decode
 
-from src.cfg import config
+from src.cfg import Config
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
@@ -33,7 +33,7 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
     """
 
     def __init__(self):
-        Meta.__init__(self, path=constants.PATH_KEYRING_FILE, encrypted=config.encrypt_keyring)
+        Meta.__init__(self, path=constants.PATH_KEYRING_FILE, encrypted=Config().encrypt_keyring)
         KeyringValues.__init__(self)
         self.rec = SignalReceiver(self)
         self.rec[sig_cfg_keyring_encrypt] = self.encrypt_keyring_setting_changed

@@ -2,7 +2,7 @@
 
 import os
 
-from src.cfg import config
+from src.cfg import Config
 from src.dcs import dcs_installs
 from src.qt import QMenu, QAction
 from src.sig import SignalReceiver, sig_known_dcs_installs_changed
@@ -73,12 +73,12 @@ class MainUiActiveDCSInstallation:
         self.combo.currentIndexChanged.connect(self.current_index_changed)
 
     def current_index_changed(self):
-        config.active_dcs_installation = self.active_dcs_installation[1]
+        Config().active_dcs_installation = self.active_dcs_installation[1]
         self.main_ui.label_dcs_version.setText(self.active_dcs_installation[0][2])
 
     def set_current_combo_index_to_config_value(self, value=None):
         if value is None:
-            value = config.active_dcs_installation
+            value = Config().active_dcs_installation
         if value is not None:
             dcs_install = self.config_mapping[value]
             if dcs_install[0] is not None:

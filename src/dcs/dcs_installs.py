@@ -8,7 +8,7 @@ except ImportError:
     winreg = MagicMock()
 from typing import Tuple
 
-from src.cfg import config
+from src.cfg import Config
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
@@ -49,7 +49,7 @@ class DCSInstalls(metaclass=Singleton):
         logger.debug('looking for DCS installations paths')
         sig_main_ui_states.set_progress_title('Looking for DCS installations')
         a_reg = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
-        if config.saved_games_path is None:
+        if Config().saved_games_path is None:
             logger.debug('searching for base "Saved Games" folder')
             try:
                 logger.debug('trying "User Shell Folders"')
@@ -67,11 +67,11 @@ class DCSInstalls(metaclass=Singleton):
                 except FileNotFoundError:
                     logger.debug('darn it, another fail, falling back to "~"')
                     self.base_sg = Path('~').expanduser().abspath()
-            config.saved_games_path = str(self.base_sg.abspath())
+            Config().saved_games_path = str(self.base_sg.abspath())
             sig_cfg_sg_path.value_changed(str(self.base_sg.abspath()))
         else:
-            logger.debug('using "Saved Games" folder: {}'.format(config.saved_games_path))
-            self.base_sg = Path(config.saved_games_path)
+            logger.debug('using "Saved Games" folder: {}'.format(Config().saved_games_path))
+            self.base_sg = Path(Config().saved_games_path)
         logger.debug('found base "Saved Games" path: {}'.format(self.base_sg.abspath()))
         sig_main_ui_states.set_progress(20)
         partial_progress = 80 / len(self.installs)

@@ -2,7 +2,7 @@
 # noinspection PyProtectedMember
 import semver
 from src.__version__ import __version__
-from src.cfg import config
+from src.cfg import Config
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.rem.gh.gh_session import GHAnonymousSession
@@ -64,7 +64,7 @@ def check_for_update():
     logger.info('running')
     sig_main_ui_states.set_progress_text('Looking for a newer version of {}'.format(constants.APP_SHORT_NAME))
     all_releases = GHAnonymousSession().get_all_releases(constants.GH_APP_USER, constants.GH_APP_REPO)
-    if config.subscribe_to_test_versions:
+    if Config().subscribe_to_test_versions:
         logger.debug('looking for a newer test version')
         look_for_test_version(all_releases)
     look_for_regular_version(all_releases)

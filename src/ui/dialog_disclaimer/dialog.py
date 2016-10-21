@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from src.cfg import config
+from src.cfg import Config
 from src.low import constants
 from src.qt import QDialog, QIcon, QDialogButtonBox, Qt, qt_resources
 from src.ui.skeletons.dialog_disclaimer import Ui_Dialog
@@ -22,7 +22,7 @@ class DisclaimerDialog(Ui_Dialog, QDialog):
         discs = []
         ks = set()
         for k, t in list_of_disclaimers:
-            if k not in config.ack:
+            if k not in Config().ack:
                 discs.append(t)
                 ks.add(k)
         if discs:
@@ -34,10 +34,10 @@ class DisclaimerDialog(Ui_Dialog, QDialog):
                 dialog.setWindowTitle('{} - {}'.format(dialog.windowTitle(), special))
             dialog.textBrowser.setHtml('<hr />'.join([x for x in discs]))
             if dialog.exec() == 1:
-                ack = config.ack
+                ack = Config().ack
                 for k in ks:
                     ack.add(k)
-                config.ack = ack
+                Config().ack = ack
                 return True
             else:
                 return False

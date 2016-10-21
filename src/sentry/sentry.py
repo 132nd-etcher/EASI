@@ -8,7 +8,7 @@ import raven.breadcrumbs
 
 from src.__version__ import __version__
 from src.abstract.abstract_sentry import SentryContextInterface
-from src.cfg import config
+from src.cfg import Config
 from src.rem.gh.gh_session import GHSession
 from src.low import constants
 from src.low.custom_logging import make_logger
@@ -42,10 +42,10 @@ class Sentry(raven.Client):
                 testing=constants.TESTING,
             )
         )
-        if config.usr_name:
-            self.tags_context(dict(username=config.usr_name))
-        if config.usr_email:
-            self.tags_context(dict(user_email=config.usr_email))
+        if Config().usr_name:
+            self.tags_context(dict(username=Config().usr_name))
+        if Config().usr_email:
+            self.tags_context(dict(user_email=Config().usr_email))
         if GHSession().user:
             self.tags_context(dict(gh_username=GHSession().user.login))
         try:

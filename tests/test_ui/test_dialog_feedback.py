@@ -7,15 +7,15 @@ from PyQt5.Qt import QTest
 from hypothesis import strategies as st, given, example, settings
 from pytestqt.qtbot import QtBot
 
-from src.cfg import config
+from src.cfg import Config
 from src.qt import Qt
 from src.ui.dialog_feedback.dialog import FeedbackDialog
 
 
 @given(usr_name=st.text(), usr_mail=st.text())
 def test_dialog_feedback_field_population(qtbot: QtBot, usr_name, usr_mail):
-    config.usr_name = usr_name
-    config.usr_email = usr_mail
+    Config().usr_name = usr_name
+    Config().usr_email = usr_mail
     dialog = FeedbackDialog()
     qtbot.add_widget(dialog)
     assert dialog.nameLineEdit.text() == usr_name

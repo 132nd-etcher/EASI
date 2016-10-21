@@ -3,7 +3,7 @@
 import zipfile
 
 from src.dld import downloader, FileDownload
-from src.cfg import config
+from src.cfg import Config
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
@@ -21,13 +21,13 @@ class KdiffHelper(AbstractHelper, metaclass=Singleton):
 
     @property
     def path(self) -> Path:
-        return Path(config.kdiff_path)
+        return Path(Config().kdiff_path)
 
     @path.setter
     def path(self, value: str or Path):
         if isinstance(value, Path):
             value = value.abspath()
-        config.kdiff_path = value
+        Config().kdiff_path = value
 
     def install(self, wait=True):
 

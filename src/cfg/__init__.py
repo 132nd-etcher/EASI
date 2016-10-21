@@ -1,3 +1,3 @@
 # coding=utf-8
 
-from .cfg import config
+from .cfg import Config

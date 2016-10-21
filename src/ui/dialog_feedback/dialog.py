@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from src.cfg import config
+from src.cfg import Config
 from src.qt import QDialog, Qt, QIcon, qt_resources, QDialogButtonBox
 from src.sig import sig_msgbox
 from src.ui.skeletons.dialog_feedback import Ui_Dialog
@@ -16,10 +16,10 @@ class FeedbackDialog(Ui_Dialog, QDialog):
         self.btn_ok = self.buttonBox.button(QDialogButtonBox.Ok)
         self.btn_cancel = self.buttonBox.button(QDialogButtonBox.Cancel)
         self.btn_ok.setText('Send')
-        if config.usr_name:
-            self.nameLineEdit.setText(config.usr_name)
-        if config.usr_email:
-            self.emailLineEdit.setText(config.usr_email)
+        if Config().usr_name:
+            self.nameLineEdit.setText(Config().usr_name)
+        if Config().usr_email:
+            self.emailLineEdit.setText(Config().usr_email)
         self.btn_ok.clicked.connect(self.btn_ok_clicked)
         self.btn_cancel.clicked.connect(self.btn_cancel_clicked)
 
@@ -58,4 +58,4 @@ class FeedbackDialog(Ui_Dialog, QDialog):
     @staticmethod
     def make(parent=None):
         dialog = FeedbackDialog(parent)
-        dialog.dialog.exec()
+        dialog.exec()
