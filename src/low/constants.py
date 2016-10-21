@@ -27,4 +27,7 @@ GH_APP_USER = '132nd-etcher'
 GH_APP_REPO = 'EASI'
 GH_APP_REPO_TEST = 'EASI_tests'
 
+QT_APP = None
+MAIN_UI = None
+
 MACHINE_GUID = None
