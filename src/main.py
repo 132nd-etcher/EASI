@@ -4,13 +4,11 @@ import builtins
 import os
 import sys
 
-from blinker import signal
 from blinker_herald import emit
 
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
-
 
 if len(sys.argv) > 1:
     print('sys.argv: ', str(sys.argv))
@@ -75,15 +73,16 @@ def set_app_wide_font():
 
 
 def init_qt_app():
-    from PyQt5.QtWidgets import QApplication
     from src.ui.main_ui.main_ui import MainUi
-    from src.ui.dialog_disclaimer.dialog import DisclaimerDialog
-
-    logger.info('QApplication: starting')
-    constants.QT_APP = QApplication([])
-    # set_app_wide_font()
-    logger.info('QApplication: started')
-    constants.MAIN_UI = MainUi(constants.QT_APP)
+    if constants.TESTING:
+        constants.MAIN_UI = MainUi(None)
+    else:
+        from PyQt5.QtWidgets import QApplication
+        logger.info('QApplication: starting')
+        constants.QT_APP = QApplication([])
+        # set_app_wide_font()
+        logger.info('QApplication: started')
+        constants.MAIN_UI = MainUi(constants.QT_APP)
 
 
 def show_disclaimer():
@@ -122,9 +121,9 @@ def init_modules():
         init_helpers()
 
 
+@emit(sender='main')
 def start_app():
     from src.threadpool import ThreadPool
-    import src.sig
     logger.info('startup: init modules: start')
     pool = ThreadPool(_num_threads=1, _basename='startup', _daemon=False)
     # signal(src.new_sig.SIG_INIT_MODULES_INTERRUPT).connect(pool.join_all)
@@ -133,8 +132,7 @@ def start_app():
 
     if constants.TESTING or 'test_and_exit' in sys.argv:
         pool.join_all()
-        constants.MAIN_UI.exit()
-        sys.exit(0)
+        return True
     else:
         logger.info('transferring control to QtApp')
         sys.exit(constants.QT_APP.exec())
