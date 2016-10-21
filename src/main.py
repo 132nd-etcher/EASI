@@ -74,7 +74,7 @@ def set_app_wide_font():
 
 def init_qt_app():
     from src.ui.main_ui.main_ui import MainUi
-    if constants.TESTING:
+    if 'no_qt_app' in sys.argv:
         constants.MAIN_UI = MainUi(None)
     else:
         from PyQt5.QtWidgets import QApplication
@@ -130,7 +130,7 @@ def start_app():
     pool.queue_task(init_modules)
     logger.info('startup: init modules: done')
 
-    if 'no_qt_app' in sys.argv:
+    if constants.TESTING or 'test_and_exit' in sys.argv:
         pool.join_all()
         return True
     else:
