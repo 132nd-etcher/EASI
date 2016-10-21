@@ -14,10 +14,10 @@ def test_config_init(config, tmpdir):
 
 def test_signal(config, tmpdir, mocker):
     new_value = tmpdir.join('file')
-    sig = signal('cache_path_value_changed')
+    sig = signal('Config_cache_path_value_changed')
     spy = mocker.spy(sig, 'send')
     config.cache_path = str(new_value)
-    spy.assert_called_with('meta', value=new_value)
+    spy.assert_called_with('Config', value=new_value)
 
 
 @skip('works fine alone, not in bulk')
