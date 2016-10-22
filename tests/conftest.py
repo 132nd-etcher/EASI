@@ -11,6 +11,13 @@ def make_test_logger():
     make_logger('__main__')
 
 
+@pytest.fixture(autouse=True)
+def set_testing_mode(monkeypatch):
+    """Sets global testing mode"""
+    from src.low import constants
+    monkeypatch.setattr(constants, 'TESTING', True)
+
+
 @pytest.fixture()
 def somefile(tmpdir_factory):
     """Returns an existing file"""
@@ -30,7 +37,6 @@ def config(tmpdir):
     assert 'Config' not in Singleton._instances
     p = str(tmpdir.join('c'))
     return Config(config_file_path=p)
-
 
 
 @pytest.fixture(scope='session')
