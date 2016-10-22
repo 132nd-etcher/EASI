@@ -43,7 +43,8 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
 
     def encrypt_keyring_setting_changed(self, value: bool):
         self.encrypt = value
-        self.write()
+        if self.data:
+            self.write()
 
     def __setitem__(self, key, value, _write=True):
         """Immediately writes any change to file"""
