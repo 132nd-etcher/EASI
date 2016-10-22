@@ -41,7 +41,6 @@ class TestConfigDialog:
     @pytest.fixture(autouse=True)
     def reset(self, qtbot: QtBot, config_dialog):
         self.dialog, self.sg, self.cache, self.kdiff, self.config = config_dialog
-        print(self.config.saved_games_path)
         qtbot.add_widget(self.dialog)
         kdiff_mock_sig.reset_mock()
         cache_mock_sig.reset_mock()
@@ -76,23 +75,69 @@ class TestConfigDialog:
         self.dialog.kdiff_line_edit.setText(test_file)
         return test_dir, test_file
 
-    def test_config_dialog_signals(self, qtbot):
+    def test_config_dialog_signals(self, qtbot, tmpdir):
+        assert isinstance(self.dialog, ConfigDialog)
         self.dialog.save_settings()
+
+        def check_signals():
+            assert subscribe_mock_sig.call_count == 0
+            assert encrypt_mock_sig.call_count == 0
+            assert author_mock_sig.call_count == 0
+            assert sg_mock_sig.call_count == 0
+            assert cache_mock_sig.call_count == 0
+            assert kdiff_mock_sig.call_count == 0
+
+        qtbot.wait_until(check_signals, timeout=3000)
+        self.dialog.subscribe_to_test_versions.setChecked(not self.dialog.subscribe_to_test_versions.isChecked())
+        self.dialog.save_settings()
+
         def check_signals():
             assert subscribe_mock_sig.call_count == 1
-            assert subscribe_mock_sig.call_args == mock.call('Config', value=self.dialog.check_box_encrypt.isChecked())
-            subscribe_mock_sig.assert_called_with('Config', value=self.dialog.check_box_encrypt.isChecked())
-            assert subscribe_mock_sig.call_count == 1
-            encrypt_mock_sig.assert_called_with('Config', value=self.dialog.check_box_encrypt.isChecked())
+            subscribe_mock_sig.assert_called_with('Config', value=self.dialog.subscribe_to_test_versions.isChecked())
+
+        qtbot.wait_until(check_signals, timeout=3000)
+        self.dialog.check_box_encrypt.setChecked(not self.dialog.check_box_encrypt.isChecked())
+        self.dialog.save_settings()
+
+        def check_signals():
             assert encrypt_mock_sig.call_count == 1
-            author_mock_sig.assert_called_with('Config', value=self.dialog.author_mode.isChecked())
+            encrypt_mock_sig.assert_called_with('Config', value=self.dialog.check_box_encrypt.isChecked())
+
+        qtbot.wait_until(check_signals, timeout=3000)
+        self.dialog.author_mode.setChecked(not self.dialog.author_mode.isChecked())
+        self.dialog.save_settings()
+
+        def check_signals():
             assert author_mock_sig.call_count == 1
-            sg_mock_sig.assert_called_with('Config', value=self.dialog.sg_line_edit.text())
+            author_mock_sig.assert_called_with('Config', value=self.dialog.author_mode.isChecked())
+
+        qtbot.wait_until(check_signals, timeout=3000)
+        self.dialog.sg_line_edit.setText(str(tmpdir))
+        self.dialog.save_settings()
+
+        def check_signals():
             assert sg_mock_sig.call_count == 1
-            cache_mock_sig.assert_called_with('Config', value=self.dialog.cache_line_edit.text())
+            sg_mock_sig.assert_called_with('Config', value=self.dialog.sg_line_edit.text())
+
+        qtbot.wait_until(check_signals, timeout=3000)
+        self.dialog.cache_line_edit.setText(str(tmpdir))
+        self.dialog.save_settings()
+
+        def check_signals():
             assert cache_mock_sig.call_count == 1
-            kdiff_mock_sig.assert_called_with('Config', value=self.dialog.kdiff_line_edit.text())
+            cache_mock_sig.assert_called_with('Config', value=self.dialog.cache_line_edit.text())
+
+        qtbot.wait_until(check_signals, timeout=3000)
+        kdiff = str(tmpdir.mkdir('sub').join('kdiff3.exe'))
+        with open(kdiff, 'w') as f:
+            f.write('')
+        self.dialog.kdiff_line_edit.setText(kdiff)
+        self.dialog.save_settings()
+
+        def check_signals():
             assert kdiff_mock_sig.call_count == 1
+            kdiff_mock_sig.assert_called_with('Config', value=self.dialog.kdiff_line_edit.text())
+
         qtbot.wait_until(check_signals, timeout=3000)
 
     def test_sg_path(self, tmpdir, mocker, qtbot):
