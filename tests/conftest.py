@@ -8,7 +8,7 @@ from src.low.custom_logging import make_logger
 @pytest.fixture(scope='session', autouse=True)
 def make_test_logger():
     """Creates main logger for tests output"""
-    make_logger('__main__')
+    make_logger('__main__').info('test logger initialized')
 
 
 @pytest.fixture(autouse=True)
