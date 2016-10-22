@@ -168,7 +168,7 @@ if __name__ == '__main__':
 
     import signal as core_sig
 
-    print('connecting SIGINT')
+    logger.info('connecting SIGINT')
     core_sig.signal(core_sig.SIGINT, nice_exit)
 
     main()
