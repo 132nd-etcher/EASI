@@ -119,7 +119,7 @@ deploy:
       secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
     subject: 132nd-etcher
     repo: EASI
-    package: nightly
+    package: beta
     version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
@@ -134,7 +134,7 @@ deploy:
       secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
     subject: 132nd-etcher
     repo: EASI
-    package: nightly
+    package: alpha
     version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
@@ -149,7 +149,7 @@ deploy:
       secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
     subject: 132nd-etcher
     repo: EASI
-    package: alpha
+    package: dev
     version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
@@ -164,7 +164,7 @@ deploy:
       secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
     subject: 132nd-etcher
     repo: EASI
-    package: beta
+    package: stable
     version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
@@ -179,7 +179,7 @@ deploy:
       secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
     subject: 132nd-etcher
     repo: EASI
-    package: beta
+    package: rc
     version: "%GitVersion_FullSemVer%"
     publish: true
     override: false
