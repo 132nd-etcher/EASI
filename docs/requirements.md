@@ -66,9 +66,16 @@ For an up-to-date list of the packages actually used, see the different "require
 ### Tests
 | Package | Version |
 | ---------------------: | --------------------- |
+| apipkg | [![PyPI version](https://badge.fury.io/py/apipkg.svg)](https://badge.fury.io/py/apipkg) |
 | colorama | [![PyPI version](https://badge.fury.io/py/colorama.svg)](https://badge.fury.io/py/colorama) |
+| diff-cover | [![PyPI version](https://badge.fury.io/py/diff-cover.svg)](https://badge.fury.io/py/diff-cover) |
+| execnet | [![PyPI version](https://badge.fury.io/py/execnet.svg)](https://badge.fury.io/py/execnet) |
+| inflect | [![PyPI version](https://badge.fury.io/py/inflect.svg)](https://badge.fury.io/py/inflect) |
+| jinja2-pluralize | [![PyPI version](https://badge.fury.io/py/jinja2-pluralize.svg)](https://badge.fury.io/py/jinja2-pluralize) |
 | py | [![PyPI version](https://badge.fury.io/py/py.svg)](https://badge.fury.io/py/py) |
 | pytest | [![PyPI version](https://badge.fury.io/py/pytest.svg)](https://badge.fury.io/py/pytest) |
+| pytest-cache | [![PyPI version](https://badge.fury.io/py/pytest-cache.svg)](https://badge.fury.io/py/pytest-cache) |
+| pytest-catchlog | [![PyPI version](https://badge.fury.io/py/pytest-catchlog.svg)](https://badge.fury.io/py/pytest-catchlog) |
 | pytest-cov | [![PyPI version](https://badge.fury.io/py/pytest-cov.svg)](https://badge.fury.io/py/pytest-cov) |
 | pytest-mock | [![PyPI version](https://badge.fury.io/py/pytest-mock.svg)](https://badge.fury.io/py/pytest-mock) |
 | pytest-qt | [![PyPI version](https://badge.fury.io/py/pytest-qt.svg)](https://badge.fury.io/py/pytest-qt) |
