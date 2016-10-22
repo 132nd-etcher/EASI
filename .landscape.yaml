@@ -9,7 +9,7 @@ ignore-paths:
   - docs
   - tests
 ignore-patterns:
-  - ^__init__.py$
+  - ^__init__\.py$
   - ^example/doc_.*\.py$
   - (^|/)docs(/|$)
 python-targets:
