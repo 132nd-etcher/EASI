@@ -74,6 +74,9 @@ class _MetaProperty:
             # Checks for type of "value"
             raise TypeError('expected a {}, got: {} (value: {})'.format(str(self.type), type(value), value))
 
+        if value == getattr(instance, self.func.__name__):
+            return
+
         # Runs whatever code is inside the decorated method
         self.func(instance, value)
 
