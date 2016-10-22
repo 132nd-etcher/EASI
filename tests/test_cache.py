@@ -18,7 +18,6 @@ class TestCache:
         Singleton.wipe_instances('Cache')
 
     def test_cache_init(self, tmpdir):
-        Singleton.wipe_instances('Cache')
         with pytest.raises(ValueError):
             Cache()
         td = str(tmpdir)
