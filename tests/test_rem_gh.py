@@ -22,6 +22,7 @@ from src.rem.gh.gh_session import GHAnonymousSession, GHSession, GithubAPIError,
 try:
     # noinspection PyUnresolvedReferences
     from vault.secret import Secret
+
     token = Secret.gh_test_token
 except ImportError:
     token = False
@@ -275,7 +276,6 @@ class TestGHAnonymousSession(TestCase):
         self.assertSequenceEqual(latest.name, 'Final-release 1')
         self.assertSequenceEqual(latest.tag_name, '0.0.1.0')
         self.assertTrue('README.rst' in latest.assets())
-
 
 
 @pytest.mark.usefixtures('config')

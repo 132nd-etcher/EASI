@@ -11,7 +11,6 @@ from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
 from src.meta.meta import Meta
-from src.sig import SignalReceiver, sig_cfg_keyring_encrypt
 from .values import KeyringValues
 
 logger = make_logger(__name__)
@@ -41,8 +40,6 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
         self.sig = signal('Config_encrypt_keyring_value_changed')
         self.on_sig = on_sig
         self.sig.connect(self.on_sig)
-        self.rec = SignalReceiver(self)
-        self.rec[sig_cfg_keyring_encrypt] = self.encrypt_keyring_setting_changed
 
     def encrypt_keyring_setting_changed(self, value: bool):
         self.encrypt = value

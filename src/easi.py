@@ -125,11 +125,11 @@ def init_modules():
     init_dcs_installs()
     init_keyring()
     init_remotes()
-    init_cache()
     if constants.TESTING:
-        logger.debug('testing mode, skipping helpers download')
+        logger.debug('testing mode, skipping helpers download & cache init')
     else:
         init_helpers()
+    init_cache()
     logger.info('done')
 
 
@@ -172,6 +172,7 @@ def start_gui():
         init_qt_app()
         show_disclaimer()
         start_app()
+
     except SystemExit:
         print('catched SystemExit')
         if constants.TESTING:

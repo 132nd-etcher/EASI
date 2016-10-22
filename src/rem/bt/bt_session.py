@@ -5,7 +5,7 @@ from requests.sessions import Session
 
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
-from src.rem.bt.bt_objects.bt_file import BTFile, BTAllFiles
+from src.rem.bt.bt_objects.bt_file import BTAllFiles
 from src.rem.bt.bt_objects.bt_version import BTVersion, BTAllVersions
 
 logger = make_logger(__name__)
@@ -117,32 +117,3 @@ class BTSession(Session, metaclass=Singleton):
 
 
 bt_session = BTSession()
-
-if __name__ == '__main__':
-    try:
-        latest = bt_session.get_latest_version('alpha')
-        print(latest.name)
-    except BTNotFoundError:
-        pass
-    try:
-        latest = bt_session.get_latest_version('beta')
-        print(latest.name)
-    except BTNotFoundError:
-        pass
-    try:
-        latest = bt_session.get_latest_version('nightly')
-        print(latest.name)
-    except BTNotFoundError:
-        pass
-    try:
-        latest = bt_session.get_latest_version('master')
-        print(latest.name)
-    except BTNotFoundError:
-        pass
-    exit(0)
-    for x in bt_session.get_files_for_package('alpha'):
-        assert isinstance(x, BTFile)
-        print(x.version)
-        print(x.name)
-        print(x.path)
-        print(x.size)

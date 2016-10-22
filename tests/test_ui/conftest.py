@@ -3,8 +3,9 @@
 import pytest
 
 
+# noinspection PyUnusedLocal
 @pytest.fixture()
-def config_dialog(qtbot, tmpdir, config, monkeypatch):
+def config_dialog(qtbot, tmpdir, config):
     """Returns initialized src.ui.dialog_config.ConfigDialog"""
     from src.ui.dialog_config.dialog import ConfigDialog
     print('creating dummy config')

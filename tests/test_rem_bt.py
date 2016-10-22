@@ -8,7 +8,9 @@ import requests
 from httmock import response, urlmatch, with_httmock
 
 from src.low.custom_path import Path
-from src.rem.bt.bt_session import BTSession, BTAllFiles, BTFile, BTVersion
+from src.rem.bt.bt_session import BTSession
+from src.rem.bt.bt_objects.bt_file import BTFile, BTAllFiles
+from src.rem.bt.bt_objects.bt_version import BTVersion
 
 ENDPOINT = r'(.*\.)?api\.bintray\.com$'
 HEADERS = {'content-type': 'application/json'}
@@ -92,6 +94,7 @@ def test_build_req():
         s.build_req(1)
 
 
+# noinspection SpellCheckingInspection
 @with_httmock(mock_bt_api)
 def test_get_files_for_package():
     s = BTSession()
@@ -111,6 +114,7 @@ def test_get_files_for_package():
     assert file.size == 1234
 
 
+# noinspection SpellCheckingInspection
 @with_httmock(mock_bt_api)
 def test_get_latest_version():
     s = BTSession()

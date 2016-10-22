@@ -23,6 +23,7 @@ file_list = [
 
 
 class TestDownload:
+    # noinspection SpellCheckingInspection
     wrong_url = [
         r'https://raw.githubusercontent.com/132nd-etcher/kdiff3/master/Qt5Coree.dll',
         'caribou'

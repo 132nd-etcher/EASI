@@ -14,8 +14,10 @@ from src.ui.dialog_feedback.dialog import FeedbackDialog
 
 @given(usr_name=st.text(), usr_mail=st.text())
 def test_dialog_feedback_field_population(qtbot: QtBot, config, usr_name, usr_mail):
-    Config().usr_name = usr_name
-    Config().usr_email = usr_mail
+    config.usr_name = usr_name
+    config.usr_email = usr_mail
+    assert Config().usr_name == usr_name
+    assert Config().usr_email == usr_mail
     dialog = FeedbackDialog()
     qtbot.add_widget(dialog)
     assert dialog.nameLineEdit.text() == usr_name
@@ -33,6 +35,8 @@ def test_feedback(qtbot: QtBot, mocker, config, some_text):
     qtbot.add_widget(dialog)
     dialog.show()
     qtbot.wait_for_window_shown(dialog)
+    assert config.usr_name == dialog.nameLineEdit.text()
+    assert config.usr_email == dialog.emailLineEdit.text()
     dialog.textEdit.setText(some_text)
     dialog.comboBox.setCurrentIndex(random.randint(0, dialog.comboBox.count()))
 

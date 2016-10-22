@@ -97,6 +97,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         WidgetBalloon(self.tableView, 'some note', palette.note, 'center', offset_y=40)
 
 
+# noinspection PyUnusedLocal
 @signals.post_init_modules.connect
 def test_balloon(sender, signal_emitter, result):
     MainUi.do('splash', 'hide')

@@ -1,5 +1,6 @@
 # coding=utf-8
 
+
 class BaseGHObject:
     def __init__(self, json):
         self._json = json

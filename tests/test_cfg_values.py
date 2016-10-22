@@ -8,8 +8,6 @@ import pytest
 from blinker import signal
 from hypothesis import strategies as st, given
 
-from tests.utils import ContainedTestCase
-
 
 @given(x=st.one_of(st.booleans(), st.floats(), st.none(), st.integers()))
 def test_type_error(config, x):
