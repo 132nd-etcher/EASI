@@ -50,7 +50,6 @@ class TestCache:
             time.sleep(0.1)
         new_p = Path(str(tmpdir.join('ff')))
 
-        @signals.post_cache_changed_event.connect
         def got_signal(sender, signal_emitter, event):
             nonlocal signal_caught
             assert sender == 'Cache'
@@ -64,11 +63,15 @@ class TestCache:
             assert new_p.abspath() in c
             signal_caught = True
 
+        signals.post_cache_changed_event.connect(got_signal)
+
         old_p = random_files[0]
         assert isinstance(old_p, Path)
         old_p.rename(new_p.abspath())
 
         qtbot.wait_until(lambda: signal_caught is True)
+
+        signals.post_cache_changed_event.disconnect(got_signal)
 
     def test_on_created(self, tmpdir, qtbot):
         signal_caught = False
@@ -78,7 +81,6 @@ class TestCache:
 
         p = Path(tmpdir.join('f'))
 
-        @signals.post_cache_changed_event.connect
         def got_signal(sender, signal_emitter, event):
             nonlocal signal_caught
             assert sender == 'Cache'
@@ -91,11 +93,15 @@ class TestCache:
             assert len(c) == 1
             signal_caught = True
 
+        signals.post_cache_changed_event.connect(got_signal)
+
         assert not os.path.exists(p.abspath())
         assert len(c) == 0
         p.write_text('')
         assert os.path.exists(p.abspath())
         qtbot.wait_until(lambda: signal_caught is True, timeout=3000)
+
+        signals.post_cache_changed_event.disconnect(got_signal)
 
     def test_on_deleted(self, tmpdir, qtbot):
         signal_caught = False
@@ -105,7 +111,6 @@ class TestCache:
 
         c = Cache(td)
 
-        @signals.post_cache_changed_event.connect
         def got_signal(sender, signal_emitter, event):
             nonlocal signal_caught
             assert sender == 'Cache'
@@ -117,9 +122,13 @@ class TestCache:
             assert not p.abspath() in c
             signal_caught = True
 
+        signals.post_cache_changed_event.connect(got_signal)
+
         assert p.abspath() in c
         assert len(c) == 1
         p.remove()
         assert not os.path.exists(p.abspath())
         qtbot.wait_until(lambda: signal_caught is True)
         assert len(c) == 0
+
+        signals.post_cache_changed_event.disconnect(got_signal)
