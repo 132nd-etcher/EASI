@@ -1,9 +1,10 @@
 # coding=utf-8
 """Manages credentials"""
+from base64 import b64encode, b64decode
 from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, KEY_READ, KEY_WOW64_64KEY, OpenKey, QueryValueEx
 
 from Crypto.Cipher import AES
-from base64 import b64encode, b64decode
+from blinker import signal
 
 from src.cfg import Config
 from src.low import constants
@@ -23,8 +24,6 @@ def pad(data):
         return data + ((32 - len(data) % 32) * '@')
     else:
         raise TypeError
-    # elif isinstance(data, bytes):
-    #     return data + ((32 - len(data) % 32) * '@'.encode())
 
 
 class Keyring(Meta, KeyringValues, metaclass=Singleton):
@@ -35,6 +34,13 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
     def __init__(self):
         Meta.__init__(self, path=constants.PATH_KEYRING_FILE, encrypted=Config().encrypt_keyring)
         KeyringValues.__init__(self)
+
+        def on_sig(_, value):
+            self.encrypt_keyring_setting_changed(value)
+
+        self.sig = signal('Config_encrypt_keyring_value_changed')
+        self.on_sig = on_sig
+        self.sig.connect(self.on_sig)
         self.rec = SignalReceiver(self)
         self.rec[sig_cfg_keyring_encrypt] = self.encrypt_keyring_setting_changed
 
@@ -66,6 +72,7 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
 
 def init_keyring():
     pass
+
 
 logger.info('keyring: initializing')
 a_reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
