@@ -2,6 +2,9 @@
 
 from queue import Queue
 
+from blinker_herald import signals
+from ..widget_balloon.widget import WidgetBalloon
+
 from src.low import constants
 from src.qt import QApplication, QMainWindow, Qt, QIcon, qt_resources
 from src.ui.main_ui.interface.interface import MainUiSigProcessor
@@ -83,3 +86,19 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.close()
         if self.qt_app:
             self.qt_app.exit(code)
+
+    def test_balloon(self):
+        from src.qt.palette import PaletteBalloonFive
+        palette = PaletteBalloonFive
+        WidgetBalloon(self.tableView, 'some info', palette.info, 'topLeft', adjust_size=True)
+        WidgetBalloon(self.tableView, 'some warning', palette.warning, 'center', offset_y=-80)
+        WidgetBalloon(self.tableView, 'some error', palette.error, 'center', offset_y=-40)
+        WidgetBalloon(self.tableView, 'some background', palette.background, 'center')
+        WidgetBalloon(self.tableView, 'some note', palette.note, 'center', offset_y=40)
+
+
+@signals.post_init_modules.connect
+def test_balloon(sender, signal_emitter, result):
+    MainUi.do('splash', 'hide')
+    MainUi.do(None, 'show')
+    MainUi.do(None, 'test_balloon')
