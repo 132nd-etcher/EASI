@@ -75,9 +75,16 @@ class TestConfigDialog:
         self.dialog.kdiff_line_edit.setText(test_file)
         return test_dir, test_file
 
-    def test_config_dialog_signals(self, qtbot, tmpdir):
+    def test_config_dialog_signals(self, qtbot, tmpdir, config):
         assert isinstance(self.dialog, ConfigDialog)
         self.dialog.save_settings()
+
+        assert config.author_mode == self.dialog.author_mode.isChecked()
+        assert config.subscribe_to_test_versions == self.dialog.subscribe_to_test_versions.isChecked()
+        assert config.encrypt_keyring == self.dialog.check_box_encrypt.isChecked()
+        assert config.saved_games_path == self.dialog.sg_line_edit.text()
+        assert config.kdiff_path == self.dialog.kdiff_line_edit.text()
+        assert config.cache_path == self.dialog.cache_line_edit.text()
 
         def check_signals():
             assert subscribe_mock_sig.call_count == 0
