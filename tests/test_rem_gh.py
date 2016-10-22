@@ -19,9 +19,6 @@ from src.rem.gh.gh_objects.gh_user import GHUser
 from src.rem.gh.gh_session import GHAnonymousSession, GHSession, GithubAPIError, RateLimitationError, GHSessionError, \
     RequestFailedError
 
-# p = mock.patch('requests.sessions.Session.get')
-# p.start()
-
 try:
     # noinspection PyUnresolvedReferences
     from vault.secret import Secret
