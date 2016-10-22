@@ -24,14 +24,16 @@ logger = make_logger(__name__)
 class Sentry(raven.Client):
     def __init__(self):
         self.registered_contexts = {}
-        if Secret.sentry_dsn is not None:  # and not constants.TESTING:
+        if Secret.sentry_dsn is not None:
             raven.Client.__init__(
                 self,
                 'https://{}@sentry.io/99772?ca_certs={}'.format(Secret.sentry_dsn, certifi.where()),
                 release=__version__
             )
+            logger.info('DSN found, Sentry is ready')
         else:
             raven.Client.__init__(self)
+            logger.warning('no DSN found, Sentry is running in dummy mode')
 
     def set_context(self):
         self.tags_context(
