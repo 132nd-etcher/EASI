@@ -194,3 +194,15 @@ class CacheEventCatcher(metaclass=abc.ABCMeta):
     @signals.post_cache_changed_event.connect
     def got_signal(sender: str, signal_emitter: Cache, event: CacheEvent):
         pass
+
+
+def init_cache():
+    logger.info('initializing cache')
+    from src.cfg import Config
+    p = Path(Config().cache_path)
+    logger.debug('cache will be in: {}'.format(p.abspath()))
+    if not p.exists():
+        logger.debug('directory does not exist, creating')
+        p.makedirs()
+    Cache(p)
+    logger.info('cache initialized')
