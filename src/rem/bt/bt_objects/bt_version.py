@@ -29,6 +29,10 @@ class BTVersion(BaseBTObject):
         """"""
 
     @json_property
+    def released(self):
+        """"""
+
+    @json_property
     def updated(self):
         """"""
 
