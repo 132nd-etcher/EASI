@@ -1,6 +1,9 @@
 # coding=utf-8
 import abc
 
+from src.low import constants
+from src.low.custom_logging import make_logger
+
 
 class Singleton(abc.ABCMeta):
     """
@@ -20,5 +23,7 @@ class Singleton(abc.ABCMeta):
         """Only for testing purposes"""
         for instance in cls._instances:
             if cls_to_remove == instance:
+                if constants.TESTING:
+                    make_logger(__name__).debug('wiping "{}" instances'.format(instance))
                 del cls._instances[instance]
                 return
