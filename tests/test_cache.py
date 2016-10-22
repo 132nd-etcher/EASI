@@ -30,14 +30,6 @@ class TestCache:
         assert os.path.exists(td)
 
     def test_on_moved(self, tmpdir, qtbot):
-        """
-        This one is a little special: Cache will generate two events during the move, one expected "move" event,
-        and another "modified" event for the destination of the move.
-
-        Thus, the signal catching function will run twice and throw an AssertionError; it is expected behaviour and
-        safe to ignore.
-        """
-
         signal_caught = False
         td = str(tmpdir)
         random_files = []
@@ -56,12 +48,17 @@ class TestCache:
             assert isinstance(signal_emitter, Cache)
             assert isinstance(event, CacheEvent)
             assert signal_emitter is c
-            assert event.event_type == 'moved'
-            assert event.src == old_p.abspath()
-            assert event.dst == new_p.abspath()
-            assert not old_p.abspath() in c
-            assert new_p.abspath() in c
-            signal_caught = True
+            try:
+                assert event.event_type == 'moved'
+            except AssertionError:
+                assert event.event_type == 'modified'
+                assert event.src == new_p.abspath()
+            else:
+                assert event.src == old_p.abspath()
+                assert event.dst == new_p.abspath()
+                assert not old_p.abspath() in c
+                assert new_p.abspath() in c
+                signal_caught = True
 
         signals.post_cache_changed_event.connect(got_signal)
 
