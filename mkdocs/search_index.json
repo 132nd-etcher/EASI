@@ -61,6 +61,26 @@
             "title": "Additional packages"
         },
         {
+            "location": "/versionning/",
+            "text": "WIP\n\n\nTalk a bit about SemVer\n\u00b6\n\n\nBranches & packages\n\u00b6\n\n\nalpha: feat/\n\nbeta: pull/\n\ndev: develop\n\nrc: /release\n\nstable: master & hotfix/\n\n\nAV artifacts\n\u00b6",
+            "title": "Versionning"
+        },
+        {
+            "location": "/versionning/#talk-a-bit-about-semver",
+            "text": "",
+            "title": "Talk a bit about SemVer"
+        },
+        {
+            "location": "/versionning/#branches-packages",
+            "text": "alpha: feat/ \nbeta: pull/ \ndev: develop \nrc: /release \nstable: master & hotfix/",
+            "title": "Branches &amp; packages"
+        },
+        {
+            "location": "/versionning/#av-artifacts",
+            "text": "",
+            "title": "AV artifacts"
+        },
+        {
             "location": "/tests/",
             "text": "Footnotes\n\n\nAdmonition\n\n\nDefinition lists\n\n\nAbbreviations\n\n\nFenced Code Blocks\n\n\n\n\n\n\nFootnotes\n\u00b6\n\n\nFootnotes\n1\n have a label\n2\n and the footnote\u2019s content.\n\n\nAdmonition\n\u00b6\n\n\n\n\noptional explicit title within double quotes\n\n\nAny number of other indented markdown elements.\n\n\nThis is the second paragraph.\n\n\n\n\nDefinition lists\n\u00b6\n\n\n\n\nApple\n\n\nPomaceous fruit of plants of the genus Malus in \n\nthe family Rosaceae.\n\n\n\n\n\n\nNote\n\n\nYou should note that the title will be automatically capitalized.\n\n\n\n\n\n\nDon\u2019t try this at home\n\n\n\u2026\n\n\n\n\n\n\nA title anyway\n\n\nThis is a admonition box without a title.\n\n\n\n\n\n\nOrange\n\n\nThe fruit of an evergreen tree of the genus Citrus.\n\n\n\n\nAbbreviations\n\u00b6\n\n\nThe \nHTML\n specification \n\nis maintained by the \nW3C\n.\n\n\nFenced Code Blocks\n\u00b6\n\n\na one-line code block\n\n\n\n\n# python code\n\n\n\n\n<p>HTML Document</p>\n\n\n\n\n# more python code\n\n\n\n\n# This line is emphasized\n# This line isn't\n# This line is emphasized\n\n\n\n\n# This line is emphasized\n# This line isn't\n# This line is emphasized\n\n\n\n\n\n\n\n\n\n\nFirst Header\n\n\nSecond Header\n\n\n\n\n\n\n\n\n\n\nContent Cell\n\n\nContent Cell\n\n\n\n\n\n\nContent Cell\n\n\nContent Cell\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis is a footnote content.\u00a0\n\u21a9\n\n\n\n\n\n\nA footnote on the label: \u201c@#$%\u201d.\u00a0\n\u21a9",
             "title": "Tests"
