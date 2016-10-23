@@ -4,7 +4,9 @@ repo_url: https://github.com/132nd-etcher/EASI
 pages:
 - Home: index.md
 - Requirements: requirements.md
+- Versionning: versionning.md
 - Tests: tests.md
+
 theme: readthedocs
 
 # https://github.com/waylan/Python-Markdown/wiki/Third-Party-Extensions
