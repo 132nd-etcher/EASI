@@ -113,20 +113,7 @@ deploy:
 #      branch: master
 #      appveyor_repo_tag: false
 
-  - provider: BinTray
-    username: 132nd-etcher
-    api_key:
-      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
-    subject: 132nd-etcher
-    repo: EASI
-    package: beta
-    version: "%GitVersion_FullSemVer%"
-    publish: true
-    override: false
-    explode: false
-    on:
-      branch: /pull/.*/
-      appveyor_repo_tag: false
+############## ALPHA
 
   - provider: BinTray
     username: 132nd-etcher
@@ -143,6 +130,25 @@ deploy:
       branch: /feature/.*/
       appveyor_repo_tag: false
 
+############## BETA
+
+  - provider: BinTray
+    username: 132nd-etcher
+    api_key:
+      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
+    subject: 132nd-etcher
+    repo: EASI
+    package: beta
+    version: "%GitVersion_FullSemVer%"
+    publish: true
+    override: false
+    explode: false
+    on:
+      branch: /pull/.*/
+      appveyor_repo_tag: false
+
+############## DEV
+
   - provider: BinTray
     username: 132nd-etcher
     api_key:
@@ -157,6 +163,25 @@ deploy:
     on:
       branch: develop
       appveyor_repo_tag: false
+
+############## RC
+
+  - provider: BinTray
+    username: 132nd-etcher
+    api_key:
+      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
+    subject: 132nd-etcher
+    repo: EASI
+    package: rc
+    version: "%GitVersion_FullSemVer%"
+    publish: true
+    override: false
+    explode: false
+    on:
+      branch: /release/.*/
+      appveyor_repo_tag: false
+
+############## STABLE - PATCH
 
   - provider: BinTray
     username: 132nd-etcher
@@ -173,20 +198,7 @@ deploy:
       branch: /hotfix/.*/
       appveyor_repo_tag: false
 
-  - provider: BinTray
-    username: 132nd-etcher
-    api_key:
-      secure: t0qrmbdcvUmtVn52IJ4YG357edT6zdA9aFQ3UEbEj8Ps8Tw363UzT9bMItJs0Kmu
-    subject: 132nd-etcher
-    repo: EASI
-    package: rc
-    version: "%GitVersion_FullSemVer%"
-    publish: true
-    override: false
-    explode: false
-    on:
-      branch: /release/.*/
-      appveyor_repo_tag: false
+############## STABLE - MINOR
 
   - provider: BinTray
     username: 132nd-etcher
