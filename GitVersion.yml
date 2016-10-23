@@ -3,23 +3,6 @@
 mode: Mainline
 
 branches:
-  master:
-    regex: master
-    tag: ''
-    increment: Minor
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
-    is-develop: false
-    is-release-branch: false
-  release:
-    regex: releases?[/-]
-    mode: ContinuousDelivery
-    tag: rc
-    increment: Patch
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
-    is-develop: false
-    is-release-branch: true
   feature:
     regex: features?[/-]
     mode: ContinuousDelivery
@@ -39,6 +22,32 @@ branches:
     track-merge-target: false
     is-develop: false
     is-release-branch: false
+  develop:
+    regex: dev(elop)?(ment)?$
+    mode: ContinuousDeployment
+    tag: dev
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: true
+    is-develop: true
+    is-release-branch: false
+  master:
+    regex: master
+    tag: ''
+    increment: Minor
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    is-develop: false
+    is-release-branch: false
+  release:
+    regex: releases?[/-]
+    mode: ContinuousDelivery
+    tag: rc
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    is-develop: false
+    is-release-branch: true
   hotfix:
     regex: hotfix(es)?[/-]
     mode: ContinuousDelivery
@@ -56,13 +65,4 @@ branches:
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
     is-develop: false
-    is-release-branch: false
-  develop:
-    regex: dev(elop)?(ment)?$
-    mode: ContinuousDeployment
-    tag: dev
-    increment: Minor
-    prevent-increment-of-merged-branch-version: false
-    track-merge-target: true
-    is-develop: true
     is-release-branch: false
