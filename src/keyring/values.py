@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.low.custom_logging import make_logger
-from src.meta.decorators import MetaProperty
+from src.meta.meta_property import MetaProperty
 
 logger = make_logger(__name__)
 

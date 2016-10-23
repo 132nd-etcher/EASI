@@ -5,7 +5,7 @@ import types
 from blinker import signal
 
 
-class MetaCustomSig(type):
+class CustomSig(type):
     """
     Meant to be used as a metaclass only !
 
@@ -19,7 +19,7 @@ class MetaCustomSig(type):
                 continue
             if isinstance(attr_value, types.FunctionType):
                 attrs[attr_name] = mcs.send_sig_decorator(attr_value)
-        return super(MetaCustomSig, mcs).__new__(mcs, name, bases, attrs)
+        return super(CustomSig, mcs).__new__(mcs, name, bases, attrs)
 
     @classmethod
     def send_sig_decorator(mcs, func):

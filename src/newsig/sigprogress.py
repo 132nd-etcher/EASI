@@ -1,10 +1,10 @@
 # coding=utf-8
 
 from src.abstract.progress_interface import ProgressInterface
-from src.newsig.metacustomsig import MetaCustomSig
+from src.newsig.customsig import CustomSig
 
 
-class SigProgress(ProgressInterface, metaclass=MetaCustomSig):
+class SigProgress(ProgressInterface, metaclass=CustomSig):
     """
     App-wide Progress signal.
     Sent whenever a lengthy operation requires the set-up of some progress feedback.

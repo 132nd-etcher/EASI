@@ -4,6 +4,7 @@ import abc
 import os
 import stat
 
+from blinker import signal
 from blinker_herald import emit, signals
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
@@ -11,7 +12,6 @@ from watchdog.observers import Observer
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
-from src.sig import SignalReceiver, sig_cfg_cache_path
 
 logger = make_logger(__name__)
 
@@ -78,8 +78,12 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         self.__path = path
         if not self.__path.exists():
             self.__path.makedirs_p()
-        self.rec = SignalReceiver(self)
-        self.rec[sig_cfg_cache_path] = self.cache_path_changed
+
+        def on_path_changed(_, value):
+            self.path = value
+            self.cache_build()
+
+        signal('Config_cache_path_value_changed').connect(on_path_changed, weak=False)
         self.observer = Observer()
         self.observer.schedule(self, self.path, recursive=True)
         self.observer.start()
@@ -147,9 +151,6 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                 self.meta[meta.path] = meta
         finally:
             self.__is_building = False
-
-    def cache_path_changed(self, value):
-        self.path = value
 
     @property
     def path(self) -> Path:

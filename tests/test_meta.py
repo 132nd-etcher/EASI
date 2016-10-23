@@ -6,7 +6,7 @@ from unittest import mock
 from hypothesis import given, settings, example
 from hypothesis import strategies as st
 # noinspection PyProtectedMember
-from src.meta.decorators import _MetaProperty, MetaProperty
+from src.meta.meta_property import _MetaProperty, MetaProperty
 from src.meta.meta import Meta
 
 from src.low.custom_path import Path

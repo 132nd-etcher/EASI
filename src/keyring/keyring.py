@@ -34,12 +34,10 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
         Meta.__init__(self, path=constants.PATH_KEYRING_FILE, encrypted=Config().encrypt_keyring)
         KeyringValues.__init__(self)
 
-        def on_sig(_, value):
+        def encrypt_keyring_value_changed(_, value):
             self.encrypt_keyring_setting_changed(value)
 
-        self.sig = signal('Config_encrypt_keyring_value_changed')
-        self.on_sig = on_sig
-        self.sig.connect(self.on_sig)
+        signal('Config_encrypt_keyring_value_changed').connect(encrypt_keyring_value_changed, weak=False)
 
     def encrypt_keyring_setting_changed(self, value: bool):
         self.encrypt = value

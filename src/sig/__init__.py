@@ -7,10 +7,6 @@ from .sig_ui_splash import SplashSig
 from .sig_ui_main import MainUiSig, MainUiStatesSig
 from .sig_config_value import ConfigValueSig
 
-sig_cfg_sg_path = ConfigValueSig()
-sig_cfg_cache_path = ConfigValueSig()
-sig_cfg_keyring_encrypt = ConfigValueSig()
-sig_cfg_kdiff_path = ConfigValueSig()
 sig_cfg_author_mode = ConfigValueSig()
 
 sig_gh_token_status_changed = RemSig()
