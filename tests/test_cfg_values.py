@@ -1,7 +1,6 @@
 # coding=utf-8
 
 import sys
-import tempfile
 from unittest import mock
 
 import pytest
@@ -30,9 +29,10 @@ def test_config_values(config, tmpdir):
     sig = signal('Config_saved_games_path_value_changed')
     m = mock.MagicMock(spec=dummy)
     sig.connect(m)
-    config.saved_games_path = tempfile.gettempdir()
-    m.assert_called_once_with('Config', value=tempfile.gettempdir())
+    td = str(tmpdir.mkdir('sub'))
+    config.saved_games_path = td
+    m.assert_called_once_with('Config', value=td)
 
     with pytest.raises(TypeError):
         config.cache_path = sys.executable
-    config.cache_path = tempfile.gettempdir()
+    config.cache_path = td

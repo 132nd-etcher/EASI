@@ -1,15 +1,14 @@
 # coding=utf-8
 # noinspection PyProtectedMember
 import semver
+
 from src.__version__ import __version__
 from src.cfg import Config
 from src.low import constants
 from src.low.custom_logging import make_logger
-from src.rem.gh.gh_session import GHAnonymousSession
+from src.newsig import SigProgress
 from src.rem.gh.gh_objects.gh_release import GHRelease
-from src.rem.bt.bt_session import BTSession
-from src.rem.bt.bt_objects.bt_version import BTVersion
-from src.newsig import SigMsg, SigProgress
+from src.rem.gh.gh_session import GHAnonymousSession
 
 logger = make_logger(__name__)
 

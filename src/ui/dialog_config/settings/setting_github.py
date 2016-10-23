@@ -10,7 +10,7 @@ class GithubSetting(AbstractCredentialSetting):
         AbstractCredentialSetting.__init__(self, dialog)
         self.flow = None
 
-        @signals.post_authenticate.connect_via('GHSession', weak=False, )
+        @signals.post_authenticate.connect_via('GHSession', weak=False)
         def status_changed(_, **kwargs):
             self.status_changed(kwargs['result'])
 

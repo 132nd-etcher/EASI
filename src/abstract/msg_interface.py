@@ -3,7 +3,7 @@
 import abc
 
 
-class MsgInterface():
+class MsgInterface:
     @abc.abstractmethod
     def show(self, title: str, text: str):
         """"""

@@ -5,8 +5,6 @@ import os
 from src.cfg import Config
 from src.dcs import dcs_installs
 from src.qt import QMenu, QAction
-# from src.sig import SignalReceiver, sig_known_dcs_installs_changed
-from blinker_herald import signals
 from src.ui.skeletons.main import Ui_MainWindow
 
 

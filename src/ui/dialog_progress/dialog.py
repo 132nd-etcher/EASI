@@ -3,7 +3,6 @@
 from src.qt import QDialog, Qt
 from src.abstract.progress_interface import ProgressInterface
 from src.low.custom_logging import make_logger
-# from src.newsig import SIG_PROGRESS
 from src.ui.skeletons.dialog_progress import Ui_Dialog
 from src.ui.base.qdialog import BaseDialog
 

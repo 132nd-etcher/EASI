@@ -6,13 +6,12 @@ from blinker_herald import emit, SENDER_CLASS_NAME
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
-from src.keyring.keyring import Keyring
-from .gh_objects.gh_authorization import GHAuthorization
-from .gh_objects.gh_release import GHAllReleases, GHRelease
 from .gh_objects.gh_asset import GHAsset, GHAllAssets
+from .gh_objects.gh_authorization import GHAuthorization
+from .gh_objects.gh_mail import GHMail, GHMailList
+from .gh_objects.gh_release import GHAllReleases, GHRelease
 from .gh_objects.gh_repo import GHRepoList, GHRepo
 from .gh_objects.gh_user import GHUser
-from .gh_objects.gh_mail import GHMail, GHMailList
 
 try:
     from vault.secret import Secret

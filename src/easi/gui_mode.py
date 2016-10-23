@@ -13,13 +13,12 @@ def redirect_signal(signal, main_ui_attribute, disconnect_all_others=False):
         for receiver in [signal.receivers[k] for k in signal.receivers]:
             signal.disconnect(receiver)
 
-    def signal_processor(sender, op, *args, **kwargs):
+    def signal_processor(_, op, *args, **kwargs):
         if not hasattr(constants.MAIN_UI, main_ui_attribute):
             raise ValueError('MainUi has no attribute "{}"'.format(main_ui_attribute))
         constants.MAIN_UI.do(main_ui_attribute, op, *args, **kwargs)
 
     signal.connect(signal_processor, weak=False)
-
 
 
 # noinspection PyUnusedLocal
