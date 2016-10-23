@@ -1,3 +1,5 @@
+# http://gitversion.readthedocs.io/en/latest/configuration/#branch-configuration
+
 mode: Mainline
 
 branches:
