@@ -78,18 +78,20 @@ def set_app_wide_font():
 
 def init_qt_app():
     logger.info('QApplication: starting')
-    from src.ui.main_ui.main_ui import MainUi
+    from src.ui.main_ui import MainUi
     if constants.QT_APP is False:
         logger.warn('starting MainUI *without* a QtApp object')
-        constants.MAIN_UI = MainUi(None)
+        main_ui = MainUi(None)
     else:
         from PyQt5.QtWidgets import QApplication
         logger.debug('starting QtApp object')
         constants.QT_APP = QApplication([])
         # set_app_wide_font()
         logger.debug('starting MainUI')
-        constants.MAIN_UI = MainUi(constants.QT_APP)
+        MainUi(constants.QT_APP)
         logger.info('QApplication: started')
+    from src.easi.gui_mode import connect_signals
+    connect_signals()
 
 
 def show_disclaimer():
