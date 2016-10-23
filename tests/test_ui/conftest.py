@@ -27,10 +27,11 @@ def config_dialog(qtbot, tmpdir, config):
 @pytest.fixture()
 def mock_main_ui(mocker):
     """Returns a dummy MainUi object that can handle connected objects"""
-    from src.ui.main_ui.main_ui import MainUi
-    yield mocker.patch('src.ui.base.with_signal.main_ui',
+    from src.ui.main_ui import MainUi
+    yield mocker.patch('src.low.constants.MAIN_UI',
                        spec=MainUi,
                        some_obj=mocker.MagicMock(),
+                       do=mocker.MagicMock(),
                        sig_proc=mocker.MagicMock(
                            do=mocker.MagicMock()),
                        msgbox=mocker.MagicMock(),
@@ -40,7 +41,7 @@ def mock_main_ui(mocker):
 @pytest.fixture()
 def main_ui(qtbot):
     """Returns the *real* MainUi object running in a QEventLoop"""
-    from src.ui.main_ui.main_ui import MainUi
+    from src.ui.main_ui import MainUi
     _main_ui = MainUi(None)
     qtbot.add_widget(_main_ui)
     yield _main_ui

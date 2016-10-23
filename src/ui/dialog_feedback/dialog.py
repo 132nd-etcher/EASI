@@ -2,7 +2,7 @@
 
 from src.cfg import Config
 from src.qt import QDialog, Qt, QIcon, qt_resources, QDialogButtonBox
-from src.sig import sig_msgbox
+from src.newsig.sigmsg import SigMsg
 from src.ui.skeletons.dialog_feedback import Ui_Dialog
 from src.sentry import crash_reporter
 
@@ -52,7 +52,7 @@ class FeedbackDialog(Ui_Dialog, QDialog):
                 'type': 'message',
             }
         )
-        sig_msgbox.show('Thank you', 'Thank you for your feedback !')
+        SigMsg().show('Thank you', 'Thank you for your feedback !')
         super(FeedbackDialog, self).accept()
 
     @staticmethod

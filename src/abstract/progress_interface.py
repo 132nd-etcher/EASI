@@ -2,7 +2,7 @@
 import abc
 
 
-class ProgressInterface(metaclass=abc.ABCMeta):
+class ProgressInterface():
 
     @abc.abstractmethod
     def set_progress(self, value: int):

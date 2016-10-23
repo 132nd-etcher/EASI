@@ -3,7 +3,8 @@
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.qt import QDialog, Qt
-from src.sig import sig_config_changed, SignalReceiver, sig_msgbox
+from src.sig import sig_config_changed, SignalReceiver
+from src.newsig.sigmsg import SigMsg
 from src.ui.skeletons.config_dialog import Ui_Settings
 from src.upd import check_for_update
 from .settings.abstract_config import AbstractConfigSetting
@@ -58,7 +59,7 @@ class ConfigDialog(Ui_Settings, QDialog):
     @staticmethod
     def __check_for_update():
         check_for_update()
-        sig_msgbox.show('Check done', 'Already running latest version of {}'.format(constants.APP_SHORT_NAME))
+        SigMsg().show('Check done', 'Already running latest version of {}'.format(constants.APP_SHORT_NAME))
 
     def show(self):
         for config_setting in self.config_settings.values():

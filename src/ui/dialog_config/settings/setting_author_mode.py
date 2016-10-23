@@ -3,6 +3,7 @@
 from src.sig import sig_cfg_author_mode, SignalReceiver, sig_config_changed
 from src.ui.dialog_disclaimer.dialog import DisclaimerDialog
 from src.ui.dialog_config.settings.abstract_config import AbstractConfigSetting
+from blinker_herald import emit
 
 
 class AuthorModeSetting(AbstractConfigSetting):
@@ -43,6 +44,7 @@ class AuthorModeSetting(AbstractConfigSetting):
     def set_dialog_value(self, value):
         self.dialog.author_mode.setChecked(self.value)
 
+    @emit()
     def author_mode_changed(self, value: bool, **_):
         self.dialog.tabWidget.setTabEnabled(1, value)
         self.dialog.tabWidget.setStyleSheet(

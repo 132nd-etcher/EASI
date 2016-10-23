@@ -12,7 +12,6 @@ from src.ui.dialog_feedback.dialog import FeedbackDialog
 from src.ui.dialog_msg.dialog import MsgDialog
 from src.ui.dialog_progress.dialog import ProgressDialog
 from src.ui.dialog_testing.dialog import TestingDialog
-from src.ui.interface.interface import MainUiSigProcessor
 from src.ui.mod_author import MainUiModAuthor
 from src.ui.skeletons.main import Ui_MainWindow
 from src.ui.splash.dialog import MainUiSplash
@@ -42,7 +41,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         import src.ui.base.with_signal
         src.ui.base.with_signal.main_ui = self
 
-        self.sig_proc = MainUiSigProcessor()
+        # self.sig_proc = MainUiSigProcessor()
         self.testing_dialog = TestingDialog(self)
         self.splash = MainUiSplash(self)
         self.long_op = ProgressDialog(self)
