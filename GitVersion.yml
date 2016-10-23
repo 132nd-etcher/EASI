@@ -1,19 +1,66 @@
-mode: ContinuousDeployment
+mode: Mainline
+
 branches:
-  (pull|pull\-requests|pr)[/-]:
-    mode: ContinuousDeployment
+  master:
+    regex: master
+    tag: ''
+    increment: Minor
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    is-develop: false
+    is-release-branch: false
+  release:
+    regex: releases?[/-]
+    mode: ContinuousDelivery
+    tag: rc
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    is-develop: false
+    is-release-branch: true
+  feature:
+    regex: features?[/-]
+    mode: ContinuousDelivery
+    tag: alpha
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    is-develop: false
+    is-release-branch: false
+  pull-request:
+    regex: (pull|pull\-requests|pr)[/-]
+    mode: ContinuousDelivery
     tag: beta
-  dev(elop)?(ment)?$:
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: false
+    tag-number-pattern: '[/-](?<number>\d+)[-/]'
+    track-merge-target: false
+    is-develop: false
+    is-release-branch: false
+  hotfix:
+    regex: hotfix(es)?[/-]
+    mode: ContinuousDelivery
+    tag: patch
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    is-develop: false
+    is-release-branch: false
+  support:
+    regex: support[/-]
+    mode: ContinuousDelivery
+    tag: ''
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    is-develop: false
+    is-release-branch: false
+  develop:
+    regex: dev(elop)?(ment)?$
     mode: ContinuousDeployment
     tag: dev
-  features?[/-]:
-    mode: ContinuousDeployment
-    tag: alpha
-  hotfix(es)?[/-]:
-    mode: ContinuousDeployment
-    tag: patch
-  releases?[/-]:
-    mode: ContinuousDeployment
-    tag: rc
-ignore:
-  sha: []
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: true
+    is-develop: true
+    is-release-branch: false
