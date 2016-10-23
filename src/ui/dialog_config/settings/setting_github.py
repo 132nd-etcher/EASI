@@ -1,11 +1,19 @@
 # coding=utf-8
+from blinker_herald import signals
 from src.qt import QLabel
 from src.rem.gh.gh_session import GHSession, GHAnonymousSession, GHSessionError
-from src.sig import sig_gh_token_status_changed, CustomSignal
 from src.ui.dialog_config.settings.abstract_credential import AbstractCredentialSetting
 
 
 class GithubSetting(AbstractCredentialSetting):
+    def __init__(self, dialog):
+        AbstractCredentialSetting.__init__(self, dialog)
+        self.flow = None
+
+        @signals.post_authenticate.connect_via('GHSession', weak=False, )
+        def status_changed(_, **kwargs):
+            self.status_changed(kwargs['result'])
+
     @property
     def qt_object(self):
         return self.dialog.githubUsernameLineEdit
@@ -18,13 +26,8 @@ class GithubSetting(AbstractCredentialSetting):
         self.dialog.githubPasswordLineEdit.setText('')
         self.dialog.githubUsernameLineEdit.setText('')
 
-    @property
-    def token_changed_signal(self) -> CustomSignal:
-        return sig_gh_token_status_changed
-
-    def __init__(self, dialog):
-        AbstractCredentialSetting.__init__(self, dialog)
-        self.flow = None
+    def status_changed(self, result):
+        super(GithubSetting, self).status_changed(result)
 
     def setup(self):
         self.dialog.githubUsernameLineEdit.textChanged.connect(self.text_changed)

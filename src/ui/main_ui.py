@@ -2,10 +2,10 @@
 
 from queue import Queue
 
-from blinker_herald import signals
+from blinker_herald import signals, emit, SENDER_CLASS_NAME
 
 from src.low import constants
-from src.qt import QApplication, QMainWindow, Qt, QIcon, qt_resources
+from src.qt import QMainWindow, Qt, QIcon, qt_resources
 from src.ui.active_dcs_installation import MainUiActiveDCSInstallation
 from src.ui.dialog_config.dialog import ConfigDialog
 from src.ui.dialog_feedback.dialog import FeedbackDialog
@@ -32,7 +32,6 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
 
         constants.MAIN_UI = self
 
-        # self.sig_proc = MainUiSigProcessor()
         self.testing_dialog = TestingDialog(self)
         self.splash = MainUiSplash(self)
         self.long_op = ProgressDialog(self)
@@ -63,6 +62,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.config_dialog.setup()
         self.mod_author_watcher.setup()
 
+    @emit(sender=SENDER_CLASS_NAME)
     def show(self):
         self.setWindowState(self.windowState() & Qt.WindowMinimized | Qt.WindowActive)
         self.activateWindow()
@@ -85,6 +85,6 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
 
 
 # noinspection PyUnusedLocal
-@signals.post_init_modules.connect
+@signals.post_show.connect_via('MainUi')
 def test_balloon(sender, signal_emitter, result):
     MainUi.do(None, 'test_balloon')

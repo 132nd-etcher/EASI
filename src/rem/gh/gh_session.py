@@ -1,11 +1,12 @@
 # coding=utf-8
 
 import requests
+from blinker_herald import emit, SENDER_CLASS_NAME
 
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
-from src.sig import sig_gh_token_status_changed
+from src.keyring.keyring import Keyring
 from .gh_objects.gh_authorization import GHAuthorization
 from .gh_objects.gh_release import GHAllReleases, GHRelease
 from .gh_objects.gh_asset import GHAsset, GHAllAssets
@@ -199,12 +200,12 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
     def __init__(self, token=None):
         GHAnonymousSession.__init__(self)
         self.user = None
-        if token:
-            self.authenticate(token)
-        else:
-            sig_gh_token_status_changed.not_connected()
+        self.authenticate(token)
 
+    @emit(only='post', sender=SENDER_CLASS_NAME)
     def authenticate(self, token):
+        if token is None:
+            return None
         self.headers.update(
             {
                 'Authorization': 'token {}'.format(token)
@@ -214,9 +215,8 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
         try:
             self.user = GHUser(self._get_json())
         except GHSessionError:
-            sig_gh_token_status_changed.wrong_token()
-        else:
-            sig_gh_token_status_changed.connected(self.user.login)
+            return False
+        return self.user.login
 
     @property
     def rate_limit(self):

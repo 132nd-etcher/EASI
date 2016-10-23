@@ -1,14 +1,12 @@
 # coding=utf-8
 
-from src.sig import sig_config_changed
 from blinker import signal
-from src.ui.dialog_disclaimer.dialog import DisclaimerDialog
+
 from src.ui.dialog_config.settings.abstract_config import AbstractConfigSetting
-from blinker_herald import emit
+from src.ui.dialog_disclaimer.dialog import DisclaimerDialog
 
 
 class AuthorModeSetting(AbstractConfigSetting):
-
     @property
     def value_name(self) -> str:
         return 'author_mode'
@@ -47,10 +45,8 @@ class AuthorModeSetting(AbstractConfigSetting):
     def set_dialog_value(self, value):
         self.dialog.author_mode.setChecked(self.value)
 
-    @emit()
     def author_mode_changed(self, value: bool, **_):
         self.dialog.tabWidget.setTabEnabled(1, value)
         self.dialog.tabWidget.setStyleSheet(
             "QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} ")
         self.dialog.author_mode.setChecked(value)
-        sig_config_changed.send()
