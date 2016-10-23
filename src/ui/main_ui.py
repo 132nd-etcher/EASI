@@ -80,8 +80,8 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
 
     def exit(self, code=0):
         self.close()
-        if self.qt_app:
-            self.qt_app.exit(code)
+        if constants.QT_APP:
+            constants.QT_APP.exit(code)
 
     def test_balloon(self):
         from src.qt.palette import PaletteBalloonFive

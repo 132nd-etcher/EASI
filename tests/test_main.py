@@ -21,10 +21,11 @@ def test_and_exit(qtbot: QtBot):
     sys.argv.append('test_and_exit')
     sys.argv.append('no_qt_app')
     from src.easi import easi
+    from src.low import constants
     try:
         easi.start_gui()
-        from src.ui.main_ui import MainUi
-        MainUi.do(None, 'exit', 0)
+        constants.MAIN_UI.do('splash', 'hide')
+        constants.MAIN_UI.do(None, 'exit')
     finally:
         import os
         del os.environ['REQUESTS_CA_BUNDLE']
