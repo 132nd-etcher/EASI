@@ -7,6 +7,8 @@ from src.low import constants
 from src.low.custom_logging import make_logger
 from src.rem.gh.gh_session import GHAnonymousSession
 from src.rem.gh.gh_objects.gh_release import GHRelease
+from src.rem.bt.bt_session import BTSession
+from src.rem.bt.bt_objects.bt_version import BTVersion
 from src.sig import sig_main_ui_states  # , sig_splash, sig_main_ui, sig_interrupt_startup
 
 logger = make_logger(__name__)
