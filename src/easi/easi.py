@@ -81,14 +81,14 @@ def init_qt_app():
     from src.ui.main_ui import MainUi
     if constants.QT_APP is False:
         logger.warn('starting MainUI *without* a QtApp object')
-        main_ui = MainUi(None)
+        MainUi()
     else:
         from PyQt5.QtWidgets import QApplication
         logger.debug('starting QtApp object')
         constants.QT_APP = QApplication([])
         # set_app_wide_font()
         logger.debug('starting MainUI')
-        MainUi(constants.QT_APP)
+        MainUi()
         logger.info('QApplication: started')
     from src.easi.gui_mode import connect_signals
     connect_signals()

@@ -22,7 +22,7 @@ from src.ui.widget_balloon.widget import WidgetBalloon
 class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
     threading_queue = Queue()
 
-    def __init__(self, qt_app: QApplication or None):
+    def __init__(self):
         # Fucking QMainWindow calls a general super().__init__ on every parent class, don't call them here !
         flags = Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowCloseButtonHint
         QMainWindow.__init__(
@@ -30,16 +30,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
             parent=None,
             flags=flags | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
 
-        self.qt_app = qt_app
-
-        # # Setup link with all connected objects
-        # import src.abstract.ui.connected_object
-        # src.abstract.ui.connected_object.main_ui = self
-
-        # Give a heads-up to all child QWidgets that the MainUi is up and running
         constants.MAIN_UI = self
-        import src.ui.base.with_signal
-        src.ui.base.with_signal.main_ui = self
 
         # self.sig_proc = MainUiSigProcessor()
         self.testing_dialog = TestingDialog(self)

@@ -42,7 +42,7 @@ def mock_main_ui(mocker):
 def main_ui(qtbot):
     """Returns the *real* MainUi object running in a QEventLoop"""
     from src.ui.main_ui import MainUi
-    _main_ui = MainUi(None)
+    _main_ui = MainUi()
     qtbot.add_widget(_main_ui)
     yield _main_ui
     _main_ui.exit()
