@@ -54,6 +54,7 @@ install:
   - curl -O http://esrg.sourceforge.net/utils_win_up/md5sum/crc32.exe
   - set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
   - choco install gitversion.portable -y
+  - "where gitversion"
   - git clone --branch=master https://github.com/132nd-etcher/verpatch.git C:\projects\verpatch
   - secure-file\tools\secure-file -decrypt vault\secret.pyd.enc -secret %VAULT_SECRET% -out vault\secret.pyd
 
