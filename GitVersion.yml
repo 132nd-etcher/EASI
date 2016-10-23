@@ -15,7 +15,7 @@ branches:
   pull-request:
     regex: (pull|pull\-requests|pr)[/-]
     mode: ContinuousDelivery
-    tag: beta
+    tag: beta.{BranchName}
     increment: Inherit
     prevent-increment-of-merged-branch-version: false
     tag-number-pattern: '[/-](?<number>\d+)[-/]'
@@ -31,14 +31,6 @@ branches:
     track-merge-target: true
     is-develop: true
     is-release-branch: false
-  master:
-    regex: master
-    tag: ''
-    increment: Minor
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
-    is-develop: false
-    is-release-branch: false
   release:
     regex: releases?[/-]
     mode: ContinuousDelivery
@@ -48,6 +40,14 @@ branches:
     track-merge-target: false
     is-develop: false
     is-release-branch: true
+  master:
+    regex: master
+    tag: ''
+    increment: Minor
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    is-develop: false
+    is-release-branch: false
   hotfix:
     regex: hotfix(es)?[/-]
     mode: ContinuousDelivery
