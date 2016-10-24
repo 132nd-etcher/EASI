@@ -24,6 +24,7 @@ def test_input_dialog_basics(title, text,
     dialog.add_question('label2')
     dialog.show()
     qtbot.wait_for_window_shown(dialog)
+    # noinspection PyUnresolvedReferences
     qtbot.mouseClick(dialog.btn_ok, Qt.LeftButton)
     qtbot.wait_signal(dialog.accepted)
     qtbot.wait_until(lambda: dialog.isVisible() is False)
@@ -39,10 +40,12 @@ def test_input_dialog_results(label, default, some_text, qtbot: QtBot):
     dialog.add_question(label, default)
     random_string = ''.join(random.choice(string.ascii_lowercase) for _ in range(32))
     dialog.questions[label].clear()
+    # noinspection PyUnresolvedReferences
     qtbot.keyClicks(dialog.questions[label], random_string)
     assert dialog.questions[label].text() == random_string
     dialog.show()
     qtbot.wait_for_window_shown(dialog)
+    # noinspection PyUnresolvedReferences
     qtbot.mouseClick(dialog.btn_ok, Qt.LeftButton)
     qtbot.wait_signal(dialog.accepted)
     qtbot.wait_until(lambda: dialog.isVisible() is False)
@@ -51,6 +54,7 @@ def test_input_dialog_results(label, default, some_text, qtbot: QtBot):
     dialog.questions[label].setText(some_text)
     dialog.show()
     qtbot.wait_for_window_shown(dialog)
+    # noinspection PyUnresolvedReferences
     qtbot.mouseClick(dialog.btn_ok, Qt.LeftButton)
     qtbot.wait_signal(dialog.accepted)
     qtbot.wait_until(lambda: dialog.isVisible() is False)
