@@ -17,6 +17,33 @@ from src.newsig.sigprogress import SigProgress
 
 logger = make_logger(__name__)
 
+A_REG = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+
+
+def look_for_saved_games_path():
+    if Config().saved_games_path is None:
+        logger.debug('searching for base "Saved Games" folder')
+        try:
+            logger.debug('trying "User Shell Folders"')
+            with winreg.OpenKey(A_REG,
+                                r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders") as aKey:
+                # noinspection SpellCheckingInspection
+                base_sg = Path(winreg.QueryValueEx(aKey, "{4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4}")[0])
+        except FileNotFoundError:
+            logger.debug('failed, trying "Shell Folders"')
+            try:
+                with winreg.OpenKey(A_REG,
+                                    r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders") as aKey:
+                    # noinspection SpellCheckingInspection
+                    base_sg = Path(winreg.QueryValueEx(aKey, "{4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4}")[0])
+            except FileNotFoundError:
+                logger.debug('darn it, another fail, falling back to "~"')
+                base_sg = Path('~').expanduser().abspath()
+        Config().saved_games_path = str(base_sg.abspath())
+        return base_sg
+    else:
+        return Path(Config().saved_games_path)
+
 
 class DCSInstalls(metaclass=Singleton):
     def __init__(self):
@@ -51,36 +78,17 @@ class DCSInstalls(metaclass=Singleton):
         logger.debug('looking for DCS installations paths')
         progress = SigProgress()
         progress.set_progress_title('Looking for DCS installations')
-        a_reg = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
-        if Config().saved_games_path is None:
-            logger.debug('searching for base "Saved Games" folder')
-            try:
-                logger.debug('trying "User Shell Folders"')
-                with winreg.OpenKey(a_reg,
-                                    r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders") as aKey:
-                    # noinspection SpellCheckingInspection
-                    self.base_sg = Path(winreg.QueryValueEx(aKey, "{4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4}")[0])
-            except FileNotFoundError:
-                logger.debug('failed, trying "Shell Folders"')
-                try:
-                    with winreg.OpenKey(a_reg,
-                                        r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders") as aKey:
-                        # noinspection SpellCheckingInspection
-                        self.base_sg = Path(winreg.QueryValueEx(aKey, "{4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4}")[0])
-                except FileNotFoundError:
-                    logger.debug('darn it, another fail, falling back to "~"')
-                    self.base_sg = Path('~').expanduser().abspath()
-            Config().saved_games_path = str(self.base_sg.abspath())
-        else:
-            logger.debug('using "Saved Games" folder: {}'.format(Config().saved_games_path))
-            self.base_sg = Path(Config().saved_games_path)
+
+        self.base_sg = look_for_saved_games_path()
+        logger.debug('using "Saved Games" folder: {}'.format(Config().saved_games_path))
+
         logger.debug('found base "Saved Games" path: {}'.format(self.base_sg.abspath()))
         progress.set_progress(20)
         partial_progress = 80 / len(self.installs)
         for k in self.installs:
             logger.debug('{}: searching for paths'.format(k))
             try:
-                with winreg.OpenKey(a_reg, r'Software\Eagle Dynamics\{}'.format(self.installs[k]['reg_key'])) as aKey:
+                with winreg.OpenKey(A_REG, r'Software\Eagle Dynamics\{}'.format(self.installs[k]['reg_key'])) as aKey:
                     install_path = Path(winreg.QueryValueEx(aKey, "Path")[0])
                     self.installs[k]['install'] = install_path.abspath()
                     exe = Path(install_path.joinpath('run.exe'))
