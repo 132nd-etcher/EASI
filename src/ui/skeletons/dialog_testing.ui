@@ -49,6 +49,26 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QPushButton" name="btn_test_logger">
+     <property name="text">
+      <string>Test Qt Logger</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTextBrowser" name="textBrowser">
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="acceptRichText">
+      <bool>false</bool>
+     </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

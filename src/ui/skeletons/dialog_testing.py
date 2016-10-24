@@ -29,6 +29,12 @@ class Ui_Dialog(object):
         self.btn_make_input_dialog = QtWidgets.QPushButton(Dialog)
         self.btn_make_input_dialog.setObjectName("btn_make_input_dialog")
         self.verticalLayout.addWidget(self.btn_make_input_dialog)
+        self.btn_test_logger = QtWidgets.QPushButton(Dialog)
+        self.btn_test_logger.setObjectName("btn_test_logger")
+        self.verticalLayout.addWidget(self.btn_test_logger)
+        self.textBrowser = QtWidgets.QTextBrowser(Dialog)
+        self.textBrowser.setObjectName("textBrowser")
+        self.verticalLayout.addWidget(self.textBrowser)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -41,4 +47,5 @@ class Ui_Dialog(object):
         self.btn_make_dual_progress.setText(_translate("Dialog", "Make dual progress"))
         self.btn_make_confirm.setText(_translate("Dialog", "Make confirm dialog"))
         self.btn_make_input_dialog.setText(_translate("Dialog", "Make input dialog"))
+        self.btn_test_logger.setText(_translate("Dialog", "Test Qt Logger"))
 

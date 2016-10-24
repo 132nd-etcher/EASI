@@ -17,6 +17,7 @@ from src.ui.skeletons.main import Ui_MainWindow
 from src.ui.splash.dialog import MainUiSplash
 from src.ui.threading import MainGuiThreading
 from src.ui.widget_balloon.widget import WidgetBalloon
+from src.ui.widget_logger.widget import QtLogger
 
 
 class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
@@ -40,6 +41,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.active_dcs_installation = MainUiActiveDCSInstallation(self)
         self.mod_author_watcher = MainUiModAuthor(self)
         self.feedback_dialog = FeedbackDialog(self)
+        self.qt_logger = QtLogger(self)
         self.setup()
         self.connect_actions()
         self.setup_children_dialogs()

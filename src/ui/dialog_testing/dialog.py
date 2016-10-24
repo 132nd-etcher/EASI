@@ -10,6 +10,7 @@ from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_input.dialog import InputDialog
 from src.ui.dialog_testing.interface import TestingDialogInterface
 from src.ui.skeletons.dialog_testing import Ui_Dialog
+from src.ui.widget_logger.widget import QtLogger
 
 
 class _TestingDialog(Ui_Dialog, QDialog):
@@ -27,6 +28,7 @@ class TestingDialog(BaseDialog, TestingDialogInterface):
         self.qobj.btn_make_dual_progress.clicked.connect(self.test_dual_progress)
         self.qobj.btn_make_confirm.clicked.connect(self.test_confirm_dialog)
         self.qobj.btn_make_input_dialog.clicked.connect(self.test_input_dialog)
+        self.qobj.btn_test_logger.clicked.connect(self.test_logger)
         self.pool = ThreadPool(1, 'gui_testing_dialog', True)
 
     def test_msg_box(self):
@@ -80,6 +82,14 @@ class TestingDialog(BaseDialog, TestingDialogInterface):
     def test_confirm_dialog(self):
         result = ConfirmDialog.make('question', 'title')
         SigMsg().show('Result', str(result))
+
+    def test_logger(self):
+        self.qobj.textBrowser.insertPlainText('test\n')
+        self.qobj.textBrowser.insertPlainText('test\n')
+        self.qobj.textBrowser.insertPlainText('test\n')
+        self.qobj.textBrowser.insertPlainText('test\n')
+        self.qobj.textBrowser.insertPlainText('test\n')
+        self.qobj.textBrowser.insertPlainText('test\n')
 
     @property
     def qobj(self) -> _TestingDialog:
