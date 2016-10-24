@@ -68,7 +68,7 @@ class BTSession(Session, metaclass=Singleton):
     def __parse_resp_error(self):
         logger.error(self.req)
         if self.resp.status_code >= 500:
-            raise BintrayAPIError(r'Bintray API seems to be down, check https://http://status.bintray.com/')
+            raise BintrayAPIError(r'Bintray API seems to be down, check http://status.bintray.com/')
         else:
             code = self.resp.status_code
             reason = self.resp.reason
