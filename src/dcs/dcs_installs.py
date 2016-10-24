@@ -128,10 +128,5 @@ class DCSInstalls(metaclass=Singleton):
 
 def init_dcs_installs():
     logger.info('dcs_installs: looking for DCS installation in Windows registry')
-    dcs_installs.discover_dcs_installation()
+    DCSInstalls().discover_dcs_installation()
     logger.info('dcs_installs: lookup done')
-
-
-logger.info('dcs_installs: initializing')
-dcs_installs = DCSInstalls()
-logger.info('dcs_installs: initialized')

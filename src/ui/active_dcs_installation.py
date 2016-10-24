@@ -3,7 +3,7 @@
 import os
 
 from src.cfg import Config
-from src.dcs.dcs_installs import dcs_installs
+from src.dcs.dcs_installs import DCSInstalls
 from src.qt import QMenu, QAction
 from src.ui.skeletons.main import Ui_MainWindow
 
@@ -14,14 +14,13 @@ class MainUiActiveDCSInstallation:
         self.main_ui = main_ui
         self.index = []
         self.config_mapping = {}
-        # self.receiver = SignalReceiver(self)
-        # self.receiver[sig_known_dcs_installs_changed] = self.known_dcs_installs_changed
         self.menu = QMenu(self.main_ui)
         self.qact_show_main_install = QAction('Main installation', self.main_ui)
         self.qact_show_sg = QAction('Saved games', self.main_ui)
 
     def update_index(self):
         self.index = []
+        dcs_installs = DCSInstalls()
         for x, y in [
             (dcs_installs.stable, 'stable'),
             (dcs_installs.beta, 'beta'),
