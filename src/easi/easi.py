@@ -117,7 +117,7 @@ def init_modules():
     logger.info('start')
     import os
     from src.upd import check_for_update
-    from src.keyring import init_keyring
+    from src.keyring.keyring import init_keyring
     from src.dcs.dcs_installs import init_dcs_installs
     from src.rem import init_remotes
     from src.helper import init_helpers

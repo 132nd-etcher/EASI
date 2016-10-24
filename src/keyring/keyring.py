@@ -67,19 +67,16 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
 
 
 def init_keyring():
-    pass
-
-
-logger.info('keyring: initializing')
-a_reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
-try:
-    with OpenKey(a_reg, r"SOFTWARE\Microsoft\Cryptography") as aKey:
-        constants.MACHINE_GUID = QueryValueEx(aKey, "MachineGuid")[0]
-except FileNotFoundError:
+    logger.info('keyring: initializing')
+    a_reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
     try:
-        with OpenKey(a_reg, r"SOFTWARE\Microsoft\Cryptography", access=KEY_READ | KEY_WOW64_64KEY) as aKey:
+        with OpenKey(a_reg, r"SOFTWARE\Microsoft\Cryptography") as aKey:
             constants.MACHINE_GUID = QueryValueEx(aKey, "MachineGuid")[0]
     except FileNotFoundError:
-        constants.MACHINE_UID = False
-keyring = Keyring()
-logger.info('keyring: initialized')
+        try:
+            with OpenKey(a_reg, r"SOFTWARE\Microsoft\Cryptography", access=KEY_READ | KEY_WOW64_64KEY) as aKey:
+                constants.MACHINE_GUID = QueryValueEx(aKey, "MachineGuid")[0]
+        except FileNotFoundError:
+            constants.MACHINE_UID = False
+    Keyring()
+    logger.info('keyring: initialized')

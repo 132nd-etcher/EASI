@@ -1,7 +1,7 @@
 # coding=utf-8
 import abc
 
-from src.keyring.keyring import keyring, Keyring
+from src.keyring.keyring import Keyring
 from src.qt import QLabel
 from .abstract import AbstractSetting
 
@@ -18,7 +18,7 @@ class AbstractCredentialSetting(AbstractSetting, metaclass=abc.ABCMeta):
 
     @property
     def store_object(self):
-        return keyring
+        return Keyring()
 
     def status_changed(self, result):
         if result is None:

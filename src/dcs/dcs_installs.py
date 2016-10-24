@@ -77,8 +77,7 @@ class DCSInstalls(metaclass=Singleton):
     def discover_dcs_installation(self):
         logger.debug('looking for DCS installations paths')
         progress = SigProgress()
-        progress.set_progress_title('Looking for DCS installations')
-
+        progress.set_progress_text('Looking for DCS installations')
         self.base_sg = look_for_saved_games_path()
         logger.debug('using "Saved Games" folder: {}'.format(Config().saved_games_path))
 
