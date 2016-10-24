@@ -29,45 +29,45 @@ class KdiffHelper(AbstractHelper, metaclass=Singleton):
             value = value.abspath()
         Config().kdiff_path = value
 
-    def install(self, wait=True):
+    def download(self, wait=True):
+        if self.folder.exists() and self.folder.isdir():
+            logger.debug('removing old kdiff3 directory')
+            self.folder.rmtree()
+        SigProgress().set_progress_title('Installing KDIFF3')
+        kwargs = dict(
+            url=self.download_link,
+            progress=SigProgress(),
+        )
+        if not wait:
+            kwargs['callback'] = self.install
+        fdl = downloader.download(**kwargs)
+        return fdl
+
+    def install(self, fdl: FileDownload):
+        if fdl.success:
+            SigProgress().set_progress(0)
+            SigProgress().set_progress_title('Unzipping KDiff3')
+            with zipfile.ZipFile(fdl.local_file) as _zip:
+                total = len(_zip.namelist())
+                count = 0
+                for name in _zip.namelist():
+                    _zip.extract(name, '.')
+                    count += 1
+                    SigProgress().set_progress((count / total) * 100)
+            p = Path('./kdiff3-master')
+            p = p.rename(self.folder)
+            Config().kdiff_path = Path(p.joinpath('kdiff3.exe')).abspath()
+            SigMsg().show('Success', 'KDiff3 has been successfully installed !')
+        else:
+            raise RuntimeError('download failed')
+
+    def download_and_install(self, wait=True):
 
         logger.info('installing KDiff3 in: {}'.format(self.path))
-
-        def __install(_fdl: FileDownload):
-            if _fdl.success:
-                SigProgress().set_progress(0)
-                SigProgress().set_progress_title('Unzipping KDiff3')
-                with zipfile.ZipFile(_fdl.local_file) as _zip:
-                    total = len(_zip.namelist())
-                    count = 0
-                    for name in _zip.namelist():
-                        _zip.extract(name, '.')
-                        count += 1
-                        SigProgress().set_progress((count / total) * 100)
-                p = Path('./kdiff3-master')
-                p.rename('kdiff3')
-                SigMsg().show('Success', 'KDiff3 has been successfully installed !')
-            else:
-                raise RuntimeError('download failed')
-
-        def __download():
-            if self.folder.exists() and self.folder.isdir():
-                logger.debug('removing old kdiff3 directory')
-                self.folder.rmtree()
-            SigProgress().set_progress_title('Installing KDIFF3')
-            kwargs = dict(
-                url=r'https://github.com/132nd-etcher/kdiff3/archive/master.zip',
-                progress=SigProgress,
-            )
-            if not wait:
-                kwargs['callback'] = __install
-            _fdl = downloader.download(**kwargs)
-            return _fdl
-
-        fdl = __download()
+        fdl = self.download(wait)
         if wait:
             fdl.wait()
-            __install(fdl)
+            self.install(fdl)
 
     @property
     def is_installed(self) -> bool:

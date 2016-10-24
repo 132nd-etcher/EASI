@@ -1,8 +1,7 @@
 # coding=utf-8
 
-from .kdiff import kdiff
-
 
 def init_helpers():
+    from .kdiff import kdiff
     if not kdiff.is_installed:
-        kdiff.install()
+        kdiff.download_and_install()
