@@ -54,8 +54,3 @@ class FeedbackDialog(Ui_Dialog, QDialog):
         )
         SigMsg().show('Thank you', 'Thank you for your feedback !')
         super(FeedbackDialog, self).accept()
-
-    @staticmethod
-    def make(parent=None):
-        dialog = FeedbackDialog(parent)
-        dialog.exec()

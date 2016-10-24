@@ -39,6 +39,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.config_dialog = ConfigDialog(self)
         self.active_dcs_installation = MainUiActiveDCSInstallation(self)
         self.mod_author_watcher = MainUiModAuthor(self)
+        self.feedback_dialog = FeedbackDialog(self)
         self.setup()
         self.connect_actions()
         self.setup_children_dialogs()
@@ -54,7 +55,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
     def connect_actions(self):
         self.actionExit.triggered.connect(self.exit)
         self.actionEASI_Settings.triggered.connect(self.config_dialog.show)
-        self.actionFeedback.triggered.connect(lambda x: FeedbackDialog.make(self))
+        self.actionFeedback.triggered.connect(self.feedback_dialog.show)
         self.actionTest_dialog.triggered.connect(self.testing_dialog.show)
 
     def setup_children_dialogs(self):
