@@ -82,10 +82,10 @@ build_script:
   - cmd: iscc inno_setup.iss /DAppName=EASI /DAssemblySemVer=%GitVersion_AssemblySemVer% /DSemVer=%GitVersion_SemVer% /DFullSemVer=%GitVersion_FullSemVer% /DInformationalVersion=%GitVersion_InformationalVersion% /DSha=%GitVersion_Sha% /DAppIco=src\ui\resources\app.ico /DOutputDir=build\release
   - git config --global credential.helper store
   - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GH_PAGES_TOKEN):x-oauth-basic@github.com`n"
-  - "%PYTHON%/Scripts/mkdocs.exe build --clean --strict -v -f .mkdocs.yml"
-  - "git config --global user.email %GH_MAIL%"
-  - "git config --global user.name 132nd-etcher"
-  - "%PYTHON%/Scripts/mkdocs.exe gh-deploy --clean -v -f .mkdocs.yml"
+  - "IF %APPVEYOR_REPO_BRANCH%==master %PYTHON%/Scripts/mkdocs.exe build --clean --strict -v -f .mkdocs.yml"
+  - "IF %APPVEYOR_REPO_BRANCH%==master git config --global user.email %GH_MAIL%"
+  - "IF %APPVEYOR_REPO_BRANCH%==master git config --global user.name 132nd-etcher"
+  - "IF %APPVEYOR_REPO_BRANCH%==master %PYTHON%/Scripts/mkdocs.exe gh-deploy --clean -v -f .mkdocs.yml"
 
 artifacts:
   - path: ./build/release/*.exe
