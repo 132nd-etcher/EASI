@@ -118,10 +118,10 @@ def init_modules():
     import os
     from src.upd import check_for_update
     from src.keyring import init_keyring
-    from src.dcs import init_dcs_installs
+    from src.dcs.dcs_installs import init_dcs_installs
     from src.rem import init_remotes
     from src.helper import init_helpers
-    from src.cache import init_cache
+    from src.cache.cache import init_cache
     if not os.getenv('APPVEYOR'):
         check_for_update()
     init_dcs_installs()

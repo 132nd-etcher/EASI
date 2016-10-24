@@ -3,7 +3,7 @@
 import os
 
 from src.cfg import Config
-from src.dcs import dcs_installs
+from src.dcs.dcs_installs import dcs_installs
 from src.qt import QMenu, QAction
 from src.ui.skeletons.main import Ui_MainWindow
 
