@@ -68,16 +68,16 @@ class BTSession(Session, metaclass=Singleton):
     def __parse_resp_error(self):
         logger.error(self.req)
         if self.resp.status_code >= 500:
-            raise BintrayAPIError(r'Github API seems to be down, check https://status.github.com/')
+            raise BintrayAPIError(r'Bintray API seems to be down, check https://http://status.bintray.com/')
         else:
             code = self.resp.status_code
             reason = self.resp.reason
             msg = [str(code), reason]
             json = self.resp.json()
             if json:
-                msg.append('GH_MSG: {}'.format(json.get('message')))
-                msg.append('GH_DOC: {}'.format(json.get('documentation_url')))
-                if code == 403 and json.get('message').startswith('API rate limit exceeded for '):
+                msg.append('BT_MSG: {}'.format(json.get('message')))
+                msg.append('BT_DOC: {}'.format(json.get('documentation_url')))
+                if code == 403:
                     raise RateLimitationError(': '.join(msg))
             if code == 401:
                 raise AuthenticationError(': '.join(msg))
