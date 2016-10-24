@@ -33,6 +33,9 @@ class Ui_Dialog(object):
         self.btn_test_logger.setObjectName("btn_test_logger")
         self.verticalLayout.addWidget(self.btn_test_logger)
         self.textBrowser = QtWidgets.QTextBrowser(Dialog)
+        self.textBrowser.setAcceptDrops(False)
+        self.textBrowser.setAcceptRichText(True)
+        self.textBrowser.setOpenExternalLinks(True)
         self.textBrowser.setObjectName("textBrowser")
         self.verticalLayout.addWidget(self.textBrowser)
 

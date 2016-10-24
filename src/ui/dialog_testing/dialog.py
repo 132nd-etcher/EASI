@@ -8,7 +8,6 @@ from src.threadpool import ThreadPool
 from src.ui.base.qdialog import BaseDialog
 from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_input.dialog import InputDialog
-from src.ui.dialog_testing.interface import TestingDialogInterface
 from src.ui.skeletons.dialog_testing import Ui_Dialog
 from src.ui.widget_logger.widget import QtLogger
 
@@ -20,7 +19,7 @@ class _TestingDialog(Ui_Dialog, QDialog):
         self.setupUi(self)
 
 
-class TestingDialog(BaseDialog, TestingDialogInterface):
+class TestingDialog(BaseDialog):
     def __init__(self, parent):
         BaseDialog.__init__(self, _TestingDialog(parent))
         self.qobj.btn_make_msgbox.clicked.connect(self.test_msg_box)
@@ -29,6 +28,7 @@ class TestingDialog(BaseDialog, TestingDialogInterface):
         self.qobj.btn_make_confirm.clicked.connect(self.test_confirm_dialog)
         self.qobj.btn_make_input_dialog.clicked.connect(self.test_input_dialog)
         self.qobj.btn_test_logger.clicked.connect(self.test_logger)
+        self.logger = QtLogger(self, self.qobj.textBrowser)
         self.pool = ThreadPool(1, 'gui_testing_dialog', True)
 
     def test_msg_box(self):
@@ -84,12 +84,10 @@ class TestingDialog(BaseDialog, TestingDialogInterface):
         SigMsg().show('Result', str(result))
 
     def test_logger(self):
-        self.qobj.textBrowser.insertPlainText('test\n')
-        self.qobj.textBrowser.insertPlainText('test\n')
-        self.qobj.textBrowser.insertPlainText('test\n')
-        self.qobj.textBrowser.insertPlainText('test\n')
-        self.qobj.textBrowser.insertPlainText('test\n')
-        self.qobj.textBrowser.insertPlainText('test\n')
+        self.logger.debug('caribou')
+        self.logger.info('caribou')
+        self.logger.warn('caribou')
+        self.logger.error('caribou')
 
     @property
     def qobj(self) -> _TestingDialog:
