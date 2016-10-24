@@ -1,0 +1,31 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="pytest_LONG_TEST" type="tests" factoryName="py.test" singleton="true">
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="PARENT_ENVS" value="true" />
+    <envs>
+      <env name="DOLONGTESTS" value="1" />
+    </envs>
+    <option name="SDK_HOME" value="D:\Anaconda3\envs\EASIv0.0.11\python.exe" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="IS_MODULE_SDK" value="false" />
+    <option name="ADD_CONTENT_ROOTS" value="true" />
+    <option name="ADD_SOURCE_ROOTS" value="true" />
+    <module name="EASIv0.0.11" />
+    <option name="SCRIPT_NAME" value="" />
+    <option name="CLASS_NAME" value="" />
+    <option name="METHOD_NAME" value="" />
+    <option name="FOLDER_NAME" value="" />
+    <option name="TEST_TYPE" value="TEST_SCRIPT" />
+    <option name="PATTERN" value="" />
+    <option name="USE_PATTERN" value="false" />
+    <option name="testToRun" value="F:\DEV\EASI\EASIv0.0.11" />
+    <option name="keywords" value="" />
+    <option name="params" value="--cov=src --cov-config .coveragerc --cov-report xml --cov-report html -c .pytest --durations=10" />
+    <option name="USE_PARAM" value="true" />
+    <option name="USE_KEYWORD" value="false" />
+    <method>
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="build_ui" run_configuration_type="PythonConfigurationType" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="build_doc" run_configuration_type="PythonConfigurationType" />
+    </method>
+  </configuration>
+</component>

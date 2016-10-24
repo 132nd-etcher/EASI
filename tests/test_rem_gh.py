@@ -344,6 +344,7 @@ class TestGHSession:
         assert Secret.gh_test_usermail == self.s.primary_email.email
 
     @skipUnless(token, 'no test token available')
+    @skipUnless(os.getenv('DOLONGTESTS', False) is not False, 'skipping long tests')
     def test_create_repo(self):
         # noinspection PyBroadException
         try:
