@@ -97,19 +97,19 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
 
     def on_created(self, event):
         if not event.is_directory:
-            logger.debug('created: %s' % event.src_path)
+            logger.debug('created: {}'.format(event.src_path))
             self.cache_build(event.src_path)
             self.cache_changed_event(CacheEvent('created', event.src_path))
 
     def on_modified(self, event):
         if not event.is_directory:
-            logger.debug('modified: %s' % event.src_path)
+            logger.debug('modified: {}'.format(event.src_path))
             self.cache_build(event.src_path)
             self.cache_changed_event(CacheEvent('modified', event.src_path))
 
     def on_moved(self, event):
         if not event.is_directory:
-            logger.debug('moved: %s -> %s' % event.src_path, event.dest_path)
+            logger.debug('moved: {} -> {}'.format(event.src_path, event.dest_path))
             del self.meta[event.src_path]
             self.cache_build(event.dest_path)
             self.cache_changed_event(CacheEvent('moved', event.src_path, event.dest_path))
@@ -142,7 +142,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                 for v in self.meta.values():
                     v.get_crc32()
             else:
-                logger.debug('re-building cache for path: %s' % rel_path)
+                logger.debug('re-building cache for path: {}'.format(rel_path))
                 path = rel_path
                 abspath = os.path.abspath(rel_path)
                 name = os.path.basename(rel_path)
@@ -181,7 +181,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
     def __str__(self):
         out = ['cache object']
         for k in self.meta.keys():
-            out.append('%s: %s' % k, self.meta[k])
+            out.append('{}: {}'.format(k, self.meta[k]))
         return '\n\t'.join(out)
 
     def __iter__(self):
@@ -201,7 +201,7 @@ def init_cache():
     logger.info('initializing cache')
     from src.cfg import Config
     p = Path(Config().cache_path)
-    logger.debug('cache will be in: %s' % p.abspath)
+    logger.debug('cache will be in: {}'.format(p.abspath()))
     if not p.exists():
         logger.debug('directory does not exist, creating')
         p.makedirs()
