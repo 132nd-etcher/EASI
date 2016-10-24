@@ -10,15 +10,17 @@ from src.helper.kdiff import KdiffHelper
 
 
 class TestKdiff:
-    def test_basics(self, config):
-        kdiff = KdiffHelper()
-        assert kdiff.path.abspath() == config.kdiff_path
-        assert kdiff.is_installed is False
-        assert kdiff.name == 'kdiff3'
-        assert kdiff.folder == os.path.dirname(config.kdiff_path)
+    def test_basics(self, chtmpdir, mocker):
+        with mock.patch(
+                'src.helper.kdiff.KdiffHelper.path',
+                new=mocker.PropertyMock(return_value=Path(str(chtmpdir.mkdir('kdiff').join('kdiff3.exe'))))):
+            kdiff = KdiffHelper()
+            assert kdiff.is_installed is False
+            assert kdiff.name == 'kdiff3'
+            assert kdiff.folder == os.path.dirname(kdiff.path.abspath())
 
     @skipUnless(os.getenv('DOLONGTESTS', False) is not False, 'skipping long tests')
-    def test_install(self, config, mocker: MockFixture, chtmpdir):
+    def test_install(self, mocker: MockFixture, chtmpdir):
         progress_patch = mock.patch('src.helper.kdiff.SigProgress')
         progress = progress_patch.start()
         msg_patch = mock.patch('src.helper.kdiff.SigMsg.show')
