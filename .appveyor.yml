@@ -218,7 +218,7 @@ deploy:
 
 skip_tags: false
 
-skip_branch_with_pr: true
+skip_branch_with_pr: false
 
 skip_commits:
   files:
