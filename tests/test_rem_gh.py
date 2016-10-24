@@ -354,7 +354,7 @@ class TestGHSession:
         name = 'test_repo'
         desc = 'some description'
         self.s.create_repo(name=name, description=desc, auto_init=False)
-        time.sleep(2)
+        time.sleep(5)
         repo = self.s.get_repo(name)
         c = [
             (repo.name, name),
