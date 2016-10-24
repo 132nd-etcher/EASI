@@ -5,6 +5,15 @@ import pytest
 from src.low.custom_logging import make_logger
 
 
+@pytest.fixture()
+def chtmpdir(tmpdir):
+    import os
+    cwd = os.getcwd()
+    tmpdir.chdir()
+    yield tmpdir
+    os.chdir(cwd)
+
+
 @pytest.fixture(scope='session', autouse=True)
 def make_test_logger():
     """Creates main logger for tests output"""
