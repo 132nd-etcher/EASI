@@ -26,7 +26,6 @@ class CustomSig(type):
 
         def wrapper(instance, *args, **kwargs):
             func(instance, *args, **kwargs)
-            print(instance, args, kwargs)
             signal(instance.__class__.__name__).send(instance, op=func.__name__, args=args,  **kwargs)
 
         return wrapper
