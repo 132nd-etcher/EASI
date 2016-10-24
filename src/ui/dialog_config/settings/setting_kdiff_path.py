@@ -37,7 +37,7 @@ class KDiffPathSetting(AbstractPathSetting):
 
     @staticmethod
     def download_kdiff():
-        kdiff.install(wait=False)
+        kdiff.download_and_install(wait=False)
 
     def save_to_meta(self):
         if self.get_value_from_dialog() is None:

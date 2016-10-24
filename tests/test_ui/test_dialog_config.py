@@ -369,7 +369,7 @@ class TestConfigDialog:
         assert isinstance(self.dialog, ConfigDialog)
         kdiff = self.dialog.config_settings['kdiff_path']
         assert isinstance(kdiff, KDiffPathSetting)
-        m = mocker.patch('src.ui.dialog_config.settings.setting_kdiff_path.kdiff.install')
+        m = mocker.patch('src.ui.dialog_config.settings.setting_kdiff_path.kdiff.download_and_install')
         assert m.call_count == 0
         kdiff.download_kdiff()
         m.assert_called_with(wait=False)

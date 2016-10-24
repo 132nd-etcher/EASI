@@ -17,7 +17,7 @@ class AbstractHelper(metaclass=abc.ABCMeta):
         """"""
 
     @abc.abstractmethod
-    def install(self, wait: bool = True):
+    def download_and_install(self, wait: bool = True):
         """"""
 
     @property
