@@ -2,7 +2,11 @@
 import abc
 
 
-class AbstractMainUiInterface(metaclass=abc.ABCMeta):
+class AbstractMainUiInterface:
+    """
+    Defines methods that are available on the MainUi itself
+    """
+
     @abc.abstractmethod
     def show(self):
         """Show the MainUi"""

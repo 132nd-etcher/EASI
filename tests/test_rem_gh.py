@@ -7,6 +7,7 @@ from unittest import TestCase, mock, skipUnless, skipIf
 
 import pytest
 import requests
+from blinker_herald import signals
 from httmock import response, urlmatch, with_httmock
 from hypothesis import strategies as st
 
@@ -283,22 +284,40 @@ class TestGHSessionAuthentication:
     s = None
 
     @pytest.fixture(autouse=True)
-    @mock.patch('src.sig.sig_gh_token_status_changed.not_connected')
-    def new_gh_session(self, m):
+    def new_gh_session(self, qtbot):
+        result = -1
+
+        @signals.post_authenticate.connect_via('GHSession', weak=False)
+        def check_result(_, **kwargs):
+            nonlocal result
+            result = kwargs['result']
+
         Singleton.wipe_instances('GHSession')
         self.s = GHSession()
-        m.assert_called_with()
+        qtbot.wait_until(lambda: result is None)
 
-    @mock.patch('src.sig.sig_gh_token_status_changed.wrong_token')
-    def test_init_wrong_token(self, m):
+    def test_init_wrong_token(self, qtbot):
+        result = -1
+
+        @signals.post_authenticate.connect_via('GHSession', weak=False)
+        def check_result(_, **kwargs):
+            nonlocal result
+            result = kwargs['result']
+
         self.s.authenticate(st.text(min_size=1))
-        m.assert_called_with()
+        qtbot.wait_until(lambda: result is False)
 
-    @mock.patch('src.sig.sig_gh_token_status_changed.connected')
     @skipUnless(token, 'no test token available')
-    def test_init_correct_token(self, m):
+    def test_init_correct_token(self, qtbot):
+        result = -1
+
+        @signals.post_authenticate.connect_via('GHSession', weak=False)
+        def check_result(_, **kwargs):
+            nonlocal result
+            result = kwargs['result']
+
         self.s.authenticate(token)
-        m.assert_called_with(Secret.gh_test_login)
+        qtbot.wait_until(lambda: result == Secret.gh_test_login)
 
 
 @skipUnless(token, 'no test token available')
@@ -307,12 +326,18 @@ class TestGHSession:
     s = None
 
     @pytest.fixture(autouse=True)
-    @mock.patch('src.sig.sig_gh_token_status_changed.connected')
-    def gh_session(self, m):
+    def gh_session(self, qtbot):
+        result = -1
+
+        @signals.post_authenticate.connect_via('GHSession', weak=False)
+        def check_result(_, **kwargs):
+            nonlocal result
+            result = kwargs['result']
+
         if token:
             Singleton.wipe_instances('GHSession')
             self.s = GHSession(token)
-            m.assert_called_with(Secret.gh_test_login)
+            qtbot.wait_until(lambda: result == Secret.gh_test_login)
 
     @skipUnless(token, 'no test token available')
     def test_primary_email(self):

@@ -1,13 +1,14 @@
 # coding=utf-8
 # noinspection PyProtectedMember
 import semver
+
 from src.__version__ import __version__
 from src.cfg import Config
 from src.low import constants
 from src.low.custom_logging import make_logger
-from src.rem.gh.gh_session import GHAnonymousSession
+from src.newsig import SigProgress
 from src.rem.gh.gh_objects.gh_release import GHRelease
-from src.sig import sig_main_ui_states  # , sig_splash, sig_main_ui, sig_interrupt_startup
+from src.rem.gh.gh_session import GHAnonymousSession
 
 logger = make_logger(__name__)
 
@@ -62,12 +63,12 @@ def look_for_regular_version(all_releases):
 
 def check_for_update():
     logger.info('running')
-    sig_main_ui_states.set_progress_text('Looking for a newer version of {}'.format(constants.APP_SHORT_NAME))
+    SigProgress().set_progress_text('Looking for a newer version of {}'.format(constants.APP_SHORT_NAME))
     all_releases = GHAnonymousSession().get_all_releases(constants.GH_APP_USER, constants.GH_APP_REPO)
     if Config().subscribe_to_test_versions:
         logger.debug('looking for a newer test version')
         look_for_test_version(all_releases)
     look_for_regular_version(all_releases)
-    sig_main_ui_states.set_progress(50)
-    sig_main_ui_states.set_progress(100)
+    SigProgress().set_progress(50)
+    SigProgress().set_progress(100)
     logger.info('done')

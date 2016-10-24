@@ -12,7 +12,7 @@ from humanize import filesize
 
 
 class Win32FileInfo:
-    def __init__(self, _path: str or Path):
+    def __init__(self, _path):
         self.__path = str(Path(_path).abspath())
         self.__props = None
         self.__read_props()

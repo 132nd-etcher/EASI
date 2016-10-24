@@ -1,25 +1,31 @@
 # coding=utf-8
 
 from src.helper.kdiff import kdiff
+from blinker import signal
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.qt import QToolButton, QAction, QLineEdit, QIcon
-from src.sig import sig_cfg_kdiff_path
 from src.ui.dialog_config.settings.abstract_path_setting import AbstractPathSetting
-from ...dialog_browse.dialog import BrowseDialog
+from src.ui.dialog_browse.dialog import BrowseDialog
 
 logger = make_logger(__name__)
 
 
 class KDiffPathSetting(AbstractPathSetting):
+
+    def __init__(self, dialog):
+        AbstractPathSetting.__init__(self, dialog)
+        self.q_action_install_kdiff = QAction(QIcon(':/pic/download.png'), 'Install now', self.dialog)
+        self.dialog.kdiff_line_edit.addAction(self.q_action_install_kdiff, QLineEdit.TrailingPosition)
+
+        def on_path_changed(_, value):
+            self.set_dialog_value(value)
+
+        signal('Config_kdiff_path_value_changed').connect(on_path_changed, weak=False)
+
     @property
     def value_name(self) -> str:
         return 'kdiff_path'
-
-    def __init__(self, dialog):
-        AbstractPathSetting.__init__(self, dialog, sig_cfg_kdiff_path)
-        self.q_action_install_kdiff = QAction(QIcon(':/pic/download.png'), 'Install now', self.dialog)
-        self.dialog.kdiff_line_edit.addAction(self.q_action_install_kdiff, QLineEdit.TrailingPosition)
 
     @property
     def qt_menu_btn(self) -> QToolButton:

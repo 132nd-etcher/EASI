@@ -20,11 +20,12 @@ def success(sender, signal_emitter, result):
 def test_and_exit(qtbot: QtBot):
     sys.argv.append('test_and_exit')
     sys.argv.append('no_qt_app')
-    from src import easi
+    from src.easi import easi
+    from src.low import constants
     try:
         easi.start_gui()
-        from src.ui.main_ui.main_ui import MainUi
-        MainUi.do(None, 'exit', 0)
+        constants.MAIN_UI.do('splash', 'hide')
+        constants.MAIN_UI.do(None, 'exit')
     finally:
         import os
         del os.environ['REQUESTS_CA_BUNDLE']
@@ -40,7 +41,7 @@ def test_cert_verify(mocker, tmpdir):
         f.write('caribou')
     with pytest.raises(KeyError):
         assert os.environ['REQUESTS_CA_BUNDLE'] == ''
-    from src.easi import check_cert
+    from src.easi.easi import check_cert
     check_cert()
     assert os.environ['REQUESTS_CA_BUNDLE'] is not None
     assert os.path.exists(os.environ['REQUESTS_CA_BUNDLE'])

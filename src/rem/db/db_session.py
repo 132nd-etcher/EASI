@@ -3,7 +3,7 @@
 import webbrowser
 
 from dropbox import Dropbox as BaseDropbox, DropboxOAuth2FlowNoRedirect
-from dropbox.exceptions import AuthError
+from dropbox.exceptions import AuthError, BadInputError
 
 try:
     from vault.secret import Secret
@@ -13,7 +13,7 @@ from src.low import constants
 from src.__version__ import __version__
 from src.low.singleton import Singleton
 from src.low.custom_logging import make_logger
-from src.sig import sig_db_token_status_changed
+from blinker_herald import emit, SENDER_CLASS_NAME
 
 logger = make_logger(__name__)
 
@@ -29,19 +29,25 @@ class DBSession(metaclass=Singleton):
         self.agent = '{}/{}'.format(constants.APP_SHORT_NAME, __version__)
         self.session = None
         self.account = None
-        if token is None:
-            sig_db_token_status_changed.not_connected()
-        else:
-            self.authenticate(token)
+        self.authenticate(token)
 
+    @emit(only='post', sender=SENDER_CLASS_NAME)
     def authenticate(self, token):
+        if token is None:
+            return None
         try:
             self.session = BaseDropbox(token)
-            self.account = self.session.users_get_current_account()
-            sig_db_token_status_changed.connected(self.account.name.given_name)
+            try:
+                self.account = self.session.users_get_current_account()
+            except BadInputError:
+                # FIXME
+                logger.error('malformed token')
+                return False
+            return self.account.name.given_name
         except AuthError:
+            # FIXME
             logger.error('wrong token')
-            sig_db_token_status_changed.wrong_token()
+            return False
 
     @staticmethod
     def start_auth_flow():

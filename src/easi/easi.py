@@ -78,18 +78,20 @@ def set_app_wide_font():
 
 def init_qt_app():
     logger.info('QApplication: starting')
-    from src.ui.main_ui.main_ui import MainUi
+    from src.ui.main_ui import MainUi
     if constants.QT_APP is False:
         logger.warn('starting MainUI *without* a QtApp object')
-        constants.MAIN_UI = MainUi(None)
+        MainUi()
     else:
         from PyQt5.QtWidgets import QApplication
         logger.debug('starting QtApp object')
         constants.QT_APP = QApplication([])
         # set_app_wide_font()
         logger.debug('starting MainUI')
-        constants.MAIN_UI = MainUi(constants.QT_APP)
+        MainUi()
         logger.info('QApplication: started')
+    from src.easi.gui_mode import connect_signals
+    connect_signals()
 
 
 def show_disclaimer():
@@ -116,10 +118,10 @@ def init_modules():
     import os
     from src.upd import check_for_update
     from src.keyring import init_keyring
-    from src.dcs import init_dcs_installs
+    from src.dcs.dcs_installs import init_dcs_installs
     from src.rem import init_remotes
     from src.helper import init_helpers
-    from src.cache import init_cache
+    from src.cache.cache import init_cache
     if not os.getenv('APPVEYOR'):
         check_for_update()
     init_dcs_installs()

@@ -2,10 +2,8 @@
 
 import abc
 
-from src.abstract.msg_interface import MsgInterface
 
-
-class MsgboxInterface(MsgInterface):
+class MsgInterface:
     @abc.abstractmethod
     def show(self, title: str, text: str):
         """"""

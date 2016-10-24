@@ -1,11 +1,9 @@
 # coding=utf-8
 
-import abc
-
 from src.abstract.msg_interface import MsgInterface
+from src.newsig.customsig import CustomSig
 
 
-class MsgboxInterface(MsgInterface):
-    @abc.abstractmethod
+class SigMsg(MsgInterface, metaclass=CustomSig):
     def show(self, title: str, text: str):
-        """"""
+        pass

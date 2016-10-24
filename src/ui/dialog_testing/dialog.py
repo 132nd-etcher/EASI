@@ -1,16 +1,15 @@
 # coding=utf-8
 import time
 
+from src.newsig.sigmsg import SigMsg
+from src.newsig.sigprogress import SigProgress
 from src.qt import QDialog, Qt
-from src.sig import sig_msgbox, sig_progress
 from src.threadpool import ThreadPool
 from src.ui.base.qdialog import BaseDialog
-from src.ui.base.with_signal import WithSignal
-from src.ui.dialog_input.dialog import InputDialog
 from src.ui.dialog_confirm.dialog import ConfirmDialog
+from src.ui.dialog_input.dialog import InputDialog
+from src.ui.dialog_testing.interface import TestingDialogInterface
 from src.ui.skeletons.dialog_testing import Ui_Dialog
-from .interface import TestingDialogInterface
-from .signal import sig_testing_dialog
 
 
 class _TestingDialog(Ui_Dialog, QDialog):
@@ -20,10 +19,9 @@ class _TestingDialog(Ui_Dialog, QDialog):
         self.setupUi(self)
 
 
-class TestingDialog(BaseDialog, WithSignal, TestingDialogInterface):
-    def __init__(self, parent, main_ui_obj):
+class TestingDialog(BaseDialog, TestingDialogInterface):
+    def __init__(self, parent):
         BaseDialog.__init__(self, _TestingDialog(parent))
-        WithSignal.__init__(self, sig_testing_dialog, main_ui_obj)
         self.qobj.btn_make_msgbox.clicked.connect(self.test_msg_box)
         self.qobj.btn_make_progress.clicked.connect(self.test_progress)
         self.qobj.btn_make_dual_progress.clicked.connect(self.test_dual_progress)
@@ -32,54 +30,56 @@ class TestingDialog(BaseDialog, WithSignal, TestingDialogInterface):
         self.pool = ThreadPool(1, 'gui_testing_dialog', True)
 
     def test_msg_box(self):
-        sig_msgbox.show('title', 'text')
+        SigMsg().show('title', 'text')
 
     def test_progress(self):
         def run_test():
-            sig_progress.show('title', 'text')
-            sig_progress.set_progress(20)
+            progress = SigProgress()
+            progress.show('title', 'text')
+            progress.set_progress(20)
             time.sleep(0.5)
-            sig_progress.set_progress(40)
+            progress.set_progress(40)
             time.sleep(0.5)
-            sig_progress.set_progress(60)
+            progress.set_progress(60)
             time.sleep(0.5)
-            sig_progress.set_progress(80)
+            progress.set_progress(80)
             time.sleep(0.5)
-            sig_progress.set_progress(100)
+            progress.set_progress(100)
 
         self.pool.queue_task(run_test)
 
     def test_dual_progress(self):
         def run_test():
-            sig_progress.show('title', 'text')
-            sig_progress.set_current_enabled(True)
-            sig_progress.set_current_text('first item')
-            sig_progress.set_progress(25)
-            sig_progress.set_current_progress(50)
+            progress = SigProgress()
+            progress.show('title', 'text')
+            progress.set_current_enabled(True)
+            progress.set_current_text('first item')
+            progress.set_progress(25)
+            progress.set_current_progress(50)
             time.sleep(0.5)
-            sig_progress.set_progress(50)
-            sig_progress.set_current_progress(100)
+            progress.set_progress(50)
+            progress.set_current_progress(100)
             time.sleep(0.5)
-            sig_progress.set_current_text('second item')
-            sig_progress.set_progress(75)
-            sig_progress.set_current_progress(50)
+            progress.set_current_text('second item')
+            progress.set_progress(75)
+            progress.set_current_progress(50)
             time.sleep(0.5)
-            sig_progress.set_progress(75)
-            sig_progress.set_current_progress(100)
-            sig_progress.set_progress(100)
+            progress.set_progress(75)
+            progress.set_current_progress(100)
+            progress.set_progress(100)
 
         self.pool.queue_task(run_test)
 
     def test_input_dialog(self):
         result = InputDialog.make('test', 'title', [('Value1', 'default1'), ('Value2', '')])
         if result:
-            sig_msgbox.show('Results', '\n'.join(['{}: {}'.format(k, result[k]) for k in result.keys()]))
+            SigMsg().show('Results', '\n'.join(['{}: {}'.format(k, result[k]) for k in result.keys()]))
         else:
-            sig_msgbox.show('Result', 'Operation cancelled')
+            SigMsg().show('Result', 'Operation cancelled')
 
     def test_confirm_dialog(self):
         result = ConfirmDialog.make('question', 'title')
-        sig_msgbox.show('Result', str(result))
+        SigMsg().show('Result', str(result))
 
     @property
     def qobj(self) -> _TestingDialog:

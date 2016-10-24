@@ -2,31 +2,27 @@
 
 from queue import Queue
 
-from blinker_herald import signals
-from ..widget_balloon.widget import WidgetBalloon
+from blinker_herald import signals, emit, SENDER_CLASS_NAME
 
 from src.low import constants
-from src.qt import QApplication, QMainWindow, Qt, QIcon, qt_resources
-from src.ui.main_ui.interface.interface import MainUiSigProcessor
+from src.qt import QMainWindow, Qt, QIcon, qt_resources
+from src.ui.active_dcs_installation import MainUiActiveDCSInstallation
+from src.ui.dialog_config.dialog import ConfigDialog
+from src.ui.dialog_feedback.dialog import FeedbackDialog
+from src.ui.dialog_msg.dialog import MsgDialog
+from src.ui.dialog_progress.dialog import ProgressDialog
+from src.ui.dialog_testing.dialog import TestingDialog
+from src.ui.mod_author import MainUiModAuthor
+from src.ui.skeletons.main import Ui_MainWindow
 from src.ui.splash.dialog import MainUiSplash
-from .main_ui_active_dcs_installation import MainUiActiveDCSInstallation
-from .main_ui_mod_author import MainUiModAuthor
-from .main_ui_threading import MainGuiThreading
-from .states import MainUiStateManager
-from ..dialog_config.dialog import ConfigDialog
-from ..dialog_feedback.dialog import FeedbackDialog
-from ..dialog_msg.dialog import MsgDialog
-from ..dialog_progress.dialog import ProgressDialog
-from ..dialog_testing.dialog import TestingDialog
-from ..skeletons.main import Ui_MainWindow
+from src.ui.threading import MainGuiThreading
+from src.ui.widget_balloon.widget import WidgetBalloon
 
-
-# from src.abstract.ui import AbstractConnectedQObject
 
 class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
     threading_queue = Queue()
 
-    def __init__(self, qt_app: QApplication or None):
+    def __init__(self):
         # Fucking QMainWindow calls a general super().__init__ on every parent class, don't call them here !
         flags = Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowCloseButtonHint
         QMainWindow.__init__(
@@ -34,28 +30,18 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
             parent=None,
             flags=flags | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
 
-        self.qt_app = qt_app
+        constants.MAIN_UI = self
 
-        # # Setup link with all connected objects
-        # import src.abstract.ui.connected_object
-        # src.abstract.ui.connected_object.main_ui = self
-
-        # Give a heads-up to all child QWidgets that the MainUi is up and running
-        import src.ui.base.with_signal
-        src.ui.base.with_signal.main_ui = self
-
-        self.sig_proc = MainUiSigProcessor(self)
-        self.testing_dialog = TestingDialog(self, 'test_dialog')
-        self.splash = MainUiSplash(self, 'splash')
-        self.long_op = ProgressDialog(self, 'long_op')
-        self.msgbox = MsgDialog(self, 'msgbox')
+        self.testing_dialog = TestingDialog(self)
+        self.splash = MainUiSplash(self)
+        self.long_op = ProgressDialog(self)
+        self.msgbox = MsgDialog(self)
         self.config_dialog = ConfigDialog(self)
         self.active_dcs_installation = MainUiActiveDCSInstallation(self)
         self.mod_author_watcher = MainUiModAuthor(self)
         self.setup()
         self.connect_actions()
         self.setup_children_dialogs()
-        self.state_manager = MainUiStateManager('state_manager', self)
 
     def setup(self):
         self.setupUi(self)
@@ -76,6 +62,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.config_dialog.setup()
         self.mod_author_watcher.setup()
 
+    @emit(sender=SENDER_CLASS_NAME)
     def show(self):
         self.setWindowState(self.windowState() & Qt.WindowMinimized | Qt.WindowActive)
         self.activateWindow()
@@ -84,8 +71,8 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
 
     def exit(self, code=0):
         self.close()
-        if self.qt_app:
-            self.qt_app.exit(code)
+        if constants.QT_APP:
+            constants.QT_APP.exit(code)
 
     def test_balloon(self):
         from src.qt.palette import PaletteBalloonFive
@@ -98,8 +85,6 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
 
 
 # noinspection PyUnusedLocal
-@signals.post_init_modules.connect
+@signals.post_show.connect_via('MainUi')
 def test_balloon(sender, signal_emitter, result):
-    MainUi.do('splash', 'hide')
-    MainUi.do(None, 'show')
     MainUi.do(None, 'test_balloon')

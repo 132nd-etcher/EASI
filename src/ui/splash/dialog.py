@@ -3,9 +3,7 @@
 from src.abstract.progress_interface import ProgressInterface
 from src.low import constants
 from src.qt import QSplashScreen, QPixmap, qt_resources, Qt, QLabel, QFont, QProgressBar
-from src.sig import sig_splash
 from src.ui.base.qwidget import BaseQWidget
-from src.ui.base.with_signal import WithSignal
 
 
 class _MainUiSplash(QSplashScreen):
@@ -78,11 +76,9 @@ class _MainUiSplash(QSplashScreen):
         pass
 
 
-class MainUiSplash(BaseQWidget, WithSignal, ProgressInterface):
-
-    def __init__(self, parent, main_ui_obj_name):
+class MainUiSplash(BaseQWidget, ProgressInterface):
+    def __init__(self, parent):
         BaseQWidget.__init__(self, _MainUiSplash(parent))
-        WithSignal.__init__(self, sig_splash, main_ui_obj_name)
 
     @property
     def qobj(self) -> _MainUiSplash:

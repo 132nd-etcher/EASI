@@ -21,6 +21,9 @@
     <option name="params" value="--cov=src --cov-config .coveragerc --cov-report xml --cov-report html -c .pytest --durations=10" />
     <option name="USE_PARAM" value="true" />
     <option name="USE_KEYWORD" value="false" />
-    <method />
+    <method>
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="build_ui" run_configuration_type="PythonConfigurationType" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="build_doc" run_configuration_type="PythonConfigurationType" />
+    </method>
   </configuration>
 </component>

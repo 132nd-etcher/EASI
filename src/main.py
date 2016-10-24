@@ -3,7 +3,7 @@
 if __name__ == '__main__':
     import signal as core_sig
 
-    from src import easi
+    from src.easi import easi
 
     core_sig.signal(core_sig.SIGINT, easi.nice_exit)
 

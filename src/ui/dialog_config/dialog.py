@@ -3,7 +3,7 @@
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.qt import QDialog, Qt
-from src.sig import sig_config_changed, SignalReceiver, sig_msgbox
+from src.newsig.sigmsg import SigMsg
 from src.ui.skeletons.config_dialog import Ui_Settings
 from src.upd import check_for_update
 from .settings.abstract_config import AbstractConfigSetting
@@ -48,8 +48,6 @@ class ConfigDialog(Ui_Settings, QDialog):
             'dropbox': DropboxSetting(self),
             'github': GithubSetting(self),
         }
-        self.receiver = SignalReceiver(self)
-        self.receiver[sig_config_changed] = self.settings_changed
 
     def __set_apply_btn_enabled(self, value: bool):
         self.btn_apply.setEnabled(value)
@@ -58,7 +56,7 @@ class ConfigDialog(Ui_Settings, QDialog):
     @staticmethod
     def __check_for_update():
         check_for_update()
-        sig_msgbox.show('Check done', 'Already running latest version of {}'.format(constants.APP_SHORT_NAME))
+        SigMsg().show('Check done', 'Already running latest version of {}'.format(constants.APP_SHORT_NAME))
 
     def show(self):
         for config_setting in self.config_settings.values():
@@ -75,7 +73,7 @@ class ConfigDialog(Ui_Settings, QDialog):
             assert isinstance(setting, AbstractConfigSetting)
             setting.setup()
             for method in setting.dialog_has_changed_methods():
-                self.receiver[method] = self.settings_changed
+                method.connect(self.settings_changed)
         for setting in self.keyring_settings.values():
             assert isinstance(setting, AbstractCredentialSetting)
             setting.setup()

@@ -1,11 +1,9 @@
 # coding=utf-8
 
-from src.ui.base.qdialog import BaseDialog
-from src.ui.base.with_signal import WithSignal
+from src.abstract.msg_interface import MsgInterface
 from src.qt import QDialog, Qt
-from src.sig import sig_msgbox
+from src.ui.base.qdialog import BaseDialog
 from src.ui.skeletons.msg_dialog import Ui_Dialog
-from .interface import MsgboxInterface
 
 
 class _MsgDialog(Ui_Dialog, QDialog):
@@ -15,10 +13,9 @@ class _MsgDialog(Ui_Dialog, QDialog):
         self.setupUi(self)
 
 
-class MsgDialog(BaseDialog, WithSignal, MsgboxInterface):
-    def __init__(self, parent, main_ui_obj_name):
+class MsgDialog(BaseDialog, MsgInterface):
+    def __init__(self, parent):
         BaseDialog.__init__(self, _MsgDialog(parent))
-        WithSignal.__init__(self, sig_msgbox, main_ui_obj_name)
 
     @property
     def qobj(self) -> _MsgDialog:
@@ -31,4 +28,3 @@ class MsgDialog(BaseDialog, WithSignal, MsgboxInterface):
         self.qobj.label.setText(text)
         self.adjust_size()
         self.qobj.show()
-        # super(MsgDialog, self).show()

@@ -1,11 +1,21 @@
 # coding=utf-8
 from src.qt import QLabel
+from blinker_herald import signals
 from src.rem.db.db_session import DBSession
-from src.sig import sig_db_token_status_changed, CustomSignal
 from src.ui.dialog_config.settings.abstract_credential import AbstractCredentialSetting
 
 
 class DropboxSetting(AbstractCredentialSetting):
+    def __init__(self, dialog):
+        AbstractCredentialSetting.__init__(self, dialog)
+        self.flow = None
+
+        @signals.post_authenticate.connect_via('DBSession', weak=False, )
+        def status_changed(_, **kwargs):
+            self.status_changed(kwargs['result'])
+
+    def status_changed(self, result):
+        super(DropboxSetting, self).status_changed(result)
 
     @property
     def qt_object(self):
@@ -14,14 +24,6 @@ class DropboxSetting(AbstractCredentialSetting):
     @property
     def value_name(self) -> str:
         return 'db_token'
-
-    @property
-    def token_changed_signal(self) -> CustomSignal:
-        return sig_db_token_status_changed
-
-    def __init__(self, dialog):
-        AbstractCredentialSetting.__init__(self, dialog)
-        self.flow = None
 
     def set_flow_elements_enabled(self, value: bool):
         self.dialog.label_db_validation_code_static.setEnabled(value)

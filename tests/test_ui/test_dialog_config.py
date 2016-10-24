@@ -352,11 +352,11 @@ class TestConfigDialog:
 
     def test_check_for_update(self, qtbot, mocker):
         m = mocker.patch('src.ui.dialog_config.dialog.check_for_update')
-        sig = mocker.patch('src.ui.dialog_config.dialog.sig_msgbox.send')
+        sig = mocker.patch('src.ui.dialog_config.dialog.SigMsg.show')
         qtbot.mouseClick(self.dialog.btn_update_check, Qt.LeftButton)
         qtbot.wait_until(m.assert_called_with)
         qtbot.wait_until(lambda: sig.assert_called_with(
-            'show', 'Check done', 'Already running latest version of {}'.format(constants.APP_SHORT_NAME)))
+            'Check done', 'Already running latest version of {}'.format(constants.APP_SHORT_NAME)))
 
     def test_kdiff_path_display_value(self):
         from src.ui.dialog_config.settings.setting_kdiff_path import KDiffPathSetting

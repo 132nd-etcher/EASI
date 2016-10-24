@@ -4,7 +4,7 @@ import os
 
 import path
 
-from src.meta.decorators import MetaProperty
+from src.meta.meta_property import MetaProperty
 
 
 class ConfigValues:
