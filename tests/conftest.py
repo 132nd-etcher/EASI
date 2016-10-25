@@ -4,6 +4,7 @@ import pytest
 
 from src.low.custom_logging import make_logger
 
+
 @pytest.fixture(scope='session', autouse=True)
 def make_test_logger():
     """Creates main logger for tests output"""
