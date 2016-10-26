@@ -6,7 +6,6 @@ except ImportError:
     from unittest.mock import MagicMock
 
     winreg = MagicMock()
-from typing import Tuple
 
 from blinker_herald import emit
 from src.cfg import Config
@@ -18,6 +17,31 @@ from src.newsig.sigprogress import SigProgress
 logger = make_logger(__name__)
 
 A_REG = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+
+
+class DCSInstall:
+
+    def __init__(self, install_path, saved_games_path, version, label):
+        self.__install = str(Path(install_path).abspath())
+        self.__sg = str(Path(saved_games_path).abspath())
+        self.__version = str(version)
+        self.__label = label
+
+    @property
+    def label(self):
+        return self.__label
+
+    @property
+    def install_path(self):
+        return self.__install
+
+    @property
+    def saved_games(self):
+        return self.__sg
+
+    @property
+    def version(self):
+        return self.__version
 
 
 def look_for_saved_games_path():
@@ -110,19 +134,30 @@ class DCSInstalls(metaclass=Singleton):
         progress.set_progress(100)
 
     def __get_props(self, channel):
-        return self.installs[channel]['install'], self.installs[channel]['sg'], self.installs[channel]['version']
+        return self.installs[channel]['install'],\
+               self.installs[channel]['sg'],\
+               self.installs[channel]['version'],\
+               channel
 
     @property
-    def stable(self) -> Tuple[Path, Path, str]:
-        return self.__get_props('stable')
+    def stable(self) -> DCSInstall:
+        return DCSInstall(*self.__get_props('stable'))
 
     @property
-    def beta(self) -> Tuple[Path, Path, str]:
-        return self.__get_props('beta')
+    def beta(self) -> DCSInstall:
+        return DCSInstall(*self.__get_props('beta'))
 
     @property
-    def alpha(self) -> Tuple[Path, Path, str]:
-        return self.__get_props('alpha')
+    def alpha(self) -> DCSInstall:
+        return DCSInstall(*self.__get_props('alpha'))
+
+    def __iter__(self) -> DCSInstall:
+        yield self.stable
+        yield self.beta
+        yield self.alpha
+
+    def __getitem__(self, item) -> DCSInstall:
+        return getattr(self, item)
 
 
 def init_dcs_installs():
