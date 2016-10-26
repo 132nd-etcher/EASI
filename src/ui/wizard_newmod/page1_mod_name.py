@@ -1,8 +1,6 @@
 # coding=utf-8
 
-from string import ascii_letters, digits
 from src.qt import QWizardPage, QLabel, QLineEdit, QVBoxLayout, Qt, QFormLayout, QRegExpValidator, QRegExp
-from src.ui.widget_balloon.widget import WidgetBalloon
 
 
 class PageModName(QWizardPage):
@@ -29,6 +27,7 @@ class PageModName(QWizardPage):
         print(self.layout())
 
     def cleanupPage(self):
+        print('test')
         self.edit_mod_name.setText('')
         super(PageModName, self).cleanupPage()
 
