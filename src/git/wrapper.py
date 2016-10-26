@@ -6,7 +6,6 @@ import pygit2
 from pygit2 import Signature
 
 from src.low.custom_path import Path
-from src.rem.gh import GHSession
 
 
 class Repository:
