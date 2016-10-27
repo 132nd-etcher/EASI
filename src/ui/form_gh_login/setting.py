@@ -8,9 +8,10 @@ from src.ui.dialog_config.settings.abstract_credential import AbstractCredential
 
 
 class GithubSetting(AbstractCredentialSetting):
-    def __init__(self, dialog):
+    def __init__(self, dialog, default_btn):
         AbstractCredentialSetting.__init__(self, dialog)
         self.flow = None
+        self.default_btn = default_btn
 
         @signals.post_authenticate.connect_via('GHSession', weak=False)
         def status_changed(_, **kwargs):
@@ -52,19 +53,24 @@ class GithubSetting(AbstractCredentialSetting):
         if not pwd:
             self.show_error_balloon('Missing password', self.dialog.githubPasswordLineEdit)
             return
+        self.del_from_meta()
         self.status_label.setText('Authenticating ...')
         self.status_label.setStyleSheet('QLabel {{ color : black; }}')
         try:
             auth = GHAnonymousSession().create_new_authorization(usr, pwd)
             token = auth.token
         except GHSessionError as e:
-            self.status_label.setText(e.msg)
-            self.status_label.setStyleSheet('QLabel {{ color : red; }}')
+            if '401:' in e.msg:
+                self.status_label.setText('Wrong username / password')
+                self.status_label.setStyleSheet('QLabel {{ color : red; }}')
+            else:
+                self.status_label.setText(e.msg)
+                self.status_label.setStyleSheet('QLabel {{ color : red; }}')
         else:
             if token:
                 GHSession().authenticate(token)
                 self.save_to_meta(token)
-            self.dialog.buttonBox.button(self.dialog.buttonBox.Ok).setDefault(True)
+            self.default_btn.setDefault(True)
 
     @property
     def status_label(self) -> QLabel:
