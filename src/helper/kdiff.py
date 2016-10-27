@@ -36,7 +36,7 @@ class KdiffHelper(AbstractHelper, metaclass=Singleton):
         if self.folder.exists() and self.folder.isdir():
             logger.debug('removing old kdiff3 directory')
             self.folder.rmtree()
-        SigProgress().set_progress_title('Installing KDIFF3')
+        SigProgress().show('Installing KDiff3...', 'Downloading...')
         kwargs = dict(
             url=self.download_link,
             progress=SigProgress(),
@@ -49,7 +49,7 @@ class KdiffHelper(AbstractHelper, metaclass=Singleton):
     def install(self, fdl: FileDownload):
         if fdl.success:
             SigProgress().set_progress(0)
-            SigProgress().set_progress_title('Unzipping KDiff3')
+            SigProgress().set_progress_text('Unzipping KDiff3')
             with zipfile.ZipFile(fdl.local_file) as _zip:
                 total = len(_zip.namelist())
                 count = 0
