@@ -8,12 +8,15 @@ from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
 from src.sig import SigProgress, SigMsg
-from .abstract import AbstractHelper
+from src.helper.abstract import AbstractHelper, AbstractHelperRunProfile
 
 logger = make_logger(__name__)
 
 
 class KdiffHelper(AbstractHelper, metaclass=Singleton):
+
+    def run_profile(self, profile: AbstractHelperRunProfile):
+        pass
 
     @property
     def folder(self) -> Path:

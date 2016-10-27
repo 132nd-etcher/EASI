@@ -5,7 +5,15 @@ import abc
 from src.low.custom_path import Path
 
 
-class AbstractHelper(metaclass=abc.ABCMeta):
+class AbstractHelperRunProfile:
+    pass
+
+
+class AbstractHelper:
+    @abc.abstractmethod
+    def run_profile(self, profile: AbstractHelperRunProfile):
+        """Executes a profile with this helper"""
+
     @property
     @abc.abstractproperty
     def download_link(self):
