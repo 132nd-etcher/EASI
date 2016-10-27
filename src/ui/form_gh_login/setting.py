@@ -54,8 +54,13 @@ class GithubSetting(AbstractCredentialSetting):
             self.show_error_balloon('Missing password', self.dialog.githubPasswordLineEdit)
             return
         self.del_from_meta()
+        delattr(self.store_object, 'gh_username')
+        delattr(self.store_object, 'gh_password')
         self.status_label.setText('Authenticating ...')
         self.status_label.setStyleSheet('QLabel {{ color : black; }}')
+        self.status_label.repaint()
+        while not self.status_label.text() == 'Authenticating ...':
+            pass
         try:
             auth = GHAnonymousSession().create_new_authorization(usr, pwd)
             token = auth.token
@@ -70,6 +75,8 @@ class GithubSetting(AbstractCredentialSetting):
             if token:
                 GHSession().authenticate(token)
                 self.save_to_meta(token)
+                setattr(self.store_object, 'gh_username', self.dialog.githubUsernameLineEdit.text())
+                setattr(self.store_object, 'gh_password', self.dialog.githubPasswordLineEdit.text())
             self.default_btn.setDefault(True)
 
     @property
