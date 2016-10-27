@@ -1,7 +1,7 @@
 # coding=utf-8
 """Manages credentials"""
 from base64 import b64encode, b64decode
-from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, KEY_READ, KEY_WOW64_64KEY, OpenKey, QueryValueEx
+
 
 from Crypto.Cipher import AES
 from blinker import signal
@@ -78,15 +78,5 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
 
 def init_keyring():
     logger.info('keyring: initializing')
-    a_reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
-    try:
-        with OpenKey(a_reg, r"SOFTWARE\Microsoft\Cryptography") as aKey:
-            constants.MACHINE_GUID = QueryValueEx(aKey, "MachineGuid")[0]
-    except FileNotFoundError:
-        try:
-            with OpenKey(a_reg, r"SOFTWARE\Microsoft\Cryptography", access=KEY_READ | KEY_WOW64_64KEY) as aKey:
-                constants.MACHINE_GUID = QueryValueEx(aKey, "MachineGuid")[0]
-        except FileNotFoundError:
-            constants.MACHINE_UID = False
     Keyring()
     logger.info('keyring: initialized')
