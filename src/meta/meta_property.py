@@ -87,6 +87,14 @@ class _MetaProperty:
         signal('{}_{}_value_changed'.format(instance.__class__.__name__, self.func.__name__)).send(
             instance.__class__.__name__, value=value)
 
+    def __delete__(self, instance):
+        if instance is None:
+            return self
+        try:
+            instance.__delitem__(self.func.__name__)
+        except KeyError:
+            pass
+
 
 class MetaProperty:
     """
