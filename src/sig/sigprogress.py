@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.abstract.progress_interface import ProgressInterface
-from src.newsig.customsig import CustomSig
+from src.sig.customsig import CustomSig
 
 
 class SigProgress(ProgressInterface, metaclass=CustomSig):

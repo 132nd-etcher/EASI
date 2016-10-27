@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.abstract.msg_interface import MsgInterface
-from src.newsig.customsig import CustomSig
+from src.sig.customsig import CustomSig
 
 
 class SigMsg(MsgInterface, metaclass=CustomSig):

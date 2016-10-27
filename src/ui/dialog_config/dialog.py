@@ -3,7 +3,7 @@
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.qt import QDialog, Qt
-from src.newsig.sigmsg import SigMsg
+from src.sig.sigmsg import SigMsg
 from src.ui.skeletons.config_dialog import Ui_Settings
 from src.upd import check_for_update
 from .settings.abstract_config import AbstractConfigSetting

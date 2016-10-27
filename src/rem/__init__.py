@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.keyring.keyring import Keyring
-from src.newsig import SigProgress
+from src.sig import SigProgress
 from .gh.gh_session import GHSession
 from .db.db_session import DBSession
 

@@ -12,7 +12,7 @@ from src.cfg import Config
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
-from src.newsig.sigprogress import SigProgress
+from src.sig.sigprogress import SigProgress
 
 logger = make_logger(__name__)
 

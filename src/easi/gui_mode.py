@@ -4,7 +4,7 @@ from blinker import Signal
 from blinker_herald import signals
 
 from src.low import constants
-from src.newsig import SIG_PROGRESS, SIG_MSG
+from src.sig import SIG_PROGRESS, SIG_MSG
 
 
 def redirect_signal(signal, main_ui_attribute, disconnect_all_others=False):

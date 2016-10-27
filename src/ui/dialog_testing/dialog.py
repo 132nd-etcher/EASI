@@ -1,8 +1,8 @@
 # coding=utf-8
 import time
 
-from src.newsig.sigmsg import SigMsg
-from src.newsig.sigprogress import SigProgress
+from src.sig.sigmsg import SigMsg
+from src.sig.sigprogress import SigProgress
 from src.qt import QDialog, Qt
 from src.threadpool import ThreadPool
 from src.ui.base.qdialog import BaseDialog

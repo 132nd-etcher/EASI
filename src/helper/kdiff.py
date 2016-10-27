@@ -7,7 +7,7 @@ from src.cfg import Config
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
-from src.newsig import SigProgress, SigMsg
+from src.sig import SigProgress, SigMsg
 from .abstract import AbstractHelper
 
 logger = make_logger(__name__)
