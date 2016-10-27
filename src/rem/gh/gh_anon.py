@@ -11,7 +11,11 @@ from src.rem.gh.gh_objects.gh_release import GHRelease, GHAllReleases
 from src.rem.gh.gh_objects.gh_repo import GHRepoList, GHRepo
 from src.rem.gh.gh_objects.gh_user import GHUser
 from src.low.custom_logging import make_logger
-from vault.empty_secret import Secret
+
+try:
+    from vault.secret import Secret
+except ImportError:
+    from vault.empty_secret import Secret
 
 
 logger = make_logger(__name__)
