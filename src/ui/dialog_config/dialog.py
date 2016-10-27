@@ -11,11 +11,11 @@ from .settings.abstract_credential import AbstractCredentialSetting
 from .settings.setting_author_mode import AuthorModeSetting
 from .settings.setting_cache_path import CachePathSetting
 from .settings.setting_dropbox import DropboxSetting
-from .settings.setting_github import GithubSetting
 from .settings.setting_kdiff_path import KDiffPathSetting
 from .settings.setting_keyring_encrypt import KeyringEncryptSetting
 from .settings.setting_sg_path import SGPathSetting
 from .settings.setting_update_to_experimental import ExperimentalUpdateSetting
+from src.ui.form_gh_login.form import GHLoginForm
 
 logger = make_logger(__name__)
 
@@ -46,8 +46,11 @@ class ConfigDialog(Ui_Settings, QDialog):
         }
         self.keyring_settings = {
             'dropbox': DropboxSetting(self),
-            'github': GithubSetting(self),
         }
+        self.forms = {
+            'github': GHLoginForm(self, self.btn_ok)
+        }
+        self.grp_github.layout().insertWidget(0, self.forms['github'])
 
     def __set_apply_btn_enabled(self, value: bool):
         self.btn_apply.setEnabled(value)
@@ -63,6 +66,8 @@ class ConfigDialog(Ui_Settings, QDialog):
             config_setting.show()
         for keyring_setting in self.keyring_settings.values():
             keyring_setting.show()
+        for form in self.forms.values():
+            form.on_show()
 
         self.load_settings()
         self.__set_apply_btn_enabled(False)
@@ -77,6 +82,8 @@ class ConfigDialog(Ui_Settings, QDialog):
         for setting in self.keyring_settings.values():
             assert isinstance(setting, AbstractCredentialSetting)
             setting.setup()
+        for form in self.forms.values():
+            form.setup()
         self.load_settings()
 
     def load_settings(self):
@@ -122,7 +129,3 @@ class ConfigDialog(Ui_Settings, QDialog):
                 self.__set_apply_btn_enabled(True)
             else:
                 setting.validation_success()
-
-    @staticmethod
-    def make():
-        raise NotImplementedError('use main_ui or signals')
