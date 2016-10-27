@@ -42,5 +42,5 @@ def config(tmpdir):
 @pytest.fixture(scope='session')
 def gh_anon():
     """Returns the Github anonymous request session"""
-    from src.rem.gh.gh_session import GHAnonymousSession
+    from src.rem.gh.gh_anon import GHAnonymousSession
     return GHAnonymousSession()

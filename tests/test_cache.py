@@ -135,13 +135,16 @@ class TestCache:
         p = Path(tmpdir.join('f'))
         p.write_text('')
         g = Path(tmpdir.mkdir('.git'))
-        gf = Path(tmpdir.join('.git').join('gitfile'))
+        gf = Path(tmpdir.join('.git').join('git_file'))
         gf.write_text('')
-        gd = Path(tmpdir.join('.git').mkdir('gitdir'))
-        d = Path(tmpdir.mkdir('somedir'))
+        gd = Path(tmpdir.join('.git').mkdir('git_dir'))
+        d = Path(tmpdir.mkdir('some_dir'))
+        df = Path(tmpdir.join('some_dir').join('some_file'))
+        df.write_text('')
 
         cache_built = False
 
+        # noinspection PyUnusedLocal
         @signals.post_cache_build.connect
         def cache_build_done(sender, signal_emitter, **kwargs):
             nonlocal cache_built
@@ -150,6 +153,7 @@ class TestCache:
         c = Cache(td)
         qtbot.wait_until(lambda: cache_built is True)
         assert p.abspath() in c
+        assert df.abspath() in c
         assert not d.abspath() in c
         assert not g.abspath() in c
         assert not gd.abspath() in c
