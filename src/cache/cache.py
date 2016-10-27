@@ -141,6 +141,8 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                 logger.info('re-building whole cache folder')
                 self.meta = {}
                 for root, folder, _ in os.walk(self.path):
+                    if root.endswith('.git'):
+                        continue
                     for entry in os.scandir(root):
                         if entry.is_dir():
                             continue

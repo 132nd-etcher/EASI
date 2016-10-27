@@ -103,7 +103,7 @@ class TestCache:
     def test_on_deleted(self, tmpdir, qtbot):
         signal_caught = False
         td = str(tmpdir)
-        p = Path(tmpdir.join('f{}'))
+        p = Path(tmpdir.join('f'))
         p.write_text('')
 
         c = Cache(td)
@@ -129,3 +129,28 @@ class TestCache:
         assert len(c) == 0
 
         signals.post_cache_changed_event.disconnect(got_signal)
+
+    def test_git_dir(self, tmpdir, qtbot):
+        td = str(tmpdir)
+        p = Path(tmpdir.join('f'))
+        p.write_text('')
+        g = Path(tmpdir.mkdir('.git'))
+        gf = Path(tmpdir.join('.git').join('gitfile'))
+        gf.write_text('')
+        gd = Path(tmpdir.join('.git').mkdir('gitdir'))
+        d = Path(tmpdir.mkdir('somedir'))
+
+        cache_built = False
+
+        @signals.post_cache_build.connect
+        def cache_build_done(sender, signal_emitter, **kwargs):
+            nonlocal cache_built
+            cache_built = True
+
+        c = Cache(td)
+        qtbot.wait_until(lambda: cache_built is True)
+        assert p.abspath() in c
+        assert not d.abspath() in c
+        assert not g.abspath() in c
+        assert not gd.abspath() in c
+        assert not gf.abspath() in c
