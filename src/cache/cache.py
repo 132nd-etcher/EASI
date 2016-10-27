@@ -133,6 +133,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
     def cache_changed_event(self, event: CacheEvent):
         return event
 
+    @emit(sender='Cache', capture_result=False)
     def cache_build(self, rel_path: str = None):
         self.__is_building = True
         try:
