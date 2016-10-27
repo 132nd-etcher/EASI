@@ -17,8 +17,9 @@ from src.rem.gh.gh_objects.gh_release import GHAllAssets
 from src.rem.gh.gh_objects.gh_release import GHRelease
 from src.rem.gh.gh_objects.gh_repo import GHRepo, GHRepoList
 from src.rem.gh.gh_objects.gh_user import GHUser
-from src.rem.gh.gh_session import GHAnonymousSession, GHSession, GithubAPIError, RateLimitationError, GHSessionError, \
-    RequestFailedError
+from src.rem.gh.gh_session import GHSession
+from src.rem.gh.gh_anon import GHAnonymousSession
+from src.rem.gh.gh_errors import GHSessionError, RequestFailedError, RateLimitationError, GithubAPIError
 
 try:
     # noinspection PyUnresolvedReferences

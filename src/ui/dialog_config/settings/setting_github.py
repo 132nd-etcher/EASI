@@ -1,7 +1,9 @@
 # coding=utf-8
 from blinker_herald import signals
 from src.qt import QLabel
-from src.rem.gh.gh_session import GHSession, GHAnonymousSession, GHSessionError
+from src.rem.gh.gh_session import GHSession
+from src.rem.gh.gh_anon import GHAnonymousSession
+from src.rem.gh.gh_errors import GHSessionError
 from src.ui.dialog_config.settings.abstract_credential import AbstractCredentialSetting
 
 

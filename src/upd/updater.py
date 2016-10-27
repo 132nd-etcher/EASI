@@ -8,7 +8,7 @@ from src.low import constants
 from src.low.custom_logging import make_logger
 from src.sig import SigProgress
 from src.rem.gh.gh_objects.gh_release import GHRelease
-from src.rem.gh.gh_session import GHAnonymousSession
+from src.rem.gh.gh_anon import GHAnonymousSession
 
 logger = make_logger(__name__)
 
