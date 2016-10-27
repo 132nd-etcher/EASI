@@ -89,7 +89,16 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         self.observer.start()
         self.meta = {}
         self.__is_building = False
+        if not self.own_base_mod_folder.exists():
+            self.own_base_mod_folder.mkdir()
         self.cache_build()
+
+    @property
+    def own_base_mod_folder(self) -> Path:
+        return Path(self.path.joinpath('own_mods'))
+
+    def get_own_mod_folder(self, modname: str) -> Path:
+        return Path(self.own_base_mod_folder.joinpath(modname))
 
     @property
     def is_building(self):
