@@ -2,16 +2,15 @@
 """
 Runs a process in an external thread and logs the output to a standard Python logger
 """
-import threading
 import os
 import subprocess
-import logging
+import threading
 
 from utils.custom_logging import DEBUG
 
+
 # noinspection PyPep8Naming
 class __LogPipe(threading.Thread):
-
     def __init__(self, logger, level):
         """Setup the object with a logger and a loglevel
         and start the thread
@@ -47,14 +46,14 @@ class __LogPipe(threading.Thread):
 def run_piped_process(args, logger, level=DEBUG, cwd=None, env=None, exe=None):
     """
     Runs a standard process and pipes its output to a Python logger
+    :param exe: path to executable (if None, will use first arg)
+    :param env: dictionary with environment variables for the child process
     :param args: process and arguments ias a list
     :param logger: logger to send data to
     :param level: logging level, defaults to DEBUG
     :param cwd: working dir to spawn the process in (defaults to current)
     """
     log_pipe = __LogPipe(logger, level)
-
-    # subprocess.Popen(process_and_arg_list, **kwargs)
 
     logger.info('running: {} {} (in {})'.format(exe, ' '.join(args), cwd))
     with subprocess.Popen(args, stdout=log_pipe, stderr=log_pipe, cwd=cwd, env=env, executable=exe) as p:
