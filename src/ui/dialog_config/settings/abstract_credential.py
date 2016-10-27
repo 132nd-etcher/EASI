@@ -40,11 +40,6 @@ class AbstractCredentialSetting(AbstractSetting, metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractproperty
-    def session_object(self):
-        """"""
-
-    @property
-    @abc.abstractproperty
     def auth_btn(self):
         """"""
 

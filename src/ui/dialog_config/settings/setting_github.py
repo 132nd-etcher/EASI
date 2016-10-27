@@ -47,13 +47,9 @@ class GithubSetting(AbstractCredentialSetting):
         usr = self.dialog.githubUsernameLineEdit.text()
         pwd = self.dialog.githubPasswordLineEdit.text()
         if not usr:
-            # noinspection PyArgumentList
-            # QToolTip.showText(self.dialog.githubUsernameLineEdit.mapToGlobal(QPoint(0, 0)), 'missing username')
             self.show_error_balloon('Missing username', self.dialog.githubUsernameLineEdit)
             return
         if not pwd:
-            # noinspection PyArgumentList
-            # QToolTip.showText(self.dialog.githubPasswordLineEdit.mapToGlobal(QPoint(0, 0)), 'missing password')
             self.show_error_balloon('Missing password', self.dialog.githubPasswordLineEdit)
             return
         self.status_label.setText('Authenticating ...')
@@ -69,10 +65,6 @@ class GithubSetting(AbstractCredentialSetting):
                 GHSession().authenticate(token)
                 self.save_to_meta(token)
             self.dialog.buttonBox.button(self.dialog.buttonBox.Ok).setDefault(True)
-
-    @property
-    def session_object(self):
-        return GHSession
 
     @property
     def status_label(self) -> QLabel:

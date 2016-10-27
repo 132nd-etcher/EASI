@@ -55,9 +55,5 @@ class DropboxSetting(AbstractCredentialSetting):
         self.flow = DBSession.start_auth_flow()
 
     @property
-    def session_object(self):
-        return DBSession
-
-    @property
     def status_label(self) -> QLabel:
         return self.dialog.label_db_status
