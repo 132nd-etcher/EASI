@@ -26,3 +26,6 @@ class BaseQWidget(metaclass=abc.ABCMeta):
             self.qobj.width() + 20,
             self.qobj.height(),
         )
+
+    def show(self):
+        self.qobj.show()
