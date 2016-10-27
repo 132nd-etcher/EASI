@@ -91,7 +91,17 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         self.__is_building = False
         if not self.own_base_mod_folder.exists():
             self.own_base_mod_folder.mkdir()
+        if not self.meta_repos_folder.exists():
+            self.meta_repos_folder.mkdir()
         self.cache_build()
+
+    @property
+    def meta_repos_folder(self) -> Path:
+        return Path(self.path.joinpath('repos'))
+
+    @property
+    def own_meta_repo_folder(self, gh_username):
+        return Path(self.meta_repos_folder.joinpath(gh_username))
 
     @property
     def own_base_mod_folder(self) -> Path:
