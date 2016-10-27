@@ -12,3 +12,5 @@ from PyQt5.QtWidgets import QMainWindow, QSplashScreen, QLabel, QProgressBar, QD
     QPushButton, QTableView
 
 from . import qt_resources
+
+dialog_default_flags = flags=Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
