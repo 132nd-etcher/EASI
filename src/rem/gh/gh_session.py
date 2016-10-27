@@ -32,11 +32,17 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
     def __init__(self, token=None):
         GHAnonymousSession.__init__(self)
         self.user = None
+        self.status = None
         self.authenticate(token)
+
+    @property
+    def has_valid_token(self):
+        return isinstance(self.status, str)
 
     @emit(only='post', sender=SENDER_CLASS_NAME)
     def authenticate(self, token):
         if token is None:
+            self.status = None
             return None
         self.headers.update(
             {
@@ -47,8 +53,11 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
         try:
             self.user = GHUser(self._get_json())
         except GHSessionError:
-            return False
-        return self.user.login
+            self.status = False
+        else:
+            self.status = self.user.login
+        finally:
+            return self.status
 
     @property
     def rate_limit(self):
