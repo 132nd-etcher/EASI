@@ -28,5 +28,10 @@ class _MetaSingleton(abc.ABCMeta):
 
 
 class MetaSingleton(Meta, metaclass=_MetaSingleton):
+    @property
+    @abc.abstractproperty
+    def meta_header(self):
+        """"""
+
     def __init__(self, path: Path or str, init_dict: dict = None, auto_read=True):
         Meta.__init__(self, path, init_dict, auto_read)

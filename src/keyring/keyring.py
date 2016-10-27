@@ -30,6 +30,10 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
     Manages known credentials
     """
 
+    @property
+    def meta_header(self):
+        return 'EASI_KEYRING'
+
     def __init__(self):
         Meta.__init__(self, path=constants.PATH_KEYRING_FILE, encrypted=Config().encrypt_keyring)
         KeyringValues.__init__(self)

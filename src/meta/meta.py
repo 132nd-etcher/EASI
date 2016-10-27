@@ -1,5 +1,6 @@
 # coding=utf-8
 import time
+import abc
 
 from ruamel.yaml import dump as ydump, load as yload, RoundTripDumper
 
@@ -14,6 +15,11 @@ class Meta(AbstractMeta):
     """
     Intercepts all call made to "instance.some_value" and reroutes them to the "__data" attribute
     """
+
+    @property
+    @abc.abstractproperty
+    def meta_header(self):
+        """"""
 
     def __init__(self, path: str or Path, init_dict: dict = None, auto_read=True, encrypted=False):
         self.free = True
@@ -148,10 +154,26 @@ class Meta(AbstractMeta):
                     # self.debug('file read successful')
                 except ValueError:
                     raise ValueError('{}: metadata file corrupted'.format(self.path.abspath()))
+                else:
+                    try:
+                        if not self.data['header'] == self.meta_header:
+                            raise TypeError('meta-header mismatch, expected: "{}", got: "{}" on file: {}'.format(
+                                self.meta_header, self.data['header'], self.path.abspath()
+                            ))
+                        else:
+                            del self.data['header']
+                    except KeyError:
+                        pass
         except OSError:
             self.exception('error while reading metadata file')
         finally:
             self.free = True
+
+    @staticmethod
+    def read_header(path):
+        path = Path(path)
+        data = yload(path.text(encoding='utf8'))
+        return data['header']
 
     def write(self):
         """
@@ -161,12 +183,12 @@ class Meta(AbstractMeta):
             raise ValueError('no data to write')
         # self.debug('writing file')
         self.wait_for_lock()
+        self.data['header'] = self.meta_header
         try:
             if self.encrypt:
                 self.path.write_bytes(self.dump())
             else:
                 self.path.write_text(self.dump(), encoding='utf8')
-            # self.debug('file write successful')
         except OSError:
             self.exception('error while writing metadata to file')
         finally:
