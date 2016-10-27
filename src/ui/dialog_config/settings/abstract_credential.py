@@ -49,3 +49,6 @@ class AbstractCredentialSetting(AbstractSetting, metaclass=abc.ABCMeta):
 
     def save_to_meta(self, value):
         setattr(self.store_object, self.value_name, value)
+
+    def del_from_meta(self):
+        delattr(self.store_object, self.value_name)
