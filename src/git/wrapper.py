@@ -41,7 +41,7 @@ class Repository:
 
     @property
     def status(self):
-        return {k: self.repo_status_map[v] for k,v in self.repo.status().items()}
+        return {k: self.repo_status_map[v] for k, v in self.repo.status().items()}
 
     def commit(self, author: str, author_mail: str, msg: str, add_all=False):
         sig = Signature(author, author_mail)
@@ -77,23 +77,3 @@ class Repository:
         tree = index.write_tree()
         repo.create_commit('refs/heads/master', author, committer, 'EASI: initial commit', tree, [])
         return repo
-
-if __name__ == '__main__':
-    p = Path('./git_test')
-    pygit2.init_repository(str(p.abspath()))
-    repo = pygit2.Repository(str(p.joinpath('.git').abspath()))
-    with open(str(p.joinpath('file').abspath()), 'wb') as f:
-        f.write(os.urandom(1024))
-    author = Signature('username', 'mail@mail.com')
-    committer = Signature('username', 'mail@mail.com')
-    index = repo.index
-    index.add_all()
-    index.write()
-    tree = index.write_tree()
-    oid = repo.create_commit('refs/heads/master', author, committer, 'msg', tree, [])
-    print(oid)
-    index = repo.index
-    print(repo.status())
-    # print('empty', repo.is_empty)
-    # print('path', repo.path)
-    # print('workdir', repo.workdir)
