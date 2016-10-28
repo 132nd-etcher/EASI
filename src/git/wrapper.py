@@ -135,6 +135,11 @@ class Repository:
     def walk(self, oid, sort_mode=pygit2.GIT_SORT_TIME):
         return self.repo.walk(oid, sort_mode)
 
+    @staticmethod
+    def clone(url, path, bare=False, repository=None, remote=None, checkout_branch=None, callbacks=None):
+        repo = pygit2.clone_repository(url, path, bare, repository, remote, checkout_branch, callbacks)
+        return repo
+
     def init(self):
         if self.is_init:
             raise FileExistsError('repository already initialized')
@@ -152,3 +157,26 @@ class Repository:
         tree = index.write_tree()
         repo.create_commit('refs/heads/master', author, committer, 'EASI: initial commit', tree, [])
         return repo
+
+    @property
+    def remotes(self):
+        return self.repo.remotes
+
+
+class Callbacks(pygit2.RemoteCallbacks):
+    def certificate_check(self, certificate, valid, host):
+        print(host)
+        return True
+
+    def transfer_progress(self, stats):
+        print(stats)
+
+    def sideband_progress(self, string):
+        print(string)
+
+    def push_update_reference(self, refname, message):
+        print(refname)
+        print(message)
+
+    def credentials(self, url, username_from_url, allowed_types):
+        return pygit2.UserPass(Keyring().gh_username, Keyring().gh_password)
