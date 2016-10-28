@@ -123,6 +123,7 @@ class TestMeta(ContainedTestCase):
         meta = DummyMeta(self.temp_file, auto_read=False)
         self.assertFalse(self.meta == meta)
         meta.read()
+        meta.data['header'] = 'DUMMY_META'
         self.assertDictEqual(self.meta.data, meta.data)
 
     @given(b=st.integers(min_value=1, max_value=1))
