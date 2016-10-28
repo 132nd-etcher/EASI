@@ -15,6 +15,18 @@ from src.meta.meta_singleton import MetaSingleton
 from .utils import ContainedTestCase
 
 
+class DummyMeta(Meta):
+    @property
+    def meta_header(self):
+        return 'DUMMY_META'
+
+
+class DummySingletonMeta(MetaSingleton):
+    @property
+    def meta_header(self):
+        return 'DUMMY_SINGLETON_META'
+
+
 def st_any_base():
     return st.one_of(st.floats(), st.integers(), st.text(), st.booleans(), st.none(), st.binary())
 
@@ -29,20 +41,20 @@ class TestMeta(ContainedTestCase):
     def setUp(self):
         super(TestMeta, self).setUp()
         self.temp_file = self.create_temp_file()
-        self.meta = Meta(self.temp_file, auto_read=False)
+        self.meta = DummyMeta(self.temp_file, auto_read=False)
 
     def test_init(self):
         with self.assertRaises(TypeError):
             # noinspection PyArgumentList
-            Meta()
+            DummyMeta()
 
     def test_init_with_str(self):
-        Meta(self.create_temp_file(), auto_read=False)
+        DummyMeta(self.create_temp_file(), auto_read=False)
 
     @given(x=st.one_of(st.booleans(), st.none(), st.integers(), st.floats()))
     def test_path_set(self, x):
         p = self.create_temp_file()
-        m = Meta(p.abspath(), auto_read=False)
+        m = DummyMeta(p.abspath(), auto_read=False)
         m.path = p.abspath()
         m.path = Path(str(p.abspath()))
         with self.assertRaises(TypeError):
@@ -54,7 +66,7 @@ class TestMeta(ContainedTestCase):
         min_size=1)
     )
     def test_context(self, d):
-        m = Meta(self.create_temp_file(), init_dict=d, auto_read=False)
+        m = DummyMeta(self.create_temp_file(), init_dict=d, auto_read=False)
         self.assertDictEqual(d, m.get_context())
 
     @given(d=st.dictionaries(
@@ -66,35 +78,35 @@ class TestMeta(ContainedTestCase):
     )
     def test_dict_props(self, d):
         assert isinstance(d, dict)
-        m = Meta(self.create_temp_file(), init_dict=d, auto_read=False)
+        m = DummyMeta(self.create_temp_file(), init_dict=d, auto_read=False)
         self.assertSequenceEqual([x for x in m], [x for x in d])
         for x in d.keys():
             self.assertTrue(x in m)
 
     @given(x=st.one_of(st.booleans(), st.none(), st.integers(), st.floats(), st.text()))
     def test_set_data(self, x):
-        m = Meta(self.create_temp_file())
+        m = DummyMeta(self.create_temp_file())
         with self.assertRaises(TypeError):
             m.data = x
 
     def test_init_with_path(self):
         p = Path(self.create_temp_file())
         self.assertIsInstance(p, Path)
-        Meta(p, auto_read=False)
+        DummyMeta(p, auto_read=False)
 
     @given(x=st.one_of(st.booleans(), st.floats(), st.integers(), st.none()))
     def test_init_wrong_arg(self, x):
         with self.assertRaises(TypeError):
-            Meta(x, auto_read=False)
+            DummyMeta(x, auto_read=False)
 
     @given(d=st.dictionaries(st.text(), st_any()))
     def test_init_d(self, d):
-        Meta('./test_d', init_dict=d, auto_read=False)
+        DummyMeta('./test_d', init_dict=d, auto_read=False)
 
     @given(x=st.one_of(st.floats(), st.integers(), st.text(), st.booleans(), st.binary()))
     def test_wrong_init_d(self, x):
         with self.assertRaises(TypeError):
-            Meta('./test_d', init_dict=x, auto_read=False)
+            DummyMeta('./test_d', init_dict=x, auto_read=False)
 
     def test_write_empty(self):
         with self.assertRaises(ValueError):
@@ -108,7 +120,7 @@ class TestMeta(ContainedTestCase):
     def test_write_basic(self, d):
         self.meta.data = d
         self.meta.write()
-        meta = Meta(self.temp_file, auto_read=False)
+        meta = DummyMeta(self.temp_file, auto_read=False)
         self.assertFalse(self.meta == meta)
         meta.read()
         self.assertDictEqual(self.meta.data, meta.data)
@@ -119,14 +131,14 @@ class TestMeta(ContainedTestCase):
         p = self.create_temp_file()
         with open(p, 'wb') as f:
             f.write(os.urandom(1024 * 32))
-        meta = Meta(p, auto_read=False)
+        meta = DummyMeta(p, auto_read=False)
         with self.assertRaises(ValueError):
             meta.read()
 
     @given(d=st.dictionaries(st.text(), st_any()))
     def test_props(self, d):
         p = Path(self.create_temp_file())
-        m = Meta(p, init_dict=d, auto_read=False)
+        m = DummyMeta(p, init_dict=d, auto_read=False)
         assert p.abspath() == m.path.abspath()
         # self.assertIs p.abspath() == m.path.abspath())
         self.assertIs(d, m.data)
@@ -137,11 +149,11 @@ class TestMeta(ContainedTestCase):
         assert isinstance(m, mock.MagicMock)
         p = self.create_temp_file()
         open(p.abspath(), 'w').close()
-        meta = Meta(p.abspath())
+        meta = DummyMeta(p.abspath())
         self.assertEqual(m.call_count, 1)
         meta.read()
         self.assertEqual(m.call_count, 2)
-        Meta(p.abspath(), auto_read=False)
+        DummyMeta(p.abspath(), auto_read=False)
         self.assertEqual(m.call_count, 2)
 
     @given(x=st.one_of(st.text(), st.integers(), st.floats(), st.none()))
@@ -181,11 +193,11 @@ class TestMeta(ContainedTestCase):
 
     def test_singleton_meta(self):
         p = self.create_temp_file()
-        m1 = MetaSingleton(p)
-        m2 = MetaSingleton(str(p.abspath()))
+        m1 = DummySingletonMeta(p)
+        m2 = DummySingletonMeta(str(p.abspath()))
         self.assertTrue(m1 is m2)
 
     @given(x=st.one_of(st.booleans(), st.integers(), st.none(), st.floats()))
     def test_single_meta_wrong_type(self, x):
         with self.assertRaises(TypeError):
-            MetaSingleton(x)
+            DummySingletonMeta(x)
