@@ -162,6 +162,10 @@ class TestMeta(ContainedTestCase):
         f.__name__ = 'mock'
 
         class C(Meta):
+            @property
+            def meta_header(self):
+                return 'test_meta'
+
             @MetaProperty('default', str)
             def some_prop(self, _):
                 f('mock called')
