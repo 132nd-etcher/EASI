@@ -66,7 +66,7 @@ class TestCache:
         assert isinstance(old_p, Path)
         old_p.rename(new_p.abspath())
 
-        qtbot.wait_until(lambda: signal_caught is True)
+        qtbot.wait_until(lambda: signal_caught is True, timeout=5000)
 
         signals.post_cache_changed_event.disconnect(got_signal)
 
@@ -96,7 +96,7 @@ class TestCache:
         assert len(c) == 0
         p.write_text('')
         assert os.path.exists(p.abspath())
-        qtbot.wait_until(lambda: signal_caught is True, timeout=3000)
+        qtbot.wait_until(lambda: signal_caught is True, timeout=5000)
 
         signals.post_cache_changed_event.disconnect(got_signal)
 
@@ -125,7 +125,7 @@ class TestCache:
         assert len(c) == 1
         p.remove()
         assert not os.path.exists(p.abspath())
-        qtbot.wait_until(lambda: signal_caught is True)
+        qtbot.wait_until(lambda: signal_caught is True, timeout=5000)
         assert len(c) == 0
 
         signals.post_cache_changed_event.disconnect(got_signal)
