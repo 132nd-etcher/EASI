@@ -28,6 +28,7 @@ class GithubSetting(AbstractCredentialSetting):
     def show(self):
         self.dialog.githubPasswordLineEdit.setText('')
         self.dialog.githubUsernameLineEdit.setText('')
+        self.status_changed(GHSession().status)
 
     def status_changed(self, result):
         super(GithubSetting, self).status_changed(result)

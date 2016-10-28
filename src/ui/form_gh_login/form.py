@@ -14,5 +14,6 @@ class GHLoginForm(Ui_Form, QWidget):
     def setup(self):
         self.setting.setup()
 
-    def on_show(self):
+    def show(self):
         self.setting.show()
+        super(GHLoginForm, self).show()
