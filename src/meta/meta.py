@@ -102,7 +102,7 @@ class Meta(AbstractMeta):
         return self.data.__str__()
 
     def __repr__(self):
-        return self.data.__repr__()
+        return '{}: {}'.format(self.__class__.__name__, self.data.__repr__())
 
     def get(self, key, default=None):
         return self._data.get(key, default)
