@@ -13,7 +13,6 @@ except KeyError:
 PATH_LOG_FILE = 'easi.debug'
 PATH_CONFIG_FILE = 'easi.config'
 PATH_KEYRING_FILE = 'easi.credentials'
-PATH_DCS_KNOWN_INSTALL = 'easi.dcs_installs'
 
 APP_SHORT_NAME = 'EASI'
 APP_FULL_NAME = 'Etcher\'s Automated Skin Installer'
