@@ -103,6 +103,21 @@ class Repository:
     @property
     def is_clean(self):
         return len(self.status) == 0
+
+    def add(self, file):
+        path = Path(file)
+        self.debug('adding: {}'.format(path.abspath()))
+        index = self.repo.index
+        index.add(path.relpath(self.path.abspath()))
+        index.write()
+
+    def remove(self, file):
+        path = Path(file)
+        self.debug('adding: {}'.format(path.abspath()))
+        index = self.repo.index
+        index.remove(path.relpath(self.path.abspath()))
+        index.write()
+
     def commit(self, author: str, author_mail: str, msg: str, add_all=False):
         sig = Signature(author, author_mail)
         author, committer = sig, sig
