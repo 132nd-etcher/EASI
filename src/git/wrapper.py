@@ -29,10 +29,23 @@ class Repository:
         if isinstance(path, str):
             path = Path(path)
         self.path = path
+        self.debug('creating Repository object')
         if self.is_init:
             self.__repo = pygit2.Repository(str(self.path.joinpath('.git').abspath()))
         elif auto_init:
             self.__repo = self.init()
+
+    def debug(self, text):
+        logger.debug('{}: {}'.format(self.path.abspath(), text))
+
+    def info(self, text):
+        logger.debug('{}: {}'.format(self.path.abspath(), text))
+
+    def warning(self, text):
+        logger.debug('{}: {}'.format(self.path.abspath(), text))
+
+    def error(self, text):
+        logger.debug('{}: {}'.format(self.path.abspath(), text))
 
     @property
     def repo(self) -> pygit2.Repository:
