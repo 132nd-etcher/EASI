@@ -59,6 +59,50 @@ class Repository:
     def status(self):
         return {k: self.repo_status_map[v] for k, v in self.repo.status().items()}
 
+    def filter_status(self, status):
+        for file, file_status in self.status.items():
+            if file_status == status:
+                yield file
+
+    @property
+    def working_dir_new(self):
+        return self.filter_status(self.repo_status_map[pygit2.GIT_STATUS_WT_NEW])
+
+    @property
+    def working_dir_modified(self):
+        return self.filter_status(self.repo_status_map[pygit2.GIT_STATUS_WT_MODIFIED])
+
+    @property
+    def working_dir_deleted(self):
+        return self.filter_status(self.repo_status_map[pygit2.GIT_STATUS_WT_DELETED])
+
+    @property
+    def index_new(self):
+        return self.filter_status(self.repo_status_map[pygit2.GIT_STATUS_INDEX_NEW])
+
+    @property
+    def index_modified(self):
+        return self.filter_status(self.repo_status_map[pygit2.GIT_STATUS_INDEX_MODIFIED])
+
+    @property
+    def index_deleted(self):
+        return self.filter_status(self.repo_status_map[pygit2.GIT_STATUS_INDEX_DELETED])
+
+    @property
+    def current(self):
+        return self.filter_status(self.repo_status_map[pygit2.GIT_STATUS_CURRENT])
+
+    @property
+    def ignored(self):
+        return self.filter_status(self.repo_status_map[pygit2.GIT_STATUS_IGNORED])
+
+    @property
+    def conflicts(self):
+        return self.filter_status(self.repo_status_map[pygit2.GIT_STATUS_CONFLICTED])
+
+    @property
+    def is_clean(self):
+        return len(self.status) == 0
     def commit(self, author: str, author_mail: str, msg: str, add_all=False):
         sig = Signature(author, author_mail)
         author, committer = sig, sig
