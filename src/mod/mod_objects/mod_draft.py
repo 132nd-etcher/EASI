@@ -1,6 +1,8 @@
 # coding=utf-8
 
 
+import semver
+
 from src.cache.cache import Cache
 from src.meta.meta import Meta
 from src.meta.meta_property import MetaProperty
@@ -30,3 +32,10 @@ class ModDraft(Meta):
     @MetaProperty('', str)
     def description(self, value: str) -> str:
         """"""
+
+    @MetaProperty('0.0.1', str)
+    def version(self, value: str) -> str:
+        try:
+            semver.parse(value)
+        except ValueError:
+            raise

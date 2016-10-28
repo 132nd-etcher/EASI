@@ -1,8 +1,9 @@
 # coding=utf-8
 import typing
+
 from src.cache.cache import Cache
 from src.low.singleton import Singleton
-from src.mod.mod_draft import ModDraft
+from src.mod.mod_objects.mod_draft import ModDraft
 
 
 class LocalMod(metaclass=Singleton):
