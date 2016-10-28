@@ -3,7 +3,7 @@
 import pytest
 
 from src.low.custom_path import Path
-from src.mod.parse_local import SrcModFile, UnknownDestination
+from src.mod.mod_objects.new_mod_file import UnknownDestination, SrcModFile
 
 
 def test_path(valid_destination, tmpdir):
@@ -30,9 +30,8 @@ def test_relpath(valid_destination, tmpdir):
     assert f.relpath == r'\sub\f'
 
 
-def test_wrong_dest(tmpdir):
+def test_wrong_dest(invalid_destination, tmpdir):
     # noinspection SpellCheckingInspection
-    for x in ['x', 'Savedgamess']:
-        p = str(tmpdir.mkdir(x).mkdir('sub').join('f'))
-        with pytest.raises(UnknownDestination):
-            SrcModFile(Path(p), str(tmpdir))
+    p = str(tmpdir.mkdir(invalid_destination).mkdir('sub').join('f'))
+    with pytest.raises(UnknownDestination):
+        SrcModFile(Path(p), str(tmpdir))
