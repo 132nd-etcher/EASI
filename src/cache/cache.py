@@ -107,8 +107,21 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
     def own_base_mod_folder(self) -> Path:
         return Path(self.path.joinpath('own_mods'))
 
+    @property
+    def own_draft_mod_folder(self) -> Path:
+        p = self.own_base_mod_folder.joinpath('drafts')
+        if not p.exists():
+            p.makedirs()
+        return p
+
+    def get_mod_draft_path(self, uuid: str) -> Path:
+        return Path(self.own_draft_mod_folder.joinpath(uuid))
+
     def get_own_mod_folder(self, modname: str) -> Path:
-        return Path(self.own_base_mod_folder.joinpath(modname))
+        p = Path(self.own_base_mod_folder.joinpath(modname))
+        if not p.exists():
+            p.mkdir()
+        return p
 
     @property
     def is_building(self):
