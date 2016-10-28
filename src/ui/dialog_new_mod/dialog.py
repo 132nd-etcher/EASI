@@ -1,13 +1,15 @@
 # coding=utf-8
 
-from src.mod.mod_draft import ModDraft
+import semver
+
+from src.mod.local_mod import LocalMod
 from src.mod.mod_category import ModTypes
+from src.mod.mod_objects.mod_draft import ModDraft
 from src.qt import QDialog, dialog_default_flags, QVBoxLayout, Qt, qt_resources, QIcon, QRegExp, QRegExpValidator, \
     QStandardItemModel, QDialogButtonBox
 from src.ui.base.qdialog import BaseDialog
 from src.ui.form_mod_metadata.form import FormModMetadata
 from src.ui.widget_balloon.widget import WidgetBalloon
-from src.mod.local_mod import LocalMod
 
 
 class _NewModDialog(QDialog):
@@ -28,13 +30,29 @@ class _NewModDialog(QDialog):
         self.error_widget = None
         self.show()
 
-        
     def show(self):
         self.set_ok_and_save_buttons(False)
         self.set_save_and_reset_buttons(False)
         self.load_data_from_meta()
         super(_NewModDialog, self).show()
-        
+
+    def setup_form(self):
+        self.form.combo_category.addItem('<please select the type of your mod>')
+        for mod_type in ModTypes.enum_category_names():
+            self.form.combo_category.addItem(mod_type)
+        model = self.form.combo_category.model()
+        assert isinstance(model, QStandardItemModel)
+        model.itemFromIndex(model.index(0, 0)).setEnabled(False)
+        self.form.label_uuid.setText(self.mod_draft.uuid)
+        self.form.label_help_name.setText(
+            'The name of your new mod needs to contain at least one string of 4 letters.')
+        self.form.edit_mod_name.setValidator(
+            QRegExpValidator(QRegExp('.*[a-zA-Z]{4,}.*'), self.form.edit_mod_name)
+        )
+        self.form.edit_mod_name.textChanged.connect(self.meta_changed)
+        self.form.combo_category.currentIndexChanged.connect(self.meta_changed)
+        self.form.text_desc.textChanged.connect(self.meta_changed)
+        self.form.edit_version.textChanged.connect(self.meta_changed)
 
     def setup_button_box(self):
         self.button_box.addButton(self.button_box.Reset)
@@ -55,6 +73,7 @@ class _NewModDialog(QDialog):
     def load_data_from_meta(self):
         self.form.edit_mod_name.setText(self.mod_draft.name)
         self.form.text_desc.setText(self.mod_draft.description)
+        self.form.edit_version.setText(self.mod_draft.version)
         if self.mod_draft.category:
             self.form.combo_category.setCurrentIndex(
                 self.form.combo_category.findText(self.mod_draft.category, flags=Qt.MatchFixedString)
@@ -66,25 +85,9 @@ class _NewModDialog(QDialog):
         self.mod_draft.name = self.form.edit_mod_name.text()
         self.mod_draft.category = self.form.combo_category.currentText()
         self.mod_draft.description = self.form.text_desc.toPlainText()
+        self.mod_draft.version = self.form.edit_version.text()
         self.mod_draft.write()
         self.set_save_and_reset_buttons(False)
-
-    def setup_form(self):
-        self.form.combo_category.addItem('<please select the type of your mod>')
-        for mod_type in ModTypes.enum_category_names():
-            self.form.combo_category.addItem(mod_type)
-        model = self.form.combo_category.model()
-        assert isinstance(model, QStandardItemModel)
-        model.itemFromIndex(model.index(0, 0)).setEnabled(False)
-        self.form.label_uuid.setText(self.mod_draft.uuid)
-        self.form.label_help_name.setText(
-            'The name of your new mod needs to contain at least one string of 4 letters.')
-        self.form.edit_mod_name.setValidator(
-            QRegExpValidator(QRegExp('.*[a-zA-Z]{4,}.*'), self.form.edit_mod_name)
-        )
-        self.form.edit_mod_name.textChanged.connect(self.meta_changed)
-        self.form.combo_category.currentIndexChanged.connect(self.meta_changed)
-        self.form.text_desc.textChanged.connect(self.meta_changed)
 
     def meta_changed(self):
         if self.error_widget:
@@ -95,11 +98,19 @@ class _NewModDialog(QDialog):
             self.set_ok_and_save_buttons(False)
             self.error_widget = WidgetBalloon.error(self.form.edit_mod_name, 'You already have a Mod with that name.')
             return
+        try:
+            semver.parse(self.form.edit_version.text())
+        except ValueError:
+            self.set_save_and_reset_buttons(False)
+            self.set_ok_and_save_buttons(False)
+            self.error_widget = WidgetBalloon.error(self.form.edit_version, 'This is not a valid semver.')
+            return
         self.set_save_and_reset_buttons(
             any([
                 self.mod_draft.name != self.form.edit_mod_name.text(),
                 self.mod_draft.category != self.form.combo_category.currentText(),
                 self.mod_draft.description != self.form.text_desc.toPlainText(),
+                self.mod_draft.version != self.form.edit_version.text()
             ])
         )
         self.validate()

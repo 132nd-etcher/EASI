@@ -14,7 +14,38 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="4" column="0">
+   <item row="6" column="1">
+    <widget class="QTextBrowser" name="text_desc">
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLabel" name="label_help_name">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Unique ID</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Category</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="combo_category"/>
+   </item>
+   <item row="6" column="0">
     <widget class="QLabel" name="label_4">
      <property name="text">
       <string>Description</string>
@@ -38,34 +69,23 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>Version</string>
+     </property>
+    </widget>
+   </item>
    <item row="4" column="1">
-    <widget class="QTextBrowser" name="text_desc">
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
+    <widget class="QLineEdit" name="edit_version"/>
    </item>
-   <item row="3" column="1">
-    <widget class="QComboBox" name="combo_category"/>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_3">
+   <item row="5" column="1">
+    <widget class="QLabel" name="label_help_version">
      <property name="text">
-      <string>Category</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The version must be a valid &lt;a href=&quot;http://semver.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;SemVer&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Unique ID</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLabel" name="label_help_name">
-     <property name="text">
-      <string>TextLabel</string>
+     <property name="openExternalLinks">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
