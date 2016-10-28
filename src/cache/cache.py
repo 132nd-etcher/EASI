@@ -168,7 +168,11 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                 path = rel_path
                 abspath = os.path.abspath(rel_path)
                 name = os.path.basename(rel_path)
-                meta = CacheFile(name, abspath, path, os.stat(abspath))
+                try:
+                    meta = CacheFile(name, abspath, path, os.stat(abspath))
+                except FileNotFoundError:
+                    logger.debug('file was deleted, canceling')
+                    return
                 meta.get_crc32()
                 self.meta[meta.path] = meta
         finally:
