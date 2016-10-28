@@ -17,11 +17,14 @@ def success(sender, signal_emitter, result):
     test_succeeded = result
 
 
-def test_and_exit(qtbot: QtBot):
+def test_and_exit(qtbot: QtBot, tmpdir):
     sys.argv.append('test_and_exit')
     sys.argv.append('no_qt_app')
     from src.easi import easi
     from src.low import constants
+    constants.PATH_CONFIG_FILE = str(tmpdir.join('config'))
+    constants.PATH_KEYRING_FILE = str(tmpdir.join('keyring'))
+    constants.PATH_LOG_FILE = str(tmpdir.join('log'))
     try:
         easi.start_gui()
         constants.MAIN_UI.do('splash', 'hide')
