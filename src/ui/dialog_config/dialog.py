@@ -67,7 +67,7 @@ class ConfigDialog(Ui_Settings, QDialog):
         for keyring_setting in self.keyring_settings.values():
             keyring_setting.show()
         for form in self.forms.values():
-            form.on_show()
+            form.show()
 
         self.load_settings()
         self.__set_apply_btn_enabled(False)
