@@ -5,11 +5,14 @@ import os
 import pygit2
 from pygit2 import Signature
 
+from src.keyring.keyring import Keyring
+from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
+
+logger = make_logger(__name__)
 
 
 class Repository:
-
     repo_status_map = {
         pygit2.GIT_STATUS_CONFLICTED: 'conflicted',
         pygit2.GIT_STATUS_CURRENT: 'current',
