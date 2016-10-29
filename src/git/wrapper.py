@@ -154,14 +154,14 @@ class Repository:
         pygit2.init_repository(str(self.path.abspath()))
         repo = pygit2.Repository(str(self.path.joinpath('.git').abspath()))
         # FIXME replace with actual metadata file
-        with open(str(self.path.joinpath('file').abspath()), 'wb') as f:
-            f.write(os.urandom(1024))
+        # with open(str(self.path.joinpath('file').abspath()), 'wb') as f:
+        #     f.write(os.urandom(1024))
         sig = Signature('EASI', 'easi@easi.net')
         author = sig
         committer = sig
         index = repo.index
-        index.add_all()
-        index.write()
+        # index.add_all()
+        # index.write()
         tree = index.write_tree()
         repo.create_commit('refs/heads/master', author, committer, 'EASI: initial commit', tree, [])
         return repo
