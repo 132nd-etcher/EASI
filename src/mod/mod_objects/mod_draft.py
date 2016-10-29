@@ -15,7 +15,7 @@ class ModDraft(Meta):
         return 'EASI_MOD_DRAFT'
 
     def __init__(self, uuid):
-        Meta.__init__(self, path=Cache().own_mods_folder.joinpath(uuid))
+        Meta.__init__(self, path=Cache().own_mods_folder.joinpath('{}.easi_mod_draft'.format(uuid)))
         self.uuid = uuid
         self.__repo = None
 
