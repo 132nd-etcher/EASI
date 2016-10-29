@@ -78,6 +78,10 @@ class _NewModDialog(QDialog):
             self.form.combo_category.setCurrentIndex(
                 self.form.combo_category.findText(self.mod_draft.category, flags=Qt.MatchFixedString)
             )
+        if self.mod_draft.version is None:
+            self.form.edit_version.setText('0.0.1')
+        else:
+            self.form.edit_version.setText(self.mod_draft.version)
         self.set_save_and_reset_buttons(False)
         self.validate()
 
