@@ -2,7 +2,7 @@
 
 # noinspection PyUnresolvedReferences
 from PyQt5.QtCore import Qt, QThread, QObject, pyqtSignal, pyqtSlot, QAbstractItemModel, QAbstractListModel, QVariant, \
-    QEvent, QPoint, QRect, QLine, QRegExp, QAbstractTableModel, QModelIndex
+    QEvent, QPoint, QRect, QLine, QRegExp, QAbstractTableModel, QModelIndex, QSortFilterProxyModel
 # noinspection PyUnresolvedReferences
 from PyQt5.QtGui import QIcon, QPixmap, QFont, QBrush, QPainter, QPen, QRegExpValidator, QStandardItemModel, QColor,\
     QStandardItem
