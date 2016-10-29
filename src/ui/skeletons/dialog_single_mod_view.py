@@ -17,6 +17,7 @@ class Ui_Dialog(object):
         self.table = QtWidgets.QTableView(Dialog)
         self.table.setMidLineWidth(8)
         self.table.setSortingEnabled(True)
+        self.table.setWordWrap(True)
         self.table.setObjectName("table")
         self.table.horizontalHeader().setSortIndicatorShown(True)
         self.table.verticalHeader().setSortIndicatorShown(False)
