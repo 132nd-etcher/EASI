@@ -41,7 +41,7 @@ class ModDraft(Meta):
     def description(self, value: str) -> str:
         """"""
 
-    @MetaProperty('0.0.1', str)
+    @MetaProperty(None, str)
     def version(self, value: str) -> str:
         try:
             semver.parse(value)
