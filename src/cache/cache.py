@@ -23,8 +23,8 @@ class CacheEvent:
 
     def __init__(self, event_type: str, src: str, dst: str = None):
         self.event_type = event_type
-        self.src = src
-        self.dst = dst
+        self.src = Path(src)
+        self.dst = Path(dst) if dst else dst
 
     def __str__(self):
         return '{}: {}'.format(
