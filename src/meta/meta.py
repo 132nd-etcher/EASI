@@ -143,7 +143,7 @@ class Meta(AbstractMeta):
         try:
             if self.path.exists():
                 if self.path.getsize() == 0:
-                    self.debug('removing existing empty file')
+                    self.debug('{}: removing existing empty file: {}'.format(self.__class__.__name__, self.path))
                     self.path.remove()
                     return
                 try:
