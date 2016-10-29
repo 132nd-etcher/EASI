@@ -8,6 +8,7 @@ from pygit2 import Signature
 from src.keyring.keyring import Keyring
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
+from src.rem.gh.gh_session import GHSession
 
 logger = make_logger(__name__)
 
@@ -118,7 +119,11 @@ class Repository:
         index.remove(path.relpath(self.path.abspath()))
         index.write()
 
-    def commit(self, author: str, author_mail: str, msg: str, add_all=False):
+    def commit(self, msg: str, author: str = None, author_mail: str = None, add_all=False):
+        if author is None:
+            author = GHSession().user.login
+        if author_mail is None:
+            author_mail = GHSession().primary_email.email
         sig = Signature(author, author_mail)
         author, committer = sig, sig
         index = self.repo.index
