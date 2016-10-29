@@ -9,7 +9,7 @@ from PyQt5.QtGui import QIcon, QPixmap, QFont, QBrush, QPainter, QPen, QRegExpVa
 from PyQt5.QtWidgets import QMainWindow, QSplashScreen, QLabel, QProgressBar, QDialog, QApplication, QStyleFactory, \
     QComboBox, QAction, QMenu, QFileDialog, QDialogButtonBox, QLineEdit, QToolTip, QToolButton, QWidget, \
     QGraphicsDropShadowEffect, QStylePainter, QFormLayout, QTextBrowser, QWizardPage, QVBoxLayout, QWizard,\
-    QPushButton, QTableView
+    QPushButton, QTableView, QHBoxLayout
 
 from . import qt_resources
 
