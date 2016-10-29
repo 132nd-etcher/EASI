@@ -17,6 +17,7 @@ from src.ui.skeletons.main import Ui_MainWindow
 from src.ui.splash.dialog import MainUiSplash
 from src.ui.threading import MainGuiThreading
 from src.ui.widget_balloon.widget import WidgetBalloon
+from src.ui.table_own_mods import TableOwnMods
 
 
 class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
@@ -38,8 +39,9 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.msgbox = MsgDialog(self)
         self.config_dialog = ConfigDialog(self)
         self.active_dcs_installation = MainUiActiveDCSInstallation(self)
-        self.mod_author_watcher = MainUiModAuthor(self)
+        self.mod_author = MainUiModAuthor(self)  # TODO: remove
         self.feedback_dialog = FeedbackDialog(self)
+        self.own_mods = TableOwnMods(self)
         self.setup()
         self.connect_actions()
         self.setup_children_dialogs()
@@ -61,7 +63,8 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
     def setup_children_dialogs(self):
         self.active_dcs_installation.setup()
         self.config_dialog.setup()
-        self.mod_author_watcher.setup()
+        self.mod_author.setup()
+        self.own_mods.setup()
 
     @emit(sender=SENDER_CLASS_NAME)
     def show(self):
@@ -85,7 +88,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         WidgetBalloon(self.tableView, 'some note', palette.note, 'center', offset_y=40)
 
 
-# noinspection PyUnusedLocal
-@signals.post_show.connect_via('MainUi')
-def test_balloon(sender, signal_emitter, result):
-    MainUi.do(None, 'test_balloon')
+# # noinspection PyUnusedLocal
+# @signals.post_show.connect_via('MainUi')
+# def test_balloon(sender, signal_emitter, result):
+#     MainUi.do(None, 'test_balloon')

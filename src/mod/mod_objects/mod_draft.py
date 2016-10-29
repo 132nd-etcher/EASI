@@ -27,6 +27,14 @@ class ModDraft(Meta):
             self.__repo = OwnModRepo(path=Cache().own_mods_folder.joinpath(self.name))
         return self.__repo
 
+    @property
+    def status(self):
+        return 'draft'
+
+    @property
+    def has_changed(self):
+        return self.repo.status != 0
+
     @MetaProperty(None, str)
     def uuid(self, value: str) -> str:
         """"""
