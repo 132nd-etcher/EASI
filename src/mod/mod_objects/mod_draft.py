@@ -16,6 +16,13 @@ class ModDraft(Meta):
     def __init__(self, uuid):
         Meta.__init__(self, path=Cache().get_mod_draft_path(uuid))
         self.uuid = uuid
+        self.__repo = None
+
+    @property
+    def repo(self):
+        if self.__repo is None:
+            self.__repo = OwnModRepo(path=Cache().own_mods_folder.joinpath(self.name))
+        return self.__repo
 
     @MetaProperty(None, str)
     def uuid(self, value: str) -> str:
