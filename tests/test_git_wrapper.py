@@ -29,7 +29,7 @@ class TestGitWrapper:
         with open(f, 'w') as _f:
             _f.write('')
         assert repo.status == {os.path.basename(f): 'working tree new'}
-        repo.commit('author', 'mail', 'message', add_all=True)
+        repo.commit('message', 'author', 'mail', add_all=True)
         assert repo.status == {}
         commit_log = []
         for commit in repo.walk(repo.head.target):
