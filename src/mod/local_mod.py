@@ -14,12 +14,12 @@ class LocalMod(metaclass=Singleton):
     @staticmethod
     def drafts() -> typing.List[ModDraft]:
         for x in Cache().own_mods_folder.listdir():
-            if Path(x).isfile():
+            print(x)
+            if Path(x).isfile() and x.endswith('.easi_mod_draft'):
                 try:
-                    yield ModDraft(x.basename)
+                    yield ModDraft(x.basename().rstrip('.easi_mod_draft'))
                 except TypeError:
                     pass
-        # return [ModDraft(x.basename()) for x in Cache().own_mods_folder.listdir() if Path(x).isfile()]
 
     @staticmethod
     def mod_name_is_available(name: str, uuid: str) -> bool:
