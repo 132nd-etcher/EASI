@@ -90,9 +90,11 @@ if __name__ == '__main__':
     from src.qt import QApplication
     from src.keyring.keyring import Keyring
     from src.rem.gh.gh_session import GHSession
+    from src.dcs.dcs_installs import DCSInstalls
     import sys
 
     qt_app = QApplication([])
+    DCSInstalls().discover_dcs_installation()
     GHSession(Keyring().gh_token)
     create_new_mod('TyYH3y9VtEEaK6RNToXgRZ')
     # create_new_mod()
