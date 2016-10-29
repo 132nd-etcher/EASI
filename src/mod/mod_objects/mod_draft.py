@@ -1,12 +1,14 @@
 # coding=utf-8
 
 
+
 import semver
 
 from src.cache.cache import Cache
 from src.git.own_mod_repo import OwnModRepo
 from src.meta.meta import Meta
 from src.meta.meta_property import MetaProperty
+from src.mod.dcs_version import DCSVersion
 
 
 class ModDraft(Meta):
@@ -47,3 +49,8 @@ class ModDraft(Meta):
             semver.parse(value)
         except ValueError:
             raise
+
+    @MetaProperty(None, str)
+    def DCSVersion(self, value: str) -> str:
+        if not DCSVersion.is_valid(value):
+            raise ValueError('not a valid DCS version: {}'.format(value))
