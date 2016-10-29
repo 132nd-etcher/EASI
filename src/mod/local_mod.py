@@ -4,6 +4,7 @@ import typing
 from src.cache.cache import Cache
 from src.low.singleton import Singleton
 from src.mod.mod_objects.mod_draft import ModDraft
+from src.low.custom_path import Path
 
 
 class LocalMod(metaclass=Singleton):
@@ -12,7 +13,13 @@ class LocalMod(metaclass=Singleton):
 
     @staticmethod
     def drafts() -> typing.List[ModDraft]:
-        return [ModDraft(x.basename()) for x in Cache().own_draft_mod_folder.listdir()]
+        for x in Cache().own_mods_folder.listdir():
+            if Path(x).isfile():
+                try:
+                    yield ModDraft(x.basename)
+                except TypeError:
+                    pass
+        # return [ModDraft(x.basename()) for x in Cache().own_mods_folder.listdir() if Path(x).isfile()]
 
     @staticmethod
     def mod_name_is_available(name: str, uuid: str) -> bool:
