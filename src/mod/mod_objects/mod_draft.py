@@ -51,6 +51,6 @@ class ModDraft(Meta):
             raise
 
     @MetaProperty(None, str)
-    def DCSVersion(self, value: str) -> str:
+    def dcs_version(self, value: str) -> str:
         if not DCSVersion.is_valid(value):
             raise ValueError('not a valid DCS version: {}'.format(value))
