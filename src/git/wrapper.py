@@ -133,6 +133,9 @@ class Repository:
         tree = index.write_tree()
         self.repo.create_commit(self.repo.head.name, author, committer, msg, tree, [self.repo.head.get_object().hex])
 
+    def hard_reset(self):
+        self.repo.reset(self.head.target, pygit2.GIT_RESET_HARD)
+
     @property
     def head(self):
         return self.repo.head
