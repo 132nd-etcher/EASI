@@ -179,17 +179,20 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                 for v in self.meta.values():
                     v.get_crc32()
             else:
-                logger.debug('re-building cache for path: {}'.format(rel_path))
-                path = rel_path
-                abspath = os.path.abspath(rel_path)
-                name = os.path.basename(rel_path)
-                try:
-                    meta = CacheFile(name, abspath, path, os.stat(abspath))
-                except FileNotFoundError:
-                    logger.debug('file was deleted, canceling')
-                    return
-                meta.get_crc32()
-                self.meta[meta.path] = meta
+                if '\\.git' in rel_path:
+                    pass
+                else:
+                    logger.debug('re-building cache for path: {}'.format(rel_path))
+                    path = rel_path
+                    abspath = os.path.abspath(rel_path)
+                    name = os.path.basename(rel_path)
+                    try:
+                        meta = CacheFile(name, abspath, path, os.stat(abspath))
+                    except FileNotFoundError:
+                        logger.debug('file was deleted, canceling')
+                        return
+                    meta.get_crc32()
+                    self.meta[meta.path] = meta
         finally:
             self.__is_building = False
 
@@ -230,11 +233,11 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
             yield item
 
 
-class CacheEventCatcher(metaclass=abc.ABCMeta):
+class CacheEventCatcher:
     @staticmethod
     @abc.abstractstaticmethod
     @signals.post_cache_changed_event.connect
-    def got_signal(sender: str, signal_emitter: Cache, event: CacheEvent):
+    def on_cache_changed_event_signal(sender: str, signal_emitter: Cache, event: CacheEvent):
         pass
 
 
