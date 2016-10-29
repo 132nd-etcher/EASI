@@ -12,6 +12,7 @@ from watchdog.observers import Observer
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
+from src.rem.gh.gh_session import GHSession
 
 logger = make_logger(__name__)
 
@@ -89,38 +90,36 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         self.observer.start()
         self.meta = {}
         self.__is_building = False
-        if not self.own_base_mod_folder.exists():
-            self.own_base_mod_folder.mkdir()
-        if not self.meta_repos_folder.exists():
-            self.meta_repos_folder.mkdir()
         self.cache_build()
 
     @property
     def meta_repos_folder(self) -> Path:
-        return Path(self.path.joinpath('repos'))
-
-    @property
-    def own_meta_repo_folder(self, gh_username):
-        return Path(self.meta_repos_folder.joinpath(gh_username))
-
-    @property
-    def own_base_mod_folder(self) -> Path:
-        return Path(self.path.joinpath('own_mods'))
-
-    @property
-    def own_draft_mod_folder(self) -> Path:
-        p = self.own_base_mod_folder.joinpath('drafts')
+        p = Path(self.path.joinpath('meta_repos'))
         if not p.exists():
             p.makedirs()
         return p
 
-    def get_mod_draft_path(self, uuid: str) -> Path:
-        return Path(self.own_draft_mod_folder.joinpath(uuid))
-
-    def get_own_mod_folder(self, modname: str) -> Path:
-        p = Path(self.own_base_mod_folder.joinpath(modname))
+    @property
+    def mods_folder(self) -> Path:
+        p = Path(self.path.joinpath('mods'))
         if not p.exists():
-            p.mkdir()
+            p.makedirs()
+        return p
+
+    @property
+    def own_mods_folder(self) -> Path:
+        p = Path(self.path.joinpath('own_mods'))
+        if not p.exists():
+            p.makedirs()
+        return p
+
+    @property
+    def own_meta_repo_folder(self):
+        if not GHSession().has_valid_token:
+            raise RuntimeError('GHSession has no valid token')
+        p = Path(self.path.joinpath('own_meta_repo').joinpath(GHSession().user.login))
+        if not p.exists():
+            p.makedirs()
         return p
 
     @property
@@ -149,7 +148,10 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
     def on_deleted(self, event):
         if not event.is_directory:
             logger.debug('deleted: {}'.format(event.src_path))
-            del self.meta[event.src_path]
+            try:
+                del self.meta[event.src_path]
+            except KeyError:
+                pass
             self.cache_changed_event(CacheEvent('deleted', event.src_path))
 
     @emit(sender='Cache', post_result_name='event')
@@ -164,7 +166,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                 logger.info('re-building whole cache folder')
                 self.meta = {}
                 for root, folder, _ in os.walk(self.path):
-                    if root.endswith('.git'):
+                    if '\\.git' in root:
                         continue
                     for entry in os.scandir(root):
                         if entry.is_dir():
