@@ -45,7 +45,7 @@ class _NewModDialog(QDialog):
         model.itemFromIndex(model.index(0, 0)).setEnabled(False)
         self.form.label_uuid.setText(self.mod_draft.uuid)
         self.form.label_help_name.setText(
-            'The name of your new mod needs to contain at least one string of 4 letters.')
+            'The name of your new mod must contain at least one string of 4 letters.')
         self.form.edit_mod_name.setValidator(
             QRegExpValidator(QRegExp('.*[a-zA-Z]{4,}.*'), self.form.edit_mod_name)
         )
