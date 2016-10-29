@@ -14,7 +14,7 @@ class _MsgDialog(Ui_Dialog, QDialog):
 
 
 class MsgDialog(BaseDialog, MsgInterface):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         BaseDialog.__init__(self, _MsgDialog(parent))
 
     @property
