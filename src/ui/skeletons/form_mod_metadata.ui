@@ -32,6 +32,9 @@
      <property name="text">
       <string>DCS version</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
     </widget>
    </item>
    <item row="9" column="1">

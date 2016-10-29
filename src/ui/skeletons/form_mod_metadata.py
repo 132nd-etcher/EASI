@@ -20,6 +20,7 @@ class Ui_Form(object):
         self.label_5.setObjectName("label_5")
         self.gridLayout_2.addWidget(self.label_5, 8, 0, 1, 1)
         self.label_6 = QtWidgets.QLabel(Form)
+        self.label_6.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_6.setObjectName("label_6")
         self.gridLayout_2.addWidget(self.label_6, 11, 0, 1, 1)
         self.label_help_version = QtWidgets.QLabel(Form)
