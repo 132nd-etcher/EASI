@@ -4,7 +4,7 @@ from re import compile
 
 
 class DCSVersion:
-    re_DCS_VERSION = compile(r'^[0-9*]+(\.[0-9*]+){0,3}$')
+    re_DCS_VERSION = compile(r'^[0-9*]+(\.[0-9*]+){0,3}(\+)?$')
 
     @staticmethod
     def is_valid(dcs_version: str) -> bool:
