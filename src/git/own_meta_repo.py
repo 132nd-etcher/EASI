@@ -6,7 +6,7 @@ from src.git.wrapper import Repository
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
 
-logger = make_logger()
+logger = make_logger(__name__)
 
 
 class OwnMetaRepo(Repository, metaclass=Singleton):
