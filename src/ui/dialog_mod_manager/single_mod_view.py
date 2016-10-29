@@ -7,7 +7,7 @@ from blinker_herald import signals
 from src.cache.cache import CacheEvent
 from src.mod.mod_objects.mod_draft import ModDraft
 from src.qt import QAbstractTableModel, QDialog, dialog_default_flags, Qt, QModelIndex, QVariant, QIcon, \
-    qt_resources
+    qt_resources, QSortFilterProxyModel, QColor
 from src.ui.base.qdialog import BaseDialog
 from src.ui.dialog_long_input.dialog import LongInputDialog
 from src.ui.skeletons.dialog_single_mod_view import Ui_Dialog
@@ -33,12 +33,25 @@ class SingleModModel(QAbstractTableModel):
             self.beginResetModel()
             self.__data = []
             assert isinstance(self.mod, ModDraft)
+            changed = set()
             for x in self.mod.repo.working_dir_new:
                 self.__data.append(('new', x))
+                changed.add(x)
             for x in self.mod.repo.working_dir_modified:
                 self.__data.append(('modified', x))
+                changed.add(x)
             for x in self.mod.repo.working_dir_deleted:
                 self.__data.append(('deleted', x))
+                changed.add(x)
+            for root, dirs, files in os.walk(self.mod.repo.path.abspath(), topdown=True):
+                dirs[:] = [d for d in dirs if d not in ['.git']]
+                if root == '.git':
+                    continue
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    rel_path = os.path.relpath(file_path, self.mod.repo.path.abspath()).replace('\\', '/')
+                    if rel_path not in changed:
+                        self.__data.append(('unchanged', rel_path))
             self.endResetModel()
 
     def rowCount(self, parent=None, *args, **kwargs):
@@ -54,6 +67,23 @@ class SingleModModel(QAbstractTableModel):
             return self.__data[index.row()][index.column()]
         if role == Qt.UserRole:
             return self.__data[index.row()]
+        if role == Qt.ForegroundRole:
+            if 'new' in self.__data[index.row()][0]:
+                return QColor(Qt.darkGreen)
+            if 'modified' in self.__data[index.row()][0]:
+                return QColor(Qt.blue)
+            if 'deleted' in self.__data[index.row()][0]:
+                return QColor(Qt.red)
+            return QColor(Qt.black)
+
+
+    def headerData(self, column, orientation, role=Qt.DisplayRole):
+        if role == Qt.DisplayRole and orientation == Qt.Horizontal:
+            if column == 0:
+                return 'Status'
+            elif column == 1:
+                return 'File path'
+        return super(SingleModModel, self).headerData(column, orientation, role)
 
 
 class _SingleModViewDialog(QDialog, Ui_Dialog):
@@ -62,9 +92,12 @@ class _SingleModViewDialog(QDialog, Ui_Dialog):
         self.setupUi(self)
         self.setWindowIcon(QIcon(qt_resources.app_ico))
         self.model = SingleModModel(self)
-        self.table.setModel(self.model)
-        self.table.horizontalHeader().hide()
+        self.proxy = QSortFilterProxyModel(self)
+        self.proxy.setSourceModel(self.model)
+        self.table.setModel(self.proxy)
+        # self.table.horizontalHeader().hide()
         self.table.verticalHeader().hide()
+        self.table.setColumnWidth(0, 80)
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.setSelectionBehavior(1)
         self.table.setSelectionMode(1)
@@ -74,7 +107,9 @@ class _SingleModViewDialog(QDialog, Ui_Dialog):
         self.model.modelReset.connect(self.on_model_reset)
 
     def on_model_reset(self):
-        self.set_global_buttons(self.model.rowCount() > 0)
+        self.set_global_buttons(len(self.mod.repo.status) > 0)
+        # self.table.resizeColumnToContents(0)
+        # self.table.setColumnWidth(0, self.table.columnWidth(0) + 40)
 
     def set_global_buttons(self, value: bool):
         self.btn_accept.setEnabled(value)
@@ -102,6 +137,8 @@ class _SingleModViewDialog(QDialog, Ui_Dialog):
                               'This is a destructive operation, and you may loose some of your work.\n\n'
                               'Are you sure you want to continue?'):
             self.mod.repo.hard_reset()
+            for x in self.mod.repo.working_dir_new:
+                os.remove(os.path.join(self.mod.repo.path.abspath(), x))
 
     def open_mod_folder(self):
         os.startfile(self.mod.repo.path.abspath())

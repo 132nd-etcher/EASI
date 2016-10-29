@@ -11,11 +11,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(400, 300)
+        Dialog.resize(829, 513)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.table = QtWidgets.QTableView(Dialog)
+        self.table.setMidLineWidth(8)
+        self.table.setSortingEnabled(True)
         self.table.setObjectName("table")
+        self.table.horizontalHeader().setSortIndicatorShown(True)
+        self.table.verticalHeader().setSortIndicatorShown(False)
         self.horizontalLayout.addWidget(self.table)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
