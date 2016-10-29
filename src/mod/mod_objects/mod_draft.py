@@ -4,6 +4,7 @@
 import semver
 
 from src.cache.cache import Cache
+from src.git.own_mod_repo import OwnModRepo
 from src.meta.meta import Meta
 from src.meta.meta_property import MetaProperty
 
