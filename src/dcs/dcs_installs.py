@@ -23,9 +23,9 @@ A_REG = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
 class DCSInstall:
 
     def __init__(self, install_path, saved_games_path, version, label):
-        self.__install = str(Path(install_path).abspath())
-        self.__sg = str(Path(saved_games_path).abspath())
-        self.__version = str(version)
+        self.__install = str(Path(install_path).abspath()) if install_path else None
+        self.__sg = str(Path(saved_games_path).abspath()) if saved_games_path else None
+        self.__version = str(version) if version else None
         self.__label = label
 
     @property
