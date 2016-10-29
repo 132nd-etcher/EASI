@@ -26,6 +26,14 @@ GH_APP_USER = '132nd-etcher'
 GH_APP_REPO = 'EASI'
 GH_APP_REPO_TEST = 'EASI_tests'
 
+DCS = {
+    'reg_key': {
+        'stable': 'DCS World',
+        'beta': 'DCS World OpenBeta',
+        'alpha': 'DCS World 2 OpenAlpha',
+    },
+}
+
 QT_APP = None
 MAIN_UI = None
 

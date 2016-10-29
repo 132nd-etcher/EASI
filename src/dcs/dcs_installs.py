@@ -13,6 +13,7 @@ from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
 from src.sig.sigprogress import SigProgress
+from src.low import constants
 
 logger = make_logger(__name__)
 
@@ -74,21 +75,21 @@ class DCSInstalls(metaclass=Singleton):
         self.base_sg = None
         self.installs = {
             'stable': {
-                'reg_key': 'DCS World',
+                'reg_key': constants.DCS['reg_key']['stable'],
                 'sg_default': 'DCS',
                 'install': None,
                 'sg': None,
                 'version': None,
             },
             'beta': {
-                'reg_key': 'DCS World OpenBeta',
+                'reg_key': constants.DCS['reg_key']['beta'],
                 'sg_default': 'DCS.openbeta',
                 'install': None,
                 'sg': None,
                 'version': None,
             },
             'alpha': {
-                'reg_key': 'DCS World 2 OpenAlpha',
+                'reg_key': constants.DCS['reg_key']['alpha'],
                 'sg_default': 'DCS.openalpha',
                 'install': None,
                 'sg': None,
