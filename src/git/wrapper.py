@@ -1,7 +1,5 @@
 # coding=utf-8
 
-import os
-
 import pygit2
 from pygit2 import Signature
 
@@ -176,8 +174,8 @@ class Callbacks(pygit2.RemoteCallbacks):
     def sideband_progress(self, string):
         print(string)
 
-    def push_update_reference(self, refname, message):
-        print(refname)
+    def push_update_reference(self, ref_name, message):
+        print(ref_name)
         print(message)
 
     def credentials(self, url, username_from_url, allowed_types):
