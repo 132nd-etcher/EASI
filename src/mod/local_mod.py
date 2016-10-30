@@ -2,9 +2,12 @@
 import typing
 
 from src.cache.cache import Cache
+from src.low.custom_logging import make_logger
+from src.low.custom_path import Path
 from src.low.singleton import Singleton
 from src.mod.mod_objects.mod_draft import ModDraft
-from src.low.custom_path import Path
+
+logger = make_logger(__name__)
 
 
 class LocalMod(metaclass=Singleton):
@@ -13,9 +16,11 @@ class LocalMod(metaclass=Singleton):
 
     @staticmethod
     def drafts() -> typing.List[ModDraft]:
+        logger.debug('getting mod drafts')
         for x in Cache().own_mods_folder.listdir():
             if Path(x).isfile() and x.endswith('.easi_mod_draft'):
                 try:
+                    logger.debug('found draft in: {}'.format(x.basename().replace('.easi_mod_draft', '')))
                     yield ModDraft(x.basename().replace('.easi_mod_draft', ''))
                 except TypeError:
                     pass
