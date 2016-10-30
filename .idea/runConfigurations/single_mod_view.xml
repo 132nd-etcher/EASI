@@ -11,7 +11,7 @@
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <module name="EASIv0.0.11" />
-    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/ui/dialog_mod_manager/single_mod_view.py" />
+    <option name="SCRIPT_NAME" value="F:\DEV\EASI\EASIv0.0.11\src\ui\dialog_mod_files\dialog.py" />
     <option name="PARAMETERS" value="" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <method>

@@ -8,10 +8,10 @@ from src.mod.mod_objects.mod_base import BaseMod
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
 from src.ui.base.qwidget import BaseQWidget
-from src.ui.dialog_edit_mod.dialog import EditModDialog
-from src.ui.dialog_mod_manager.single_mod_view import SingleModViewDialog
-from src.ui.skeletons.form_own_mod_table import Ui_Form
 from src.ui.dialog_confirm.dialog import ConfirmDialog
+from src.ui.dialog_edit_mod.dialog import EditModDialog
+from src.ui.dialog_mod_files.dialog import ModFilesDialog
+from src.ui.skeletons.form_own_mod_table import Ui_Form
 
 
 class OwnModModel(QAbstractTableModel):
@@ -100,7 +100,7 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.proxy.sort(0, Qt.AscendingOrder)
 
     def view_files(self):
-        SingleModViewDialog(self.selected_mod, self)
+        ModFilesDialog(self.selected_mod, self)
 
     @property
     def selected_mod(self) -> BaseMod:

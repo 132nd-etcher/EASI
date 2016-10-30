@@ -11,10 +11,10 @@ from src.qt import QAbstractTableModel, QDialog, dialog_default_flags, Qt, QMode
 from src.ui.base.qdialog import BaseDialog
 from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_long_input.dialog import LongInputDialog
-from src.ui.skeletons.dialog_single_mod_view import Ui_Dialog
+from src.ui.skeletons.dialog_mod_files import Ui_Dialog
 
 
-class SingleModModel(QAbstractTableModel):
+class ModFilesModel(QAbstractTableModel):
     def __init__(self, mod: BaseMod, parent):
         QAbstractTableModel.__init__(self, parent)
         self.__data = []
@@ -77,17 +77,17 @@ class SingleModModel(QAbstractTableModel):
                 return 'Status'
             elif column == 1:
                 return 'File path'
-        return super(SingleModModel, self).headerData(column, orientation, role)
+        return super(ModFilesModel, self).headerData(column, orientation, role)
 
 
-class _SingleModViewDialog(QDialog, Ui_Dialog):
+class _ModFilesDialog(QDialog, Ui_Dialog):
     def __init__(self, mod: BaseMod, parent=None):
         QDialog.__init__(self, parent, flags=dialog_default_flags)
         self.setupUi(self)
         self.setWindowIcon(QIcon(qt_resources.app_ico))
         self.mod = mod
         self.setWindowTitle('Showing single mod: {}'.format(mod.name))
-        self.model = SingleModModel(mod, self)
+        self.model = ModFilesModel(mod, self)
         self.proxy = QSortFilterProxyModel(self)
         self.proxy.setSourceModel(self.model)
         self.table.setModel(self.proxy)
@@ -146,18 +146,18 @@ class _SingleModViewDialog(QDialog, Ui_Dialog):
     def show(self):
         signals.post_cache_changed_event.connect(self.signal_handler, weak=False)
         self.model.refresh_data()
-        super(_SingleModViewDialog, self).show()
+        super(_ModFilesDialog, self).show()
 
     def accept(self):
         signals.post_cache_changed_event.disconnect(self.signal_handler)
-        super(_SingleModViewDialog, self).accept()
+        super(_ModFilesDialog, self).accept()
 
 
-class SingleModViewDialog(BaseDialog):
+class ModFilesDialog(BaseDialog):
     def __init__(self, mod, parent=None):
-        BaseDialog.__init__(self, _SingleModViewDialog(mod, parent))
+        BaseDialog.__init__(self, _ModFilesDialog(mod, parent))
         self.qobj.show()
 
     @property
-    def qobj(self) -> _SingleModViewDialog:
-        return super(SingleModViewDialog, self).qobj
+    def qobj(self) -> _ModFilesDialog:
+        return super(ModFilesDialog, self).qobj

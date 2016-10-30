@@ -1,18 +1,20 @@
 # coding=utf-8
 
 
-from shortuuid import uuid
 import os
+
+from shortuuid import uuid
+
 from src.git.own_mod_repo import OwnModRepo
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.mod.mod_objects.mod_draft import ModDraft
-from src.ui.dialog_confirm.dialog import ConfirmDialog
-from src.ui.dialog_gh_login.dialog import GHLoginDialog
 from src.rem.gh.gh_session import GHSession
-from src.ui.dialog_msg.dialog import MsgDialog
+from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_edit_mod.dialog import NewModDialog
-from src.ui.dialog_mod_manager.single_mod_view import SingleModViewDialog
+from src.ui.dialog_gh_login.dialog import GHLoginDialog
+from src.ui.dialog_mod_files.dialog import ModFilesDialog
+from src.ui.dialog_msg.dialog import MsgDialog
 
 logger = make_logger(__name__)
 
@@ -48,7 +50,7 @@ def add_content(mod_draft: ModDraft, parent_qobj) -> bool:
                         'what you\'re doing ! =)')
     msg.qobj.exec()
     os.startfile(mod_draft.repo.path)
-    dialog = SingleModViewDialog(mod_draft, parent_qobj).qobj
+    dialog = ModFilesDialog(mod_draft, parent_qobj).qobj
     return dialog.exec() == dialog.Accepted
 
 
