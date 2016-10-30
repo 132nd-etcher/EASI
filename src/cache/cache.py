@@ -219,7 +219,9 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                         self.meta[meta.path] = meta
         finally:
             self.__is_building = False
-            print('META_KEYS', self.meta.keys())
+
+    def stop(self):
+        self.observer.stop()
 
     @property
     def path(self) -> Path:
