@@ -8,6 +8,7 @@ from src.cache.cache import Cache
 from src.git.own_mod_repo import OwnModRepo
 from src.meta.meta_property import MetaProperty
 from src.mod.dcs_version import DCSVersion
+from src.low.custom_path import Path
 
 
 class BaseMod:
@@ -16,9 +17,13 @@ class BaseMod:
         self._repo = None
 
     @property
+    def repo_path(self) -> Path:
+        return Path(Cache().own_mods_folder.joinpath(self.name))
+
+    @property
     def repo(self):
         if self._repo is None:
-            self._repo = OwnModRepo(path=Cache().own_mods_folder.joinpath(self.name))
+            self._repo = OwnModRepo(path=self.repo_path)
         return self._repo
 
     @abc.abstractclassmethod
