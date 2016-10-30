@@ -16,7 +16,6 @@ from src.low.singleton import Singleton
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from blinker_herald import emit, SENDER_CLASS_NAME
-from src.abstract.progress_interface import ProgressInterface
 
 logger = make_logger(__name__)
 
@@ -58,8 +57,7 @@ class DBSession(metaclass=Singleton):
             self.status = False
         else:
             self.status = account.name.given_name
-        finally:
-            return self.status
+        return self.status
 
     @property
     def vs(self) -> BaseDropbox:

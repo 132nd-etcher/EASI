@@ -56,8 +56,7 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
             self.status = False
         else:
             self.status = self.user.login
-        finally:
-            return self.status
+        return self.status
 
     @property
     def rate_limit(self):
