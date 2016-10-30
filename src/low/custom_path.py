@@ -109,6 +109,10 @@ class Path(path.Path):
                 with open(self.abspath(), 'rb') as buf:
                     buf = "%08X" % (binascii.crc32(buf.read()) & 0xFFFFFFFF)
                     return buf
+            except FileNotFoundError:
+                raise FileNotFoundError('failed to compute crc32 for: {}'.format(self.abspath()))
+            except PermissionError:
+                raise PermissionError('failed to compute crc32 for: {}'.format(self.abspath()))
             except:
                 raise RuntimeError('failed to compute crc32 for: {}'.format(self.abspath()))
 
