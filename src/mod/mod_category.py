@@ -59,10 +59,3 @@ class ModTypes:
         for cls in sorted(ModTypes.__iter__(), key=lambda x: x().sorting_weight):
             print(cls)
             yield cls().category_name
-
-
-if __name__ == '__main__':
-    # for x in ModTypes():
-    #     print(x)
-    for x in ModTypes.enum_category_names():
-        print(x)
