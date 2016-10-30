@@ -180,9 +180,8 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
             if rel_path is None:
                 logger.info('re-building whole cache folder')
                 self.meta = {}
-                for root, folder, _ in os.walk(self.path):
-                    if '\\.git' in root:
-                        continue
+                for root, folder, _ in os.walk(self.path, topdown=True):
+                    folder[:] = [d for d in folder if d not in ['.git']]
                     for entry in os.scandir(root):
                         if entry.is_dir():
                             continue
