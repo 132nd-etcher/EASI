@@ -1,6 +1,10 @@
 # coding=utf-8
 
 import pytest
+from src.low.custom_logging import make_logger
+
+
+logger = make_logger(__name__)
 
 
 # noinspection PyUnusedLocal
@@ -8,7 +12,7 @@ import pytest
 def config_dialog(qtbot, tmpdir, config):
     """Returns initialized src.ui.dialog_config.ConfigDialog"""
     from src.ui.dialog_config.dialog import ConfigDialog
-    print('creating dummy config')
+    logger.debug('creating dummy config')
     sg = str(tmpdir.mkdir('sg'))
     cache = str(tmpdir.mkdir('cache'))
     kdiff = tmpdir.join('kdiff3.exe')
