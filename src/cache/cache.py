@@ -58,6 +58,8 @@ class CacheFile:
 
     @property
     def crc32(self) -> str or None:
+        if self.__crc32 is None:
+            self.get_crc32()
         return self.__crc32
 
     @crc32.setter
