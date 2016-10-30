@@ -11,8 +11,7 @@ class QtHandler(logging.Handler):
 
     def emit(self, record):
         record = self.format(record)
-        if record:
-            if isinstance(self.qobj, QTextBrowser):
+        if record and isinstance(self.qobj, QTextBrowser):
                 self.qobj.append(record)
 
 
