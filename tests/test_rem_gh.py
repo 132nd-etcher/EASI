@@ -13,21 +13,13 @@ from hypothesis import strategies as st
 
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
+from src.rem.gh.gh_anon import GHAnonymousSession
+from src.rem.gh.gh_errors import GHSessionError, RequestFailedError, RateLimitationError, GithubAPIError
 from src.rem.gh.gh_objects.gh_release import GHAllAssets
 from src.rem.gh.gh_objects.gh_release import GHRelease
 from src.rem.gh.gh_objects.gh_repo import GHRepo, GHRepoList
 from src.rem.gh.gh_objects.gh_user import GHUser
 from src.rem.gh.gh_session import GHSession
-from src.rem.gh.gh_anon import GHAnonymousSession
-from src.rem.gh.gh_errors import GHSessionError, RequestFailedError, RateLimitationError, GithubAPIError
-
-try:
-    # noinspection PyUnresolvedReferences
-    from vault.secret import Secret
-
-    token = Secret.gh_test_token
-except ImportError:
-    token = False
 
 
 def test_build_req():
@@ -280,10 +272,7 @@ class TestGHAnonymousSession(TestCase):
         self.assertTrue('README.rst' in latest.assets())
 
 
-@pytest.mark.usefixtures('config')
 class TestGHSessionAuthentication:
-    s = None
-
     @pytest.fixture(autouse=True)
     def new_gh_session(self, qtbot):
         result = -1
@@ -308,8 +297,10 @@ class TestGHSessionAuthentication:
         self.s.authenticate(st.text(min_size=1))
         qtbot.wait_until(lambda: result is False)
 
-    @skipUnless(token, 'no test token available')
-    def test_init_correct_token(self, qtbot):
+    def test_init_correct_token(self, qtbot, secret):
+        if not secret.gh_test_token:
+            pytest.skip('missing_token')
+
         result = -1
 
         @signals.post_authenticate.connect_via('GHSession', weak=False)
@@ -317,17 +308,19 @@ class TestGHSessionAuthentication:
             nonlocal result
             result = kwargs['result']
 
-        self.s.authenticate(token)
-        qtbot.wait_until(lambda: result == Secret.gh_test_login)
+        self.s.authenticate(secret.gh_test_token)
+        qtbot.wait_until(lambda: result == secret.gh_test_login)
 
 
-@skipUnless(token, 'no test token available')
-@pytest.mark.usefixtures('config')
 class TestGHSession:
-    s = None
+    token = None
+
+    @pytest.fixture(autouse=True, scope='session')
+    def get_secret(self, secret):
+        GHSession.token = secret.gh_test_token
 
     @pytest.fixture(autouse=True)
-    def gh_session(self, qtbot):
+    def gh_session(self, qtbot, secret):
         result = -1
 
         @signals.post_authenticate.connect_via('GHSession', weak=False)
@@ -335,18 +328,15 @@ class TestGHSession:
             nonlocal result
             result = kwargs['result']
 
-        if token:
-            Singleton.wipe_instances('GHSession')
-            self.s = GHSession(token)
-            qtbot.wait_until(lambda: result == Secret.gh_test_login)
+        Singleton.wipe_instances('GHSession')
+        self.s = GHSession(secret.gh_test_token)
+        qtbot.wait_until(lambda: result == secret.gh_test_login)
 
-    @skipUnless(token, 'no test token available')
-    def test_primary_email(self):
-        assert Secret.gh_test_usermail == self.s.primary_email.email
+    def test_primary_email(self, secret):
+        assert secret.gh_test_usermail == self.s.primary_email.email
 
-    @skipUnless(token, 'no test token available')
     @skipUnless(os.getenv('DOLONGTESTS', False) is not False, 'skipping long tests')
-    def test_create_repo(self):
+    def test_create_repo(self, secret):
         # noinspection PyBroadException
         try:
             self.s.delete_repo(name='test_repo')
@@ -361,13 +351,13 @@ class TestGHSession:
             (repo.name, name),
             (repo.default_branch, 'master'),
             (repo.archive_url, 'https://api.github.com/repos/{}/{}/{{archive_format}}{{/ref}}'.format(
-                Secret.gh_test_login, name)),
+                secret.gh_test_login, name)),
             (repo.branches_url, 'https://api.github.com/repos/{}/{}/branches{{/branch}}'.format(
-                Secret.gh_test_login, name)),
+                secret.gh_test_login, name)),
             (repo.clone_url, 'https://github.com/{}/{}.git'.format(
-                Secret.gh_test_login, name)),
+                secret.gh_test_login, name)),
             (repo.commits_url, 'https://api.github.com/repos/{}/{}/commits{{/sha}}'.format(
-                Secret.gh_test_login, name)),
+                secret.gh_test_login, name)),
             (repo.description, desc)
         ]
         for x, y in c:
