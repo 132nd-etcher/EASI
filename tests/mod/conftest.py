@@ -1,6 +1,8 @@
 # coding=utf-8
 
 import pytest
+from shortuuid import uuid
+from src.mod.mod_objects.mod_draft import ModDraft
 
 
 # noinspection SpellCheckingInspection
@@ -15,3 +17,14 @@ def valid_destination(request, tmpdir):
 def invalid_destination(request, tmpdir):
     yield request.param
     tmpdir.remove()
+
+
+@pytest.fixture(params=[uuid(), uuid(), uuid(), uuid(), uuid(), uuid()])
+def random_mod_name(request, tmpdir):
+    yield request.param
+    tmpdir.remove()
+
+@pytest.fixture()
+def mod_draft():
+    yield ModDraft(uuid())
+
