@@ -151,7 +151,11 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
     def on_moved(self, event):
         if self.__filter_event(event):
             logger.debug('{} -> {}'.format(event.src_path, event.dest_path))
-            del self.meta[event.src_path]
+            try:
+                del self.meta[event.src_path]
+            except KeyError:
+                # Src wasn't in the cache anyway
+                pass
             self.cache_build(event.dest_path)
             self.cache_changed_event(CacheEvent('moved', event.src_path, event.dest_path))
 
@@ -161,6 +165,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
             try:
                 del self.meta[event.src_path]
             except KeyError:
+                logger.debug('not in cache, skipping')
                 pass
             self.cache_changed_event(CacheEvent('deleted', event.src_path))
 
