@@ -189,9 +189,15 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                         abspath = os.path.join(self.path.dirname(), path)
                         name = entry.name
                         meta = CacheFile(name, abspath, path, entry.stat())
-                        self.meta[meta.path] = meta
-                for v in self.meta.values():
-                    v.get_crc32()
+                    for v in self.meta.values():
+                        try:
+                            v.get_crc32()
+                        except FileNotFoundError:
+                            del self.meta[v.path]
+                        except PermissionError:
+                            del self.meta[v.path]
+                        else:
+                            self.meta[meta.path] = meta
             else:
                 if '\\.git' in rel_path:
                     pass
@@ -202,11 +208,13 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                     name = os.path.basename(rel_path)
                     try:
                         meta = CacheFile(name, abspath, path, os.stat(abspath))
+                        meta.get_crc32()
                     except FileNotFoundError:
-                        logger.debug('file was deleted, canceling')
-                        return
-                    meta.get_crc32()
-                    self.meta[meta.path] = meta
+                        logger.debug('file not found, canceling')
+                    except PermissionError:
+                        logger.debug('permission error, canceling')
+                    else:
+                        self.meta[meta.path] = meta
         finally:
             self.__is_building = False
 
