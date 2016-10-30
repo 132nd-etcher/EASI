@@ -10,7 +10,7 @@ from utils.custom_logging import DEBUG
 
 
 # noinspection PyPep8Naming
-class __LogPipe(threading.Thread):
+class _LogPipe(threading.Thread):
     def __init__(self, logger, level):
         """Setup the object with a logger and a loglevel
         and start the thread
@@ -53,7 +53,7 @@ def run_piped_process(args, logger, level=DEBUG, cwd=None, env=None, exe=None):
     :param level: logging level, defaults to DEBUG
     :param cwd: working dir to spawn the process in (defaults to current)
     """
-    log_pipe = __LogPipe(logger, level)
+    log_pipe = _LogPipe(logger, level)
 
     logger.info('running: {} {} (in {})'.format(exe, ' '.join(args), cwd))
     with subprocess.Popen(args, stdout=log_pipe, stderr=log_pipe, cwd=cwd, env=env, executable=exe) as p:
