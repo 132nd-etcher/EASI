@@ -49,6 +49,8 @@ class FormModMetadata(Ui_Form, QWidget):
                 continue
             self.pull_dcs['menu'].addAction(self.pull_dcs[branch][0])
             self.pull_dcs[branch][0].triggered.connect(self.pull_dcs[branch][2])
+        self._meta_is_valid = False
+        self._meta_has_changed = False
         self.btn_pull_dcs_version.setMenu(self.pull_dcs['menu'])
 
     @property
@@ -134,7 +136,7 @@ class FormModMetadata(Ui_Form, QWidget):
                 self.validation_error(self.edit_dcs_version, 'Invalid value')
                 return
 
-        different = any([
+        self._meta_has_changed = any([
             self.mod.name != self.edit_mod_name.text(),
             self.mod.category != self.combo_category.currentText(),
             self.mod.description != self.text_desc.toPlainText(),
@@ -142,12 +144,12 @@ class FormModMetadata(Ui_Form, QWidget):
             self.mod.dcs_version != self.edit_dcs_version.text(),
         ])
 
-        valid = all({
+        self._meta_is_valid = all({
             self.edit_mod_name.hasAcceptableInput(),
             self.combo_category.currentIndex() != 0,
             self.edit_version.text() != '',
         })
-        self.meta_has_changed.emit(different, valid)
+        self.meta_has_changed.emit(self._meta_has_changed, self._meta_is_valid)
 
     def load_data_from_meta(self):
         self.edit_mod_name.setText(self.mod.name)
