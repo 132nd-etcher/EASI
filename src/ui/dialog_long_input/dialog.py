@@ -4,8 +4,8 @@ from src.ui.skeletons.dialog_long_input import Ui_Dialog
 from src.ui.base.qdialog import BaseDialog
 from src.qt import QDialog, dialog_default_flags, QIcon, qt_resources
 
-class _LongInputDialog(QDialog, Ui_Dialog):
 
+class _LongInputDialog(QDialog, Ui_Dialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent, flags=dialog_default_flags)
         self.setupUi(self)
@@ -17,7 +17,6 @@ class _LongInputDialog(QDialog, Ui_Dialog):
 
 
 class LongInputDialog(BaseDialog):
-
     def __init__(self, parent=None):
         BaseDialog.__init__(self, _LongInputDialog(parent))
 
@@ -49,5 +48,3 @@ class LongInputDialog(BaseDialog):
             return None
         else:
             return dialog.qobj.textBrowser.toPlainText()
-
-
