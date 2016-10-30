@@ -1,0 +1,40 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'F:\DEV\EASI\EASIv0.0.11\src\ui\skeletons\form_own_mod_table.ui'
+#
+# Created by: PyQt5 UI code generator 5.7
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(830, 541)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.table = QtWidgets.QTableView(Form)
+        self.table.setObjectName("table")
+        self.horizontalLayout.addWidget(self.table)
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.btn_create_mod = QtWidgets.QPushButton(Form)
+        self.btn_create_mod.setObjectName("btn_create_mod")
+        self.verticalLayout.addWidget(self.btn_create_mod)
+        self.btn_view_files = QtWidgets.QPushButton(Form)
+        self.btn_view_files.setObjectName("btn_view_files")
+        self.verticalLayout.addWidget(self.btn_view_files)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem)
+        self.horizontalLayout.addLayout(self.verticalLayout)
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.btn_create_mod.setText(_translate("Form", "Create new mod"))
+        self.btn_view_files.setText(_translate("Form", "View files"))
+
