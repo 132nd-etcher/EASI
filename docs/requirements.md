@@ -33,6 +33,7 @@ For an up-to-date list of the packages actually used, see the different "require
 | requests | [![PyPI version](https://badge.fury.io/py/requests.svg)](https://badge.fury.io/py/requests) |
 | ruamel.yaml | [![PyPI version](https://badge.fury.io/py/ruamel.yaml.svg)](https://badge.fury.io/py/ruamel.yaml) |
 | semver | [![PyPI version](https://badge.fury.io/py/semver.svg)](https://badge.fury.io/py/semver) |
+| Send2Trash | [![PyPI version](https://badge.fury.io/py/Send2Trash.svg)](https://badge.fury.io/py/Send2Trash) |
 | shortuuid | [![PyPI version](https://badge.fury.io/py/shortuuid.svg)](https://badge.fury.io/py/shortuuid) |
 | sip | [![PyPI version](https://badge.fury.io/py/sip.svg)](https://badge.fury.io/py/sip) |
 | smmap | [![PyPI version](https://badge.fury.io/py/smmap.svg)](https://badge.fury.io/py/smmap) |
