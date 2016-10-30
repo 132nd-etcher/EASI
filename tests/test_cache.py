@@ -12,9 +12,7 @@ from src.low.singleton import Singleton
 
 class TestCache:
     @pytest.fixture(autouse=True)
-    def wipe_singleton(self):
-        Singleton.wipe_instances('Cache')
-        yield
+    def wipe_cache(self):
         Singleton.wipe_instances('Cache')
 
     def test_cache_init(self, tmpdir):

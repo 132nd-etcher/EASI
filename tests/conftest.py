@@ -3,6 +3,34 @@
 import pytest
 
 from src.low.custom_logging import make_logger
+from src.low.singleton import Singleton
+from src.cache.cache import Cache
+
+
+@pytest.fixture(scope='session')
+def secret():
+    try:
+        from vault.secret import Secret
+    except ImportError:
+        from vault.empty_secret import Secret
+        pytest.skip('missing secret')
+    yield Secret
+
+
+@pytest.fixture()
+def wipe_cache():
+    Singleton.wipe_instances('Cache')
+    yield
+    Singleton.wipe_instances('Cache')
+
+
+# noinspection PyUnusedLocal,PyShadowingNames
+@pytest.fixture(autouse=True)
+def make_tmp_cache(tmpdir):
+    Singleton.wipe_instances('Cache')
+    c = Cache(str(tmpdir))
+    yield
+    c.stop()
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -27,7 +55,7 @@ def somefile(tmpdir_factory):
     return p
 
 
-@pytest.fixture()
+@pytest.fixture(autouse=True)
 def config(tmpdir):
     """Creates a new instance of src.cfg.cfg.Config object"""
     from src.cfg.cfg import Config
