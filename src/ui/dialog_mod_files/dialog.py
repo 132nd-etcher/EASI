@@ -36,7 +36,6 @@ class ModFilesModel(QAbstractTableModel):
             for x in self.mod.repo.working_dir_deleted:
                 self.__data.append(('deleted', x))
                 changed.add(x)
-            print(self.show_unchanged)
             if self.show_unchanged:
                 for root, dirs, files in os.walk(self.mod.repo.path.abspath(), topdown=True):
                     dirs[:] = [d for d in dirs if d not in ['.git']]

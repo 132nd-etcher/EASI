@@ -57,5 +57,4 @@ class ModTypes:
     @staticmethod
     def enum_category_names():
         for cls in sorted(ModTypes.__iter__(), key=lambda x: x().sorting_weight):
-            print(cls)
             yield cls().category_name
