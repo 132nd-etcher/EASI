@@ -25,8 +25,13 @@ class Ui_Form(object):
         self.btn_view_files = QtWidgets.QPushButton(Form)
         self.btn_view_files.setObjectName("btn_view_files")
         self.verticalLayout.addWidget(self.btn_view_files)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.verticalLayout.addItem(spacerItem)
+        self.btn_trash_mod = QtWidgets.QPushButton(Form)
+        self.btn_trash_mod.setObjectName("btn_trash_mod")
+        self.verticalLayout.addWidget(self.btn_trash_mod)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
 
         self.retranslateUi(Form)
@@ -37,4 +42,5 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.btn_create_mod.setText(_translate("Form", "Create new mod"))
         self.btn_view_files.setText(_translate("Form", "View files"))
+        self.btn_trash_mod.setText(_translate("Form", "Remove mod"))
 

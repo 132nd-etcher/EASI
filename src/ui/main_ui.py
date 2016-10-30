@@ -2,7 +2,7 @@
 
 from queue import Queue
 
-from blinker_herald import signals, emit, SENDER_CLASS_NAME
+from blinker_herald import emit, SENDER_CLASS_NAME
 
 from src.low import constants
 from src.qt import QMainWindow, Qt, QIcon, qt_resources
@@ -12,12 +12,12 @@ from src.ui.dialog_feedback.dialog import FeedbackDialog
 from src.ui.dialog_msg.dialog import MsgDialog
 from src.ui.dialog_progress.dialog import ProgressDialog
 from src.ui.dialog_testing.dialog import TestingDialog
+from src.ui.form_table_own_mods.form import OwnModsTable
 from src.ui.mod_author import MainUiModAuthor
 from src.ui.skeletons.main import Ui_MainWindow
 from src.ui.splash.dialog import MainUiSplash
 from src.ui.threading import MainGuiThreading
 from src.ui.widget_balloon.widget import WidgetBalloon
-from src.ui.table_own_mods import TableOwnMods
 
 
 class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
@@ -41,7 +41,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.active_dcs_installation = MainUiActiveDCSInstallation(self)
         self.mod_author = MainUiModAuthor(self)  # TODO: remove
         self.feedback_dialog = FeedbackDialog(self)
-        self.own_mods = TableOwnMods(self)
+        self.own_mods = OwnModsTable(self)
         self.setup()
         self.connect_actions()
         self.setup_children_dialogs()
@@ -53,6 +53,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
                                  constants.APP_VERSION,
                                  constants.APP_RELEASE_NAME))
         self.setWindowIcon(QIcon(qt_resources.app_ico))
+        self.tab_own_mods.layout().addWidget(self.own_mods.qobj)
 
     def connect_actions(self):
         self.actionExit.triggered.connect(self.exit)
@@ -64,7 +65,6 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.active_dcs_installation.setup()
         self.config_dialog.setup()
         self.mod_author.setup()
-        self.own_mods.setup()
 
     @emit(sender=SENDER_CLASS_NAME)
     def show(self):
