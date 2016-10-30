@@ -31,8 +31,9 @@ class FormModMetadata(Ui_Form, QWidget):
             'min': (QAction('Minor (new features)', self), self.version_increment_minor),
             'pat': (QAction('Patch (bug fix)', self), self.version_increment_patch),
             'pre': (QAction('Prerelease (testing)', self), self.version_increment_prerelease),
+            'bui': (QAction('Build (increments)', self), self.version_increment_build),
         }
-        for action in ['maj', 'min', 'pat', 'pre']:
+        for action in ['maj', 'min', 'pat', 'pre', 'bui']:
             self.version_menu['menu'].addAction(self.version_menu[action][0])
             self.version_menu[action][0].triggered.connect(self.version_menu[action][1])
         self.btn_increment_version.setMenu(self.version_menu['menu'])
@@ -75,6 +76,9 @@ class FormModMetadata(Ui_Form, QWidget):
 
     def version_increment_prerelease(self):
         self.__version_bump(semver.bump_prerelease)
+
+    def version_increment_build(self):
+        self.__version_bump(semver.bump_build)
 
     def __pull_dcs_version(self, branch: DCSInstall):
         self.edit_dcs_version.setText(branch.version)
