@@ -53,6 +53,10 @@ class NewModDialog(BaseDialog):
     def __init__(self, mod_draft: ModDraft, parent=None):
         BaseDialog.__init__(self, _ModMetaDataDialog('New mod', 'Create', mod_draft, parent))
 
+    @property
+    def qobj(self) -> _ModMetaDataDialog:
+        return super(NewModDialog, self).qobj
+
     @staticmethod
     def make(mod_draft: ModDraft, parent=None):
         dialog = NewModDialog(mod_draft, parent).qobj
