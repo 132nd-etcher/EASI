@@ -153,15 +153,9 @@ class Repository:
             raise FileExistsError('repository already initialized')
         pygit2.init_repository(str(self.path.abspath()))
         repo = pygit2.Repository(str(self.path.joinpath('.git').abspath()))
-        # FIXME replace with actual metadata file
-        # with open(str(self.path.joinpath('file').abspath()), 'wb') as f:
-        #     f.write(os.urandom(1024))
-        sig = Signature('EASI', 'easi@easi.net')
-        author = sig
-        committer = sig
+        sig = Signature(GHSession().user.login, GHSession().primary_email.email)
+        author, committer = sig, sig
         index = repo.index
-        # index.add_all()
-        # index.write()
         tree = index.write_tree()
         repo.create_commit('refs/heads/master', author, committer, 'EASI: initial commit', tree, [])
         return repo
