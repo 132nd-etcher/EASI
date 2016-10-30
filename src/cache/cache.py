@@ -138,26 +138,26 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
 
     def on_created(self, event):
         if self.__filter_event(event):
-            logger.debug('created: {}'.format(event.src_path))
+            logger.debug('{}'.format(event.src_path))
             self.cache_build(event.src_path)
             self.cache_changed_event(CacheEvent('created', event.src_path))
 
     def on_modified(self, event):
         if self.__filter_event(event):
-            logger.debug('modified: {}'.format(event.src_path))
+            logger.debug('{}'.format(event.src_path))
             self.cache_build(event.src_path)
             self.cache_changed_event(CacheEvent('modified', event.src_path))
 
     def on_moved(self, event):
         if self.__filter_event(event):
-            logger.debug('moved: {} -> {}'.format(event.src_path, event.dest_path))
+            logger.debug('{} -> {}'.format(event.src_path, event.dest_path))
             del self.meta[event.src_path]
             self.cache_build(event.dest_path)
             self.cache_changed_event(CacheEvent('moved', event.src_path, event.dest_path))
 
     def on_deleted(self, event):
         if self.__filter_event(event):
-            logger.debug('deleted: {}'.format(event.src_path))
+            logger.debug('{}'.format(event.src_path))
             try:
                 del self.meta[event.src_path]
             except KeyError:
