@@ -17,7 +17,6 @@ try:
 except ImportError:
     from vault.empty_secret import Secret
 
-
 logger = make_logger(__name__)
 
 
