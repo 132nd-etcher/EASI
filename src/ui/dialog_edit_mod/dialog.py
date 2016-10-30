@@ -62,7 +62,10 @@ class NewModDialog(BaseDialog):
         dialog = NewModDialog(mod_draft, parent).qobj
         result = dialog.exec() == dialog.Accepted
         if not result:
-            os.remove(mod_draft.path)
+            try:
+                os.remove(mod_draft.path)
+            except FileNotFoundError:
+                pass
         return result
 
 
