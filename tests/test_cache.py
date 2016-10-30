@@ -93,12 +93,16 @@ class TestCache:
         signals.post_cache_changed_event.connect(got_signal)
 
         assert not os.path.exists(p.abspath())
+        assert p.abspath() not in c
         assert len(c) == 0
         p.write_text('')
         assert os.path.exists(p.abspath())
         qtbot.wait_until(lambda: signal_caught is True, timeout=5000)
 
         signals.post_cache_changed_event.disconnect(got_signal)
+
+        assert p.abspath() in c
+        assert os.path.exists(p.abspath())
 
     def test_on_deleted(self, tmpdir, qtbot):
         signal_caught = False
@@ -107,6 +111,7 @@ class TestCache:
         p.write_text('')
 
         c = Cache(td)
+        print(c.meta)
 
         def got_signal(sender, signal_emitter, event):
             nonlocal signal_caught
@@ -119,9 +124,11 @@ class TestCache:
             assert not p.abspath() in c
             signal_caught = True
 
+        assert os.path.exists(p.abspath())
+        assert os.path.relpath(p.abspath(), td)
         signals.post_cache_changed_event.connect(got_signal)
-
-        assert p.abspath() in c
+        print(p.abspath())
+        qtbot.wait_until(lambda: p.abspath() in c, timeout=5000)
         assert len(c) == 1
         p.remove()
         assert not os.path.exists(p.abspath())

@@ -83,6 +83,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
             self.__path.makedirs_p()
 
         def on_path_changed(_, value):
+            logger.warning('changing cache path to: {}'.format(value))
             self.path = value
             self.cache_build()
 
@@ -132,7 +133,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
     def __filter_event(event):
         if event.is_directory:
             return False
-        if '\\.git' in event.src_path:
+        if '\\.git\\' in event.src_path:
             return False
         return True
 
@@ -180,8 +181,8 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
             if rel_path is None:
                 logger.info('re-building whole cache folder')
                 self.meta = {}
-                for root, folder, _ in os.walk(self.path, topdown=True):
-                    folder[:] = [d for d in folder if d not in ['.git']]
+                for root, folders, _ in os.walk(self.path, topdown=True):
+                    folders[:] = [d for d in folders if d not in ['.git']]
                     for entry in os.scandir(root):
                         if entry.is_dir():
                             continue
@@ -189,15 +190,16 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                         abspath = os.path.join(self.path.dirname(), path)
                         name = entry.name
                         meta = CacheFile(name, abspath, path, entry.stat())
+                        self.meta[meta.path] = meta
                     for v in self.meta.values():
                         try:
                             v.get_crc32()
                         except FileNotFoundError:
+                            logger.debug('file not found, canceling')
                             del self.meta[v.path]
                         except PermissionError:
+                            logger.debug('permission error, canceling')
                             del self.meta[v.path]
-                        else:
-                            self.meta[meta.path] = meta
             else:
                 if '\\.git' in rel_path:
                     pass
@@ -217,6 +219,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                         self.meta[meta.path] = meta
         finally:
             self.__is_building = False
+            print('META_KEYS', self.meta.keys())
 
     @property
     def path(self) -> Path:
