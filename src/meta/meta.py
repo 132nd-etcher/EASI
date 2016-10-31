@@ -12,9 +12,6 @@ logger = make_logger(__name__)
 
 
 class Meta(AbstractMeta):
-    """
-    Intercepts all call made to "instance.some_value" and reroutes them to the "__data" attribute
-    """
 
     @property
     @abc.abstractproperty
