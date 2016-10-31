@@ -85,7 +85,7 @@ class _ModFilesDialog(QDialog, Ui_Dialog):
         self.setupUi(self)
         self.setWindowIcon(QIcon(qt_resources.app_ico))
         self.mod = mod
-        self.setWindowTitle('Showing single mod: {}'.format(mod.name))
+        self.setWindowTitle('Showing files for: {}'.format(mod.name))
         self.model = ModFilesModel(mod, self)
         self.proxy = QSortFilterProxyModel(self)
         self.proxy.setSourceModel(self.model)

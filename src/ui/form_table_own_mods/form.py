@@ -68,7 +68,7 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.btn_create_mod.clicked.connect(self.create_new_mod)
-        self.btn_view_files.clicked.connect(self.view_files)
+        self.btn_local_files.clicked.connect(self.view_files)
 
         # noinspection PyUnusedLocal
         def refresh_mod_list(sender, signal_emitter, *args, **kwargs):

@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import abc
+import os
 
 import semver
 
@@ -70,3 +71,10 @@ class BaseMod:
     def dcs_version(self, value: str) -> str:
         if not DCSVersion.is_valid(value):
             raise ValueError('not a valid DCS version: {}'.format(value))
+        
+    @property
+    def local_files(self):
+        for root, folders, files in os.walk(self.repo_path, topdown=True):
+            folders[:] = [d for d in folders if d not in ['.git']]
+            for file in files:
+                yield os.path.join(root, file)

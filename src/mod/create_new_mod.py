@@ -78,28 +78,3 @@ def create_new_mod(parent_qobj=constants.MAIN_UI):
             finalize(mod_draft)
             break
     logger.debug('outta the loop')
-
-
-# if __name__ == '__main__':
-#     Cache('./cache')
-#     # from src.mod.local_mod import LocalMod
-#     # logger.debug(LocalMod.drafts())
-#     # exit(0)
-#     from src.qt import QApplication
-#     from src.keyring.keyring import Keyring
-#     from src.rem.gh.gh_session import GHSession
-#     from src.dcs.dcs_installs import DCSInstalls
-#     import sys
-#
-#     qt_app = QApplication([])
-#     DCSInstalls().discover_dcs_installation()
-#     GHSession(Keyring().gh_token)
-#     create_new_mod('TyYH3y9VtEEaK6RNToXgRZ')
-#     # create_new_mod()
-#     sys.exit(qt_app.exec())
-#     sys.exit(0)
-#     exit(0)
-#     from src.keyring.keyring import Keyring
-#
-#     GHSession(Keyring().gh_token)
-#     create_new_mod()

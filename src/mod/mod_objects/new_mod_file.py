@@ -9,7 +9,8 @@ class UnknownDestination(Exception):
 class SrcModFile:
     # noinspection SpellCheckingInspection
     known_destinations = dict(
-        saved_games=['sg', 'saved games', 'saved_games', 'savedgames']
+        saved_games=['sg', 'saved games', 'saved_games', 'savedgames'],
+        dcs=['dcs']
     )
 
     special_files_handlers = {
