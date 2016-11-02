@@ -152,8 +152,9 @@ class Repository:
         return self.repo.walk(oid, sort_mode)
 
     @staticmethod
-    def clone(url, path, bare=False, repository=None, remote=None, checkout_branch=None, callbacks=None):
-        repo = pygit2.clone_repository(url, path, bare, repository, remote, checkout_branch, callbacks)
+    def clone(url, path, bare=False, repository=None, remote=None, checkout_branch='master', callbacks=None):
+        logger.debug('cloning "{}" into "{}"'.format(url, path))
+        repo = pygit2.clone_repository(url, path, bare, repository, remote, checkout_branch, callbacks or Callbacks())
         return repo
 
     def init(self):
@@ -174,6 +175,42 @@ class Repository:
     @property
     def remotes(self):
         return self.repo.remotes
+
+    def pull(self, remote_name='origin'):
+        for remote in self.remotes:
+            if remote.name == remote_name:
+                remote.fetch()
+                remote_master_id = self.repo.lookup_reference('refs/remotes/origin/master').target
+                merge_result, _ = self.repo.merge_analysis(remote_master_id)
+                # Up to date, do nothing
+                if merge_result & pygit2.GIT_MERGE_ANALYSIS_UP_TO_DATE:
+                    print('repository already up-to-date')
+                    return
+                # We can just fastforward
+                elif merge_result & pygit2.GIT_MERGE_ANALYSIS_FASTFORWARD:
+                    print('fast-forward to origin/master')
+                    self.repo.checkout_tree(self.repo.get(remote_master_id))
+                    master_ref = self.repo.lookup_reference('refs/heads/master')
+                    master_ref.set_target(remote_master_id)
+                    self.repo.head.set_target(remote_master_id)
+                # Need to check for conflicts
+                elif merge_result & pygit2.GIT_MERGE_ANALYSIS_NORMAL:
+                    print('merging origin/master')
+                    self.repo.merge(remote_master_id)
+                    print(self.repo.index.conflicts)
+
+                    assert self.repo.index.conflicts is None, 'Conflicts, ahhhh!'
+                    user = self.repo.default_signature
+                    tree = self.repo.index.write_tree()
+                    commit = self.repo.create_commit('HEAD',
+                                                     user,
+                                                     user,
+                                                     'auto-merge from origin',
+                                                     tree,
+                                                     [self.repo.head.target, remote_master_id])
+                    self.repo.state_cleanup()
+                else:
+                    raise AssertionError('Unknown merge analysis result')
 
 
 class Callbacks(pygit2.RemoteCallbacks):
