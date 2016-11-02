@@ -77,6 +77,6 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
 
 
 def init_keyring():
-    logger.info('keyring: initializing')
+    logger.info('initializing')
     Keyring()
-    logger.info('keyring: initialized')
+    logger.info('initialized')

@@ -119,7 +119,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
     @property
     def own_meta_repo_folder(self):
         if not GHSession().has_valid_token:
-            raise RuntimeError('GHSession has no valid token')
+            raise FileNotFoundError('GHSession has no valid token')
         p = Path(self.path.joinpath('own_meta_repo').joinpath(GHSession().user.login))
         if not p.exists():
             p.makedirs()
@@ -269,7 +269,7 @@ class CacheEventCatcher:
 
 
 def init_cache():
-    logger.info('initializing cache')
+    logger.info('initializing')
     from src.cfg import Config
     p = Path(Config().cache_path)
     logger.debug('cache will be in: {}'.format(p.abspath()))
@@ -277,4 +277,4 @@ def init_cache():
         logger.debug('directory does not exist, creating')
         p.makedirs()
     Cache(p)
-    logger.info('cache initialized')
+    logger.info('initialized')

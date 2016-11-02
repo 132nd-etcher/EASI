@@ -2,16 +2,18 @@
 
 from blinker_herald import signals
 
-from src.mod.create_new_mod import create_new_mod
-from src.mod.local_mod import LocalMod
-from src.mod.mod_objects.mod_base import BaseMod
+from src.sig import SIG_LOCAL_MOD_CHANGED
+from src.mod.mod import Mod
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
 from src.ui.base.qwidget import BaseQWidget
-from src.ui.dialog_confirm.dialog import ConfirmDialog
-from src.ui.dialog_edit_mod.dialog import EditModDialog
-from src.ui.dialog_mod_files.dialog import ModFilesDialog
 from src.ui.skeletons.form_own_mod_table import Ui_Form
+from src.low import constants
+from src.rem.gh.gh_session import GHSession
+from src.ui.dialog_confirm.dialog import ConfirmDialog
+from src.ui.dialog_gh_login.dialog import GHLoginDialog
+from src.ui.dialog_own_mod.dialog import OwnModDialog
+from src.mod.local_mod import LocalMod
 
 
 class OwnModModel(QAbstractTableModel):
@@ -23,14 +25,15 @@ class OwnModModel(QAbstractTableModel):
 
     def refresh_data(self):
         self.beginResetModel()
-        self.__data = [draft for draft in LocalMod.drafts()]
+        self.__data = [mod for mod in LocalMod()]
+        print([mod.meta.name for mod in self.__data])
         self.endResetModel()
 
     def data(self, index: QModelIndex, role=Qt.DisplayRole):
         if not index.isValid():
             return QVariant()
         if role == Qt.DisplayRole:
-            return getattr(self.__data[index.row()], self.columns_map[index.column()])
+            return getattr(self.__data[index.row()].meta, self.columns_map[index.column()])
         elif role == Qt.UserRole:
             return self.__data[index.row()]
         elif role == Qt.ForegroundRole:
@@ -65,52 +68,69 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.table.setSelectionMode(1)
         self.table.setSelectionBehavior(1)
         self.table.setSortingEnabled(True)
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.btn_create_mod.clicked.connect(self.create_new_mod)
-        self.btn_local_files.clicked.connect(self.view_files)
+        self.btn_details.clicked.connect(self.show_details_for_selected_mod)
+        self.btn_details.setEnabled(False)
 
         # noinspection PyUnusedLocal
-        def refresh_mod_list(sender, signal_emitter, *args, **kwargs):
-            if sender == 'MainUi':
-                self.model.refresh_data()
-                self.table.resizeColumnsToContents()
-                self.proxy.sort(0, Qt.AscendingOrder)
+        @signals.post_show.connect_via('MainUi', weak=False)
+        def refresh_mod_list(sender, *args, **kwargs):
+            self.model.refresh_data()
+            self.resize_columns()
 
-        # signals.post_cache_changed_event.connect(refresh_mod_list, weak=False)
-        signals.post_show.connect(refresh_mod_list, weak=False)
+        SIG_LOCAL_MOD_CHANGED.connect(refresh_mod_list, weak=False)
+        self.proxy.sort(0, Qt.AscendingOrder)
 
         self.connect_signals()
+
+    def resize_columns(self):
+        print('resizing columns')
+        for x in range(len(self.model.columns_map)):
+            self.table.horizontalHeader().setSectionResizeMode(x, QHeaderView.ResizeToContents)
+        self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
 
     # noinspection PyUnresolvedReferences
     def connect_signals(self):
         self.table.doubleClicked.connect(self.on_double_click)
         self.btn_trash_mod.clicked.connect(self.delete_mod)
+        self.table.clicked.connect(self.on_click)
 
     def delete_mod(self):
-        if ConfirmDialog.make('Are you sure you want to delete you want to trash {}?'.format(self.selected_mod.name)):
+        if ConfirmDialog.make(
+                'Are you sure you want to delete you want to delete "{}"?\n\n'
+                '(all files will be moved to the recycle bin)'.format(
+                    self.selected_mod.meta.name)):
             self.table.setUpdatesEnabled(False)
-            self.selected_mod.trash()
-            self.model.refresh_data()
+            LocalMod().trash_mod(self.selected_mod.meta.name)
             self.table.setUpdatesEnabled(True)
 
     def create_new_mod(self, _):
-        create_new_mod(self)
-        self.model.refresh_data()
-        self.proxy.sort(0, Qt.AscendingOrder)
-
-    def view_files(self):
-        ModFilesDialog(self.selected_mod, self)
+        if not GHSession().has_valid_token:
+            if ConfirmDialog.make('Creating a mod requires a valid Github account.<br><br>'
+                                  'Would you like to connect your Github account now?',
+                                  'Github account not connected'):
+                if not GHLoginDialog.make(constants.MAIN_UI):
+                    return
+            else:
+                return
+        OwnModDialog(None, self).qobj.exec()
+        self.resize_columns()
 
     @property
-    def selected_mod(self) -> BaseMod:
+    def selected_mod(self) -> Mod:
         return self.table.selectedIndexes()[0].data(Qt.UserRole)
 
-    def on_double_click(self, _):
-        EditModDialog.make(self.selected_mod, self)
+    def show_details_for_selected_mod(self):
+        OwnModDialog(self.selected_mod, self).qobj.exec()
+        self.resize_columns()
 
-    def show(self):
-        self.proxy.sort(0, Qt.AscendingOrder)
+    def on_double_click(self, _):
+        if isinstance(self.selected_mod, Mod):
+            self.show_details_for_selected_mod()
+
+    def on_click(self, _):
+        if isinstance(self.selected_mod, Mod):
+            self.btn_details.setEnabled(True)
 
 
 class OwnModsTable(BaseQWidget):

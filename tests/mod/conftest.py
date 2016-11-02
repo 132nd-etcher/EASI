@@ -2,7 +2,6 @@
 
 import pytest
 from shortuuid import uuid
-from src.mod.mod_objects.mod_draft import ModDraft
 
 
 # noinspection SpellCheckingInspection
@@ -23,8 +22,4 @@ def invalid_destination(request, tmpdir):
 def random_mod_name(request, tmpdir):
     yield request.param
     tmpdir.remove()
-
-@pytest.fixture()
-def mod_draft():
-    yield ModDraft(uuid())
 

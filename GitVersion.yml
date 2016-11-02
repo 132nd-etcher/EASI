@@ -25,7 +25,7 @@ branches:
     regex: dev(elop)?(ment)?$
     mode: ContinuousDeployment
     tag: dev
-    increment: Prerelease
+    increment: Inherit
     prevent-increment-of-merged-branch-version: false
     track-merge-target: true
     is-develop: true
@@ -34,7 +34,7 @@ branches:
     regex: releases?[/-]
     mode: ContinuousDelivery
     tag: rc
-    increment: Prerelease
+    increment: Inherit
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
     is-develop: false

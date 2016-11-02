@@ -27,16 +27,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_local_files">
+      <widget class="QPushButton" name="btn_details">
        <property name="text">
-        <string>Local files</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_remote_files">
-       <property name="text">
-        <string>Online Files</string>
+        <string>Details</string>
        </property>
       </widget>
      </item>

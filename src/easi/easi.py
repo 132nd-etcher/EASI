@@ -55,12 +55,12 @@ def check_cert():
 
 
 def init_sentry():
-    logger.info('sentry: initializing')
+    logger.info('initializing')
     from src.cfg import Config
     from src.sentry import crash_reporter
     logger.debug('sentry online: {}'.format(crash_reporter.state.ONLINE))
     crash_reporter.register_context('config', Config())
-    logger.info('sentry: initialized')
+    logger.info('initialized')
 
 
 def set_app_wide_font():
@@ -77,7 +77,7 @@ def set_app_wide_font():
 
 
 def init_qt_app():
-    logger.info('QApplication: starting')
+    logger.info('initializing')
     from src.ui.main_ui import MainUi
     if constants.QT_APP is False:
         logger.warn('starting MainUI *without* a QtApp object')
@@ -89,7 +89,7 @@ def init_qt_app():
         # set_app_wide_font()
         logger.debug('starting MainUI')
         MainUi()
-        logger.info('QApplication: started')
+        logger.info('initialized')
     from src.easi.gui_mode import connect_signals
     connect_signals()
 
@@ -114,25 +114,27 @@ def init_modules():
     """
     This should be run in a thread with QtApp started
     """
-    logger.info('start')
+    logger.info('INIT: start')
     import os
-    from src.upd import check_for_update
-    from src.keyring.keyring import init_keyring
-    from src.dcs.dcs_installs import init_dcs_installs
-    from src.rem import init_remotes
-    from src.helper import init_helpers
-    from src.cache.cache import init_cache
     if not os.getenv('APPVEYOR'):
+        from src.upd import check_for_update
         check_for_update()
+    from src.dcs.dcs_installs import init_dcs_installs
     init_dcs_installs()
+    from src.keyring.keyring import init_keyring
     init_keyring()
+    from src.rem import init_remotes
     init_remotes()
     if constants.TESTING:
         logger.debug('testing mode, skipping helpers download & cache init')
     else:
+        from src.helper import init_helpers
         init_helpers()
+    from src.cache.cache import init_cache
     init_cache()
-    logger.info('done')
+    from src.mod.local_mod import init_local_mods
+    init_local_mods()
+    logger.info('INIT: done')
 
 
 @emit(sender='main')

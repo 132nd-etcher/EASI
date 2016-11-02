@@ -27,7 +27,7 @@ class Repository:
     def __init__(self, path: str or Path, auto_init=True):
         if isinstance(path, str):
             path = Path(path)
-        self.path = path
+        self.__path = path
         self.debug('creating Repository object')
         if self.is_init:
             self.__repo = pygit2.Repository(str(self.path.joinpath('.git').abspath()))
@@ -49,6 +49,10 @@ class Repository:
     @property
     def repo(self) -> pygit2.Repository:
         return self.__repo
+
+    @property
+    def path(self):
+        return self.__path
 
     @property
     def is_init(self):
