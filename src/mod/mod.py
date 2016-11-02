@@ -25,20 +25,20 @@ class Mod:
         return self.repo.path
 
     @property
-    def meta_path(self) -> Path:
-        return self.meta.path
-
-    @property
-    def meta(self) -> ModMeta:
-        return self.__meta
-
-    @property
     def repo(self) -> Repository:
         if self.__repo is None:
             if self.meta.name == '':
                 raise ValueError('cannot create repo without a valid mod name')
             self.__repo = OwnModRepo(path=Path(Cache().own_mods_folder.joinpath(self.meta.name)))
         return self.__repo
+
+    @property
+    def meta_path(self) -> Path:
+        return self.meta.path
+
+    @property
+    def meta(self) -> ModMeta:
+        return self.__meta
 
     @property
     def has_changed(self):
