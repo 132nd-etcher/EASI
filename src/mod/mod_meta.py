@@ -11,6 +11,24 @@ class ModMeta(Meta):
     def meta_header(self):
         return 'EASI_MOD'
 
+    @property
+    def path(self):
+        return super(ModMeta, self).path
+
+    @path.setter
+    def path(self, value):
+        # noinspection PyAttributeOutsideInit
+        self.meta_repo_name = str(value.dirname().basename())
+        self._path = value
+
+    @MetaProperty(None, str)
+    def meta_repo_name(self, value: str) -> str:
+        """"""
+
+    @MetaProperty('', str)
+    def author(self, value: str) -> str:
+        """"""
+
     @MetaProperty('', str)
     def status(self, value: str) -> str:
         """"""

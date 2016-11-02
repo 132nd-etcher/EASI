@@ -17,7 +17,7 @@ from src.mod.local_mod import LocalMod
 
 
 class OwnModModel(QAbstractTableModel):
-    columns_map = ['name', 'category', 'version', 'dcs_version', 'status']
+    columns_map = ['name', 'author', 'category', 'version', 'dcs_version', 'status', 'meta_repo_name']
 
     def __init__(self, parent=None):
         QAbstractTableModel.__init__(self, parent)
