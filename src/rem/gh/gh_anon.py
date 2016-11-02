@@ -10,6 +10,7 @@ from src.rem.gh.gh_objects.gh_authorization import GHAuthorization
 from src.rem.gh.gh_objects.gh_release import GHRelease, GHAllReleases
 from src.rem.gh.gh_objects.gh_repo import GHRepoList, GHRepo
 from src.rem.gh.gh_objects.gh_user import GHUser
+from src.rem.gh.gh_objects.gh_ref import GHRef
 from src.low.custom_logging import make_logger
 
 try:
@@ -112,17 +113,21 @@ class GHAnonymousSession(requests.Session, metaclass=Singleton):
         self.build_req('repos', user, repo, 'releases', str(release_id), 'assets', str(asset_id))
         return GHAsset(self._get_json())
 
-    def list_user_repos(self, user: str):
+    def list_user_repos(self, user: str) -> GHRepoList:
         self.build_req('users', user, 'repos')
         return GHRepoList(self._get_json())
 
-    def get_repo(self, user: str, repo: str):
+    def get_repo(self, user: str, repo: str) -> GHRepo:
         self.build_req('repos', user, repo)
         return GHRepo(self._get_json())
 
-    def get_user(self, user: str):
+    def get_user(self, user: str) -> GHUser:
         self.build_req('users', user)
         return GHUser(self._get_json())
+
+    def get_ref(self, user: str, repo: str, branch: str) -> GHRef:
+        self.build_req('repos', user, repo, 'git', 'refs', 'heads', branch)
+        return GHRef(self._get_json())
 
     def list_authorizations(self, username, password) -> list:
 
