@@ -59,6 +59,23 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
         return self.status
 
     @property
+    def own_meta_repo(self):
+        if not self.status:
+            return None
+        try:
+            return self.get_repo('EASIMETA')
+        except FileNotFoundError:
+            self.create_repo(name='EASIMETA',
+                             description='Meta repository for EASI mods',
+                             auto_init=True)
+            ref = self.get_ref(self.user.login, 'EASIMETA', 'master')
+            sha = ref.object().sha
+            self.create_status('EASIMETA', sha, 'success',
+                               description='This commit was made by EASI',
+                               context='EASI')
+            return self.get_repo('EASIMETA')
+
+    @property
     def rate_limit(self):
         self.build_req('rate_limit')
         req = self._get()
@@ -123,7 +140,11 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
 
     def get_repo(self, repo_name: str, **_):
         self.build_req('repos', self.user.login, repo_name)
-        return GHRepo(self._get_json())
+        try:
+            return GHRepo(self._get_json())
+        except GHSessionError as e:
+            if e.msg.startswith('404'):
+                raise FileNotFoundError('repository does not exist')
 
     def create_pull_request(
             self,
