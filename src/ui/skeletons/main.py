@@ -121,7 +121,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuTesting.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tab_widget.setCurrentIndex(1)
+        self.tab_widget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
