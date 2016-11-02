@@ -5,7 +5,6 @@ from src.mod.mod import Mod
 
 
 class HostingProvider:
-
     def __init__(self):
         pass
 
@@ -13,5 +12,5 @@ class HostingProvider:
         pass
 
     @abc.abstractmethod
-    def upload_mod_files(selfself, mod: Mod):
+    def upload_mod_files(self, mod: Mod):
         """"""

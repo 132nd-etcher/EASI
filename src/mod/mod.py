@@ -3,13 +3,11 @@
 
 import os
 
-from send2trash import send2trash
-
 from src.cache.cache import Cache
-from src.mod.mod_repo import OwnModRepo
 from src.git.wrapper import Repository
 from src.low.custom_path import Path
 from src.mod.mod_meta import ModMeta
+from src.mod.mod_repo import OwnModRepo
 
 
 class Mod:

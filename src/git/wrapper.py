@@ -186,7 +186,7 @@ class Repository:
                 if merge_result & pygit2.GIT_MERGE_ANALYSIS_UP_TO_DATE:
                     print('repository already up-to-date')
                     return
-                # We can just fastforward
+                # We can just fast forward
                 elif merge_result & pygit2.GIT_MERGE_ANALYSIS_FASTFORWARD:
                     print('fast-forward to origin/master')
                     self.repo.checkout_tree(self.repo.get(remote_master_id))
@@ -202,12 +202,12 @@ class Repository:
                     assert self.repo.index.conflicts is None, 'Conflicts, ahhhh!'
                     user = self.repo.default_signature
                     tree = self.repo.index.write_tree()
-                    commit = self.repo.create_commit('HEAD',
-                                                     user,
-                                                     user,
-                                                     'auto-merge from origin',
-                                                     tree,
-                                                     [self.repo.head.target, remote_master_id])
+                    self.repo.create_commit('HEAD',
+                                            user,
+                                            user,
+                                            'auto-merge from origin',
+                                            tree,
+                                            [self.repo.head.target, remote_master_id])
                     self.repo.state_cleanup()
                 else:
                     raise AssertionError('Unknown merge analysis result')

@@ -16,7 +16,6 @@ from src.ui.widget_balloon.widget import WidgetBalloon
 
 
 class ModMetadataWidget(QWidget, Ui_Form):
-
     def __init__(self, mod: Mod or None, parent=None):
         QWidget.__init__(self, parent, flags=Qt.Widget)
         self.setupUi(self)
@@ -64,8 +63,8 @@ class ModMetadataWidget(QWidget, Ui_Form):
 
         def make_dcs_version_pull_menu():
 
-            def __pull_dcs_version( branch: DCSInstall):
-                self.edit_dcs_version.setText(branch.version)
+            def __pull_dcs_version(_branch: DCSInstall):
+                self.edit_dcs_version.setText(_branch.version)
 
             def pull_dcs_version_from_stable():
                 __pull_dcs_version(DCSInstalls().stable)
@@ -189,5 +188,3 @@ class ModMetadataWidget(QWidget, Ui_Form):
             self.btn_save.setEnabled(meta_changed and meta_is_valid)
         else:
             self.btn_save.setEnabled(meta_is_valid)
-
-

@@ -17,6 +17,7 @@ class _NewModNameDialog(QDialog):
         self.edit_name.setValidator(
             QRegExpValidator(QRegExp('.*[a-zA-Z]{4,}.*'), self.edit_name)
         )
+        # noinspection PyUnresolvedReferences
         self.edit_name.textChanged.connect(self.on_mod_name_changed)
         self.__layout.addWidget(self.edit_name, alignment=Qt.AlignCenter)
         self.error_label = QLabel('The name of your new mod must contain at least one string of 4 letters.')

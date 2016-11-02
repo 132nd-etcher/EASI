@@ -283,6 +283,7 @@ class TestGHSessionAuthentication:
             result = kwargs['result']
 
         Singleton.wipe_instances('GHSession')
+        # noinspection PyAttributeOutsideInit
         self.s = GHSession()
         qtbot.wait_until(lambda: result is None)
 
@@ -329,6 +330,7 @@ class TestGHSession:
             result = kwargs['result']
 
         Singleton.wipe_instances('GHSession')
+        # noinspection PyAttributeOutsideInit
         self.s = GHSession(secret.gh_test_token)
         qtbot.wait_until(lambda: result == secret.gh_test_login)
 

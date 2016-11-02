@@ -4,7 +4,6 @@ from src.git.wrapper import Repository
 
 
 class MetaRepo(Repository):
-
     def __init__(self, path):
         self.__repo = Repository.__init__(self, path, auto_init=False)
 

@@ -5,15 +5,13 @@ import os
 from blinker_herald import signals
 
 from src.cache.cache import CacheEvent
-from src.qt import QAbstractTableModel, QDialog, dialog_default_flags, Qt, QModelIndex, QVariant, QIcon, \
+from src.mod.mod import Mod
+from src.qt import QAbstractTableModel, QModelIndex, QVariant, QIcon, \
     qt_resources, QSortFilterProxyModel, QColor
+from src.qt import Qt, QWidget
 from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_long_input.dialog import LongInputDialog
-
-
 from src.ui.skeletons.form_mod_files import Ui_Form
-from src.qt import Qt, QWidget
-from src.mod.mod import Mod
 
 
 class ModFilesModel(QAbstractTableModel):

@@ -8,7 +8,6 @@ from src.cache.cache import Cache
 from src.low.custom_logging import make_logger
 from src.sig import SIG_LOCAL_MOD_CHANGED
 
-
 logger = make_logger(__name__)
 
 
@@ -66,7 +65,7 @@ class LocalMod(metaclass=Singleton):
 
     def mod_name_is_available(self, mod_name: str, mod_instance: Mod):
         for mod in self:
-            if mod.meta.name == mod_name and not mod is mod_instance:
+            if mod.meta.name == mod_name and mod is not mod_instance:
                 return False
         return True
 

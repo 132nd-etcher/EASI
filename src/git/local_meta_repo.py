@@ -1,20 +1,17 @@
 # coding=utf-8
 
 
-from src.low.singleton import Singleton
-from src.low.custom_logging import make_logger
 from src.cache.cache import Cache
 from src.git.meta_repo import MetaRepo
-from src.low.custom_path import Path
 from src.low.constants import EASIMETA_REPO_URL
+from src.low.custom_logging import make_logger
+from src.low.singleton import Singleton
 from src.rem.gh.gh_session import GHSession
-
 
 logger = make_logger(__name__)
 
 
 class LocalMetaRepo(metaclass=Singleton):
-
     def __init__(self):
         self.__repos = {}
         for repo in Cache().meta_repos_folder.listdir():
@@ -51,6 +48,7 @@ class LocalMetaRepo(metaclass=Singleton):
             return r'https://github.com/{}/EASIMETA.git'.format(GHSession().status)
         else:
             return None
+
 
 def init_local_meta_repo():
     logger.info('initializing')
