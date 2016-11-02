@@ -7,6 +7,8 @@ from src.mod.mod import Mod
 from src.cache.cache import Cache
 from src.low.custom_logging import make_logger
 from src.sig import SIG_LOCAL_MOD_CHANGED
+from src.git.local_meta_repo import LocalMetaRepo
+from src.rem.gh.gh_session import GHSession
 
 logger = make_logger(__name__)
 
@@ -15,9 +17,10 @@ class LocalMod(metaclass=Singleton):
     def __init__(self):
         self.__mods = {}
         try:
-            for mod_meta_path in Cache().own_meta_repo_folder.listdir(pattern='*.yml'):
-                mod = Mod(mod_meta_path)
-                self[mod.meta.name] = mod
+            for repo in LocalMetaRepo():
+                for mod_meta_path in repo.path.listdir(pattern='*.yml'):
+                    mod = Mod(mod_meta_path)
+                    self[mod.meta.name] = mod
         except FileNotFoundError:
             pass
 
@@ -26,13 +29,29 @@ class LocalMod(metaclass=Singleton):
             raise ValueError('mod already exists: {}'.format(mod_name))
         if not mod_name:
             raise ValueError('empty mod name')
+        if GHSession().status in [False, None]:
+            raise RuntimeError('no valid GHSession')
         mod = Mod(Cache().own_meta_repo_folder.joinpath('{}.yml'.format(mod_name)), delay_repo=True)
         mod.meta.uuid = uuid()
         mod.meta.name = mod_name
+        mod.meta.meta_repo_name = LocalMetaRepo().own_meta_repo_name
+        mod.meta.author = GHSession().status
         mod.meta.write()
         self[mod_name] = mod
         SIG_LOCAL_MOD_CHANGED.send()
         return mod
+
+    def move_meta(self, mod_name: str, new_repo_name):
+        mod = self[mod_name]
+        new_meta_path = Cache().meta_repos_folder.joinpath(new_repo_name).joinpath('{}.yml'.format(mod_name))
+        old_meta_path = mod.meta.path
+        # mod.meta.path.copy(new_meta_path)
+        mod.meta.path = new_meta_path
+        # mod.meta_repo_name = new_repo_name
+        # mod.meta.meta_repo_name = new_repo_name
+        mod.meta.write()
+        old_meta_path.remove()
+        SIG_LOCAL_MOD_CHANGED.send()
 
     def trash_mod(self, mod_name: str):
         mod = self[mod_name]

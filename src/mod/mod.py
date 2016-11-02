@@ -8,15 +8,28 @@ from src.git.wrapper import Repository
 from src.low.custom_path import Path
 from src.mod.mod_meta import ModMeta
 from src.mod.mod_repo import OwnModRepo
+from src.sig import SIG_LOCAL_MOD_CHANGED
 
 
 class Mod:
-    def __init__(self, meta_path, delay_repo=False):
-        self.__meta = ModMeta(path=meta_path)
+    def __init__(self, meta_path, *, init_meta: ModMeta = None, delay_repo=False):
+        if init_meta is None:
+            self.__meta = ModMeta(path=meta_path)
+        else:
+            self.__meta = ModMeta(path=meta_path, init_dict=init_meta.data)
         if not delay_repo:
             self.__repo = OwnModRepo(path=Path(Cache().own_mods_folder.joinpath(self.meta.name)))
         else:
             self.__repo = None
+        self.__meta_repo_name = str(self.meta.path.dirname().basename())
+
+    # @property
+    # def meta_repo_name(self):
+    #     return self.__meta_repo_name
+    #
+    # @meta_repo_name.setter
+    # def meta_repo_name(self, value: Path):
+    #     self.__meta_repo_name = value
 
     @property
     def repo_path(self) -> Path:

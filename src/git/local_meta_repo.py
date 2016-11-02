@@ -16,7 +16,6 @@ class LocalMetaRepo(metaclass=Singleton):
         self.__repos = {}
         for repo in Cache().meta_repos_folder.listdir():
             self.__repos[str(repo.basename())] = MetaRepo(repo)
-            print(self.__repos)
 
         if 'EASIMETA' not in self.__repos:
             self.__repos['EASIMETA'] = MetaRepo.clone(
@@ -31,14 +30,28 @@ class LocalMetaRepo(metaclass=Singleton):
                     self.own_meta_repo_path,
                 )
 
+    def __iter__(self) -> MetaRepo:
+        for repo in self.__repos.values():
+            yield repo
+
+    def repo_names(self):
+        return [repo_name for repo_name in self.__repos.keys()]
+
     @property
     def main_easi_meta_repo_path(self):
         return Cache().meta_repos_folder.joinpath('EASIMETA')
 
     @property
     def own_meta_repo_path(self):
+        if self.own_meta_repo_name:
+            return Cache().meta_repos_folder.joinpath(self.own_meta_repo_name)
+        else:
+            return None
+
+    @property
+    def own_meta_repo_name(self):
         if GHSession().status:
-            return Cache().meta_repos_folder.joinpath(GHSession().status)
+            return GHSession().status
         else:
             return None
 
