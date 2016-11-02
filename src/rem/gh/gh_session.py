@@ -138,8 +138,10 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
         self.build_req('user', 'repos')
         return GHRepoList(self._get_json())
 
-    def get_repo(self, repo_name: str, **_):
-        self.build_req('repos', self.user.login, repo_name)
+    def get_repo(self, repo_name: str, user: str = None, **_):
+        if user is None:
+            user = self.user.login
+        self.build_req('repos', user, repo_name)
         try:
             return GHRepo(self._get_json())
         except GHSessionError as e:
