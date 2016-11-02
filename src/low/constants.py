@@ -22,6 +22,8 @@ APP_STATUS = 'alpha'
 APP_RELEASE_NAME = 'Another Fine Product From The Nonsense Factory'
 APP_WEBSITE = r'https://github.com/132nd-etcher/EASI'
 
+EASIMETA_REPO_URL = r'https://github.com/EASIMETA/EASIMETA.git'
+
 GH_APP_USER = '132nd-etcher'
 GH_APP_REPO = 'EASI'
 GH_APP_REPO_TEST = 'EASI_tests'
