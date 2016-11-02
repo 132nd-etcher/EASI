@@ -117,6 +117,7 @@ class ModMetadataWidget(QWidget, Ui_Form):
         if self.mod is None:
             self.btn_save.setText('Create')
             self.edit_uuid.setText('-- pending creation --')
+            self.edit_mod_name.setFocus()
         else:
             self.edit_uuid.setText(self.mod.meta.uuid)
 
