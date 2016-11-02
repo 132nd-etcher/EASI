@@ -120,7 +120,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
     def own_meta_repo_folder(self):
         if not GHSession().has_valid_token:
             raise FileNotFoundError('GHSession has no valid token')
-        p = Path(self.path.joinpath('own_meta_repo').joinpath(GHSession().user.login))
+        p = Path(self.meta_repos_folder.joinpath(GHSession().user.login))
         if not p.exists():
             p.makedirs()
         return p
