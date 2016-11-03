@@ -20,8 +20,6 @@ class ModRemoteWidget(Ui_Form, QWidget):
 
     def set_combo_meta_to_mod_value(self):
         if self.mod is not None:
-            print('caribou',
-                self.combo_meta.findText(self.mod.meta.meta_repo_name, Qt.MatchExactly))
             self.combo_meta.setCurrentIndex(
                 self.combo_meta.findText(self.mod.meta.meta_repo_name, Qt.MatchExactly)
             )
