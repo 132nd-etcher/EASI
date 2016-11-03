@@ -1,15 +1,13 @@
 # coding=utf-8
 
 from blinker_herald import signals
-
-from src.git.local_meta_repo import LocalMetaRepo
-from src.git.meta_repo import MetaRepo
+from src.meta_repo.local_meta_repo import LocalMetaRepo
+from src.meta_repo.meta_repo import MetaRepo
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
 from src.sig import SIG_LOCAL_REPO_CHANGED
 from src.ui.base.qwidget import BaseQWidget
 from src.ui.skeletons.form_repository_table import Ui_Form
-from src.ui.dialog_input.dialog import InputDialog
 
 
 class MetaRepoModel(QAbstractTableModel):
@@ -21,7 +19,7 @@ class MetaRepoModel(QAbstractTableModel):
 
     def refresh_data(self):
         self.beginResetModel()
-        self.__data = [mod for mod in LocalMetaRepo()]
+        self.__data = [mod for mod in LocalMetaRepo().repos]
         self.endResetModel()
 
     def data(self, index: QModelIndex, role=Qt.DisplayRole):
@@ -110,7 +108,7 @@ class _OwnModsTable(Ui_Form, QWidget):
         if isinstance(self.selected_repo, MetaRepo):
             if any(
                     {self.selected_repo is LocalMetaRepo().own_meta_repo,
-                     self.selected_repo is LocalMetaRepo().main_easi_meta_repo}
+                     self.selected_repo is LocalMetaRepo().root_meta_repo}
             ):
                 self.btn_remove.setEnabled(False)
             else:

@@ -157,6 +157,13 @@ class Repository:
         repo = pygit2.clone_repository(url, path, bare, repository, remote, checkout_branch, callbacks or Callbacks())
         return repo
 
+    def clone_from(self, url, bare=False, remote=None, checkout_branch='master', callbacks=None):
+
+        def repo_callback(*_):
+            return self.repo
+
+        pygit2.clone_repository(url, self.path, bare, repo_callback, remote, checkout_branch, callbacks or Callbacks())
+
     def init(self):
         if self.is_init:
             raise FileExistsError('repository already initialized')

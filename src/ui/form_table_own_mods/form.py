@@ -13,11 +13,11 @@ from src.rem.gh.gh_session import GHSession
 from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_gh_login.dialog import GHLoginDialog
 from src.ui.dialog_own_mod.dialog import OwnModDialog
-from src.mod.local_mod import LocalMod
+from src.meta_repo.local_meta_repo import LocalMetaRepo
 
 
 class OwnModModel(QAbstractTableModel):
-    columns_map = ['name', 'author', 'category', 'version', 'dcs_version', 'status', 'meta_repo_name']
+    columns_map = ['name', 'author', 'category', 'version', 'dcs_version', 'status']
 
     def __init__(self, parent=None):
         QAbstractTableModel.__init__(self, parent)
@@ -25,7 +25,7 @@ class OwnModModel(QAbstractTableModel):
 
     def refresh_data(self):
         self.beginResetModel()
-        self.__data = [mod for mod in LocalMod()]
+        self.__data = list(LocalMetaRepo().mods)
         self.endResetModel()
 
     def data(self, index: QModelIndex, role=Qt.DisplayRole):
@@ -99,9 +99,10 @@ class _OwnModsTable(Ui_Form, QWidget):
                 'Are you sure you want to delete you want to delete "{}"?\n\n'
                 '(all files will be moved to the recycle bin)'.format(
                     self.selected_mod.meta.name)):
-            self.table.setUpdatesEnabled(False)
-            LocalMod().trash_mod(self.selected_mod.meta.name)
-            self.table.setUpdatesEnabled(True)
+            raise NotImplementedError('mod trash')
+            # self.table.setUpdatesEnabled(False)
+            # LocalMod().trash_mod(self.selected_mod.meta.name)
+            # self.table.setUpdatesEnabled(True)
 
     def create_new_mod(self, _):
         if not GHSession().has_valid_token:

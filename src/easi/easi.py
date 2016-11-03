@@ -132,9 +132,9 @@ def init_modules():
         init_helpers()
     from src.cache.cache import init_cache
     init_cache()
-    from src.mod.local_mod import init_local_mods
-    init_local_mods()
-    from src.git.local_meta_repo import init_local_meta_repo
+    # from src.mod.local_mod import init_local_mods
+    # init_local_mods()
+    from src.meta_repo.local_meta_repo import init_local_meta_repo
     init_local_meta_repo()
     logger.info('INIT: done')
 

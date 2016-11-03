@@ -4,9 +4,10 @@
 import semver
 
 from src.dcs.dcs_installs import DCSInstalls, DCSInstall
-from src.mod.dcs_version import DCSVersion
-from src.mod.local_mod import LocalMod
+# noinspection PyUnresolvedReferences
+from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.mod.mod import Mod
+from src.mod.dcs_version import DCSVersion
 from src.mod.mod_category import ModTypes
 from src.qt import QWidget
 from src.qt import Qt, QRegExp, QRegExpValidator, \
@@ -141,9 +142,10 @@ class ModMetadataWidget(QWidget, Ui_Form):
 
     def save_data_to_meta(self):
         if self.mod is None:
-            self.parent().mod = LocalMod().create_new_mod(self.edit_mod_name.text())
-            self.edit_uuid.setText(self.mod.meta.uuid)
-            self.btn_save.setText('Save')
+            raise NotImplementedError('make the user choose a repo first')
+            # self.parent().mod = LocalMod().create_new_mod(self.edit_mod_name.text())
+            # self.edit_uuid.setText(self.mod.meta.uuid)
+            # self.btn_save.setText('Save')
         self.mod.meta.name = self.edit_mod_name.text()
         self.mod.meta.category = self.combo_category.currentText()
         self.mod.meta.description = self.text_desc.toPlainText()
@@ -157,11 +159,12 @@ class ModMetadataWidget(QWidget, Ui_Form):
             self.error_widget.hide()
             self.error_widget = None
         if self.edit_mod_name.text():
-            if not LocalMod().mod_name_is_available(self.edit_mod_name.text(), self.mod):
-                self.error_widget = WidgetBalloon.error(
-                    self.edit_mod_name,
-                    'You already have another mod with that name.')
-                return
+            raise NotImplementedError('make the user choose a repo first')
+            # if not LocalMod().mod_name_is_available(self.edit_mod_name.text(), self.mod):
+            #     self.error_widget = WidgetBalloon.error(
+            #         self.edit_mod_name,
+            #         'You already have another mod with that name.')
+            #     return
         if self.edit_version.text():
             try:
                 semver.parse(self.edit_version.text())

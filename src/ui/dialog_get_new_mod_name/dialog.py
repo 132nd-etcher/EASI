@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from src.mod.local_mod import LocalMod
+from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.qt import QDialog, Qt, dialog_default_flags, QLineEdit, QLabel, QDialogButtonBox, QVBoxLayout, \
     QRegExp, QRegExpValidator
 from src.ui.base.qdialog import BaseDialog
@@ -36,7 +36,7 @@ class _NewModNameDialog(QDialog):
         if not self.edit_name.hasAcceptableInput():
             self.error_label.setText('The name of your new mod must contain at least one string of 4 letters.')
             self.btn_ok.setEnabled(False)
-        elif self.new_mod_name in LocalMod():
+        elif self.new_mod_name in LocalMetaRepo().mod_names:
             self.error_label.setText('You already have a mod with that name.')
             self.btn_ok.setEnabled(False)
         else:

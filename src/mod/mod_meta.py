@@ -11,19 +11,10 @@ class ModMeta(Meta):
     def meta_header(self):
         return 'EASI_MOD'
 
-    @property
-    def path(self):
-        return super(ModMeta, self).path
-
-    @path.setter
-    def path(self, value):
-        # noinspection PyAttributeOutsideInit
-        self.meta_repo_name = str(value.dirname().basename())
-        self._path = value
-
-    @MetaProperty(None, str)
-    def meta_repo_name(self, value: str) -> str:
-        """"""
+    def write(self):
+        if not self.name:
+            raise ValueError('can\'t write mod metadata without a name')
+        super(ModMeta, self).write()
 
     @MetaProperty('', str)
     def author(self, value: str) -> str:
@@ -60,15 +51,3 @@ class ModMeta(Meta):
     def dcs_version(self, value: str) -> str:
         if not DCSVersion.is_valid(value):
             raise ValueError('not a valid DCS version: {}'.format(value))
-
-    def write(self):
-        # for attr in ['name', 'version', 'category', 'dcs_version']:
-        #     if getattr(self, attr, '') == '':
-        #         raise ValueError('invalid mod {}: {}'.format(attr, getattr(self, attr, '')))
-        # try:
-        #     semver.parse(self.version)
-        # except ValueError:
-        #     raise ValueError('invalid mod version: {}'.format(self.version))
-        if not self.name:
-            raise ValueError('can\'t write mod metadata without a name')
-        super(ModMeta, self).write()
