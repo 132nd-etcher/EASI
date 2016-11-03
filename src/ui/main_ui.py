@@ -12,11 +12,12 @@ from src.ui.dialog_feedback.dialog import FeedbackDialog
 from src.ui.dialog_msg.dialog import MsgDialog
 from src.ui.dialog_progress.dialog import ProgressDialog
 from src.ui.dialog_testing.dialog import TestingDialog
-from src.ui.form_table_own_mods.form import OwnModsTable
+from src.ui.form_table_own_mods.form import ModEditor
 from src.ui.mod_author import MainUiModAuthor
 from src.ui.skeletons.main import Ui_MainWindow
 from src.ui.splash.dialog import MainUiSplash
 from src.ui.threading import MainGuiThreading
+from src.ui.form_table_repositories.form_table_repositories import MetaRepoTable
 from src.ui.widget_balloon.widget import WidgetBalloon
 
 
@@ -41,10 +42,20 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.active_dcs_installation = MainUiActiveDCSInstallation(self)
         self.mod_author = MainUiModAuthor(self)  # TODO: remove
         self.feedback_dialog = FeedbackDialog(self)
-        self.own_mods = OwnModsTable(self)
+        # self.meta_repos = MetaRepoTable(self)
+        # self.own_mods = ModEditor(self)
+        self.repos = MetaRepoTable(self)
+        self.editor = ModEditor(self)
         self.setup()
         self.connect_actions()
         self.setup_children_dialogs()
+        self.show_widget(self.editor.qobj)
+        self.btn_editor.setChecked(True)
+
+    def show_widget(self, widget):
+        self.repos.qobj.hide()
+        self.editor.qobj.hide()
+        widget.show()
 
     def setup(self):
         self.setupUi(self)
@@ -53,13 +64,16 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
                                  constants.APP_VERSION,
                                  constants.APP_RELEASE_NAME))
         self.setWindowIcon(QIcon(qt_resources.app_ico))
-        self.tab_own_mods.layout().addWidget(self.own_mods.qobj)
+        self.main_layout.addWidget(self.repos.qobj)
+        self.main_layout.addWidget(self.editor.qobj)
 
     def connect_actions(self):
         self.actionExit.triggered.connect(self.exit)
         self.actionEASI_Settings.triggered.connect(self.config_dialog.show)
         self.actionFeedback.triggered.connect(self.feedback_dialog.show)
         self.actionTest_dialog.triggered.connect(self.testing_dialog.show)
+        self.btn_editor.clicked.connect(lambda: self.show_widget(self.editor.qobj))
+        self.btn_repos.clicked.connect(lambda: self.show_widget(self.repos.qobj))
 
     def setup_children_dialogs(self):
         self.active_dcs_installation.setup()

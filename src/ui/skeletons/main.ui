@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1">
     <item>
      <widget class="QGroupBox" name="group_active_dcs_installation">
       <property name="title">
@@ -106,51 +106,95 @@
      </widget>
     </item>
     <item>
-     <widget class="QTabWidget" name="tab_widget">
-      <property name="currentIndex">
-       <number>2</number>
-      </property>
-      <property name="documentMode">
-       <bool>false</bool>
-      </property>
-      <widget class="QWidget" name="tab_mods">
-       <attribute name="title">
-        <string>Available mods</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="spacing">
-         <number>6</number>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QToolButton" name="btn_mods">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="leftMargin">
-         <number>9</number>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
         </property>
-        <property name="topMargin">
-         <number>9</number>
+        <property name="text">
+         <string>Mods</string>
         </property>
-        <property name="rightMargin">
-         <number>9</number>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
-        <property name="bottomMargin">
-         <number>9</number>
+        <property name="autoExclusive">
+         <bool>true</bool>
         </property>
-        <item>
-         <widget class="QTableView" name="table_mods"/>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab_repos">
-       <attribute name="title">
-        <string>Repositories</string>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout"/>
-      </widget>
-      <widget class="QWidget" name="tab_own_mods">
-       <attribute name="title">
-        <string>My mods</string>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_3"/>
-      </widget>
-     </widget>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="btn_repos">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Repositories</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="btn_editor">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Mod editor</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="main_layout"/>
     </item>
    </layout>
   </widget>
