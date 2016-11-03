@@ -30,9 +30,20 @@ class LocalMetaRepo(metaclass=Singleton):
                     self.own_meta_repo_path,
                 )
 
+        for repo in self:
+            repo.pull()
+
     def __iter__(self) -> MetaRepo:
         for repo in self.__repos.values():
             yield repo
+
+    @property
+    def own_meta_repo(self):
+        return self.__repos[GHSession().status]
+
+    @property
+    def main_easi_meta_repo(self):
+        return self.__repos['EASIMETA']
 
     def repo_names(self):
         return [repo_name for repo_name in self.__repos.keys()]

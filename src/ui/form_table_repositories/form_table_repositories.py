@@ -2,22 +2,18 @@
 
 from blinker_herald import signals
 
-from src.sig import SIG_LOCAL_MOD_CHANGED
-from src.mod.mod import Mod
+from src.git.local_meta_repo import LocalMetaRepo
+from src.git.meta_repo import MetaRepo
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
+from src.sig import SIG_LOCAL_REPO_CHANGED
 from src.ui.base.qwidget import BaseQWidget
-from src.ui.skeletons.form_own_mod_table import Ui_Form
-from src.low import constants
-from src.rem.gh.gh_session import GHSession
-from src.ui.dialog_confirm.dialog import ConfirmDialog
-from src.ui.dialog_gh_login.dialog import GHLoginDialog
-from src.ui.dialog_own_mod.dialog import OwnModDialog
-from src.mod.local_mod import LocalMod
+from src.ui.skeletons.form_repository_table import Ui_Form
+from src.ui.dialog_input.dialog import InputDialog
 
 
-class OwnModModel(QAbstractTableModel):
-    columns_map = ['name', 'author', 'category', 'version', 'dcs_version', 'status', 'meta_repo_name']
+class MetaRepoModel(QAbstractTableModel):
+    columns_map = ['name', 'push_perm']
 
     def __init__(self, parent=None):
         QAbstractTableModel.__init__(self, parent)
@@ -25,14 +21,14 @@ class OwnModModel(QAbstractTableModel):
 
     def refresh_data(self):
         self.beginResetModel()
-        self.__data = [mod for mod in LocalMod()]
+        self.__data = [mod for mod in LocalMetaRepo()]
         self.endResetModel()
 
     def data(self, index: QModelIndex, role=Qt.DisplayRole):
         if not index.isValid():
             return QVariant()
         if role == Qt.DisplayRole:
-            return getattr(self.__data[index.row()].meta, self.columns_map[index.column()])
+            return getattr(self.__data[index.row()], self.columns_map[index.column()])
         elif role == Qt.UserRole:
             return self.__data[index.row()]
         elif role == Qt.ForegroundRole:
@@ -51,14 +47,14 @@ class OwnModModel(QAbstractTableModel):
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:
             return QVariant(str(self.columns_map[col]).capitalize().replace('_', ' '))
         else:
-            return super(OwnModModel, self).headerData(col, orientation, role)
+            return super(MetaRepoModel, self).headerData(col, orientation, role)
 
 
 class _OwnModsTable(Ui_Form, QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent, flags=Qt.Widget)
         self.setupUi(self)
-        self.model = OwnModModel(self)
+        self.model = MetaRepoModel(self)
         self.proxy = QSortFilterProxyModel(self)
         self.proxy.setSourceModel(self.model)
         self.table.setModel(self.proxy)
@@ -67,9 +63,6 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.table.setSelectionMode(1)
         self.table.setSelectionBehavior(1)
         self.table.setSortingEnabled(True)
-        self.btn_create_mod.clicked.connect(self.create_new_mod)
-        self.btn_details.clicked.connect(self.show_details_for_selected_mod)
-        self.btn_details.setEnabled(False)
 
         # noinspection PyUnusedLocal
         @signals.post_show.connect_via('MainUi', weak=False)
@@ -77,10 +70,11 @@ class _OwnModsTable(Ui_Form, QWidget):
             self.model.refresh_data()
             self.resize_columns()
 
-        SIG_LOCAL_MOD_CHANGED.connect(refresh_mod_list, weak=False)
+        SIG_LOCAL_REPO_CHANGED.connect(refresh_mod_list, weak=False)
         self.proxy.sort(0, Qt.AscendingOrder)
 
         self.connect_signals()
+        self.btn_remove.setEnabled(False)
 
     def resize_columns(self):
         print('resizing columns')
@@ -91,47 +85,39 @@ class _OwnModsTable(Ui_Form, QWidget):
     # noinspection PyUnresolvedReferences
     def connect_signals(self):
         self.table.doubleClicked.connect(self.on_double_click)
-        self.btn_trash_mod.clicked.connect(self.delete_mod)
         self.table.clicked.connect(self.on_click)
+        self.btn_add.clicked.connect(self.add_repository)
+        self.btn_remove.clicked.connect(self.remove_repository)
 
-    def delete_mod(self):
-        if ConfirmDialog.make(
-                'Are you sure you want to delete you want to delete "{}"?\n\n'
-                '(all files will be moved to the recycle bin)'.format(
-                    self.selected_mod.meta.name)):
-            self.table.setUpdatesEnabled(False)
-            LocalMod().trash_mod(self.selected_mod.meta.name)
-            self.table.setUpdatesEnabled(True)
+    def add_repository(self):
+        raise NotImplementedError
 
-    def create_new_mod(self, _):
-        if not GHSession().has_valid_token:
-            if ConfirmDialog.make('Creating a mod requires a valid Github account.<br><br>'
-                                  'Would you like to connect your Github account now?',
-                                  'Github account not connected'):
-                if not GHLoginDialog.make(constants.MAIN_UI):
-                    return
-            else:
-                return
-        OwnModDialog(None, self).qobj.exec()
-        self.resize_columns()
+    def remove_repository(self):
+        raise NotImplementedError
 
     @property
-    def selected_mod(self) -> Mod:
+    def selected_repo(self) -> MetaRepo:
         return self.table.selectedIndexes()[0].data(Qt.UserRole)
 
     def show_details_for_selected_mod(self):
-        OwnModDialog(self.selected_mod, self).qobj.exec()
         self.resize_columns()
 
     def on_double_click(self, _):
-        if isinstance(self.selected_mod, Mod):
+        if isinstance(self.selected_repo, MetaRepo):
             self.show_details_for_selected_mod()
 
     def on_click(self, _):
-        if isinstance(self.selected_mod, Mod):
+        if isinstance(self.selected_repo, MetaRepo):
+            if any(
+                    {self.selected_repo is LocalMetaRepo().own_meta_repo,
+                     self.selected_repo is LocalMetaRepo().main_easi_meta_repo}
+            ):
+                self.btn_remove.setEnabled(False)
+            else:
+                self.btn_remove.setEnabled(True)
             self.btn_details.setEnabled(True)
 
 
-class ModEditor(BaseQWidget):
+class MetaRepoTable(BaseQWidget):
     def __init__(self, parent=None):
         BaseQWidget.__init__(self, _OwnModsTable(parent))

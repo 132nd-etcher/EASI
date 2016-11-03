@@ -20,16 +20,16 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPushButton" name="btn_create_mod">
+      <widget class="QPushButton" name="btn_add">
        <property name="text">
-        <string>Create new mod</string>
+        <string>Add</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_details">
+      <widget class="QPushButton" name="btn_remove">
        <property name="text">
-        <string>Details</string>
+        <string>Remove</string>
        </property>
       </widget>
      </item>
@@ -50,9 +50,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_trash_mod">
+      <widget class="QPushButton" name="btn_details">
        <property name="text">
-        <string>Remove mod</string>
+        <string>Details</string>
        </property>
       </widget>
      </item>
