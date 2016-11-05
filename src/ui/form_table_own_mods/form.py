@@ -12,7 +12,7 @@ from src.low import constants
 from src.rem.gh.gh_session import GHSession
 from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_gh_login.dialog import GHLoginDialog
-from src.ui.dialog_own_mod.dialog import OwnModDialog
+from src.ui.dialog_own_mod.dialog import ModDetailsDialog
 from src.meta_repo.local_meta_repo import LocalMetaRepo
 
 
@@ -113,7 +113,7 @@ class _OwnModsTable(Ui_Form, QWidget):
                     return
             else:
                 return
-        OwnModDialog(None, self).qobj.exec()
+        ModDetailsDialog(None, self.selected_meta_repo, self).qobj.exec()
         self.resize_columns()
 
     @property
@@ -121,7 +121,7 @@ class _OwnModsTable(Ui_Form, QWidget):
         return self.table.selectedIndexes()[0].data(Qt.UserRole)
 
     def show_details_for_selected_mod(self):
-        OwnModDialog(self.selected_mod, self).qobj.exec()
+        ModDetailsDialog(self.selected_mod, self.selected_meta_repo, self).qobj.exec()
         self.resize_columns()
 
     def on_double_click(self, _):

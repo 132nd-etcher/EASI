@@ -5,11 +5,11 @@ from src.ui.base.qdialog import BaseDialog
 from src.ui.widget_git_files.widget import GitFilesWidget
 from src.ui.dialog_own_mod.widget_mod_metadata import ModMetadataWidget
 from src.ui.dialog_own_mod.widget_mod_remote import ModRemoteWidget
-from src.ui.skeletons.form_own_mod_view import Ui_Form
+from src.ui.skeletons.form_mod_details import Ui_Form
 from src.mod.mod import Mod
 
 
-class _OwnModDialog(QDialog, Ui_Form):
+class _ModDetailsDialog(QDialog, Ui_Form):
     def __init__(self, mod: Mod or None, parent=None):
         QDialog.__init__(self, parent, flags=dialog_default_flags)
         self.setupUi(self)
@@ -52,7 +52,7 @@ class _OwnModDialog(QDialog, Ui_Form):
         widget.setHidden(False)
 
 
-class OwnModDialog(BaseDialog):
+class ModDetailsDialog(BaseDialog):
     def __init__(self, mod: Mod or None, parent=None):
-        BaseDialog.__init__(self, _OwnModDialog(mod, parent))
+        BaseDialog.__init__(self, _ModDetailsDialog(mod, parent))
         self.qobj.show()

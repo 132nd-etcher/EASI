@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'F:\DEV\EASI\EASIv0.0.11\src\ui\skeletons\form_own_mod_view.ui'
+# Form implementation generated from reading ui file 'F:\DEV\EASI\EASIv0.0.11\src\ui\skeletons\form_repo_details.ui'
 #
 # Created by: PyQt5 UI code generator 5.7
 #
@@ -17,21 +17,6 @@ class Ui_Form(object):
         self.layout_tabs = QtWidgets.QHBoxLayout()
         self.layout_tabs.setSpacing(0)
         self.layout_tabs.setObjectName("layout_tabs")
-        self.btn_metadata = QtWidgets.QToolButton(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(2)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_metadata.sizePolicy().hasHeightForWidth())
-        self.btn_metadata.setSizePolicy(sizePolicy)
-        self.btn_metadata.setMinimumSize(QtCore.QSize(90, 30))
-        self.btn_metadata.setCheckable(True)
-        self.btn_metadata.setChecked(False)
-        self.btn_metadata.setAutoExclusive(True)
-        self.btn_metadata.setPopupMode(QtWidgets.QToolButton.DelayedPopup)
-        self.btn_metadata.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
-        self.btn_metadata.setAutoRaise(True)
-        self.btn_metadata.setObjectName("btn_metadata")
-        self.layout_tabs.addWidget(self.btn_metadata)
         self.btn_local_files = QtWidgets.QToolButton(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(2)
@@ -47,21 +32,6 @@ class Ui_Form(object):
         self.btn_local_files.setAutoRaise(True)
         self.btn_local_files.setObjectName("btn_local_files")
         self.layout_tabs.addWidget(self.btn_local_files)
-        self.btn_remote = QtWidgets.QToolButton(Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(2)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_remote.sizePolicy().hasHeightForWidth())
-        self.btn_remote.setSizePolicy(sizePolicy)
-        self.btn_remote.setMinimumSize(QtCore.QSize(90, 30))
-        self.btn_remote.setCheckable(True)
-        self.btn_remote.setChecked(False)
-        self.btn_remote.setAutoExclusive(True)
-        self.btn_remote.setPopupMode(QtWidgets.QToolButton.DelayedPopup)
-        self.btn_remote.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
-        self.btn_remote.setAutoRaise(True)
-        self.btn_remote.setObjectName("btn_remote")
-        self.layout_tabs.addWidget(self.btn_remote)
         self.verticalLayout.addLayout(self.layout_tabs)
         self.line = QtWidgets.QFrame(Form)
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
@@ -79,7 +49,5 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.btn_metadata.setText(_translate("Form", "Metadata"))
         self.btn_local_files.setText(_translate("Form", "Local files"))
-        self.btn_remote.setText(_translate("Form", "Remote"))
 
