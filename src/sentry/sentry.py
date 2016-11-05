@@ -12,6 +12,7 @@ from src.cfg import Config
 from src.rem.gh.gh_session import GHSession
 from src.low import constants
 from src.low.custom_logging import make_logger
+from src.low.singleton import Singleton
 
 try:
     from vault.secret import Secret
@@ -21,7 +22,7 @@ except ImportError:
 logger = make_logger(__name__)
 
 
-class Sentry(raven.Client):
+class Sentry(raven.Client, metaclass=Singleton):
     def __init__(self):
         self.registered_contexts = {}
         if Secret.sentry_dsn is not None:
