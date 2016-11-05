@@ -5,9 +5,9 @@ import os
 import shutil
 import tempfile
 import win32api
-import pywintypes
 
 import path
+import pywintypes
 from humanize import filesize
 
 
@@ -99,7 +99,6 @@ class Win32FileInfo:
 
 # noinspection PyAbstractClass
 class Path(path.Path):
-
     def crc32(self):
 
         if not self.isfile():
@@ -153,6 +152,10 @@ class Path(path.Path):
             raise TypeError('not a directory: {}'.format(self.abspath()))
         if must_exist and not self.exists():
             raise ValueError('directory does not exist: {}'.format(self.abspath()))
+        for root, dirnames, filenames in os.walk(str(self.abspath())):
+            for file in filenames:
+                os.chmod(root + '\\' + file, 0o777)
+                os.remove(root + '\\' + file)
         shutil.rmtree(self.abspath())
 
 
