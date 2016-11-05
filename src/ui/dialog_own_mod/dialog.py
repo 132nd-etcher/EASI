@@ -7,13 +7,17 @@ from src.ui.dialog_own_mod.widget_mod_metadata import ModMetadataWidget
 from src.ui.dialog_own_mod.widget_mod_remote import ModRemoteWidget
 from src.ui.skeletons.form_mod_details import Ui_Form
 from src.mod.mod import Mod
+from src.meta_repo.meta_repo import MetaRepo
 
 
 class _ModDetailsDialog(QDialog, Ui_Form):
-    def __init__(self, mod: Mod or None, parent=None):
+    def __init__(self, mod: Mod or None, meta_repo: MetaRepo, parent=None):
         QDialog.__init__(self, parent, flags=dialog_default_flags)
         self.setupUi(self)
         self.__mod = mod
+        if mod is not None:
+            self.setWindowTitle(mod.meta.name)
+        self.__meta_repo = meta_repo
         self.metadata_widget = ModMetadataWidget(self.mod, self)
         self.files_widget = GitFilesWidget(self.mod.repo, self)
         self.remote_widget = ModRemoteWidget(self.mod, self)
@@ -29,15 +33,20 @@ class _ModDetailsDialog(QDialog, Ui_Form):
         self.mod = mod
 
     @property
+    def meta_repo(self) -> MetaRepo:
+        return self.__meta_repo
+
+    @property
     def mod(self):
         return self.__mod
 
     @mod.setter
-    def mod(self, value):
+    def mod(self, value: Mod):
         self.__mod = value
         if value is None:
             self.btn_local_files.setEnabled(False)
             self.btn_remote.setEnabled(False)
+            self.setWindowTitle(value.meta.name)
         else:
             self.btn_local_files.setEnabled(True)
             self.btn_remote.setEnabled(True)
@@ -53,6 +62,6 @@ class _ModDetailsDialog(QDialog, Ui_Form):
 
 
 class ModDetailsDialog(BaseDialog):
-    def __init__(self, mod: Mod or None, parent=None):
-        BaseDialog.__init__(self, _ModDetailsDialog(mod, parent))
+    def __init__(self, mod: Mod or None, meta_repo: MetaRepo, parent=None):
+        BaseDialog.__init__(self, _ModDetailsDialog(mod, meta_repo, parent))
         self.qobj.show()
