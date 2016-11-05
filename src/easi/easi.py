@@ -109,6 +109,23 @@ def show_disclaimer():
         logger.info('disclaimer: done')
 
 
+def delete_pending():
+    logger.info('processing')
+    from src.cfg.cfg import Config
+    to_del = Config().to_del
+    while to_del:
+        from src.low.custom_path import Path
+        assert isinstance(to_del, set)
+        path = Path(to_del.pop())
+        logger.debug('removing: {}'.format(path.abspath()))
+        if path.isdir():
+            path.rmtree()
+        elif path.isfile():
+            path.remove()
+    Config().to_del = to_del
+    logger.info('done')
+
+
 @emit(sender=lambda func: func.__name__)
 def init_modules():
     """
@@ -177,6 +194,7 @@ def start_gui():
         init_sentry()
         init_qt_app()
         show_disclaimer()
+        delete_pending()
         start_app()
 
     except SystemExit:

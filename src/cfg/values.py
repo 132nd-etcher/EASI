@@ -34,6 +34,10 @@ class ConfigValues:
         """"""
 
     @MetaProperty(set(), set)
+    def to_del(self, value: set):
+        """"""
+
+    @MetaProperty(set(), set)
     def ack(self, value: set):
         """List of acknowledged disclaimers & info"""
 
