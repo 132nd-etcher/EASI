@@ -5,45 +5,45 @@ import os
 from blinker_herald import signals
 
 from src.cache.cache import CacheEvent
-from src.mod.mod import Mod
+from src.git.wrapper import Repository
 from src.qt import QAbstractTableModel, QModelIndex, QVariant, QIcon, \
     qt_resources, QSortFilterProxyModel, QColor
 from src.qt import Qt, QWidget
 from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_long_input.dialog import LongInputDialog
-from src.ui.skeletons.form_mod_files import Ui_Form
+from src.ui.skeletons.form_git_files import Ui_Form
 
 
-class ModFilesModel(QAbstractTableModel):
-    def __init__(self, mod: Mod, parent):
+class GitFilesModel(QAbstractTableModel):
+    def __init__(self, repo: Repository, parent):
         QAbstractTableModel.__init__(self, parent)
         self.__data = []
-        self.mod = mod
+        self.repo = repo
         self.show_unchanged = False
 
     def refresh_data(self):
         self.beginResetModel()
         self.__data = []
-        if self.mod is not None:
-            assert isinstance(self.mod, Mod)
+        if self.repo is not None:
+            assert isinstance(self.repo, Repository)
             changed = set()
-            for x in self.mod.repo.working_dir_new:
+            for x in self.repo.working_dir_new:
                 self.__data.append(('new', x))
                 changed.add(x)
-            for x in self.mod.repo.working_dir_modified:
+            for x in self.repo.working_dir_modified:
                 self.__data.append(('modified', x))
                 changed.add(x)
-            for x in self.mod.repo.working_dir_deleted:
+            for x in self.repo.working_dir_deleted:
                 self.__data.append(('deleted', x))
                 changed.add(x)
             if self.show_unchanged:
-                for root, dirs, files in os.walk(self.mod.repo.path.abspath(), topdown=True):
+                for root, dirs, files in os.walk(self.repo.path.abspath(), topdown=True):
                     dirs[:] = [d for d in dirs if d not in ['.git']]
                     if root == '.git':
                         continue
                     for file in files:
                         file_path = os.path.join(root, file)
-                        rel_path = os.path.relpath(file_path, self.mod.repo.path.abspath()).replace('\\', '/')
+                        rel_path = os.path.relpath(file_path, self.repo.path.abspath()).replace('\\', '/')
                         if rel_path not in changed:
                             self.__data.append(('unchanged', rel_path))
         self.endResetModel()
@@ -76,26 +76,25 @@ class ModFilesModel(QAbstractTableModel):
                 return 'Status'
             elif column == 1:
                 return 'File path'
-        return super(ModFilesModel, self).headerData(column, orientation, role)
+        return super(GitFilesModel, self).headerData(column, orientation, role)
 
 
-class ModFilesWidget(QWidget, Ui_Form):
-    def __init__(self, mod: Mod or None, parent=None):
+class GitFilesWidget(QWidget, Ui_Form):
+    def __init__(self, repo: Repository, parent=None):
         QWidget.__init__(self, parent, flags=Qt.Widget)
         self.setupUi(self)
         self.setWindowIcon(QIcon(qt_resources.app_ico))
-        self.__mod = mod
-        self.model = ModFilesModel(self.mod, self)
+        self.__repo = repo
+        self.model = GitFilesModel(self.repo, self)
         self.proxy = QSortFilterProxyModel(self)
         self.proxy.setSourceModel(self.model)
         self.table.setModel(self.proxy)
-        # self.table.horizontalHeader().hide()
         self.table.verticalHeader().hide()
         self.table.setColumnWidth(0, 80)
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.setSelectionBehavior(1)
         self.table.setSelectionMode(1)
-        self.btn_open.clicked.connect(self.open_mod_folder)
+        self.btn_open.clicked.connect(self.open_repo_folder)
         self.btn_accept.clicked.connect(self.commit_changes)
         self.btn_reset.clicked.connect(self.reset_changes)
         self.check_show_unchanged.clicked.connect(self.show_unchanged)
@@ -104,65 +103,66 @@ class ModFilesWidget(QWidget, Ui_Form):
 
         # noinspection PyUnusedLocal
         def cache_signal_handler(sender, signal_emitter, event: CacheEvent):
-            if self.mod is None:
+            if self.repo is None:
                 return
-            if str(event.src.abspath()).startswith(str(self.mod.repo.path.abspath())):
+            if str(event.src.abspath()).startswith(str(self.repo.path.abspath())):
                 self.model.refresh_data()
 
         self.cache_signal_handler = cache_signal_handler
 
     @property
-    def mod(self):
-        return self.__mod
+    def repo(self):
+        return self.__repo
 
-    @mod.setter
-    def mod(self, value):
-        self.__mod = value
-        self.model.mod = value
+    @repo.setter
+    def repo(self, value):
+        self.__repo = value
+        self.model.repo = value
 
     def show_unchanged(self, value: bool):
         self.model.show_unchanged = value
         self.model.refresh_data()
 
     def on_model_reset(self):
-        if self.mod is not None:
-            self.set_global_buttons(len(self.mod.repo.status) > 0)
+        if self.repo is not None:
+            self.set_global_buttons(len(self.repo.status) > 0)
 
     def set_global_buttons(self, value: bool):
         self.btn_accept.setEnabled(value)
         self.btn_reset.setEnabled(value)
 
     def commit_changes(self):
-        if self.mod is not None:
+        if self.repo is not None:
             commit_msg = LongInputDialog.make(self,
                                               'Describe your changes',
                                               'Write a short summary of the changes you just made:')
             if commit_msg is None:
                 return
-            self.mod.repo.commit(msg=commit_msg, add_all=True)
+            self.repo.commit(msg=commit_msg, add_all=True)
+            self.repo.push()
             self.model.refresh_data()
 
     def reset_changes(self):
-        if self.mod is None:
+        if self.repo is None:
             return
         if ConfirmDialog.make('WARNING: resetting this mod will revert all changes made since last commit.\n\n'
                               'This is a destructive operation, and you may loose some of your work.\n\n'
                               'Are you sure you want to continue?'):
-            self.mod.repo.hard_reset()
-            for x in self.mod.repo.working_dir_new:
-                os.remove(os.path.join(self.mod.repo.path.abspath(), x))
+            self.repo.hard_reset()
+            for x in self.repo.working_dir_new:
+                os.remove(os.path.join(self.repo.path.abspath(), x))
 
-    def open_mod_folder(self):
-        if self.mod is not None:
-            os.startfile(self.mod.repo.path.abspath())
+    def open_repo_folder(self):
+        if self.repo is not None:
+            os.startfile(self.repo.path.abspath())
 
     def showEvent(self, event):
-        if self.mod is not None:
-            self.setWindowTitle('Showing files for: {}'.format(self.mod.meta.name))
+        if self.repo is not None:
+            self.setWindowTitle('Showing files for: {}'.format(self.repo.path.abspath()))
         signals.post_cache_changed_event.connect(self.cache_signal_handler, weak=False)
         self.model.refresh_data()
-        super(ModFilesWidget, self).showEvent(event)
+        super(GitFilesWidget, self).showEvent(event)
 
     def hideEvent(self, event):
         signals.post_cache_changed_event.disconnect(self.cache_signal_handler)
-        super(ModFilesWidget, self).hideEvent(event)
+        super(GitFilesWidget, self).hideEvent(event)

@@ -2,7 +2,7 @@
 
 from src.qt import QDialog, dialog_default_flags, QWidget
 from src.ui.base.qdialog import BaseDialog
-from src.ui.dialog_own_mod.widget_mod_files import ModFilesWidget
+from src.ui.widget_git_files.widget import GitFilesWidget
 from src.ui.dialog_own_mod.widget_mod_metadata import ModMetadataWidget
 from src.ui.dialog_own_mod.widget_mod_remote import ModRemoteWidget
 from src.ui.skeletons.form_own_mod_view import Ui_Form
@@ -15,7 +15,7 @@ class _OwnModDialog(QDialog, Ui_Form):
         self.setupUi(self)
         self.__mod = mod
         self.metadata_widget = ModMetadataWidget(self.mod, self)
-        self.files_widget = ModFilesWidget(self.mod, self)
+        self.files_widget = GitFilesWidget(self.mod.repo, self)
         self.remote_widget = ModRemoteWidget(self.mod, self)
         self.main_layout.addWidget(self.metadata_widget)
         self.main_layout.addWidget(self.files_widget)
