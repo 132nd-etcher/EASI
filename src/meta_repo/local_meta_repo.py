@@ -24,7 +24,7 @@ class LocalMetaRepo(metaclass=Singleton):
         if GHSession().status and GHSession().status not in self.__repos:
             self.__repos[GHSession().status] = MetaRepo(GHSession().status)
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> MetaRepo:
         return self.__repos[item]
 
     @property
