@@ -30,6 +30,9 @@ class Ui_Form(object):
         self.btn_details = QtWidgets.QPushButton(Form)
         self.btn_details.setObjectName("btn_details")
         self.verticalLayout.addWidget(self.btn_details)
+        self.btn_open_on_gh = QtWidgets.QPushButton(Form)
+        self.btn_open_on_gh.setObjectName("btn_open_on_gh")
+        self.verticalLayout.addWidget(self.btn_open_on_gh)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
@@ -43,4 +46,5 @@ class Ui_Form(object):
         self.btn_add.setText(_translate("Form", "Add"))
         self.btn_remove.setText(_translate("Form", "Remove"))
         self.btn_details.setText(_translate("Form", "Details"))
+        self.btn_open_on_gh.setText(_translate("Form", "Open on Github"))
 

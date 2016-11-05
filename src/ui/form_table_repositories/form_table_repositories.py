@@ -1,5 +1,7 @@
 # coding=utf-8
 
+import webbrowser
+
 from blinker_herald import signals
 from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.meta_repo.meta_repo import MetaRepo
@@ -86,6 +88,9 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.table.clicked.connect(self.on_click)
         self.btn_add.clicked.connect(self.add_repository)
         self.btn_remove.clicked.connect(self.remove_repository)
+
+    def show_on_github(self):
+        webbrowser.open_new_tab(self.selected_repo.github_url)
 
     def add_repository(self):
         raise NotImplementedError
