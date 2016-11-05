@@ -9,16 +9,16 @@ logger = make_logger(__name__)
 class KeyringValues:
     @MetaProperty(None, str)
     def gh_token(self, value: str) -> str:
-        """Dictionary of Github tokens"""
+        """"""
 
     @MetaProperty(None, str)
     def gh_username(self, value: str) -> str:
-        """Dictionary of Github tokens"""
+        """"""
 
     @MetaProperty(None, str)
     def gh_password(self, value: str) -> str:
-        """Dictionary of Github tokens"""
+        """"""
 
     @MetaProperty(None, str)
     def db_token(self, value: str) -> str:
-        """Dictionary of Github tokens"""
+        """"""
