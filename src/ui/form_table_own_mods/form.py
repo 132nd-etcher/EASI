@@ -14,6 +14,7 @@ from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_gh_login.dialog import GHLoginDialog
 from src.ui.dialog_own_mod.dialog import ModDetailsDialog
 from src.meta_repo.local_meta_repo import LocalMetaRepo
+from src.meta_repo.meta_repo import MetaRepo
 
 
 class OwnModModel(QAbstractTableModel):
@@ -25,7 +26,7 @@ class OwnModModel(QAbstractTableModel):
 
     def refresh_data(self):
         self.beginResetModel()
-        self.__data = list(LocalMetaRepo().mods)
+        self.__data = list(LocalMetaRepo()[self.parent().combo_repo.currentText()].mods)
         self.endResetModel()
 
     def data(self, index: QModelIndex, role=Qt.DisplayRole):
@@ -72,18 +73,32 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.btn_details.setEnabled(False)
 
         # noinspection PyUnusedLocal
+        def refresh_mod_list(*args, **kwargs):
+            self.refresh_data()
+
+        # noinspection PyUnusedLocal
         @signals.post_show.connect_via('MainUi', weak=False)
-        def refresh_mod_list(sender, *args, **kwargs):
-            self.model.refresh_data()
-            self.resize_columns()
+        def on_ui_creation(*args, **kwargs):
+            self.combo_repo.addItems([repo.name for repo in LocalMetaRepo().repos])
+            if LocalMetaRepo().own_meta_repo:
+                self.combo_repo.setCurrentText(LocalMetaRepo().own_meta_repo.name)
+            self.proxy.sort(0, Qt.AscendingOrder)
+            self.refresh_data()
 
         SIG_LOCAL_MOD_CHANGED.connect(refresh_mod_list, weak=False)
-        self.proxy.sort(0, Qt.AscendingOrder)
 
         self.connect_signals()
 
+    @property
+    def selected_meta_repo(self) -> MetaRepo:
+        return LocalMetaRepo()[self.combo_repo.currentText()]
+
+    def refresh_data(self):
+        self.btn_details.setEnabled(False)
+        self.model.refresh_data()
+        self.resize_columns()
+
     def resize_columns(self):
-        print('resizing columns')
         for x in range(len(self.model.columns_map)):
             self.table.horizontalHeader().setSectionResizeMode(x, QHeaderView.ResizeToContents)
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
@@ -93,6 +108,7 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.table.doubleClicked.connect(self.on_double_click)
         self.btn_trash_mod.clicked.connect(self.delete_mod)
         self.table.clicked.connect(self.on_click)
+        self.combo_repo.currentIndexChanged.connect(self.refresh_data)
 
     def delete_mod(self):
         if ConfirmDialog.make(
