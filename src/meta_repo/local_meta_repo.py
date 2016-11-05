@@ -7,6 +7,7 @@ from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
 from src.rem.gh.gh_session import GHSession
 from src.sig import SIG_LOCAL_REPO_CHANGED
+from src.cfg.cfg import Config
 
 logger = make_logger(__name__)
 
@@ -57,7 +58,22 @@ class LocalMetaRepo(metaclass=Singleton):
     def add_repo(self, user_name: str):
         if user_name in self.__repos.keys():
             raise ValueError('repo already added')
-        self.__repos[user_name] = MetaRepo(user_name)
+        repo = MetaRepo(user_name)
+        self.__repos[user_name] = repo
+        if repo in Config().to_del:
+            Config().to_del.remove(repo.path.abspath())
+        SIG_LOCAL_REPO_CHANGED.send()
+
+    def remove_repo(self, user_name: str):
+        print('remove_repo')
+        if user_name not in self.__repos.keys():
+            raise ValueError('no repo for user "{}"'.format(user_name))
+        repo = self.__repos[user_name]
+        to_del = set(Config().to_del)
+        to_del.add(str(repo.path.abspath()))
+        Config().to_del = to_del
+        # repo.path.rmtree()
+        del self.__repos[user_name]
         SIG_LOCAL_REPO_CHANGED.send()
 
 
