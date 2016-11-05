@@ -122,6 +122,7 @@ class ModMetadataWidget(QWidget, Ui_Form):
         else:
             self.edit_uuid.setText(self.mod.meta.uuid)
 
+
     def showEvent(self, event):
         self.load_data_from_meta()
         super(ModMetadataWidget, self).showEvent(event)
@@ -142,10 +143,9 @@ class ModMetadataWidget(QWidget, Ui_Form):
 
     def save_data_to_meta(self):
         if self.mod is None:
-            raise NotImplementedError('make the user choose a repo first')
-            # self.parent().mod = LocalMod().create_new_mod(self.edit_mod_name.text())
-            # self.edit_uuid.setText(self.mod.meta.uuid)
-            # self.btn_save.setText('Save')
+            self.parent().mod = self.parent().meta_repo.create_new_mod(self.edit_mod_name.text())
+            self.edit_uuid.setText(self.mod.meta.uuid)
+            self.btn_save.setText('Save')
         self.mod.meta.name = self.edit_mod_name.text()
         self.mod.meta.category = self.combo_category.currentText()
         self.mod.meta.description = self.text_desc.toPlainText()
@@ -159,12 +159,11 @@ class ModMetadataWidget(QWidget, Ui_Form):
             self.error_widget.hide()
             self.error_widget = None
         if self.edit_mod_name.text():
-            raise NotImplementedError('make the user choose a repo first')
-            # if not LocalMod().mod_name_is_available(self.edit_mod_name.text(), self.mod):
-            #     self.error_widget = WidgetBalloon.error(
-            #         self.edit_mod_name,
-            #         'You already have another mod with that name.')
-            #     return
+            if not self.parent().meta_repo.mod_name_is_available(self.edit_mod_name.text(), self.mod):
+                self.error_widget = WidgetBalloon.error(
+                    self.edit_mod_name,
+                    'There is another mod with the same name in this repository.')
+                return
         if self.edit_version.text():
             try:
                 semver.parse(self.edit_version.text())
