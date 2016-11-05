@@ -1,11 +1,14 @@
 # coding=utf-8
 
 from blinker_herald import emit, SENDER_CLASS_NAME
+from blinker import signal
+from src.sig import SIG_CREDENTIALS_GH_AUTH_STATUS
 
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
 from src.rem.gh.gh_anon import GHAnonymousSession
 from src.rem.gh.gh_errors import GHSessionError
+from src.keyring.keyring import Keyring
 from .gh_objects.gh_mail import GHMail, GHMailList
 from .gh_objects.gh_repo import GHRepoList, GHRepo
 from .gh_objects.gh_user import GHUser
@@ -31,9 +34,27 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
 
     def __init__(self, token=None):
         GHAnonymousSession.__init__(self)
+        if token is None:
+            token = Keyring().gh_token
         self.user = None
         self.status = None
+        print('sending first')
         self.authenticate(token)
+        if self.status is False:
+            SIG_CREDENTIALS_GH_AUTH_STATUS.send(
+                text='Token was invalidated; please create a new one',
+                color='red'
+            )
+        elif self.status is None:
+            SIG_CREDENTIALS_GH_AUTH_STATUS.send(text='Ready', color='black')
+        else:
+            SIG_CREDENTIALS_GH_AUTH_STATUS.send(text=self.status, color='green')
+
+        # noinspection PyUnusedLocal
+        def update_credentials(sender, *args, **kwargs):
+            self.authenticate(Keyring().gh_token)
+
+        signal('Keyring_gh_token_value_changed').connect(update_credentials, weak=False)
 
     @property
     def has_valid_token(self):
@@ -43,19 +64,19 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
     def authenticate(self, token):
         if token is None:
             self.status = None
-            return None
-        self.headers.update(
-            {
-                'Authorization': 'token {}'.format(token)
-            }
-        )
-        self.build_req('user')
-        try:
-            self.user = GHUser(self._get_json())
-        except GHSessionError:
-            self.status = False
         else:
-            self.status = self.user.login
+            self.headers.update(
+                {
+                    'Authorization': 'token {}'.format(token)
+                }
+            )
+            self.build_req('user')
+            try:
+                self.user = GHUser(self._get_json())
+            except GHSessionError:
+                self.status = False
+            else:
+                self.status = self.user.login
         return self.status
 
     @property
