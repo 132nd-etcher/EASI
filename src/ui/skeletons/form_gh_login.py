@@ -57,6 +57,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_gh_status.sizePolicy().hasHeightForWidth())
         self.label_gh_status.setSizePolicy(sizePolicy)
+        self.label_gh_status.setMinimumSize(QtCore.QSize(200, 0))
         self.label_gh_status.setObjectName("label_gh_status")
         self.horizontalLayout_3.addWidget(self.label_gh_status)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
