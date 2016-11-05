@@ -53,7 +53,7 @@ class MetaRepoModel(QAbstractTableModel):
             return super(MetaRepoModel, self).headerData(col, orientation, role)
 
 
-class _OwnModsTable(Ui_Form, QWidget):
+class _MetaRepoTable(Ui_Form, QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent, flags=Qt.Widget)
         self.setupUi(self)
@@ -79,8 +79,11 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.connect_signals()
         self.btn_remove.setEnabled(False)
 
+    def showEvent(self, event):
+        self.set_repo_btn(False)
+        super(_MetaRepoTable, self).showEvent(event)
+
     def resize_columns(self):
-        print('resizing columns')
         for x in range(len(self.model.columns_map)):
             self.table.horizontalHeader().setSectionResizeMode(x, QHeaderView.ResizeToContents)
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
@@ -91,26 +94,45 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.table.clicked.connect(self.on_click)
         self.btn_add.clicked.connect(self.add_repository)
         self.btn_remove.clicked.connect(self.remove_repository)
+        self.btn_open_on_gh.clicked.connect(self.show_on_github)
+        self.btn_details.clicked.connect(self.show_details_for_selected_repo)
 
     def show_on_github(self):
         webbrowser.open_new_tab(self.selected_repo.github_url)
 
     def add_repository(self):
-        raise NotImplementedError
+        self.table.setUpdatesEnabled(False)
+        dialog = InputDialog(self)
+        dialog.set_title('Adding repository')
+        dialog.set_text('')
+        dialog.add_question('Username')
+        if dialog.exec() == dialog.Accepted:
+            user_name = dialog.result['Username']
+            LocalMetaRepo().add_repo(user_name)
+        self.table.setUpdatesEnabled(True)
 
     def remove_repository(self):
-        raise NotImplementedError
+        self.table.setUpdatesEnabled(False)
+        if ConfirmDialog.make(
+                'Are you sure you want to remove this repository ?\n\n'
+                '(the repository will be deleted the next time EASI starts)',
+                'Removing: {}'.format(self.selected_repo.name)
+        ):
+            print('remove_repository')
+            LocalMetaRepo().remove_repo(self.selected_repo.name)
+        self.table.setUpdatesEnabled(True)
 
     @property
     def selected_repo(self) -> MetaRepo:
         return self.table.selectedIndexes()[0].data(Qt.UserRole)
 
-    def show_details_for_selected_mod(self):
+    def show_details_for_selected_repo(self):
+        RepoDetailsDialog(self.selected_repo, self).qobj.exec()
         self.resize_columns()
 
     def on_double_click(self, _):
         if isinstance(self.selected_repo, MetaRepo):
-            self.show_details_for_selected_mod()
+            self.show_details_for_selected_repo()
 
     def on_click(self, _):
         if isinstance(self.selected_repo, MetaRepo):
@@ -121,9 +143,13 @@ class _OwnModsTable(Ui_Form, QWidget):
                 self.btn_remove.setEnabled(False)
             else:
                 self.btn_remove.setEnabled(True)
-            self.btn_details.setEnabled(True)
+            self.set_repo_btn(True)
+
+    def set_repo_btn(self, value: bool):
+        self.btn_details.setEnabled(value)
+        self.btn_open_on_gh.setEnabled(value)
 
 
 class MetaRepoTable(BaseQWidget):
     def __init__(self, parent=None):
-        BaseQWidget.__init__(self, _OwnModsTable(parent))
+        BaseQWidget.__init__(self, _MetaRepoTable(parent))
