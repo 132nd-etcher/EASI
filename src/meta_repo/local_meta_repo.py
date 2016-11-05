@@ -6,6 +6,7 @@ from src.meta_repo.meta_repo import MetaRepo
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
 from src.rem.gh.gh_session import GHSession
+from src.sig import SIG_LOCAL_REPO_CHANGED
 
 logger = make_logger(__name__)
 
@@ -52,6 +53,12 @@ class LocalMetaRepo(metaclass=Singleton):
     @property
     def mod_names(self) -> list:
         return [mod.name for repo in self.__repos.values() for mod in repo.mods]
+
+    def add_repo(self, user_name: str):
+        if user_name in self.__repos.keys():
+            raise ValueError('repo already added')
+        self.__repos[user_name] = MetaRepo(user_name)
+        SIG_LOCAL_REPO_CHANGED.send()
 
 
 def init_local_meta_repo():
