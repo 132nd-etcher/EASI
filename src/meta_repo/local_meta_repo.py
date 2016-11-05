@@ -24,12 +24,12 @@ class LocalMetaRepo(metaclass=Singleton):
             self.__repos[GHSession().status] = MetaRepo(GHSession().status)
 
     @property
-    def repos(self) -> set:
-        return set(x for x in self.__repos.values())
+    def repos(self) -> list:
+        return list(x for x in self.__repos.values())
 
     @property
-    def names(self) -> set:
-        return set(x for x in self.__repos.keys())
+    def names(self) -> list:
+        return list(x for x in self.__repos.keys())
 
     @property
     def own_meta_repo(self) -> MetaRepo:
