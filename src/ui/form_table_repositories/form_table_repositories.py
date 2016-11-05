@@ -4,12 +4,15 @@ import webbrowser
 
 from blinker_herald import signals
 from src.meta_repo.local_meta_repo import LocalMetaRepo
+from src.ui.dialog_input.dialog import InputDialog
 from src.meta_repo.meta_repo import MetaRepo
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
 from src.sig import SIG_LOCAL_REPO_CHANGED
 from src.ui.base.qwidget import BaseQWidget
 from src.ui.skeletons.form_repository_table import Ui_Form
+from src.ui.dialog_repo.dialog import RepoDetailsDialog
+from src.ui.dialog_confirm.dialog import ConfirmDialog
 
 
 class MetaRepoModel(QAbstractTableModel):
