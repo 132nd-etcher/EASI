@@ -4,12 +4,12 @@ from src.qt import QLabel
 from src.rem.gh.gh_session import GHSession
 from src.rem.gh.gh_anon import GHAnonymousSession
 from src.rem.gh.gh_errors import GHSessionError
-from src.ui.dialog_config.settings.abstract_credential import AbstractCredentialSetting
+from src.ui.base.with_balloons import WithBalloons
 
 
-class GithubSetting(AbstractCredentialSetting):
+class GithubSetting(WithBalloons):
     def __init__(self, dialog, default_btn):
-        AbstractCredentialSetting.__init__(self, dialog)
+        WithBalloons.__init__(self)
         self.flow = None
         self.default_btn = default_btn
 
