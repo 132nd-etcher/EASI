@@ -45,33 +45,3 @@ class InputDialog(Ui_Dialog, QDialog):
     @property
     def result(self):
         return {k: self.questions[k].text() for k in self.questions}
-
-    # # noinspection PyMethodOverriding
-    # @staticmethod
-    # def make(text,
-    #          title=' ',
-    #          inputs: list = None,
-    #          ok_btn_text: str = None,
-    #          cancel_btn_txt: str = None,
-    #          parent=None) -> dict:
-    #     if inputs is None:
-    #         inputs = []
-    #     dialog = InputDialog(parent)
-    #     dialog.set_title(title)
-    #     dialog.set_text(text)
-    #
-    #     assert isinstance(inputs, list)
-    #     for x in inputs:
-    #         try:
-    #             label, default = x
-    #         except IndexError:
-    #             label, default = x, ''
-    #         dialog.add_question(label, default)
-    #     if ok_btn_text is not None:
-    #         dialog.set_btn_ok_text(ok_btn_text)
-    #     if cancel_btn_txt is not None:
-    #         dialog.set_btn_cancel_text(cancel_btn_txt)
-    #     if dialog.exec() == 1:
-    #         return {k: dialog.questions[k].text() for k in dialog.questions}
-    #     else:
-    #         return {}
