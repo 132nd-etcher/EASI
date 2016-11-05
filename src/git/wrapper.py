@@ -33,6 +33,8 @@ class Repository:
             self.__repo = pygit2.Repository(str(self.path.joinpath('.git').abspath()))
         elif auto_init:
             self.__repo = self.init()
+        else:
+            self.__repo = None
 
     def debug(self, text):
         logger.debug('{}: {}'.format(self.path.abspath(), text))
@@ -160,9 +162,20 @@ class Repository:
     def clone_from(self, url, bare=False, remote=None, checkout_branch='master', callbacks=None):
 
         def repo_callback(*_):
+            if not self.__repo:
+                pygit2.init_repository(path=str(self.path.abspath()), bare=bare)
+                self.__repo = pygit2.Repository(str(self.path.joinpath('.git').abspath()))
             return self.repo
 
-        pygit2.clone_repository(url, self.path, bare, repo_callback, remote, checkout_branch, callbacks or Callbacks())
+        self.__repo = pygit2.clone_repository(
+            url,
+            self.path,
+            bare,
+            repo_callback,
+            remote,
+            checkout_branch,
+            callbacks or Callbacks()
+        )
 
     def init(self):
         if self.is_init:
