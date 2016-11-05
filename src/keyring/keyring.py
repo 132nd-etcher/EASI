@@ -50,15 +50,11 @@ class Keyring(Meta, KeyringValues, metaclass=Singleton):
 
     def __setitem__(self, key, value, _write=True):
         """Immediately writes any change to file"""
-        super(Keyring, self).__setitem__(key, value)
-        if _write:
-            self.write()
+        super(Keyring, self).__setitem__(key, value, _write)
 
     def __delitem__(self, key, _write=True):
         """Immediately writes any change to file"""
-        super(Keyring, self).__delitem__(key)
-        if _write:
-            self.write()
+        super(Keyring, self).__delitem__(key, _write)
 
     def dump(self):
         if self.encrypt and constants.MACHINE_GUID:
