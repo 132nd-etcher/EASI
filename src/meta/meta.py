@@ -83,8 +83,10 @@ class Meta(AbstractMeta):
     def __contains__(self, x):
         return self._data.__contains__(x)
 
-    def __delitem__(self, key):
+    def __delitem__(self, key, _write=False):
         del self.data[key]
+        if _write:
+            self.write()
 
     def __setitem__(self, key, value, _write=False):
         self.data[key] = value
