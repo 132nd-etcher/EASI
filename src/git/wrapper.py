@@ -232,6 +232,11 @@ class Repository:
                 else:
                     raise AssertionError('Unknown merge analysis result')
 
+    def push(self, remote_name='origin', callbacks=None):
+        remote = self.repo.remotes[remote_name]
+        assert isinstance(remote, pygit2.Remote)
+        remote.push(['refs/heads/master:refs/heads/master'], callbacks=callbacks or Callbacks())
+
 
 class Callbacks(pygit2.RemoteCallbacks):
     def certificate_check(self, certificate, valid, host):
@@ -245,8 +250,10 @@ class Callbacks(pygit2.RemoteCallbacks):
         print(string)
 
     def push_update_reference(self, ref_name, message):
-        print(ref_name)
-        print(message)
+        if not message is None:
+            raise RuntimeError('failed to push {} on remote: {}'.format(ref_name, message))
+        else:
+            logger.debug('successfull push to {}'.format(ref_name))
 
     def credentials(self, url, username_from_url, allowed_types):
         return pygit2.UserPass(Keyring().gh_username, Keyring().gh_password)
