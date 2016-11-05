@@ -4,7 +4,7 @@ from src.cfg import Config
 from src.qt import QDialog, Qt, QIcon, qt_resources, QDialogButtonBox
 from src.sig.sigmsg import SigMsg
 from src.ui.skeletons.dialog_feedback import Ui_Dialog
-from src.sentry import crash_reporter
+from src.sentry.feedback import send_feedback
 
 
 class FeedbackDialog(Ui_Dialog, QDialog):
@@ -36,21 +36,8 @@ class FeedbackDialog(Ui_Dialog, QDialog):
         name = self.nameLineEdit.text()
         if name:
             Config().usr_name = name
-        text = self.textEdit.toPlainText()
-        crash_reporter.extra_context(
-            data={
-                'user': name,
-                'mail': mail,
-            }
+        send_feedback(
+            msg=self.textEdit.toPlainText(),
+            msg_type=self.comboBox.currentText()
         )
-        type_of_msg = self.comboBox.currentText()
-        text = '{}\n{}'.format(type_of_msg, text)
-        crash_reporter.captureMessage(
-            message=text, level='debug',
-            tags={
-                'message': type_of_msg,
-                'type': 'message',
-            }
-        )
-        SigMsg().show('Thank you', 'Thank you for your feedback !')
         super(FeedbackDialog, self).accept()
