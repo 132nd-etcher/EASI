@@ -68,8 +68,6 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.table.setSelectionMode(1)
         self.table.setSelectionBehavior(1)
         self.table.setSortingEnabled(True)
-        self.btn_create_mod.clicked.connect(self.create_new_mod)
-        self.btn_details.clicked.connect(self.show_details_for_selected_mod)
         self.btn_details.setEnabled(False)
 
         # noinspection PyUnusedLocal
@@ -109,6 +107,8 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.btn_trash_mod.clicked.connect(self.delete_mod)
         self.table.clicked.connect(self.on_click)
         self.combo_repo.currentIndexChanged.connect(self.refresh_data)
+        self.btn_create_mod.clicked.connect(self.create_new_mod)
+        self.btn_details.clicked.connect(self.show_details_for_selected_mod)
 
     def delete_mod(self):
         if ConfirmDialog.make(

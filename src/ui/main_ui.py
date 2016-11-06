@@ -12,12 +12,12 @@ from src.ui.dialog_feedback.dialog import FeedbackDialog
 from src.ui.dialog_msg.dialog import MsgDialog
 from src.ui.dialog_progress.dialog import ProgressDialog
 from src.ui.dialog_testing.dialog import TestingDialog
-from src.ui.form_table_own_mods.form import ModEditor
+from src.ui.form_mods.form_mods import ModEditor
 from src.ui.mod_author import MainUiModAuthor
 from src.ui.skeletons.main import Ui_MainWindow
 from src.ui.splash.dialog import MainUiSplash
 from src.ui.threading import MainGuiThreading
-from src.ui.form_table_repositories.form_table_repositories import MetaRepoTable
+from src.ui.form_repos.form_repos import MetaRepoTable
 from src.ui.widget_balloon.widget import WidgetBalloon
 
 
