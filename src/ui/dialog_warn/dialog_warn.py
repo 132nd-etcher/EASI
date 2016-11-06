@@ -9,9 +9,10 @@ from src.ui.skeletons.dialog_warn import Ui_Dialog
 
 
 class _WarningDialog(QDialog, Ui_Dialog):
-    def __init__(self, text, buttons=None, title=None, parent=None):
+    def __init__(self, text, _id, buttons=None, title=None, parent=None):
         QDialog.__init__(self, parent, flags=dialog_default_flags)
         self.setupUi(self)
+        self.id = _id
         if title is None:
             title = 'Warning'
         self.setWindowTitle(title)
@@ -30,10 +31,6 @@ class _WarningDialog(QDialog, Ui_Dialog):
         else:
             raise ValueError('unknown buttons value: {}'.format(buttons))
 
-    @property
-    def id(self):
-        return b64encode(self.label.text().encode())
-
     def accept(self):
         if self.checkBox.isChecked():
             ack = set(Config().ack)
@@ -46,7 +43,13 @@ class WarningDialog(BaseDialog):
 
     buttons = dict(ok='ok', yesno='yesno')
 
-    def __init__(self, text, title=None, buttons=None, parent=None):
-        BaseDialog.__init__(self, _WarningDialog(text, buttons=buttons, title=title, parent=parent))
-        if self.qobj.id not in Config().ack:
-            self.qobj.show()
+    def __init__(self, _id: str, text: str, title: str = None, buttons: str = None, parent=None):
+        BaseDialog.__init__(self, _WarningDialog(text, _id, buttons=buttons, title=title, parent=parent))
+
+    @staticmethod
+    def make(_id: str, text: str, title: str = None, buttons: str = None, parent=None):
+        dialog = WarningDialog(_id, text, title, buttons, parent)
+        if _id in Config().ack:
+            return True
+        else:
+            return dialog.qobj.exec() == dialog.qobj.Accepted
