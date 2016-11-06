@@ -17,6 +17,8 @@ class _ModDetailsDialog(QDialog, Ui_Form):
         self.__mod = mod
         if mod is not None:
             self.setWindowTitle(mod.meta.name)
+        else:
+            self.setWindowTitle('Creating new mod')
         self.__meta_repo = meta_repo
         self.metadata_widget = ModMetadataWidget(self.mod, self)
         self.files_widget = GitFilesWidget(self.mod.repo if self.mod else None, self)
