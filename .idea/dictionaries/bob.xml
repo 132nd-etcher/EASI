@@ -11,9 +11,11 @@
       <w>chocolatey</w>
       <w>dolongtests</w>
       <w>easimeta</w>
+      <w>nopushperm</w>
       <w>octocub</w>
       <w>octodog</w>
       <w>pytest</w>
+      <w>refspecs</w>
       <w>relpath</w>
       <w>runslow</w>
       <w>somefile</w>
