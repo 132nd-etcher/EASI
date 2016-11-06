@@ -1,11 +1,11 @@
 # coding=utf-8
 
-import builtins
 import sys
 
 from blinker_herald import emit
 
 from src.easi.delete_pending import delete_pending
+from src.easi.replace_builtins import replace_builtins
 from src.low import constants
 from src.low.custom_logging import make_logger
 
@@ -24,20 +24,6 @@ if constants.TESTING:
 else:
     logger = make_logger(log_file_path=constants.PATH_LOG_FILE)
     logger.info('logger initialized')
-
-
-def replace_builtins():
-    logger.info('builtins overloads: registering')
-
-    if constants.FROZEN:
-        # noinspection PyUnusedLocal
-        def new_print(*args, **kwargs):
-            """Replace print builtins to mute output on frozen version"""
-            logger.debug(' '.join([x for x in list(args) + list(kwargs.values()) if isinstance(x, str)]))
-
-        builtins.print = new_print
-
-    logger.info('builtins overloads: registered')
 
 
 def check_cert():
