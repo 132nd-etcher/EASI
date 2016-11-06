@@ -239,7 +239,12 @@ class Repository:
                 # We can just fast forward
                 elif merge_result & pygit2.GIT_MERGE_ANALYSIS_FASTFORWARD:
                     self.debug('fast-forward to origin/master')
-                    self.repo.checkout_tree(self.repo.get(remote_master_id))
+                    try:
+                        self.repo.checkout_tree(self.repo.get(remote_master_id))
+                    except pygit2.GitError:
+                        self.warning('local conflict since last run, resetting')
+                        self.hard_reset()
+                        self.repo.checkout_tree(self.repo.get(remote_master_id))
                     master_ref = self.repo.lookup_reference('refs/heads/master')
                     master_ref.set_target(remote_master_id)
                     self.repo.head.set_target(remote_master_id)
