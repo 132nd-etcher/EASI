@@ -122,7 +122,6 @@ class ModMetadataWidget(QWidget, Ui_Form):
         else:
             self.edit_uuid.setText(self.mod.meta.uuid)
 
-
     def showEvent(self, event):
         self.load_data_from_meta()
         super(ModMetadataWidget, self).showEvent(event)
