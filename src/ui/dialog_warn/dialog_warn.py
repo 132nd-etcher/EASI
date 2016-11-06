@@ -2,7 +2,7 @@
 
 from base64 import b64encode
 
-from src.qt import QDialog, dialog_default_flags
+from src.qt import QDialog, dialog_default_flags, Qt
 from src.cfg.cfg import Config
 from src.ui.base.qdialog import BaseDialog
 from src.ui.skeletons.dialog_warn import Ui_Dialog
@@ -16,6 +16,7 @@ class _WarningDialog(QDialog, Ui_Dialog):
             title = 'Warning'
         self.setWindowTitle(title)
         self.label.setText(text)
+        self.setWindowModality(Qt.ApplicationModal)
         if buttons is None:
             buttons = 'ok'
         if buttons == 'ok':
