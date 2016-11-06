@@ -119,4 +119,7 @@ class MetaRepo:
 
     @property
     def owner(self):
-        return self.remote.owner().login
+        try:
+            return self.remote.owner().login
+        except KeyError:
+            return False
