@@ -32,5 +32,6 @@ def init_qt_app():
         logger.debug('starting MainUI')
         MainUi()
         logger.info('initialized')
-    from src.easi.gui_mode import connect_signals
+    from src.easi.gui_mode import connect_signals, init_proxies
     connect_signals()
+    init_proxies()
