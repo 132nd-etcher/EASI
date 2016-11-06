@@ -10,6 +10,7 @@ from src.easi.ini_sentry import init_sentry
 from src.easi.init_modules import init_modules
 from src.easi.init_qt_app import init_qt_app
 from src.easi.replace_builtins import replace_builtins
+from src.easi.show_disclaimer import show_disclaimer
 from src.low import constants
 from src.low.custom_logging import make_logger
 
@@ -28,21 +29,6 @@ if constants.TESTING:
 else:
     logger = make_logger(log_file_path=constants.PATH_LOG_FILE)
     logger.info('logger initialized')
-
-
-def show_disclaimer():
-    if constants.TESTING:
-        logger.info('disclaimer: skipping (testing mode)')
-    else:
-        from src.cfg import Config
-        from src.ui.dialog_disclaimer.dialog import DisclaimerDialog
-        logger.info('disclaimer: showing')
-        if not DisclaimerDialog.make():
-            logger.warning('disclaimer: user declined')
-            sys.exit(0)
-        if Config().author_mode and not DisclaimerDialog.make_for_mod_authors():
-            Config().author_mode = False
-        logger.info('disclaimer: done')
 
 
 @emit(sender='main')
