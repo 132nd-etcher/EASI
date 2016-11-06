@@ -44,12 +44,12 @@ class MetaRepo:
             raise ValueError('mod already exists: {}'.format(mod_name))
         if not mod_name:
             raise ValueError('empty mod name')
-        if GHSession().status in [False, None]:
+        if GHSession().user in [False, None]:
             raise RuntimeError('no valid GHSession')
         mod = Mod(self.path.joinpath('{}.yml'.format(mod_name)), self, new_mod_name=mod_name)
         mod.meta.uuid = uuid()
         mod.meta.name = mod_name
-        mod.meta.author = GHSession().status
+        mod.meta.author = GHSession().user
         mod.meta.write()
         self.__mods[mod_name] = mod
         SIG_LOCAL_MOD_CHANGED.send()

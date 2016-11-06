@@ -50,7 +50,7 @@ class Sentry(raven.Client, metaclass=Singleton):
         if Config().usr_email:
             self.tags_context(dict(user_email=Config().usr_email))
         if GHSession().user:
-            self.tags_context(dict(gh_username=GHSession().user.login))
+            self.tags_context(dict(gh_username=GHSession().user))
         try:
             self.tags_context(dict(windows_version=sys.getwindowsversion()))
         except AttributeError:

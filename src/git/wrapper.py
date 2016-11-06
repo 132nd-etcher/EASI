@@ -124,9 +124,9 @@ class Repository:
         index.write()
 
     def commit(self, msg: str, author: str = None, author_mail: str = None, add_all=False):
-        if GHSession().user is not None:
+        if GHSession().user:
             if author is None:
-                author = GHSession().user.login
+                author = GHSession().user
             if author_mail is None:
                 author_mail = GHSession().primary_email.email
         else:  # FIXME use those provided in git config
@@ -182,8 +182,8 @@ class Repository:
             raise FileExistsError('repository already initialized')
         pygit2.init_repository(str(self.path.abspath()))
         repo = pygit2.Repository(str(self.path.joinpath('.git').abspath()))
-        if GHSession().user is not None:
-            sig = Signature(GHSession().user.login, GHSession().primary_email.email)
+        if GHSession().user:
+            sig = Signature(GHSession().user, GHSession().primary_email.email)
         else:
             sig = Signature('EASI', 'EASI@EASI.com')
         author, committer = sig, sig

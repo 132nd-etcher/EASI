@@ -34,21 +34,18 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
 
     def __init__(self, token=None):
         GHAnonymousSession.__init__(self)
-        if token is None:
-            token = Keyring().gh_token
+        self.gh_user = None
         self.user = None
-        self.status = None
-        print('sending first')
         self.authenticate(token)
-        if self.status is False:
+        if self.user is False:
             SIG_CREDENTIALS_GH_AUTH_STATUS.send(
                 text='Token was invalidated; please create a new one',
                 color='red'
             )
-        elif self.status is None:
+        elif self.user is None:
             SIG_CREDENTIALS_GH_AUTH_STATUS.send(text='Ready', color='black')
         else:
-            SIG_CREDENTIALS_GH_AUTH_STATUS.send(text=self.status, color='green')
+            SIG_CREDENTIALS_GH_AUTH_STATUS.send(text=self.user, color='green')
 
         # noinspection PyUnusedLocal
         def update_credentials(sender, *args, **kwargs):
@@ -58,12 +55,12 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
 
     @property
     def has_valid_token(self):
-        return isinstance(self.status, str)
+        return isinstance(self.user, str)
 
     @emit(only='post', sender=SENDER_CLASS_NAME)
     def authenticate(self, token):
         if token is None:
-            self.status = None
+            self.user = None
         else:
             self.headers.update(
                 {
@@ -72,12 +69,17 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
             )
             self.build_req('user')
             try:
-                self.user = GHUser(self._get_json())
+                self.gh_user = GHUser(self._get_json())
+                self.user = self.gh_user.login
             except GHSessionError:
-                self.status = False
-            else:
-                self.status = self.user.login
-        return self.status
+                self.user = False
+        return self.user
+
+    def check_authentication(self, _raise=True):
+        if not isinstance(self.user, str):
+            if _raise:
+                raise GHSessionError('unauthenticated')
+            return False
 
     @property
     def own_meta_repo(self):

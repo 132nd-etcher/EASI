@@ -22,8 +22,8 @@ class LocalMetaRepo(metaclass=Singleton):
         if 'EASIMETA' not in self.__repos:
             self.__repos['EASIMETA'] = MetaRepo('EASIMETA')
 
-        if GHSession().status and GHSession().status not in self.__repos:
-            self.__repos[GHSession().status] = MetaRepo(GHSession().status)
+        if GHSession().user and GHSession().user not in self.__repos:
+            self.__repos[GHSession().user] = MetaRepo(GHSession().user)
 
     def __getitem__(self, item) -> MetaRepo:
         return self.__repos[item]
@@ -38,8 +38,8 @@ class LocalMetaRepo(metaclass=Singleton):
 
     @property
     def own_meta_repo(self) -> MetaRepo:
-        if GHSession().status:
-            return self.__repos[GHSession().status]
+        if GHSession().user:
+            return self.__repos[GHSession().user]
         else:
             return None
 
@@ -69,6 +69,7 @@ class LocalMetaRepo(metaclass=Singleton):
         if user_name not in self.__repos.keys():
             raise ValueError('no repo for user "{}"'.format(user_name))
         repo = self.__repos[user_name]
+        # send2trash(str(repo.path.abspath()))
         to_del = set(Config().to_del)
         to_del.add(str(repo.path.abspath()))
         Config().to_del = to_del
