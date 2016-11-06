@@ -1,7 +1,6 @@
 # coding=utf-8
-from blinker_herald import signals
-from src.qt import QLabel
 from src.keyring.gh import GHCredentials
+from src.qt import QLabel
 from src.sig import SIG_CREDENTIALS_GH_AUTH_STATUS
 from src.ui.base.with_balloons import WithBalloons
 
@@ -20,7 +19,6 @@ class GithubSetting(WithBalloons):
             self.status_label.repaint()
 
         SIG_CREDENTIALS_GH_AUTH_STATUS.connect(update_auth_status, weak=False)
-        print('catcher ready')
 
     @property
     def qt_object(self):
