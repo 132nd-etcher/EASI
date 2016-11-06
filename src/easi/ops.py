@@ -33,7 +33,11 @@ def get_existing_file(parent, title: str, _filter: typing.List[str] = None, init
     return _get_existing_file(parent, title, _filter, init_dir)
 
 
-def get_existing_files(parent, title: str, _filter: typing.List[str] = None, init_dir: str = '.') -> typing.List[Path] or None:
+def get_existing_files(
+        parent,
+        title: str,
+        _filter: typing.List[str] = None,
+        init_dir: str = '.') -> typing.List[Path] or None:
     return _get_existing_files(parent, title, _filter, init_dir)
 
 

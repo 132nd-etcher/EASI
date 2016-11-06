@@ -36,6 +36,7 @@ class MetaRepo:
             mod = Mod(mod_meta_path, self)
             self.__mods[mod.meta.name] = mod
 
+        # noinspection PyUnusedLocal
         def cache_signal_handler(sender, signal_emitter, event: CacheEvent):
             print(str(event.src.abspath()))
             print(str(self.path.abspath()))

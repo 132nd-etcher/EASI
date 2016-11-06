@@ -13,6 +13,7 @@ class GithubSetting(WithBalloons):
         self.default_btn = default_btn
         self.auth_btn.clicked.connect(self.authenticate)
 
+        # noinspection PyUnusedLocal
         def update_auth_status(sender, text, color):
             self.status_label.setText(text)
             self.status_label.setStyleSheet('QLabel {{ color : {}; }}'.format(color))

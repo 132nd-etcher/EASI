@@ -1,16 +1,15 @@
 # coding=utf-8
 import time
 
+from src.easi.ops import confirm
+from src.qt import QDialog, Qt
 from src.sig.sigmsg import SigMsg
 from src.sig.sigprogress import SigProgress
-from src.qt import QDialog, Qt
 from src.threadpool import ThreadPool
 from src.ui.base.qdialog import BaseDialog
-from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_input.dialog import InputDialog
 from src.ui.skeletons.dialog_testing import Ui_Dialog
 from src.ui.widget_logger.widget import QtLogger
-from src.easi.ops import confirm
 
 
 class _TestingDialog(Ui_Dialog, QDialog):

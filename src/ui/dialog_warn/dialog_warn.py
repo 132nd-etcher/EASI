@@ -1,9 +1,7 @@
 # coding=utf-8
 
-from base64 import b64encode
-
-from src.qt import QDialog, dialog_default_flags, Qt
 from src.cfg.cfg import Config
+from src.qt import QDialog, dialog_default_flags, Qt
 from src.ui.base.qdialog import BaseDialog
 from src.ui.skeletons.dialog_warn import Ui_Dialog
 

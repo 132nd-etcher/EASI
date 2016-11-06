@@ -7,6 +7,7 @@ from src.qt import Qt
 
 class TestWarnDialog:
 
+    # noinspection PyUnusedLocal
     def test_basics(self, qtbot, config):
         dialog = WarningDialog('dummy_id', 'some text', 'title')
         qtbot.add_widget(dialog.qobj)
@@ -17,11 +18,12 @@ class TestWarnDialog:
         qtbot.mouseClick(dialog.qobj.buttonBox.button(dialog.qobj.buttonBox.Ok), Qt.LeftButton)
         assert dialog.qobj.isVisible() is False
 
+    # noinspection PyUnusedLocal
     def test_buttons(self, qtbot):
         WarningDialog('dummy_id', 'some text', 'title', 'ok')
         WarningDialog('dummy_id', 'some text', 'title', 'yesno')
         with pytest.raises(ValueError):
-            WarningDialog('dummy_id', 'some text', 'title', 'somethingelse')
+            WarningDialog('dummy_id', 'some text', 'title', 'something_else')
 
     def test_ack(self, qtbot, config):
         assert len(config.ack) == 0

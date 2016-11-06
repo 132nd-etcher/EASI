@@ -46,7 +46,7 @@ class InputDialog(Ui_Dialog, QDialog):
         super(InputDialog, self).show()
         self.setFocus()
         self.first.setFocus()
-        
+
     def showEvent(self, event):
         super(InputDialog, self).showEvent(event)
         self.first.setFocus()
