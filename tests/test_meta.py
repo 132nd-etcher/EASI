@@ -2,6 +2,7 @@
 
 import os
 from unittest import mock
+from collections import OrderedDict
 
 from hypothesis import given, settings, example
 from hypothesis import strategies as st
@@ -66,6 +67,7 @@ class TestMeta(ContainedTestCase):
         min_size=1)
     )
     def test_context(self, d):
+        d = OrderedDict(d)
         m = DummyMeta(self.create_temp_file(), init_dict=d, auto_read=False)
         self.assertDictEqual(d, m.get_context())
 
@@ -77,7 +79,7 @@ class TestMeta(ContainedTestCase):
     )
     )
     def test_dict_props(self, d):
-        assert isinstance(d, dict)
+        d = OrderedDict(d)
         m = DummyMeta(self.create_temp_file(), init_dict=d, auto_read=False)
         self.assertSequenceEqual([x for x in m], [x for x in d])
         for x in d.keys():
@@ -101,6 +103,7 @@ class TestMeta(ContainedTestCase):
 
     @given(d=st.dictionaries(st.text(), st_any()))
     def test_init_d(self, d):
+        d = OrderedDict(d)
         DummyMeta('./test_d', init_dict=d, auto_read=False)
 
     @given(x=st.one_of(st.floats(), st.integers(), st.text(), st.booleans(), st.binary()))
@@ -118,6 +121,7 @@ class TestMeta(ContainedTestCase):
         min_size=1
     ))
     def test_write_basic(self, d):
+        d = OrderedDict(d)
         self.meta.data = d
         self.meta.write()
         meta = DummyMeta(self.temp_file, auto_read=False)
@@ -138,6 +142,7 @@ class TestMeta(ContainedTestCase):
 
     @given(d=st.dictionaries(st.text(), st_any()))
     def test_props(self, d):
+        d = OrderedDict(d)
         p = Path(self.create_temp_file())
         m = DummyMeta(p, init_dict=d, auto_read=False)
         assert p.abspath() == m.path.abspath()

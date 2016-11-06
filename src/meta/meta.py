@@ -1,14 +1,30 @@
 # coding=utf-8
 import time
 import abc
+from collections import OrderedDict
 
-from ruamel.yaml import dump as ydump, load as yload, RoundTripDumper
+from ruamel.yaml import dump as ydump, load as yload, RoundTripDumper, resolver, add_constructor, add_representer
 
 from src.meta.abstract import AbstractMeta
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 
 logger = make_logger(__name__)
+
+
+_yaml_mapping = resolver.BaseResolver.DEFAULT_MAPPING_TAG
+
+
+def odict_represent(dumper, data):
+    return dumper.represent_dict(data.iteritems())
+
+
+def odict_construct(loader, node):
+    return OrderedDict(loader.construct_pairs(node))
+
+
+add_representer(OrderedDict, odict_represent)
+add_constructor(_yaml_mapping, odict_construct)
 
 
 class Meta(AbstractMeta):
@@ -18,14 +34,14 @@ class Meta(AbstractMeta):
     def meta_header(self):
         """"""
 
-    def __init__(self, path: str or Path, init_dict: dict = None, auto_read=True, encrypted=False):
+    def __init__(self, path: str or Path, init_dict: OrderedDict = None, auto_read=True, encrypted=False):
         self.free = True
         self.encrypt = encrypted
         if init_dict is None:
-            self._data = {}
+            self._data = OrderedDict()
         else:
-            if not isinstance(init_dict, dict):
-                raise TypeError('expected a dict, got "{}"'.format(type(init_dict)))
+            if not isinstance(init_dict, OrderedDict):
+                raise TypeError('expected a OrderedDict, got "{}"'.format(type(init_dict)))
             self._data = init_dict
         self._values, self._keys, self._items = None, None, None
         self._init_views()
@@ -67,9 +83,9 @@ class Meta(AbstractMeta):
         return self.data
 
     @data.setter
-    def data(self, value: dict):
-        if not isinstance(value, dict):
-            raise TypeError('expected a dict, got "{}"'.format(type(value)))
+    def data(self, value: OrderedDict):
+        if not isinstance(value, OrderedDict):
+            raise TypeError('expected a OrderedDict, got "{}"'.format(type(value)))
         self._data = value
         self._init_views()
 
