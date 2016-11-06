@@ -169,7 +169,8 @@ def test_get_repos():
 @with_httmock(mock_gh_api)
 def test_edit_repo():
     s = GHSession()
-    s.user = mock.MagicMock(login='octocat')
+    s.gh_user = mock.MagicMock(login='octocat')
+    s.user = 'octocat'
     repo = s.get_repo('ze_repo')
     assert repo.name == 'Hello-World'
     resp = GHSession().edit_repo('octocat', 'ze_repo', new_name='ze_other_repo')

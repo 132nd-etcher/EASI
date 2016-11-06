@@ -29,8 +29,8 @@ def test_dialog_feedback_field_population(qtbot: QtBot, config, usr_name, usr_ma
 @settings(max_examples=5)
 def test_feedback(qtbot: QtBot, mocker, config, some_text):
     assert isinstance(qtbot, (QtBot, QTest))
-    msgbox = mocker.patch('src.ui.dialog_feedback.dialog.SigMsg.show')
-    crash_reporter = mocker.patch('src.ui.dialog_feedback.dialog.crash_reporter', captureMessage=mock.MagicMock())
+    msgbox = mocker.patch('src.sentry.feedback.SigMsg.show')
+    crash_reporter = mocker.patch('src.sentry.feedback.crash_reporter', captureMessage=mock.MagicMock())
     dialog = FeedbackDialog()
     qtbot.add_widget(dialog)
     dialog.show()
