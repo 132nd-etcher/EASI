@@ -8,6 +8,7 @@ from src.git.wrapper import Repository
 from src.low.custom_path import Path
 from src.mod.mod_meta import ModMeta
 
+
 class Mod:
     def __init__(self, meta_path: Path, parent_meta_repo, new_mod_name: str or None = None):
         self.__meta = ModMeta(path=meta_path)

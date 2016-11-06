@@ -2,6 +2,8 @@
 
 from shortuuid import uuid
 
+from send2trash import send2trash
+from src.cfg.cfg import Config
 from src.cache.cache import Cache
 from src.git.wrapper import Repository
 from src.low.custom_path import Path
@@ -52,6 +54,20 @@ class MetaRepo:
         self.__mods[mod_name] = mod
         SIG_LOCAL_MOD_CHANGED.send()
         return mod
+
+    def trash_mod(self, mod_name: str):
+        if not mod_name:
+            raise ValueError('empty mod name')
+        if not mod_name in [mod.meta.name for mod in self.mods]:
+            raise ValueError('no mod named: {}'.format(mod_name))
+        mod = self.__mods[mod_name]
+        send2trash(str(mod.repo.path.abspath()))
+        send2trash(str(mod.meta.path.abspath()))
+        # to_del = set(Config().to_del)
+        # to_del.add(str(mod.repo.path.abspath()))
+        # Config().to_del = to_del
+        del self.__mods[mod_name]
+        SIG_LOCAL_MOD_CHANGED.send()
 
     @property
     def mods(self):

@@ -115,10 +115,9 @@ class _OwnModsTable(Ui_Form, QWidget):
                 'Are you sure you want to delete you want to delete "{}"?\n\n'
                 '(all files will be moved to the recycle bin)'.format(
                     self.selected_mod.meta.name)):
-            raise NotImplementedError('mod trash')
-            # self.table.setUpdatesEnabled(False)
-            # LocalMod().trash_mod(self.selected_mod.meta.name)
-            # self.table.setUpdatesEnabled(True)
+            self.table.setUpdatesEnabled(False)
+            self.selected_meta_repo.trash_mod(self.selected_mod.meta.name)
+            self.table.setUpdatesEnabled(True)
 
     def create_new_mod(self, _):
         if not GHSession().has_valid_token:
