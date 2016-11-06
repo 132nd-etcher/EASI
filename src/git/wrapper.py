@@ -111,20 +111,22 @@ class Repository:
 
     def add(self, file):
         path = Path(file)
-        self.debug('adding: {}'.format(path.abspath()))
+        self.debug('adding to index: {}'.format(path.abspath()))
         index = self.repo.index
         index.add(path.relpath(self.path.abspath()))
         index.write()
 
     def remove(self, file):
         path = Path(file)
-        self.debug('adding: {}'.format(path.abspath()))
+        self.debug('removing from index: {}'.format(path.abspath()))
         index = self.repo.index
         index.remove(path.relpath(self.path.abspath()))
         index.write()
 
     def commit(self, msg: str, author: str = None, author_mail: str = None, add_all=False):
+        self.debug('committing')
         if GHSession().user:
+            self.debug('using GHSession credentials')
             if author is None:
                 author = GHSession().user
             if author_mail is None:
@@ -138,12 +140,15 @@ class Repository:
         author, committer = sig, sig
         index = self.repo.index
         if add_all:
+            self.debug('adding all changes to index')
             index.add_all()
             index.write()
         tree = index.write_tree()
         self.repo.create_commit(self.repo.head.name, author, committer, msg, tree, [self.repo.head.get_object().hex])
+        self.debug('commit ok')
 
     def hard_reset(self):
+        self.debug('hard reset')
         self.repo.reset(self.head.target, pygit2.GIT_RESET_HARD)
 
     @property
@@ -151,15 +156,12 @@ class Repository:
         return self.repo.head
 
     def walk(self, oid, sort_mode=pygit2.GIT_SORT_TIME):
+        self.debug('walking')
         return self.repo.walk(oid, sort_mode)
 
-    @staticmethod
-    def clone(url, path, bare=False, repository=None, remote=None, checkout_branch='master', callbacks=None):
-        logger.debug('cloning "{}" into "{}"'.format(url, path))
-        repo = pygit2.clone_repository(url, path, bare, repository, remote, checkout_branch, callbacks or Callbacks())
-        return repo
-
     def clone_from(self, url, bare=False, remote=None, checkout_branch='master', callbacks=None):
+
+        self.debug('cloning: {}'.format(url))
 
         def repo_callback(*_):
             if not self.__repo:
@@ -177,49 +179,81 @@ class Repository:
             callbacks or Callbacks()
         )
 
+        self.debug('clone ok')
+
     def init(self):
+        self.debug('initializing')
         if self.is_init:
             raise FileExistsError('repository already initialized')
         pygit2.init_repository(str(self.path.abspath()))
         repo = pygit2.Repository(str(self.path.joinpath('.git').abspath()))
         if GHSession().user:
+            self.debug('init commit with GHSession credentials')
             sig = Signature(GHSession().user, GHSession().primary_email.email)
         else:
+            self.debug('init commit with dummy credentials')
             sig = Signature('EASI', 'EASI@EASI.com')
         author, committer = sig, sig
         index = repo.index
         tree = index.write_tree()
         repo.create_commit('refs/heads/master', author, committer, 'EASI: initial commit', tree, [])
+        self.debug('init ok')
         return repo
+
+    # def fetch(self, remote='origin', refspecs=None, message=None, callbacks=None):
+    #     if refspecs is None:
+    #         refspecs = ['refs/heads/master:refs/remote/{}/master'.format(remote)]
+    #     self.debug('fetching {} from: {}'.format(refspecs, remote))
+    #     self.repo.remotes[remote].fetch(refspecs, message, callbacks or Callbacks())
+
+    def fetch(self, remote='origin', refspecs=None, message=None, callbacks=None):
+        self.debug('fetching from: {}'.format(remote))
+        self.repo.remotes[remote].fetch(refspecs, message, callbacks or Callbacks())
+
+    def ahead_behind(self, local=None, upstream=None):
+        self.fetch()
+        if local is None:
+            local = self.repo.revparse_single('HEAD').oid
+        if upstream is None:
+            upstream = self.repo.revparse_single('refs/remotes/origin/master').oid
+        ahead, behind = self.repo.ahead_behind(local, upstream)
+        self.debug('ahead: {} behind: {}'.format(ahead, behind))
+        return ahead, behind
 
     @property
     def remotes(self):
         return self.repo.remotes
 
     def pull(self, remote_name='origin'):
+        self.debug('pulling from: {}'.format(remote_name))
         for remote in self.remotes:
             if remote.name == remote_name:
+                self.debug('remote found, fetching')
                 remote.fetch()
                 remote_master_id = self.repo.lookup_reference('refs/remotes/origin/master').target
                 merge_result, _ = self.repo.merge_analysis(remote_master_id)
                 # Up to date, do nothing
                 if merge_result & pygit2.GIT_MERGE_ANALYSIS_UP_TO_DATE:
-                    print('repository already up-to-date')
+                    self.debug('repository already up-to-date')
                     return
                 # We can just fast forward
                 elif merge_result & pygit2.GIT_MERGE_ANALYSIS_FASTFORWARD:
-                    print('fast-forward to origin/master')
+                    self.debug('fast-forward to origin/master')
                     self.repo.checkout_tree(self.repo.get(remote_master_id))
                     master_ref = self.repo.lookup_reference('refs/heads/master')
                     master_ref.set_target(remote_master_id)
                     self.repo.head.set_target(remote_master_id)
+                    self.debug('fast-forward ok')
+                    return
                 # Need to check for conflicts
                 elif merge_result & pygit2.GIT_MERGE_ANALYSIS_NORMAL:
-                    print('merging origin/master')
+                    self.debug('merging origin/master')
                     self.repo.merge(remote_master_id)
-                    print(self.repo.index.conflicts)
+                    self.debug('conflicts: {}'.format(self.repo.index.conflicts))
+                    if self.repo.index.conflicts:
+                        raise NotImplementedError('conflicts are not managed yet')
 
-                    assert self.repo.index.conflicts is None, 'Conflicts, ahhhh!'
+                    self.debug('no conflicts, merging changes')
                     user = self.repo.default_signature
                     tree = self.repo.index.write_tree()
                     self.repo.create_commit('HEAD',
@@ -229,13 +263,18 @@ class Repository:
                                             tree,
                                             [self.repo.head.target, remote_master_id])
                     self.repo.state_cleanup()
+                    self.debug('merge ok')
+                    return
                 else:
                     raise AssertionError('Unknown merge analysis result')
+        raise ValueError('remote not found: {}'.format(remote_name))
 
     def push(self, remote_name='origin', callbacks=None):
-        remote = self.repo.remotes[remote_name]
-        assert isinstance(remote, pygit2.Remote)
-        remote.push(['refs/heads/master:refs/heads/master'], callbacks=callbacks or Callbacks())
+        self.debug('pushing changes to: {}'.format(remote_name))
+        self.repo.remotes[remote_name].push(
+            ['refs/heads/master:refs/heads/master'],
+            callbacks=callbacks or Callbacks()
+        )
 
 
 class Callbacks(pygit2.RemoteCallbacks):
@@ -250,10 +289,15 @@ class Callbacks(pygit2.RemoteCallbacks):
         print(string)
 
     def push_update_reference(self, ref_name, message):
-        if not message is None:
+        if message is not None:
             raise RuntimeError('failed to push {} on remote: {}'.format(ref_name, message))
         else:
-            logger.debug('successfull push to {}'.format(ref_name))
+            logger.debug('successful push to {}'.format(ref_name))
 
     def credentials(self, url, username_from_url, allowed_types):
         return pygit2.UserPass(Keyring().gh_username, Keyring().gh_password)
+
+
+if __name__ == '__main__':
+    r = Repository(path=r'F:\DEV\EASI\EASIv0.0.11\cache\meta_repos\132nd-etcher')
+    print(r.ahead_behind())
