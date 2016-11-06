@@ -1,10 +1,10 @@
 # coding=utf-8
 
 
+from src.easi.ops import confirm
 from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.mod.mod import Mod
 from src.qt import QWidget, Qt
-from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.skeletons.form_mod_remote import Ui_Form
 
 
@@ -25,7 +25,7 @@ class ModRemoteWidget(Ui_Form, QWidget):
 
     def change_meta_repository(self):
         if self.mod.meta_repo.name != self.combo_meta.currentText():
-            if ConfirmDialog.make(
+            if confirm(
                     question='Are you sure you want to move this mod from "{}" to "{}" ?'.format(
                         self.mod.meta_repo.name, self.combo_meta.currentText()),
                     parent=self.parent()):

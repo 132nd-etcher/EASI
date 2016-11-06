@@ -5,6 +5,7 @@ from blinker_herald import signals
 
 from src.low import constants
 from src.sig import SIG_PROGRESS, SIG_MSG
+from src.easi import ops
 
 
 def redirect_signal(signal, main_ui_attribute, disconnect_all_others=False):
@@ -44,3 +45,14 @@ def connect_signals():
     signals.pre_init_modules.connect(pre_init_modules)
     signals.post_init_modules.connect(post_init_modules)
     signals.post_discover_dcs_installation.connect(post_discover_dcs_installation)
+
+
+def init_proxies():
+    from src.ui.dialog_confirm.dialog import ConfirmDialog
+    from src.ui.dialog_browse.dialog import BrowseDialog
+    ops._confirm_func = ConfirmDialog.make
+    ops._get_directory = BrowseDialog.get_directory
+    ops._save_file = BrowseDialog.save_file
+    ops._get_file = BrowseDialog.get_file
+    ops._get_existing_file = BrowseDialog.get_existing_file
+    ops._get_existing_files = BrowseDialog.get_existing_files

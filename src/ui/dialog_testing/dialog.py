@@ -10,6 +10,7 @@ from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_input.dialog import InputDialog
 from src.ui.skeletons.dialog_testing import Ui_Dialog
 from src.ui.widget_logger.widget import QtLogger
+from src.easi.ops import confirm
 
 
 class _TestingDialog(Ui_Dialog, QDialog):
@@ -80,8 +81,7 @@ class TestingDialog(BaseDialog):
             SigMsg().show('Result', 'Operation cancelled')
 
     def test_confirm_dialog(self):
-        result = ConfirmDialog.make('question', 'title')
-        SigMsg().show('Result', str(result))
+        SigMsg().show('Result', str(confirm('question', 'title')))
 
     def test_logger(self):
         self.logger.debug('caribou')

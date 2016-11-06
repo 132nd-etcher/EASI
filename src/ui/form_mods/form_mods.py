@@ -2,20 +2,20 @@
 
 from blinker_herald import signals
 
-from src.sig import SIG_LOCAL_MOD_CHANGED
+from src.easi.ops import confirm
+from src.low import constants
+from src.meta_repo.local_meta_repo import LocalMetaRepo
+from src.meta_repo.meta_repo import MetaRepo
 from src.mod.mod import Mod
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
-from src.ui.base.qwidget import BaseQWidget
-from src.ui.skeletons.form_own_mod_table import Ui_Form
-from src.low import constants
 from src.rem.gh.gh_session import GHSession
-from src.ui.dialog_confirm.dialog import ConfirmDialog
+from src.sig import SIG_LOCAL_MOD_CHANGED
+from src.ui.base.qwidget import BaseQWidget
 from src.ui.dialog_gh_login.dialog import GHLoginDialog
 from src.ui.dialog_own_mod.dialog import ModDetailsDialog
 from src.ui.dialog_warn.dialog_warn import WarningDialog
-from src.meta_repo.local_meta_repo import LocalMetaRepo
-from src.meta_repo.meta_repo import MetaRepo
+from src.ui.skeletons.form_own_mod_table import Ui_Form
 
 
 class OwnModModel(QAbstractTableModel):
@@ -114,7 +114,7 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.btn_details.clicked.connect(self.show_details_for_selected_mod)
 
     def delete_mod(self):
-        if ConfirmDialog.make(
+        if confirm(
                 'Are you sure you want to delete you want to delete "{}"?\n\n'
                 '(all files will be moved to the recycle bin)'.format(
                     self.selected_mod.meta.name)):
@@ -124,26 +124,26 @@ class _OwnModsTable(Ui_Form, QWidget):
 
     def create_new_mod(self, _):
         if not GHSession().has_valid_token:
-            if ConfirmDialog.make('Creating a mod requires a valid Github account.<br><br>'
-                                  'Would you like to connect your Github account now?',
-                                  'Github account not connected'):
+            if confirm('Creating a mod requires a valid Github account.<br><br>'
+                       'Would you like to connect your Github account now?',
+                       'Github account not connected'):
                 if not GHLoginDialog.make(constants.MAIN_UI):
                     return
             else:
                 return
         if not self.selected_meta_repo.push_perm:
             if not WarningDialog.make(
-                'nopushperm',
-                'You are about to create a mod in a repository for which you do not have push permission (meaning '
-                'you cannot write to it).\n\n'
-                ''
-                'Your changes will instead be sent as a "Pull Request" (an update proposal) '
-                'the the repository owner ({})\n\n'
-                ''
-                'Do you want to continue?'.format(
-                    self.selected_meta_repo.owner
-                ),
-                buttons='yesno'
+                    'nopushperm',
+                    'You are about to create a mod in a repository for which you do not have push permission (meaning '
+                    'you cannot write to it).\n\n'
+                    ''
+                    'Your changes will instead be sent as a "Pull Request" (an update proposal) '
+                    'the the repository owner ({})\n\n'
+                    ''
+                    'Do you want to continue?'.format(
+                        self.selected_meta_repo.owner
+                    ),
+                    buttons='yesno'
             ):
                 return
         ModDetailsDialog(None, self.selected_meta_repo, self).qobj.exec()

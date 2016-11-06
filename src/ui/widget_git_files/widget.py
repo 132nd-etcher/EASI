@@ -5,11 +5,11 @@ import os
 from blinker_herald import signals
 
 from src.cache.cache import CacheEvent
+from src.easi.ops import confirm
 from src.git.wrapper import Repository
 from src.qt import QAbstractTableModel, QModelIndex, QVariant, QIcon, \
     qt_resources, QSortFilterProxyModel, QColor
 from src.qt import Qt, QWidget
-from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_long_input.dialog import LongInputDialog
 from src.ui.skeletons.form_git_files import Ui_Form
 
@@ -145,9 +145,9 @@ class GitFilesWidget(QWidget, Ui_Form):
     def reset_changes(self):
         if self.repo is None:
             return
-        if ConfirmDialog.make('WARNING: resetting this mod will revert all changes made since last commit.\n\n'
-                              'This is a destructive operation, and you may loose some of your work.\n\n'
-                              'Are you sure you want to continue?'):
+        if confirm('WARNING: resetting this mod will revert all changes made since last commit.\n\n'
+                   'This is a destructive operation, and you may loose some of your work.\n\n'
+                   'Are you sure you want to continue?'):
             self.repo.hard_reset()
             for x in self.repo.working_dir_new:
                 os.remove(os.path.join(self.repo.path.abspath(), x))

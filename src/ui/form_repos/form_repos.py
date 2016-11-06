@@ -3,16 +3,17 @@
 import webbrowser
 
 from blinker_herald import signals
+
+from src.easi.ops import confirm
 from src.meta_repo.local_meta_repo import LocalMetaRepo
-from src.ui.dialog_input.dialog import InputDialog
 from src.meta_repo.meta_repo import MetaRepo
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
 from src.sig import SIG_LOCAL_REPO_CHANGED
 from src.ui.base.qwidget import BaseQWidget
-from src.ui.skeletons.form_repository_table import Ui_Form
+from src.ui.dialog_input.dialog import InputDialog
 from src.ui.dialog_repo.dialog import RepoDetailsDialog
-from src.ui.dialog_confirm.dialog import ConfirmDialog
+from src.ui.skeletons.form_repository_table import Ui_Form
 
 
 class MetaRepoModel(QAbstractTableModel):
@@ -113,7 +114,7 @@ class _MetaRepoTable(Ui_Form, QWidget):
 
     def remove_repository(self):
         self.table.setUpdatesEnabled(False)
-        if ConfirmDialog.make(
+        if confirm(
                 'Are you sure you want to remove this repository ?\n\n'
                 '(the repository will be deleted the next time EASI starts)',
                 'Removing: {}'.format(self.selected_repo.name)
