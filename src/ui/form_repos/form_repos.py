@@ -9,7 +9,7 @@ from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.meta_repo.meta_repo import MetaRepo
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
-from src.sig import SIG_LOCAL_REPO_CHANGED
+from src.sig import SIG_LOCAL_REPO_CHANGED, SigMsg
 from src.ui.base.qwidget import BaseQWidget
 from src.ui.dialog_input.dialog import InputDialog
 from src.ui.dialog_repo.dialog import RepoDetailsDialog
@@ -109,7 +109,10 @@ class _MetaRepoTable(Ui_Form, QWidget):
         dialog.add_question('Username')
         if dialog.exec() == dialog.Accepted:
             user_name = dialog.result['Username']
-            LocalMetaRepo().add_repo(user_name)
+            try:
+                LocalMetaRepo().add_repo(user_name)
+            except FileNotFoundError:
+                SigMsg().show('Error', 'The repository was not found')
         self.table.setUpdatesEnabled(True)
 
     def remove_repository(self):
