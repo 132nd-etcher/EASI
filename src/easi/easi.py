@@ -6,6 +6,7 @@ from src.easi.check_cert import check_cert
 from src.easi.delete_pending import delete_pending
 from src.easi.ini_sentry import init_sentry
 from src.easi.init_qt_app import init_qt_app
+from src.easi.nice_exit import nice_exit
 from src.easi.replace_builtins import replace_builtins
 from src.easi.show_disclaimer import show_disclaimer
 from src.easi.start_app import start_app
@@ -27,13 +28,6 @@ if constants.TESTING:
 else:
     logger = make_logger(log_file_path=constants.PATH_LOG_FILE)
     logger.info('logger initialized')
-
-
-def nice_exit(*_):
-    import os
-    # Shameful monkey-patching to bypass windows being a jerk
-    # noinspection PyProtectedMember
-    os._exit(0)
 
 
 def start_gui():
