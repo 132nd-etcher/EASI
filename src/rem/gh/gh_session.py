@@ -83,7 +83,7 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
 
     @property
     def own_meta_repo(self):
-        if not self.status:
+        if not self.user:
             return None
         try:
             return self.get_repo('EASIMETA')
@@ -91,7 +91,8 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
             self.create_repo(name='EASIMETA',
                              description='Meta repository for EASI mods',
                              auto_init=True)
-            ref = self.get_ref(self.user.login, 'EASIMETA', 'master')
+            self.check_authentication()
+            ref = self.get_ref(self.user, 'EASIMETA', 'master')
             sha = ref.object().sha
             self.create_status('EASIMETA', sha, 'success',
                                description='This commit was made by EASI',
@@ -154,7 +155,8 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
         return self._patch(json=json)
 
     def delete_repo(self, name: str):
-        self.build_req('repos', self.user.login, name)
+        self.check_authentication()
+        self.build_req('repos', self.user, name)
         self._delete()
 
     def list_own_repos(self):
@@ -163,7 +165,8 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
 
     def get_repo(self, repo_name: str, user: str = None, **_):
         if user is None:
-            user = self.user.login
+            self.check_authentication()
+            user = self.user
         self.build_req('repos', user, repo_name)
         try:
             return GHRepo(self._get_json())
@@ -177,8 +180,9 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
             user, repo,
             description: str = None,
             head: str = None, base: str = 'master'):
+        self.check_authentication()
         if head is None:
-            head = '{}:master'.format(self.user.login)
+            head = '{}:master'.format(self.user)
         json = dict(
             title=title,
             head=head,
@@ -198,7 +202,8 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
             target_url: str = None,
             description: str = None,
             context: str = None):
-        self.build_req('repos', self.user.login, repo, 'statuses', sha)
+        self.check_authentication()
+        self.build_req('repos', self.user, repo, 'statuses', sha)
         json = dict(state=state)
         if target_url:
             json['target_url'] = target_url
