@@ -59,3 +59,11 @@ def test_input_dialog_results(label, default, some_text, qtbot: QtBot):
     qtbot.wait_signal(dialog.accepted)
     qtbot.wait_until(lambda: dialog.isVisible() is False)
     assert dialog.result[label] == some_text
+
+
+def test_focus(qtbot: QtBot):
+    dialog = InputDialog()
+    qtbot.add_widget(dialog)
+    dialog.add_question('label', '')
+    dialog.show()
+    assert dialog.questions['label'].hasFocus()

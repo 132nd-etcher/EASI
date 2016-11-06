@@ -11,6 +11,7 @@ class InputDialog(Ui_Dialog, QDialog):
         self.setWindowModality(Qt.ApplicationModal)
         self.setupUi(self)
         self.questions = {}
+        self.first = None
 
     @property
     def btn_ok(self):
@@ -30,6 +31,8 @@ class InputDialog(Ui_Dialog, QDialog):
         line = QLineEdit()
         line.setText(default)
         self.questions[label] = line
+        if self.first is None:
+            self.first = self.questions[label]
         self.formLayout.addRow(QLabel(label), line)
 
     def set_btn_ok_text(self, text: str):
@@ -41,6 +44,11 @@ class InputDialog(Ui_Dialog, QDialog):
     def show(self):
         self.adjustSize()
         super(InputDialog, self).show()
+        self.setFocus()
+        
+    def showEvent(self, event):
+        super(InputDialog, self).showEvent(event)
+        self.first.setFocus()
 
     @property
     def result(self):
