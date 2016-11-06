@@ -95,6 +95,16 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="btn_changes">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Show changes</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QCheckBox" name="check_show_unchanged">
        <property name="text">
         <string>Show unchanged files</string>

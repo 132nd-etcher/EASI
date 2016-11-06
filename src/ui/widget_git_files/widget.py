@@ -12,6 +12,7 @@ from src.qt import QAbstractTableModel, QModelIndex, QVariant, QIcon, \
 from src.qt import Qt, QWidget
 from src.ui.dialog_long_input.dialog import LongInputDialog
 from src.ui.skeletons.form_git_files import Ui_Form
+from src.low.custom_path import Path
 
 
 class GitFilesModel(QAbstractTableModel):
@@ -109,6 +110,24 @@ class GitFilesWidget(QWidget, Ui_Form):
                 self.model.refresh_data()
 
         self.cache_signal_handler = cache_signal_handler
+        self.table.doubleClicked.connect(self.on_double_click)
+        self.table.clicked.connect(self.on_click)
+        self.btn_changes.clicked.connect(self.show_changes)
+
+    def on_click(self, _):
+        if isinstance(self.selected_file, tuple):
+            self.btn_changes.setEnabled(True)
+
+    def show_changes(self):
+        path = Path(self.repo.path.joinpath(self.selected_file[1]))
+        self.repo.show_file_diff(path)
+
+    def on_double_click(self, _):
+        self.show_changes()
+
+    @property
+    def selected_file(self):
+        return self.table.selectedIndexes()[0].data(Qt.UserRole)
 
     @property
     def repo(self):
@@ -161,6 +180,7 @@ class GitFilesWidget(QWidget, Ui_Form):
             self.setWindowTitle('Showing files for: {}'.format(self.repo.path.abspath()))
         signals.post_cache_changed_event.connect(self.cache_signal_handler, weak=False)
         self.model.refresh_data()
+        self.btn_changes.setEnabled(False)
         super(GitFilesWidget, self).showEvent(event)
 
     def hideEvent(self, event):

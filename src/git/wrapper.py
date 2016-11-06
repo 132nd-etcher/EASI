@@ -5,10 +5,32 @@ from pygit2 import Signature
 
 from src.keyring.keyring import Keyring
 from src.low.custom_logging import make_logger
-from src.low.custom_path import Path
+from src.low.custom_path import Path, create_temp_file
 from src.rem.gh.gh_session import GHSession
+from src.helper.kdiff import KdiffHelper
 
 logger = make_logger(__name__)
+
+
+class Callbacks(pygit2.RemoteCallbacks):
+    def certificate_check(self, certificate, valid, host):
+        print(host)
+        return True
+
+    def transfer_progress(self, stats):
+        print(stats)
+
+    def sideband_progress(self, string):
+        print(string)
+
+    def push_update_reference(self, ref_name, message):
+        if message is not None:
+            raise RuntimeError('failed to push {} on remote: {}'.format(ref_name, message))
+        else:
+            logger.debug('successful push to {}'.format(ref_name))
+
+    def credentials(self, url, username_from_url, allowed_types):
+        return pygit2.UserPass(Keyring().gh_username, Keyring().gh_password)
 
 
 class Repository:
@@ -224,6 +246,38 @@ class Repository:
     def remotes(self):
         return self.repo.remotes
 
+    def __fast_forward(self, remote_master_id):
+        try:
+            self.repo.checkout_tree(self.repo.get(remote_master_id))
+        except pygit2.GitError:
+            self.warning('local conflict since last run, resetting')
+            self.hard_reset()
+            self.repo.checkout_tree(self.repo.get(remote_master_id))
+        master_ref = self.repo.lookup_reference('refs/heads/master')
+        master_ref.set_target(remote_master_id)
+        self.repo.head.set_target(remote_master_id)
+        self.debug('fast-forward ok')
+
+    def __merge(self, remote_master_id):
+        self.debug('merging origin/master')
+        self.repo.merge(remote_master_id)
+        self.debug('conflicts: {}'.format(self.repo.index.conflicts))
+        if self.repo.index.conflicts:
+            self.warning('local conflict since last run, resetting')
+            self.repo.state_cleanup()
+            self.hard_reset()
+            self.repo.merge(remote_master_id)
+        user = self.repo.default_signature
+        tree = self.repo.index.write_tree()
+        self.repo.create_commit('HEAD',
+                                user,
+                                user,
+                                'auto-merge from origin',
+                                tree,
+                                [self.repo.head.target, remote_master_id])
+        self.repo.state_cleanup()
+        self.debug('merge ok')
+
     def pull(self, remote_name='origin'):
         self.debug('pulling from: {}'.format(remote_name))
         for remote in self.remotes:
@@ -239,37 +293,10 @@ class Repository:
                 # We can just fast forward
                 elif merge_result & pygit2.GIT_MERGE_ANALYSIS_FASTFORWARD:
                     self.debug('fast-forward to origin/master')
-                    try:
-                        self.repo.checkout_tree(self.repo.get(remote_master_id))
-                    except pygit2.GitError:
-                        self.warning('local conflict since last run, resetting')
-                        self.hard_reset()
-                        self.repo.checkout_tree(self.repo.get(remote_master_id))
-                    master_ref = self.repo.lookup_reference('refs/heads/master')
-                    master_ref.set_target(remote_master_id)
-                    self.repo.head.set_target(remote_master_id)
-                    self.debug('fast-forward ok')
-                    return
+                    return self.__fast_forward(remote_master_id)
                 # Need to check for conflicts
                 elif merge_result & pygit2.GIT_MERGE_ANALYSIS_NORMAL:
-                    self.debug('merging origin/master')
-                    self.repo.merge(remote_master_id)
-                    self.debug('conflicts: {}'.format(self.repo.index.conflicts))
-                    if self.repo.index.conflicts:
-                        self.warning('local conflict since last run, resetting')
-                        self.repo.state_cleanup()
-                        self.hard_reset()
-                        self.repo.merge(remote_master_id)
-                    user = self.repo.default_signature
-                    tree = self.repo.index.write_tree()
-                    self.repo.create_commit('HEAD',
-                                            user,
-                                            user,
-                                            'auto-merge from origin',
-                                            tree,
-                                            [self.repo.head.target, remote_master_id])
-                    self.repo.state_cleanup()
-                    self.debug('merge ok')
+                    self.__merge(remote_master_id)
                     return
                 else:
                     raise AssertionError('Unknown merge analysis result')
@@ -282,28 +309,35 @@ class Repository:
             callbacks=callbacks or Callbacks()
         )
 
+    def __get_blob_from_index(self, file):
+        rel_path = file.relpath(self.path.abspath())
+        index = self.repo.index
+        index.read()
+        oid = None
+        for entry in index:
+            if entry.path == rel_path:
+                oid = entry.hex
+                break
+        if oid is None:
+            raise FileNotFoundError(str(file.abspath()))
 
-class Callbacks(pygit2.RemoteCallbacks):
-    def certificate_check(self, certificate, valid, host):
-        print(host)
-        return True
+        return self.repo[oid]
 
-    def transfer_progress(self, stats):
-        print(stats)
+    def __make_temp_file_outta_index(self, file):
+        blob = self.__get_blob_from_index(file)
+        tmp_file = create_temp_file()
+        tmp_file.write_text(blob.data.decode())
+        return tmp_file
 
-    def sideband_progress(self, string):
-        print(string)
-
-    def push_update_reference(self, ref_name, message):
-        if message is not None:
-            raise RuntimeError('failed to push {} on remote: {}'.format(ref_name, message))
-        else:
-            logger.debug('successful push to {}'.format(ref_name))
-
-    def credentials(self, url, username_from_url, allowed_types):
-        return pygit2.UserPass(Keyring().gh_username, Keyring().gh_password)
+    def show_file_diff(self, file: Path, output=None):
+        KdiffHelper().compare(
+            self.__make_temp_file_outta_index(file),
+            file,
+            base_alias='Previous version',
+            output=output
+        )
 
 
 if __name__ == '__main__':
     r = Repository(path=r'F:\DEV\EASI\EASIv0.0.11\cache\meta_repos\132nd-etcher')
-    print(r.ahead_behind())
+    print(r.show_file_diff(Path(r'F:\DEV\EASI\EASIv0.0.11\cache\meta_repos\132nd-etcher\test.yml')))

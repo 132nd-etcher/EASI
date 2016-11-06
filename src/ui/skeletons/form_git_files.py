@@ -39,6 +39,10 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.btn_open)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.verticalLayout.addItem(spacerItem1)
+        self.btn_changes = QtWidgets.QPushButton(Form)
+        self.btn_changes.setEnabled(False)
+        self.btn_changes.setObjectName("btn_changes")
+        self.verticalLayout.addWidget(self.btn_changes)
         self.check_show_unchanged = QtWidgets.QCheckBox(Form)
         self.check_show_unchanged.setChecked(False)
         self.check_show_unchanged.setObjectName("check_show_unchanged")
@@ -56,5 +60,6 @@ class Ui_Form(object):
         self.btn_accept.setText(_translate("Form", "Accept changes"))
         self.btn_reset.setText(_translate("Form", "Reject changes"))
         self.btn_open.setText(_translate("Form", "Open folder"))
+        self.btn_changes.setText(_translate("Form", "Show changes"))
         self.check_show_unchanged.setText(_translate("Form", "Show unchanged files"))
 

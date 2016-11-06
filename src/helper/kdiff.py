@@ -9,11 +9,39 @@ from src.low.custom_path import Path
 from src.low.singleton import Singleton
 from src.sig import SigProgress, SigMsg
 from src.helper.abstract import AbstractHelper, AbstractHelperRunProfile
+from subprocess import Popen
 
 logger = make_logger(__name__)
 
 
 class KdiffHelper(AbstractHelper, metaclass=Singleton):
+
+    def compare(self, base: Path, file2: Path, file3: Path = None,
+                base_alias: str = None,
+                file2_alias: str = None,
+                file3_alias: str = None,
+                output: Path = None):
+        cmd = [self.path]
+        cmd += ['-b', str(base.abspath())]
+        cmd += [str(file2.abspath())]
+        if file3:
+            cmd += [str(file3.abspath())]
+        if output:
+            cmd += ['-o', str(output.abspath())]
+        if base_alias:
+            cmd += ['--L1', base_alias]
+        if file2_alias:
+            cmd += ['--L2', base_alias]
+        if file3_alias:
+            cmd += ['--L3', base_alias]
+        cmd += ['--cs', 'Show Statusbar=0']
+        cmd += ['--cs', 'TabSize=4']
+        cmd += ['--cs', 'ShowInfoDialogs=0']
+        cmd += ['--cs', 'CreateBakFiles=0']
+        # if output:
+        #     cmd.append('-o')
+        #     cmd.append(str(output.abspath()))
+        Popen(cmd)
 
     def run_profile(self, profile: AbstractHelperRunProfile):
         pass
