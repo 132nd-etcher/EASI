@@ -7,6 +7,7 @@ from blinker_herald import emit
 from src.easi.check_cert import check_cert
 from src.easi.delete_pending import delete_pending
 from src.easi.ini_sentry import init_sentry
+from src.easi.init_modules import init_modules
 from src.easi.replace_builtins import replace_builtins
 from src.low import constants
 from src.low.custom_logging import make_logger
@@ -72,36 +73,6 @@ def show_disclaimer():
         if Config().author_mode and not DisclaimerDialog.make_for_mod_authors():
             Config().author_mode = False
         logger.info('disclaimer: done')
-
-
-@emit(sender=lambda func: func.__name__)
-def init_modules():
-    """
-    This should be run in a thread with QtApp started
-    """
-    logger.info('INIT: start')
-    import os
-    if not os.getenv('APPVEYOR'):
-        from src.upd import check_for_update
-        check_for_update()
-    from src.dcs.dcs_installs import init_dcs_installs
-    init_dcs_installs()
-    from src.keyring.keyring import init_keyring
-    init_keyring()
-    from src.rem import init_remotes
-    init_remotes()
-    if constants.TESTING:
-        logger.debug('testing mode, skipping helpers download & cache init')
-    else:
-        from src.helper import init_helpers
-        init_helpers()
-    from src.cache.cache import init_cache
-    init_cache()
-    # from src.mod.local_mod import init_local_mods
-    # init_local_mods()
-    from src.meta_repo.local_meta_repo import init_local_meta_repo
-    init_local_meta_repo()
-    logger.info('INIT: done')
 
 
 @emit(sender='main')
