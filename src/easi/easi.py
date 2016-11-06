@@ -4,6 +4,7 @@ import sys
 
 from blinker_herald import emit
 
+from src.easi.check_cert import check_cert
 from src.easi.delete_pending import delete_pending
 from src.easi.replace_builtins import replace_builtins
 from src.low import constants
@@ -24,21 +25,6 @@ if constants.TESTING:
 else:
     logger = make_logger(log_file_path=constants.PATH_LOG_FILE)
     logger.info('logger initialized')
-
-
-def check_cert():
-    logger.info('certificate: checking')
-    import certifi
-    import os
-
-    from src.low.custom_path import Path
-    cacert = Path(certifi.where())
-    # noinspection SpellCheckingInspection
-    if not cacert.crc32() == '5630AEBB':
-        raise ImportError('cacert.pem file is corrupted, please reinstall EASI ({})'.format(cacert.crc32()))
-    logger.debug('setting up local cacert file to: {}'.format(str(cacert)))
-    os.environ['REQUESTS_CA_BUNDLE'] = str(cacert)
-    logger.info('certificate: checked')
 
 
 def init_sentry():

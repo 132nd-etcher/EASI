@@ -44,7 +44,7 @@ def test_cert_verify(mocker, tmpdir):
         f.write('caribou')
     with pytest.raises(KeyError):
         assert os.environ['REQUESTS_CA_BUNDLE'] == ''
-    from src.easi.easi import check_cert
+    from src.easi.check_cert import check_cert
     check_cert()
     assert os.environ['REQUESTS_CA_BUNDLE'] is not None
     assert os.path.exists(os.environ['REQUESTS_CA_BUNDLE'])
