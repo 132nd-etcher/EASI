@@ -49,12 +49,11 @@ class GithubSetting(WithBalloons):
         pwd = self.dialog.githubPasswordLineEdit.text()
         if not usr:
             self.show_error_balloon('Missing username', self.dialog.githubUsernameLineEdit)
-            return
-        if not pwd:
+        elif not pwd:
             self.show_error_balloon('Missing password', self.dialog.githubPasswordLineEdit)
-            return
-        GHCredentials.authenticate(usr, pwd)
-        self.default_btn.setDefault(True)
+        else:
+            GHCredentials.authenticate(usr, pwd)
+            self.default_btn.setDefault(True)
 
     @property
     def status_label(self) -> QLabel:
