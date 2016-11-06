@@ -73,9 +73,12 @@ class TestingDialog(BaseDialog):
         self.pool.queue_task(run_test)
 
     def test_input_dialog(self):
-        result = InputDialog.make('test', 'title', [('Value1', 'default1'), ('Value2', '')])
-        if result:
-            SigMsg().show('Results', '\n'.join(['{}: {}'.format(k, result[k]) for k in result.keys()]))
+        dialog = InputDialog(self.qobj)
+        dialog.add_question('Value1', 'default1')
+        dialog.add_question('Value2', '')
+        dialog.exec()
+        if dialog.result:
+            SigMsg().show('Results', '\n'.join(['{}: {}'.format(k, dialog.result[k]) for k in dialog.result.keys()]))
         else:
             SigMsg().show('Result', 'Operation cancelled')
 
