@@ -2,7 +2,6 @@
 
 from src.cfg import Config
 from src.qt import QDialog, Qt, QIcon, qt_resources, QDialogButtonBox
-from src.sig.sigmsg import SigMsg
 from src.ui.skeletons.dialog_feedback import Ui_Dialog
 from src.sentry.feedback import send_feedback
 
