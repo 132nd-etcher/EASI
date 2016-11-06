@@ -19,7 +19,7 @@ class _ModDetailsDialog(QDialog, Ui_Form):
             self.setWindowTitle(mod.meta.name)
         self.__meta_repo = meta_repo
         self.metadata_widget = ModMetadataWidget(self.mod, self)
-        self.files_widget = GitFilesWidget(self.mod.repo, self)
+        self.files_widget = GitFilesWidget(self.mod.repo if self.mod else None, self)
         self.remote_widget = ModRemoteWidget(self.mod, self)
         self.main_layout.addWidget(self.metadata_widget)
         self.main_layout.addWidget(self.files_widget)
@@ -46,12 +46,12 @@ class _ModDetailsDialog(QDialog, Ui_Form):
         if value is None:
             self.btn_local_files.setEnabled(False)
             self.btn_remote.setEnabled(False)
-            self.setWindowTitle(value.meta.name)
         else:
+            self.setWindowTitle(value.meta.name)
             self.btn_local_files.setEnabled(True)
             self.btn_remote.setEnabled(True)
             self.metadata_widget.mod = value
-            self.files_widget.mod = value
+            self.files_widget.repo = value.repo
             self.remote_widget.mod = value
 
     def show_widget(self, widget: QWidget):
