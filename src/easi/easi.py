@@ -5,6 +5,7 @@ import sys
 
 from blinker_herald import emit
 
+from src.easi.delete_pending import delete_pending
 from src.low import constants
 from src.low.custom_logging import make_logger
 
@@ -107,23 +108,6 @@ def show_disclaimer():
         if Config().author_mode and not DisclaimerDialog.make_for_mod_authors():
             Config().author_mode = False
         logger.info('disclaimer: done')
-
-
-def delete_pending():
-    logger.info('processing')
-    from src.cfg.cfg import Config
-    to_del = Config().to_del
-    while to_del:
-        from src.low.custom_path import Path
-        assert isinstance(to_del, set)
-        path = Path(to_del.pop())
-        logger.debug('removing: {}'.format(path.abspath()))
-        if path.isdir():
-            path.rmtree()
-        elif path.isfile():
-            path.remove()
-    Config().to_del = to_del
-    logger.info('done')
 
 
 @emit(sender=lambda func: func.__name__)
