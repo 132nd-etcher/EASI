@@ -1,10 +1,11 @@
 # coding=utf-8
 
+from blinker_herald import signals
+from send2trash import send2trash
 from shortuuid import uuid
 
-from send2trash import send2trash
-from src.cfg.cfg import Config
 from src.cache.cache import Cache
+from src.cache.cache import CacheEvent
 from src.git.wrapper import Repository
 from src.low.custom_path import Path
 from src.mod.mod import Mod
@@ -25,6 +26,22 @@ class MetaRepo:
         for mod_meta_path in self.path.listdir(pattern='*.yml'):
             mod = Mod(mod_meta_path, self)
             self.__mods[mod.meta.name] = mod
+
+        def cache_signal_handler(sender, signal_emitter, event: CacheEvent):
+            print(str(event.src.abspath()))
+            print(str(self.path.abspath()))
+            if str(event.src.abspath()).startswith(str(self.path.abspath())):
+                self.refresh_mods()
+
+        signals.post_cache_changed_event.connect(cache_signal_handler, weak=False)
+
+    def refresh_mods(self):
+        print('refreshing mods')
+        self.__mods = {}
+        for mod_meta_path in self.path.listdir(pattern='*.yml'):
+            mod = Mod(mod_meta_path, self)
+            self.__mods[mod.meta.name] = mod
+        SIG_LOCAL_MOD_CHANGED.send()
 
     @property
     def github_url(self):
@@ -58,7 +75,7 @@ class MetaRepo:
     def trash_mod(self, mod_name: str):
         if not mod_name:
             raise ValueError('empty mod name')
-        if not mod_name in [mod.meta.name for mod in self.mods]:
+        if mod_name not in [mod.meta.name for mod in self.mods]:
             raise ValueError('no mod named: {}'.format(mod_name))
         mod = self.__mods[mod_name]
         send2trash(str(mod.repo.path.abspath()))
