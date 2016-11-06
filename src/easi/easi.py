@@ -6,6 +6,7 @@ from blinker_herald import emit
 
 from src.easi.check_cert import check_cert
 from src.easi.delete_pending import delete_pending
+from src.easi.ini_sentry import init_sentry
 from src.easi.replace_builtins import replace_builtins
 from src.low import constants
 from src.low.custom_logging import make_logger
@@ -25,15 +26,6 @@ if constants.TESTING:
 else:
     logger = make_logger(log_file_path=constants.PATH_LOG_FILE)
     logger.info('logger initialized')
-
-
-def init_sentry():
-    logger.info('initializing')
-    from src.cfg import Config
-    from src.sentry import crash_reporter
-    logger.debug('sentry online: {}'.format(crash_reporter.state.ONLINE))
-    crash_reporter.register_context('config', Config())
-    logger.info('initialized')
 
 
 def set_app_wide_font():
