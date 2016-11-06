@@ -40,10 +40,10 @@ class MetaRepo:
         return True
 
     def create_new_mod(self, mod_name: str):
-        if mod_name in [mod.meta.name for mod in self.mods]:
-            raise ValueError('mod already exists: {}'.format(mod_name))
         if not mod_name:
             raise ValueError('empty mod name')
+        if mod_name in [mod.meta.name for mod in self.mods]:
+            raise ValueError('mod already exists: {}'.format(mod_name))
         if GHSession().user in [False, None]:
             raise RuntimeError('no valid GHSession')
         mod = Mod(self.path.joinpath('{}.yml'.format(mod_name)), self, new_mod_name=mod_name)
