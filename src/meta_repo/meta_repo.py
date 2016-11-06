@@ -8,20 +8,29 @@ from src.cache.cache import Cache
 from src.cache.cache import CacheEvent
 from src.git.wrapper import Repository
 from src.low.custom_path import Path
+from src.low.custom_logging import make_logger
 from src.mod.mod import Mod
 from src.rem.gh.gh_anon import GHRepo
 from src.rem.gh.gh_session import GHSession
 from src.sig import SIG_LOCAL_MOD_CHANGED
 
 
+logger = make_logger(__name__)
+
+
 class MetaRepo:
     def __init__(self, user: str):
+        logger.info('creating meta repo for user: {}'.format(user))
         self.__remote = GHSession().get_repo('EASIMETA', user=user)
         self.__local = Repository(Cache().meta_repos_folder.joinpath(user), auto_init=False)
         if not self.local.is_init:
+            logger.debug('no local repo, cloning remote')
             self.local.clone_from('https://github.com/{}/EASIMETA.git'.format(user))
         else:
-            self.local.pull()
+            ahead, behind = self.local.ahead_behind()
+            if behind:
+                logger.debug('local repo is behind remote, pulling')
+                self.local.pull()
         self.__mods = {}
         for mod_meta_path in self.path.listdir(pattern='*.yml'):
             mod = Mod(mod_meta_path, self)
@@ -36,7 +45,6 @@ class MetaRepo:
         signals.post_cache_changed_event.connect(cache_signal_handler, weak=False)
 
     def refresh_mods(self):
-        print('refreshing mods')
         self.__mods = {}
         for mod_meta_path in self.path.listdir(pattern='*.yml'):
             mod = Mod(mod_meta_path, self)
@@ -48,15 +56,17 @@ class MetaRepo:
         return 'https://github.com/{}/EASIMETA.git'.format(self.name)
 
     def mod_name_is_available(self, mod_name: str, mod: Mod or None) -> bool:
+        logger.debug('checking availability of: {}'.format(mod_name))
         for other_mod in self.mods:
             if mod_name == other_mod.meta.name:
-                if mod is None:
+                if mod is None or mod.meta.uuid != other_mod.meta.uuid:
+                    logger.debug('name is *not* available')
                     return False
-                elif mod.meta.uuid != other_mod.meta.uuid:
-                    return False
+        logger.debug('name is available')
         return True
 
     def create_new_mod(self, mod_name: str):
+        logger.debug('creating new mod')
         if not mod_name:
             raise ValueError('empty mod name')
         if mod_name in [mod.meta.name for mod in self.mods]:
@@ -70,9 +80,11 @@ class MetaRepo:
         mod.meta.write()
         self.__mods[mod_name] = mod
         SIG_LOCAL_MOD_CHANGED.send()
+        logger.debug('creation ok')
         return mod
 
     def trash_mod(self, mod_name: str):
+        logger.debug('trashing mod')
         if not mod_name:
             raise ValueError('empty mod name')
         if mod_name not in [mod.meta.name for mod in self.mods]:
