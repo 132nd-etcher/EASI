@@ -13,6 +13,7 @@ from src.rem.gh.gh_session import GHSession
 from src.ui.dialog_confirm.dialog import ConfirmDialog
 from src.ui.dialog_gh_login.dialog import GHLoginDialog
 from src.ui.dialog_own_mod.dialog import ModDetailsDialog
+from src.ui.dialog_warn.dialog_warn import WarningDialog
 from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.meta_repo.meta_repo import MetaRepo
 
@@ -80,6 +81,7 @@ class _OwnModsTable(Ui_Form, QWidget):
             self.combo_repo.addItems([repo.name for repo in LocalMetaRepo().repos])
             if LocalMetaRepo().own_meta_repo:
                 self.combo_repo.setCurrentText(LocalMetaRepo().own_meta_repo.name)
+            self.set_repo_labels()
             self.proxy.sort(0, Qt.AscendingOrder)
             self.refresh_data()
 
@@ -94,6 +96,7 @@ class _OwnModsTable(Ui_Form, QWidget):
     def refresh_data(self):
         self.btn_details.setEnabled(False)
         self.model.refresh_data()
+        self.set_repo_labels()
         self.resize_columns()
 
     def resize_columns(self):
@@ -128,6 +131,21 @@ class _OwnModsTable(Ui_Form, QWidget):
                     return
             else:
                 return
+        if not self.selected_meta_repo.push_perm:
+            if not WarningDialog.make(
+                'nopushperm',
+                'You are about to create a mod in a repository for which you do not have push permission (meaning '
+                'you cannot write to it).\n\n'
+                ''
+                'Your changes will instead be sent as a "Pull Request" (an update proposal) '
+                'the the repository owner ({})\n\n'
+                ''
+                'Do you want to continue?'.format(
+                    self.selected_meta_repo.owner
+                ),
+                buttons='yesno'
+            ):
+                return
         ModDetailsDialog(None, self.selected_meta_repo, self).qobj.exec()
         self.resize_columns()
 
@@ -146,6 +164,14 @@ class _OwnModsTable(Ui_Form, QWidget):
     def on_click(self, _):
         if isinstance(self.selected_mod, Mod):
             self.btn_details.setEnabled(True)
+
+    def set_repo_labels(self):
+        if self.selected_meta_repo.push_perm:
+            self.label_push_perm.setText('yes')
+            self.label_push_perm.setStyleSheet('QLabel { color : green; }')
+        else:
+            self.label_push_perm.setText('no')
+            self.label_push_perm.setStyleSheet('QLabel { color : red; }')
 
 
 class ModEditor(BaseQWidget):
