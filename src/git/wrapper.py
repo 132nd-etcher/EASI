@@ -256,9 +256,10 @@ class Repository:
                     self.repo.merge(remote_master_id)
                     self.debug('conflicts: {}'.format(self.repo.index.conflicts))
                     if self.repo.index.conflicts:
-                        raise NotImplementedError('conflicts are not managed yet')
-
-                    self.debug('no conflicts, merging changes')
+                        self.warning('local conflict since last run, resetting')
+                        self.repo.state_cleanup()
+                        self.hard_reset()
+                        self.repo.merge(remote_master_id)
                     user = self.repo.default_signature
                     tree = self.repo.index.write_tree()
                     self.repo.create_commit('HEAD',
