@@ -57,13 +57,11 @@ class MetaRepo:
         return 'https://github.com/{}/EASIMETA.git'.format(self.name)
 
     def mod_name_is_available(self, mod_name: str, mod: Mod or None) -> bool:
-        logger.debug('checking availability of: {}'.format(mod_name))
         for other_mod in self.mods:
             if mod_name == other_mod.meta.name:
                 if mod is None or mod.meta.uuid != other_mod.meta.uuid:
                     logger.debug('name is *not* available')
                     return False
-        logger.debug('name is available')
         return True
 
     def create_new_mod(self, mod_name: str):
