@@ -2,15 +2,13 @@
 
 import sys
 
-from blinker_herald import emit
-
 from src.easi.check_cert import check_cert
 from src.easi.delete_pending import delete_pending
 from src.easi.ini_sentry import init_sentry
-from src.easi.init_modules import init_modules
 from src.easi.init_qt_app import init_qt_app
 from src.easi.replace_builtins import replace_builtins
 from src.easi.show_disclaimer import show_disclaimer
+from src.easi.start_app import start_app
 from src.low import constants
 from src.low.custom_logging import make_logger
 
@@ -29,30 +27,6 @@ if constants.TESTING:
 else:
     logger = make_logger(log_file_path=constants.PATH_LOG_FILE)
     logger.info('logger initialized')
-
-
-@emit(sender='main')
-def start_app():
-    from src.threadpool import ThreadPool
-    logger.info('fill starting pool: begin')
-    pool = ThreadPool(_num_threads=1, _basename='startup', _daemon=False)
-    # signal(src.new_sig.SIG_INIT_MODULES_INTERRUPT).connect(pool.join_all)
-    pool.queue_task(init_modules)
-    pool.queue_task(logger.info, ['all done'])
-    logger.info('fill starting pool: done')
-
-    if constants.TESTING:
-        logger.info('TESTING mode: waiting for pool to join')
-        pool.join_all()
-        logger.info('TESTING mode: pool is done')
-        if constants.QT_APP:
-            logger.info('TESTING mode: closing QtApp')
-            constants.QT_APP.exit(0)
-        logger.info('start_app: TESTING mode: returning')
-        return True
-    else:
-        logger.info('transferring control to QtApp')
-        sys.exit(constants.QT_APP.exec())
 
 
 def nice_exit(*_):
