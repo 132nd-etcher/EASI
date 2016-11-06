@@ -66,4 +66,5 @@ def test_focus(qtbot: QtBot):
     qtbot.add_widget(dialog)
     dialog.add_question('label', '')
     dialog.show()
+    qtbot.wait_for_window_shown(dialog)
     assert dialog.questions['label'].hasFocus()
