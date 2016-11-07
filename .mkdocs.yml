@@ -3,8 +3,9 @@ site_favicon: app.ico
 repo_url: https://github.com/132nd-etcher/EASI
 pages:
 - Home: index.md
-- Requirements: requirements.md
+- ModCreation: mod_creation.md
 - Versionning: versionning.md
+- Requirements: requirements.md
 - Tests: tests.md
 
 theme: readthedocs

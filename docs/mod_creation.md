@@ -1,5 +1,35 @@
 # Creating a mod
 
+## Select a repository
+
+The first step will be to select a repository to host your mod's metadata.
+
+### Own metadata repository
+
+When you log into github with EASI, a repository named `EASIMETA` will be created. By default, EASI will send all your mods' metadata to this repository, because it's yours.
+
+The catch is that in order for your mods to be made available for download, end-users will need to `add` your repository to their list of repositories.
+
+This is fine if, for example, you are the maintainer of all the skins for your organization.
+
+This is less fine if you're not part of any organization and are releasing a HUD mod for the A-10C, in which case you would probably prefer to use the `root metadata repository`.
+
+### EASI root metadata repository
+
+The `root metadata repository` is the central repository of EASI, the only one that is visible by all the clients out of the box.
+
+It's located at [https://github.com/EASIMETA/EASIMETA][https://github.com/EASIMETA/EASIMETA].
+
+This time, the catch is that you cannot write in a repository you do not own.
+
+What you can do, however, is make a copy of the repository, change it, and then send your changes to the owner with a message attached to it, describing your changes.
+
+This process is called a `Pull Request`, and EASI will do it automatically for you.
+
+The disadvantage of the `Pull Request` method is that it may take some time between the moment you make your changes, and the mooment the owner of the repository accepts and merge them, so your mod will not be available immediatly.
+
+#### The Pull Request
+
 ## Going deeper
 
 ### Directories
