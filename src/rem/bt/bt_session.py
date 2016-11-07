@@ -103,20 +103,24 @@ class BTSession(Session, metaclass=Singleton):
         req = self._get(**kwargs)
         return req.json()
 
+    @property
+    def __base_req(self):
+        return 'packages', self.subject, self.repo
+
     def get_files_for_package(self, package) -> BTAllFiles:
-        self.build_req('packages', self.subject, self.repo, package, 'files')
+        self.build_req(*self.__base_req, package, 'files')
         return BTAllFiles(self._get_json())
 
     def get_files_for_version(self, package, version) -> BTAllFiles:
-        self.build_req('packages', self.subject, self.repo, package, 'versions', version, 'files')
+        self.build_req(*self.__base_req, package, 'versions', version, 'files')
         return BTAllFiles(self._get_json())
 
     def get_version(self, package, version) -> BTAllVersions:
-        self.build_req('packages', self.subject, self.repo, package, 'versions', version)
+        self.build_req(*self.__base_req, package, 'versions', version)
         return BTAllVersions(self._get_json())
 
     def get_latest_version(self, package) -> BTVersion:
-        self.build_req('packages', self.subject, self.repo, package, 'versions', '_latest')
+        self.build_req(*self.__base_req, package, 'versions', '_latest')
         return BTVersion(self._get_json())
 
 
