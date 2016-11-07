@@ -225,12 +225,12 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
 
     def temp_file(self, *, subdir: str, suffix: str = None, prefix: str = None) -> Path:
         subdir = Path(self.path.joinpath('temp').joinpath(subdir))
-        subdir.makedirs()
+        subdir.makedirs_p()
         return create_temp_file(create_in_dir=str(subdir.abspath()), prefix=prefix, suffix=suffix)
 
     def temp_dir(self, *, subdir: str, suffix: str = None, prefix: str = None) -> Path:
         subdir = Path(self.path.joinpath('temp').joinpath(subdir))
-        subdir.makedirs()
+        subdir.makedirs_p()
         return create_temp_dir(create_in_dir=str(subdir.abspath()), prefix=prefix, suffix=suffix)
 
     def wipe_temp(self):
