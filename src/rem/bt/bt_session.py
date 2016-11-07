@@ -107,6 +107,10 @@ class BTSession(Session, metaclass=Singleton):
         self.build_req('packages', self.subject, self.repo, package, 'files')
         return BTAllFiles(self._get_json())
 
+    def get_files_for_version(self, package, version) -> BTAllFiles:
+        self.build_req('packages', self.subject, self.repo, package, 'versions', version, 'files')
+        return BTAllFiles(self._get_json())
+
     def get_version(self, package, version) -> BTAllVersions:
         self.build_req('packages', self.subject, self.repo, package, 'versions', version)
         return BTAllVersions(self._get_json())

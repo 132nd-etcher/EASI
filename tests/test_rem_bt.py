@@ -116,6 +116,26 @@ def test_get_files_for_package():
 
 # noinspection SpellCheckingInspection
 @with_httmock(mock_bt_api)
+def test_get_files_for_version():
+    s = BTSession()
+    files = s.get_files_for_version('alpha', '1.1')
+    assert isinstance(files, BTAllFiles)
+    assert len(files) == 1
+    file = files['nutcracker-1.1-sources.jar']
+    assert isinstance(file, BTFile)
+    assert file.version == '1.1'
+    assert file.sha1 == '602e20176706d3cc7535f01ffdbe91b270ae5012'
+    assert file.name == 'nutcracker-1.1-sources.jar'
+    assert file.path == 'org/jfrog/powerutils/nutcracker/1.1/nutcracker-1.1-sources.jar'
+    assert file.package == 'jfrog-power-utils'
+    assert file.repo == 'jfrog-jars'
+    assert file.owner == 'jfrog'
+    assert file.created == "ISO8601 (yyyy-MM-dd'T'HH:mm:ss.SSSZ)"
+    assert file.size == 1234
+
+
+# noinspection SpellCheckingInspection
+@with_httmock(mock_bt_api)
 def test_get_latest_version():
     s = BTSession()
     latest = s.get_latest_version('alpha')
