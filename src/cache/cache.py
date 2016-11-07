@@ -234,7 +234,11 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         return create_temp_dir(create_in_dir=str(subdir.abspath()), prefix=prefix, suffix=suffix)
 
     def wipe_temp(self):
-        for path in Path(self.path.joinpath('temp')).listdir():
+        logger.debug('wiping temp dir')
+        temp_dir = Path(self.path.joinpath('temp'))
+        if not temp_dir.exists():
+            return
+        for path in temp_dir.listdir():
             if path.isdir():
                 path.rmtree()
             elif path.isfile():
