@@ -17,7 +17,7 @@ class TestCache:
     def wipe_cache(self):
         Singleton.wipe_instances('Cache')
 
-    @pytest.fixture(params=list(range(20)))
+    @pytest.fixture(params=list(range(4)))
     def random_names(self, request, tmpdir):
         """This is *very* costly to run but is there to ensure stability of the cache and catch corner instability
         with the FSObserver"""
