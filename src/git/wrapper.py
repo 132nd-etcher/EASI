@@ -8,6 +8,7 @@ from src.low.custom_logging import make_logger
 from src.low.custom_path import Path, create_temp_file
 from src.rem.gh.gh_session import GHSession
 from src.helper.kdiff import KdiffHelper
+from src.cache.cache import Cache
 
 logger = make_logger(__name__)
 
@@ -325,7 +326,7 @@ class Repository:
 
     def __make_temp_file_outta_index(self, file):
         blob = self.__get_blob_from_index(file)
-        tmp_file = create_temp_file()
+        tmp_file = Cache().temp_file(subdir='git')
         tmp_file.write_text(blob.data.decode())
         return tmp_file
 

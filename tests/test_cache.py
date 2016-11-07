@@ -1,6 +1,8 @@
 # coding=utf-8
 import os
 import time
+import random
+import string
 
 import pytest
 from blinker_herald import signals
@@ -14,6 +16,22 @@ class TestCache:
     @pytest.fixture(autouse=True)
     def wipe_cache(self):
         Singleton.wipe_instances('Cache')
+
+    @pytest.fixture(params=list(range(20)))
+    def random_names(self, request, tmpdir):
+        """This is *very* costly to run but is there to ensure stability of the cache and catch corner instability
+        with the FSObserver"""
+        names = (
+            ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
+            ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
+            ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
+            ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
+            ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
+            ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
+        )
+        yield names
+        Cache().stop()
+        tmpdir.remove()
 
     def test_cache_init(self, tmpdir):
         with pytest.raises(ValueError):
@@ -135,16 +153,20 @@ class TestCache:
 
         signals.post_cache_changed_event.disconnect(got_signal)
 
-    def test_git_dir(self, tmpdir, qtbot):
+    def test_git_dir(self, tmpdir, qtbot, random_names):
+        git_file = random_names[0]
+        git_dir = random_names[1]
+        some_file = random_names[2]
+        some_dir = random_names[3]
         td = str(tmpdir)
         p = Path(tmpdir.join('f'))
         p.write_text('')
         g = Path(tmpdir.mkdir('.git'))
-        gf = Path(tmpdir.join('.git').join('git_file'))
+        gf = Path(tmpdir.join('.git').join(git_file))
         gf.write_text('')
-        gd = Path(tmpdir.join('.git').mkdir('git_dir'))
-        d = Path(tmpdir.mkdir('some_dir'))
-        df = Path(tmpdir.join('some_dir').join('some_file'))
+        gd = Path(tmpdir.join('.git').mkdir(git_dir))
+        d = Path(tmpdir.mkdir(some_dir))
+        df = Path(tmpdir.join(some_dir).join(some_file))
         df.write_text('')
 
         cache_built = False
@@ -163,3 +185,33 @@ class TestCache:
         assert not g.abspath() in c
         assert not gd.abspath() in c
         assert not gf.abspath() in c
+
+    def test_temp_file(self, tmpdir, random_names):
+        td = str(tmpdir)
+        Cache(td)
+        for name in random_names:
+            tmp_file = Cache().temp_file(subdir=name)
+            assert tmp_file.exists()
+            assert tmp_file.isfile()
+
+    def test_temp_dir(self, tmpdir, random_names):
+        td = str(tmpdir)
+        Cache(td)
+        for name in random_names:
+            tmp_file = Cache().temp_dir(subdir=name)
+            assert tmp_file.exists()
+            assert tmp_file.isdir()
+
+    def test_wipe_temp(self, tmpdir, random_names):
+        td = str(tmpdir)
+        Cache(td)
+        files = set()
+        for name in random_names:
+            tmp_file = Cache().temp_file(subdir=name)
+            assert tmp_file.exists()
+            files.add(tmp_file)
+        Cache().stop()
+        Cache(td)
+        Cache().wipe_temp()
+        for file in files:
+            assert not file.exists()

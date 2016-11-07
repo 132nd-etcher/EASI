@@ -7,7 +7,8 @@ from requests.exceptions import InvalidURL, MissingSchema
 
 from src.abstract.progress_interface import ProgressInterface
 from src.low.custom_logging import make_logger
-from src.low.custom_path import Path, create_temp_file, create_temp_dir
+from src.low.custom_path import Path, create_temp_dir
+from src.cache.cache import Cache
 from src.threadpool import ThreadPool
 
 logger = make_logger(__name__)
@@ -22,7 +23,7 @@ class FileDownload:
         if local_folder is not None:
             local_folder = self.normalize_path(local_folder)
         if local_file is None:
-            local_file = create_temp_file(create_in_dir=local_folder)
+            local_file = Cache().temp_file(subdir='download')
         else:
             local_file = self.normalize_path(local_file)
         self.url = url
@@ -109,7 +110,7 @@ class FileDownload:
 class BulkFileDownload:
     def __init__(self, fdl_list: list = None, local_folder: str or Path = None):
         if local_folder is None:
-            local_folder = create_temp_dir()
+            local_folder = Cache().temp_dir(subdir='download')
         elif isinstance(local_folder, str):
             local_folder = Path(local_folder)
         self.local_folder = local_folder

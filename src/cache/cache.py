@@ -10,7 +10,7 @@ from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
 from src.low.custom_logging import make_logger
-from src.low.custom_path import Path
+from src.low.custom_path import Path, create_temp_file, create_temp_dir
 from src.low.singleton import Singleton
 from src.rem.gh.gh_session import GHSession
 
@@ -223,6 +223,23 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
     def stop(self):
         self.observer.stop()
 
+    def temp_file(self, *, subdir: str, suffix: str = None, prefix: str = None) -> Path:
+        subdir = Path(self.path.joinpath('temp').joinpath(subdir))
+        subdir.makedirs()
+        return create_temp_file(create_in_dir=str(subdir.abspath()), prefix=prefix, suffix=suffix)
+
+    def temp_dir(self, *, subdir: str, suffix: str = None, prefix: str = None) -> Path:
+        subdir = Path(self.path.joinpath('temp').joinpath(subdir))
+        subdir.makedirs()
+        return create_temp_dir(create_in_dir=str(subdir.abspath()), prefix=prefix, suffix=suffix)
+
+    def wipe_temp(self):
+        for path in Path(self.path.joinpath('temp')).listdir():
+            if path.isdir():
+                path.rmtree()
+            elif path.isfile():
+                path.remove()
+
     @property
     def path(self) -> Path:
         return self.__path
@@ -276,5 +293,5 @@ def init_cache():
     if not p.exists():
         logger.debug('directory does not exist, creating')
         p.makedirs()
-    Cache(p)
+    Cache(p).wipe_temp()
     logger.info('initialized')
