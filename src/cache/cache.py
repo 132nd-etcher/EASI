@@ -183,6 +183,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                 self.meta = {}
                 for root, folders, _ in os.walk(self.path, topdown=True):
                     folders[:] = [d for d in folders if d not in ['.git']]
+                    folders[:] = [d for d in folders if d not in ['temp']]
                     for entry in os.scandir(root):
                         if entry.is_dir():
                             continue
@@ -201,7 +202,11 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                             logger.debug('permission error, canceling')
                             del self.meta[v.path]
             else:
-                if '\\.git' in rel_path:
+                if any((
+                            '\\.git' in rel_path,
+                            '\\temp' in rel_path,
+
+                )):
                     pass
                 else:
                     logger.debug('re-building cache for path: {}'.format(rel_path))
