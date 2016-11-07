@@ -81,12 +81,13 @@ class TestDownload:
         self.progress.set_progress.assert_called_with(100)
         self.progress.set_progress_text.assert_called_with('Downloading:\n{}'.format(self.url1))
 
+    # noinspection PyUnusedLocal
     @skipUnless(os.getenv('DOLONGTESTS', False) is not False, 'skipping long tests')
     def test_bulk_download(self, tmpdir):
         callback = MagicMock()
         fdl_list = []
         for x in file_list:
-            fdl_list.append(FileDownload(x, local_folder=str(tmpdir)))
+            fdl_list.append(FileDownload(x))
         bdl = downloader.bulk_download(
             fdl_list=fdl_list,
             progress=self.progress,

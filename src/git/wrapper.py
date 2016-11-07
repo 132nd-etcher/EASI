@@ -3,12 +3,12 @@
 import pygit2
 from pygit2 import Signature
 
+from src.cache.cache import Cache
+from src.helper.kdiff import KdiffHelper
 from src.keyring.keyring import Keyring
 from src.low.custom_logging import make_logger
-from src.low.custom_path import Path, create_temp_file
+from src.low.custom_path import Path
 from src.rem.gh.gh_session import GHSession
-from src.helper.kdiff import KdiffHelper
-from src.cache.cache import Cache
 
 logger = make_logger(__name__)
 

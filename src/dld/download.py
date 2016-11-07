@@ -6,9 +6,9 @@ from requests import head, get
 from requests.exceptions import InvalidURL, MissingSchema
 
 from src.abstract.progress_interface import ProgressInterface
-from src.low.custom_logging import make_logger
-from src.low.custom_path import Path, create_temp_dir
 from src.cache.cache import Cache
+from src.low.custom_logging import make_logger
+from src.low.custom_path import Path
 from src.threadpool import ThreadPool
 
 logger = make_logger(__name__)
@@ -19,9 +19,7 @@ class DownloadError(Exception):
 
 
 class FileDownload:
-    def __init__(self, url: str, local_file: Path or str = None, local_folder: Path or str = None):
-        if local_folder is not None:
-            local_folder = self.normalize_path(local_folder)
+    def __init__(self, url: str, local_file: Path or str = None):
         if local_file is None:
             local_file = Cache().temp_file(subdir='download')
         else:
