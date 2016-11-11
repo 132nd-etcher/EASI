@@ -62,15 +62,15 @@
             
                 <li class="toctree-l3"><a href="#creating-a-mod">Creating a mod</a></li>
                 
-                    <li><a class="toctree-l4" href="#step-1-select-a-repository">Step 1: select a repository</a></li>
+                    <li><a class="toctree-l4" href="#step-1-repository">Step 1: Repository</a></li>
                 
-                    <li><a class="toctree-l4" href="#step-2-name-your-mod">Step 2: name your mod</a></li>
+                    <li><a class="toctree-l4" href="#step-2-name">Step 2: Name</a></li>
                 
-                    <li><a class="toctree-l4" href="#step-3-choose-your-mods-type">Step 3: choose your mod's "type"</a></li>
+                    <li><a class="toctree-l4" href="#step-3-mod-category">Step 3: Mod category</a></li>
                 
-                    <li><a class="toctree-l4" href="#step-4-choose-the-initial-version-number">Step 4: choose the initial version number</a></li>
+                    <li><a class="toctree-l4" href="#step-4-initial-version-number">Step 4: Initial version number</a></li>
                 
-                    <li><a class="toctree-l4" href="#step-5-specify-the-dcs-version">Step 5: specify the DCS version</a></li>
+                    <li><a class="toctree-l4" href="#step-5-dcs-version">Step 5: DCS version</a></li>
                 
                     <li><a class="toctree-l4" href="#going-deeper">Going deeper</a></li>
                 
@@ -137,7 +137,7 @@
             <div class="section">
               
                 <h1 id="creating-a-mod"><a class="toclink" href="#creating-a-mod">Creating a mod</a><a class="headerlink" href="#creating-a-mod" title="Permanent link">&para;</a></h1>
-<h2 id="step-1-select-a-repository"><a class="toclink" href="#step-1-select-a-repository">Step 1: select a repository</a><a class="headerlink" href="#step-1-select-a-repository" title="Permanent link">&para;</a></h2>
+<h2 id="step-1-repository"><a class="toclink" href="#step-1-repository">Step 1: Repository</a><a class="headerlink" href="#step-1-repository" title="Permanent link">&para;</a></h2>
 <p>The first step will be to select a repository to host your mod&rsquo;s metadata.</p>
 <h3 id="own-metadata-repository"><a class="toclink" href="#own-metadata-repository">Own metadata repository</a><a class="headerlink" href="#own-metadata-repository" title="Permanent link">&para;</a></h3>
 <p>When you link your Github account with EASI, a repository named <code>EASIMETA</code> will be created. By default, EASI will send all your mods&rsquo; metadata to this repository, because it&rsquo;s yours.</p>
@@ -152,29 +152,105 @@
 <p>This process is called a <code>Pull Request</code>, and EASI will do it automatically for you.</p>
 <p>The disadvantage of the <code>Pull Request</code> method is that it may take some time between the moment you make your changes, and the mooment the owner of the repository accepts and merge them, so your mod will not be available immediatly.</p>
 <h4 id="the-pull-request"><a class="toclink" href="#the-pull-request">The Pull Request</a><a class="headerlink" href="#the-pull-request" title="Permanent link">&para;</a></h4>
-<h2 id="step-2-name-your-mod"><a class="toclink" href="#step-2-name-your-mod">Step 2: name your mod</a><a class="headerlink" href="#step-2-name-your-mod" title="Permanent link">&para;</a></h2>
+<h2 id="step-2-name"><a class="toclink" href="#step-2-name">Step 2: Name</a><a class="headerlink" href="#step-2-name" title="Permanent link">&para;</a></h2>
 <p>The name of your mod can be any text value of your choosing, as long as it fits the following 2 rules:</p>
 <ul>
 <li>Rule 1: the name of your mod must contain a string of four contiguous letters (case doesn&rsquo;t matter)</li>
 <li>Rule 2: the name of your mod must be unique <em>within the selected metadata repository</em></li>
 </ul>
-<h2 id="step-3-choose-your-mods-type"><a class="toclink" href="#step-3-choose-your-mods-type">Step 3: choose your mod&rsquo;s &ldquo;type&rdquo;</a><a class="headerlink" href="#step-3-choose-your-mods-type" title="Permanent link">&para;</a></h2>
-<p>The type of your mod serves to describe its purpose to the end-user.</p>
+<h2 id="step-3-mod-category"><a class="toclink" href="#step-3-mod-category">Step 3: Mod category</a><a class="headerlink" href="#step-3-mod-category" title="Permanent link">&para;</a></h2>
+<p>The category of your mod serves to describe its purpose to the end-user.</p>
 <p>It also helps for sorting and finding mods.</p>
-<h2 id="step-4-choose-the-initial-version-number"><a class="toclink" href="#step-4-choose-the-initial-version-number">Step 4: choose the initial version number</a><a class="headerlink" href="#step-4-choose-the-initial-version-number" title="Permanent link">&para;</a></h2>
+<h2 id="step-4-initial-version-number"><a class="toclink" href="#step-4-initial-version-number">Step 4: Initial version number</a><a class="headerlink" href="#step-4-initial-version-number" title="Permanent link">&para;</a></h2>
 <p>A versionning scheme is needed to allow updates.</p>
 <p>If you do not want to manage the versions yourself, it&rsquo;s mighty fine: leave it at the default when you create a new mod, and let EASI bump the version for you when you update your mod.</p>
 <p>EASI is following the <a href="../semver">Semantic Versioning 2.0.0</a> rules for its versionning; both for EASI itself, and for the mods.</p>
 <p>If you do want to customize the versionning of your mod, make sure you understand and follow SemVer guidelines.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>EASI uses <code>rc</code> as the default tag for the <code>prerelease</code> part of the SemVer; feel free to use any other one you like !</p>
+<p>EASI uses <code>rc</code> as the default tag for the <code>prerelease</code> part of the SemVer; feel free to use any other one you like, though.</p>
 </div>
-<h2 id="step-5-specify-the-dcs-version"><a class="toclink" href="#step-5-specify-the-dcs-version">Step 5: specify the DCS version</a><a class="headerlink" href="#step-5-specify-the-dcs-version" title="Permanent link">&para;</a></h2>
+<h2 id="step-5-dcs-version"><a class="toclink" href="#step-5-dcs-version">Step 5: DCS version</a><a class="headerlink" href="#step-5-dcs-version" title="Permanent link">&para;</a></h2>
 <p>To allow for compatibility check before the installation of your mod, it is strongly recommended to define which version of DCS your mod is designed to work with.</p>
 <p>Defining a DCS version can be precise (e.g. <code>1.5.4.12345</code>) or fuzzy (e.g. <code>1.5.*</code>).</p>
 <p>You can also specify that your mod should be working with any newer version of DCS by using the <code>+</code> sign at the end of the DCS version string (e.g. <code>1.5.4.12345+</code> or <code>1.5+</code>).</p>
 <p>The <code>Pull from...</code> button reads the DCS version from your actual DCS installation, so you don&rsquo;t have to look it up yourself.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The default value of <code>*</code> means that your mod is compatible with <em>any</em> version of DCS.</p>
+</div>
+<h3 id="example-table"><a class="toclink" href="#example-table">Example table:</a><a class="headerlink" href="#example-table" title="Permanent link">&para;</a></h3>
+<p>In the following table, the leftmost column is the DCS version string that has been given during the mod creation process, while, the header of the other columns is the current DCS version.</p>
+<p>A checked cell means that the mod could be installed in that specific DCS installation.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>1.5.1.00000</th>
+<th>1.5.1.00001</th>
+<th>1.5.2.00000</th>
+<th>2.0.0.00000</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&ldquo;1.5.1.0000&rdquo;</td>
+<td>x</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>&ldquo;1.5.1.0000+&rdquo;</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>&ldquo;1.5.1.*&rdquo;</td>
+<td>x</td>
+<td>x</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>&ldquo;1.5+&rdquo;</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>&ldquo;1.5.*&rdquo;</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td></td>
+</tr>
+<tr>
+<td>&ldquo;1.5.2+&rdquo;</td>
+<td></td>
+<td></td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>&rdquo;*&rdquo;</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>&ldquo;2+&rdquo;</td>
+<td></td>
+<td></td>
+<td></td>
+<td>x</td>
+</tr>
+</tbody>
+</table>
 <h2 id="going-deeper"><a class="toclink" href="#going-deeper">Going deeper</a><a class="headerlink" href="#going-deeper" title="Permanent link">&para;</a></h2>
 <h3 id="directories"><a class="toclink" href="#directories">Directories</a><a class="headerlink" href="#directories" title="Permanent link">&para;</a></h3>
 <h4 id="the-cache"><a class="toclink" href="#the-cache">The cache</a><a class="headerlink" href="#the-cache" title="Permanent link">&para;</a></h4>
