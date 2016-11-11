@@ -122,7 +122,6 @@ class _MetaRepoTable(Ui_Form, QWidget):
                 '(the repository will be deleted the next time EASI starts)',
                 'Removing: {}'.format(self.selected_repo.name)
         ):
-            print('remove_repository')
             LocalMetaRepo().remove_repo(self.selected_repo.name)
         self.table.setUpdatesEnabled(True)
 

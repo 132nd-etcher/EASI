@@ -26,7 +26,6 @@ class ModMetadataWidget(QWidget, Ui_Form):
         def make_version_menu():
 
             def __version_bump(bump_func):
-                print('bumping')
                 try:
                     self.edit_version.setText(bump_func(self.edit_version.text()))
                 except ValueError:

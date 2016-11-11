@@ -15,7 +15,7 @@ logger = make_logger(__name__)
 
 class Callbacks(pygit2.RemoteCallbacks):
     def certificate_check(self, certificate, valid, host):
-        print(host)
+        logger.debug('checking certificate for: {}'.format(host))
         return True
 
     def transfer_progress(self, stats):
