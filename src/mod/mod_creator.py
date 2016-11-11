@@ -22,7 +22,7 @@ RE_MOD_NAME = compile(""".*[a-zA-Z]{4,}.*""")
 
 class ModCreator():
     def __init__(self, meta_repo_name=None):
-        self.__basics = create_new_mod_collect_basics(constants.MAIN_UI)
+        self.__basics = create_new_mod_collect_basics(constants.MAIN_UI, meta_repo_name)
         print(self.__basics)
         return
         self.__done = False

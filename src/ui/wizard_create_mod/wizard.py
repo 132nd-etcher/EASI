@@ -11,7 +11,8 @@ from src.rem.gh.gh_session import GHSession
 
 class _ModCreationWizard(Ui_Wizard, QWizard):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, meta_repo_name=None):
+        self.meta_repo_name = meta_repo_name
         QWizard.__init__(self, parent, flags=dialog_default_flags)
         self.setupUi(self)
         if not GHSession().user:
@@ -27,9 +28,9 @@ class _ModCreationWizard(Ui_Wizard, QWizard):
 
 class ModCreationWizard(BaseDialog):
 
-    def __init__(self, parent=None):
-        BaseDialog.__init__(self, _ModCreationWizard(parent))
+    def __init__(self, parent=None, meta_repo_name=None):
+        BaseDialog.__init__(self, _ModCreationWizard(parent, meta_repo_name))
 
     @staticmethod
-    def make(parent=None):
-        return ModCreationWizard(parent).qobj.exec()
+    def make(parent=None, meta_repo_name=None):
+        return ModCreationWizard(parent, meta_repo_name).qobj.exec()

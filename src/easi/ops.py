@@ -77,5 +77,5 @@ def get_new_gh_login(parent=None):
     return _get_new_gh_login(parent)
 
 
-def create_new_mod_collect_basics(parent=None):
-    return _create_new_mod_collect_basics(parent)
+def create_new_mod_collect_basics(parent=None, meta_repo_name=None):
+    return _create_new_mod_collect_basics(parent, meta_repo_name)
