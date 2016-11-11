@@ -4,10 +4,12 @@ from re import compile
 
 from src.easi.ops import get_new_gh_login, confirm, select, warn, simple_input
 from src.low import constants
+from src.low import help_links
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
 from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.meta_repo.meta_repo import MetaRepo
+from src.mod.mod_category import ModTypes
 from src.rem.gh.gh_session import GHSession
 from src.sig import SIG_CREATE_NEW_MOD
 
@@ -20,10 +22,12 @@ class ModCreator(metaclass=Singleton):
         self.__done = False
         self.__meta_repo = None
         self.__mod_name = None
+        self.__mod_category = None
         self.steps = [
             self._check_gh_login,
             self._select_metadata_repo,
             self._get_mod_name,
+            self._select_mod_category
         ]
         while True:
             try:
@@ -71,7 +75,7 @@ class ModCreator(metaclass=Singleton):
             choices=choices,
             title='Select a meta repository',
             text='Select which metadata repository you want to use to host your mod.',
-            help_link=r'https://132nd-etcher.github.io/EASI/mod_creation/#step-1-select-a-repository',
+            help_link=help_links.mod_creation_meta_repo
         )
         if meta_repo_name is None:
             logger.debug('user cancelled')
@@ -116,7 +120,7 @@ class ModCreator(metaclass=Singleton):
                  'It also has to be unique in the current repository ({})'.format(self.__meta_repo.name),
             verify_input_func=verify_mod_name,
             parent=constants.MAIN_UI,
-            # help_link= FIXME
+            help_link=help_links.mod_creation_name
         )
         if mod_name:
             self.__mod_name = mod_name
@@ -126,10 +130,30 @@ class ModCreator(metaclass=Singleton):
             logger.debug('user cancelled')
             return False
 
+    def _select_mod_category(self):
+        logger.debug('selecting mod category')
+        mod_category = select(
+            choices=[x for x in ModTypes.category_names()],
+            title='Select mod type',
+            text='How would you describe your mod ?',
+            help_link=help_links.mod_creation_type
+        )
+        if mod_category:
+            logger.debug('mod category: {}'.format(mod_category))
+            self.__mod_category = mod_category
+            return True
+        else:
+            logger.debug('user cancelled')
+            return False
 
-def on_sig_create_new_mod(sender):
-    logger.debug('catched mod creation request from: {}'.format(sender))
-    ModCreator()
 
+def init_mod_creator():
+    logger.info('initializing')
 
-SIG_CREATE_NEW_MOD.connect(on_sig_create_new_mod, weak=False)
+    def on_sig_create_new_mod(sender):
+        logger.debug('catched mod creation request from: {}'.format(sender))
+        ModCreator()
+
+    SIG_CREATE_NEW_MOD.connect(on_sig_create_new_mod, weak=False)
+
+    logger.info('initializing')
