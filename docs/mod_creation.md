@@ -18,7 +18,7 @@ This is less fine if you're not part of any organization and are releasing a HUD
 
 The `root metadata repository` is the central repository of EASI, the only one that is visible by all the clients out of the box.
 
-It's located at [https://github.com/EASIMETA/EASIMETA][https://github.com/EASIMETA/EASIMETA].
+It's located at [https://github.com/EASIMETA/EASIMETA](https://github.com/EASIMETA/EASIMETA).
 
 This time, the catch is that you cannot write in a repository you do not own.
 
@@ -42,6 +42,29 @@ The name of your mod can be any text value of your choosing, as long as it fits 
 The type of your mod serves to describe its purpose to the end-user.
 
 It also helps for sorting and finding mods.
+
+## Step 4: choose the initial version number
+
+A versionning scheme is needed to allow updates.
+
+If you do not want to manage the versions yourself, it's mighty fine: leave it at the default when you create a new mod, and let EASI bump the version for you when you update your mod.
+
+EASI is following the [Semantic Versioning 2.0.0](semver) rules for its versionning; both for EASI itself, and for the mods.
+
+If you do want to customize the versionning of your mod, make sure you understand and follow SemVer guidelines.
+
+!!! Note
+    EASI uses `rc` as the default tag for the `prerelease` part of the SemVer; feel free to use any other one you like !
+    
+## Step 5: specify the DCS version
+
+To allow for compatibility check before the installation of your mod, it is strongly recommended to define which version of DCS your mod is designed to work with.
+  
+Defining a DCS version can be precise (e.g. `1.5.4.12345`) or fuzzy (e.g. `1.5.*`).
+
+You can also specify that your mod should be working with any newer version of DCS by using the `+` sign at the end of the DCS version string (e.g. `1.5.4.12345+` or `1.5+`).
+ 
+The `Pull from...` button reads the DCS version from your actual DCS installation, so you don't have to look it up yourself.
 
 ## Going deeper
 
@@ -116,3 +139,4 @@ I would recommend you give [SmartGit][smartgit] or [GitKraken][gitkraken] a go, 
 [gitkraken]: https://www.gitkraken.com/
 [smartgit]: http://www.syntevo.com/smartgit/
 [gitdl]: https://git-scm.com/download/win
+[semver]: http://semver.org/
