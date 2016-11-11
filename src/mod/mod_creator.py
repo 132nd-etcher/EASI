@@ -12,6 +12,7 @@ from src.low.singleton import Singleton
 from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.meta_repo.meta_repo import MetaRepo
 from src.mod.mod_category import ModTypes
+from src.mod.mod import Mod
 from src.rem.gh.gh_session import GHSession
 from src.sig import SIG_CREATE_NEW_MOD
 
@@ -50,6 +51,18 @@ class ModCreator(metaclass=Singleton):
             logger.debug('mod creation failed')
         else:
             logger.debug('mod creation successful')
+
+    @property
+    def meta_repo(self):
+        if not isinstance(self.__meta_repo, MetaRepo):
+            raise ValueError('meta_repo should be initialized by now')
+        return self.__meta_repo
+
+    @property
+    def mod(self):
+        if not isinstance(self.__mod, Mod):
+            raise ValueError('mod should be initialized by now')
+        return self.__mod
 
     def _check_gh_login(self):
         logger.debug('checking GH login')
@@ -93,7 +106,7 @@ class ModCreator(metaclass=Singleton):
         return self._check_push_perm()
 
     def _check_push_perm(self):
-        if not self.__meta_repo.push_perm:
+        if not self.meta_repo.push_perm:
             if not warn(
                     'nopushperm',
                     'You are about to create a mod in a repository in which you do not have push permission '
@@ -105,7 +118,7 @@ class ModCreator(metaclass=Singleton):
                     'Make sure you understand the implications before going further'
                     ''
                     'Do you want to continue?'.format(
-                        self.__meta_repo.owner
+                        self.meta_repo.owner
                     ),
                     buttons='yesno'
             ):
@@ -116,8 +129,7 @@ class ModCreator(metaclass=Singleton):
     def _get_mod_name(self):
 
         def verify_mod_name(_mod_name):
-            assert isinstance(self.__meta_repo, MetaRepo)
-            if not self.__meta_repo.mod_name_is_available_new(_mod_name):
+            if not self.meta_repo.mod_name_is_available_new(_mod_name):
                 return 'There is already a mod named "{}" in repository "{}"'.format(_mod_name, self.__meta_repo.name)
             if not RE_MOD_NAME.match(_mod_name):
                 return 'Mod name needs to contain at least one string of 4 letters'
@@ -125,7 +137,7 @@ class ModCreator(metaclass=Singleton):
         mod_name = simple_input(
             title='Choose a name for your mod',
             text='The name of your mod needs to contain at least 4 contiguous letters.\n\n'
-                 'It also has to be unique in the current repository ({})'.format(self.__meta_repo.name),
+                 'It also has to be unique in the current repository ({})'.format(self.meta_repo.name),
             verify_input_func=verify_mod_name,
             parent=constants.MAIN_UI,
             help_link=help_links.mod_creation_name
