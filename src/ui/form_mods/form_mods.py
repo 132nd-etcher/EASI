@@ -152,18 +152,21 @@ class _OwnModsTable(Ui_Form, QWidget):
 
     @property
     def selected_mod(self) -> Mod:
-        return self.table.selectedIndexes()[0].data(Qt.UserRole)
+        mod = self.table.selectedIndexes()[0].data(Qt.UserRole)
+        if isinstance(mod, Mod):
+            return mod
+        return None
 
     def show_details_for_selected_mod(self):
         ModDetailsDialog.make(self.selected_mod, self.selected_meta_repo, self)
         self.resize_columns()
 
     def on_double_click(self, _):
-        if isinstance(self.selected_mod, Mod):
+        if self.selected_mod:
             self.show_details_for_selected_mod()
 
     def on_click(self, _):
-        if isinstance(self.selected_mod, Mod):
+        if self.selected_mod:
             self.btn_details.setEnabled(True)
 
     def set_repo_labels(self):
