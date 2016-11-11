@@ -56,7 +56,7 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../requirements/">Requirements</a>
+        <a class="" href="../mod_creation/">ModCreation</a>
         
     </li>
 <li>
@@ -67,16 +67,23 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#talk-a-bit-about-semver">Talk a bit about SemVer</a></li>
+                <li class="toctree-l3"><a href="#update-versionning">Update &amp; versionning</a></li>
                 
-            
-                <li class="toctree-l3"><a href="#branches-packages">Branches &amp; packages</a></li>
+                    <li><a class="toctree-l4" href="#basics">Basics</a></li>
                 
-            
-                <li class="toctree-l3"><a href="#av-artifacts">AV artifacts</a></li>
+                    <li><a class="toctree-l4" href="#update-channels">Update channels</a></li>
+                
+                    <li><a class="toctree-l4" href="#av-artifacts">AV artifacts</a></li>
                 
             
             </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../requirements/">Requirements</a>
         
     </li>
 <li>
@@ -123,14 +130,56 @@
           <div role="main">
             <div class="section">
               
-                <p><strong>WIP</strong></p>
-<h2 id="talk-a-bit-about-semver"><a class="toclink" href="#talk-a-bit-about-semver">Talk a bit about SemVer</a><a class="headerlink" href="#talk-a-bit-about-semver" title="Permanent link">&para;</a></h2>
-<h2 id="branches-packages"><a class="toclink" href="#branches-packages">Branches &amp; packages</a><a class="headerlink" href="#branches-packages" title="Permanent link">&para;</a></h2>
-<p>alpha: feat/<br />
-beta: pull/<br />
-dev: develop<br />
-rc: /release<br />
-stable: master &amp; hotfix/</p>
+                <h1 id="update-versionning"><a class="toclink" href="#update-versionning">Update &amp; versionning</a><a class="headerlink" href="#update-versionning" title="Permanent link">&para;</a></h1>
+<h2 id="basics"><a class="toclink" href="#basics">Basics</a><a class="headerlink" href="#basics" title="Permanent link">&para;</a></h2>
+<p>Updating EASI is as simple as starting it. If, during startup, it detects a newer version, that version will automatically be downloaded and installed.</p>
+<p>All files and settings are preserved during updates.</p>
+<h2 id="update-channels"><a class="toclink" href="#update-channels">Update channels</a><a class="headerlink" href="#update-channels" title="Permanent link">&para;</a></h2>
+<p>By default, EASI will only update itself to the most stable version (which, at the time I&rsquo;m writing this, is confusingly still considered an experimental version).</p>
+<p>I you so desire, you may elect to subscribe to a different (less stable) channel and receive early updates before they are integrated in the stable branch.</p>
+<p>This allows you to enjoy the latest features, and offers me early feedback on potential bugs.</p>
+<p>To opt-in for a different update channel, got the settings page (CTRL+S) and look for the dropdown menu in the update section.</p>
+<h3 id="semantic-versionning"><a class="toclink" href="#semantic-versionning">Semantic versionning</a><a class="headerlink" href="#semantic-versionning" title="Permanent link">&para;</a></h3>
+<p>EASI follows the convention of <a href="http://semver.org/">Sementic Versionning 2.0.0</a>.</p>
+<p>Versionning is done automatically by <a href="https://github.com/GitTools/GitVersion">Git Version</a> at build time and written into the resulting <a href="https://en.wikipedia.org/wiki/Portable_Executable">PE</a>.</p>
+<p>The current version of EASI is shown in the main window title-bar.</p>
+<h3 id="branches-packages"><a class="toclink" href="#branches-packages">Branches &amp; packages</a><a class="headerlink" href="#branches-packages" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Branch</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>alpha</td>
+<td>feat/</td>
+<td>Very early testing of new features</td>
+</tr>
+<tr>
+<td>beta</td>
+<td>pull/*</td>
+<td>Early testing of features ready to be integrated</td>
+</tr>
+<tr>
+<td>dev</td>
+<td>develop</td>
+<td>Development version</td>
+</tr>
+<tr>
+<td>rc</td>
+<td>release/*</td>
+<td>Release candidate</td>
+</tr>
+<tr>
+<td>stable</td>
+<td>master &amp; hotfix/</td>
+<td>Stable version</td>
+</tr>
+</tbody>
+</table>
 <h2 id="av-artifacts"><a class="toclink" href="#av-artifacts">AV artifacts</a><a class="headerlink" href="#av-artifacts" title="Permanent link">&para;</a></h2>
               
             </div>
@@ -139,10 +188,10 @@ stable: master &amp; hotfix/</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../tests/" class="btn btn-neutral float-right" title="Tests">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../requirements/" class="btn btn-neutral float-right" title="Requirements">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../requirements/" class="btn btn-neutral" title="Requirements"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../mod_creation/" class="btn btn-neutral" title="ModCreation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -170,10 +219,10 @@ stable: master &amp; hotfix/</p>
           <a href="https://github.com/132nd-etcher/EASI" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../requirements/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../mod_creation/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../tests/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../requirements/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../app.ico">
+  
+  <title>ModCreation - Etcher's Automated Skins Installer</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "ModCreation";
+    var mkdocs_page_input_path = "mod_creation.md";
+    var mkdocs_page_url = "/mod_creation/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Etcher's Automated Skins Installer</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="..">Home</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">ModCreation</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#creating-a-mod">Creating a mod</a></li>
+                
+                    <li><a class="toctree-l4" href="#step-1-select-a-repository">Step 1: select a repository</a></li>
+                
+                    <li><a class="toctree-l4" href="#going-deeper">Going deeper</a></li>
+                
+            
+            </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../versionning/">Versionning</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../requirements/">Requirements</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../tests/">Tests</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Etcher's Automated Skins Installer</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>ModCreation</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/132nd-etcher/EASI/edit/master/docs/mod_creation.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="creating-a-mod"><a class="toclink" href="#creating-a-mod">Creating a mod</a><a class="headerlink" href="#creating-a-mod" title="Permanent link">&para;</a></h1>
+<h2 id="step-1-select-a-repository"><a class="toclink" href="#step-1-select-a-repository">Step 1: select a repository</a><a class="headerlink" href="#step-1-select-a-repository" title="Permanent link">&para;</a></h2>
+<p>The first step will be to select a repository to host your mod&rsquo;s metadata.</p>
+<h3 id="own-metadata-repository"><a class="toclink" href="#own-metadata-repository">Own metadata repository</a><a class="headerlink" href="#own-metadata-repository" title="Permanent link">&para;</a></h3>
+<p>When you link your Github account with EASI, a repository named <code>EASIMETA</code> will be created. By default, EASI will send all your mods&rsquo; metadata to this repository, because it&rsquo;s yours.</p>
+<p>The catch is that in order for your mods to be made available for download, end-users will need to add your repository to their list of repositories, which is a manual operation.</p>
+<p>This is fine if, for example, you are the maintainer of all the skins for your organization.</p>
+<p>This is less fine if you&rsquo;re not part of any organization and are releasing a HUD mod for the A-10C, in which case you would probably prefer to use the <code>root metadata repository</code>.</p>
+<h3 id="easi-root-metadata-repository"><a class="toclink" href="#easi-root-metadata-repository">EASI root metadata repository</a><a class="headerlink" href="#easi-root-metadata-repository" title="Permanent link">&para;</a></h3>
+<p>The <code>root metadata repository</code> is the central repository of EASI, the only one that is visible by all the clients out of the box.</p>
+<p>It&rsquo;s located at [https://github.com/EASIMETA/EASIMETA][https://github.com/EASIMETA/EASIMETA].</p>
+<p>This time, the catch is that you cannot write in a repository you do not own.</p>
+<p>What you can do, however, is make a copy of the repository, change it, and then send your changes to the owner with a message attached to it, describing your changes.</p>
+<p>This process is called a <code>Pull Request</code>, and EASI will do it automatically for you.</p>
+<p>The disadvantage of the <code>Pull Request</code> method is that it may take some time between the moment you make your changes, and the mooment the owner of the repository accepts and merge them, so your mod will not be available immediatly.</p>
+<h4 id="the-pull-request"><a class="toclink" href="#the-pull-request">The Pull Request</a><a class="headerlink" href="#the-pull-request" title="Permanent link">&para;</a></h4>
+<h2 id="going-deeper"><a class="toclink" href="#going-deeper">Going deeper</a><a class="headerlink" href="#going-deeper" title="Permanent link">&para;</a></h2>
+<h3 id="directories"><a class="toclink" href="#directories">Directories</a><a class="headerlink" href="#directories" title="Permanent link">&para;</a></h3>
+<h4 id="the-cache"><a class="toclink" href="#the-cache">The cache</a><a class="headerlink" href="#the-cache" title="Permanent link">&para;</a></h4>
+<p>The cache is where EASI stores every local file it works with, be it texture files from mods you&rsquo;ve downloaded or meta-data related to available mods.</p>
+<p>By default, i&rsquo;ts located in a <code>./cache</code> folder in the same directory EASI&rsquo;s installed in.</p>
+<p>As it can grow quite large, you can move the cache to another location via the <code>Settings</code> menu.</p>
+<h5 id="meta-folder"><a class="toclink" href="#meta-folder"><code>meta</code> folder</a><a class="headerlink" href="#meta-folder" title="Permanent link">&para;</a></h5>
+<p>The <code>meta</code> folder contains the <code>metadata</code> of all mods.</p>
+<dl>
+<dt>Metadata</dt>
+<dd>Merriam-Webster defines the term &ldquo;metadata&rdquo; as &ldquo;data that provides information about other data&rdquo;<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>. In the context of EASI, the primary &ldquo;data&rdquo; would be the mod itself: the textures, the *.lua files, the readme, etc. The &ldquo;metadata&rdquo; would be the file that contains the mod name, the list of files to download, and where to install them.</dd>
+</dl>
+<p>All <code>metadata</code> files are stored in a [Git][git] repository.</p>
+<p>During normal use, you don&rsquo;t need to worry about it at all (except for accepting or rejecting changes to your mods).</p>
+<p>However, nothing prevents you from <a href="#managing-your-repositories">managing your repositories yourself</a>.</p>
+<p>The <code>metadata</code> inside the <code>meta</code> folder is contained within Git repositories arranged by their Github username.</p>
+<h5 id="easi_meta"><a class="toclink" href="#easi_meta"><code>EASI_META</code></a><a class="headerlink" href="#easi_meta" title="Permanent link">&para;</a></h5>
+<p>Main EASI metadata folder</p>
+<h5 id="custom-metarepo"><a class="toclink" href="#custom-metarepo">Custom <code>metarepo</code></a><a class="headerlink" href="#custom-metarepo" title="Permanent link">&para;</a></h5>
+<h4 id="managing-your-repositories-directly"><a class="toclink" href="#managing-your-repositories-directly">Managing your repositories directly</a><a class="headerlink" href="#managing-your-repositories-directly" title="Permanent link">&para;</a></h4>
+<h5 id="i-know-git"><a class="toclink" href="#i-know-git">I know Git</a><a class="headerlink" href="#i-know-git" title="Permanent link">&para;</a></h5>
+<p>If you&rsquo;re familiar with [Git][git], this is the basic workflow:</p>
+<ol>
+<li>Pull or fork the <code>metarepo</code> you want to edit</li>
+<li>Make your changes</li>
+<li>Commit and push / make a PR</li>
+<li>Profit!</li>
+</ol>
+<h5 id="whats-git"><a class="toclink" href="#whats-git">What&rsquo;s Git ?</a><a class="headerlink" href="#whats-git" title="Permanent link">&para;</a></h5>
+<p>If you&rsquo;re not familiar with Git but would still want to give it a try, I strongly recommend you give this a go first:</p>
+<p><a href="https://try.github.io">https://try.github.io</a></p>
+<h6 id="tutorials-about-git"><a class="toclink" href="#tutorials-about-git">Tutorials about Git</a><a class="headerlink" href="#tutorials-about-git" title="Permanent link">&para;</a></h6>
+<p><a href="https://git-scm.com/docs/gittutorial">https://git-scm.com/docs/gittutorial</a></p>
+<p><a href="https://www.atlassian.com/git/tutorials/">https://www.atlassian.com/git/tutorials/</a></p>
+<h6 id="install-git"><a class="toclink" href="#install-git">Install Git</a><a class="headerlink" href="#install-git" title="Permanent link">&para;</a></h6>
+<p>You will need to [download and install git][gitdl] on your machine before you can use it locally.</p>
+<h6 id="optional-get-a-gui"><a class="toclink" href="#optional-get-a-gui">(optional) Get a GUI</a><a class="headerlink" href="#optional-get-a-gui" title="Permanent link">&para;</a></h6>
+<p>Also, for the day-to-day use, you might want to use an application with a GUI instead of the crude CLI that comes with Git.</p>
+<p>I would recommend you give [SmartGit][smartgit] or [GitKraken][gitkraken] a go, they&rsquo;re both free for non-commercial use.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p><a href="http://www.merriam-webster.com/dictionary/metadata">http://www.merriam-webster.com/dictionary/metadata</a><br />
+[git]: https://git-scm.com/<br />
+[gitkraken]: https://www.gitkraken.com/<br />
+[smartgit]: http://www.syntevo.com/smartgit/<br />
+[gitdl]: https://git-scm.com/download/win&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../versionning/" class="btn btn-neutral float-right" title="Versionning">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/132nd-etcher/EASI" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../versionning/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>

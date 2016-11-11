@@ -21,8 +21,133 @@
             "title": "Project layout"
         },
         {
+            "location": "/mod_creation/",
+            "text": "Creating a mod\n\u00b6\n\n\nStep 1: select a repository\n\u00b6\n\n\nThe first step will be to select a repository to host your mod\u2019s metadata.\n\n\nOwn metadata repository\n\u00b6\n\n\nWhen you link your Github account with EASI, a repository named \nEASIMETA\n will be created. By default, EASI will send all your mods\u2019 metadata to this repository, because it\u2019s yours.\n\n\nThe catch is that in order for your mods to be made available for download, end-users will need to add your repository to their list of repositories, which is a manual operation.\n\n\nThis is fine if, for example, you are the maintainer of all the skins for your organization.\n\n\nThis is less fine if you\u2019re not part of any organization and are releasing a HUD mod for the A-10C, in which case you would probably prefer to use the \nroot metadata repository\n.\n\n\nEASI root metadata repository\n\u00b6\n\n\nThe \nroot metadata repository\n is the central repository of EASI, the only one that is visible by all the clients out of the box.\n\n\nIt\u2019s located at [https://github.com/EASIMETA/EASIMETA][https://github.com/EASIMETA/EASIMETA].\n\n\nThis time, the catch is that you cannot write in a repository you do not own.\n\n\nWhat you can do, however, is make a copy of the repository, change it, and then send your changes to the owner with a message attached to it, describing your changes.\n\n\nThis process is called a \nPull Request\n, and EASI will do it automatically for you.\n\n\nThe disadvantage of the \nPull Request\n method is that it may take some time between the moment you make your changes, and the mooment the owner of the repository accepts and merge them, so your mod will not be available immediatly.\n\n\nThe Pull Request\n\u00b6\n\n\nGoing deeper\n\u00b6\n\n\nDirectories\n\u00b6\n\n\nThe cache\n\u00b6\n\n\nThe cache is where EASI stores every local file it works with, be it texture files from mods you\u2019ve downloaded or meta-data related to available mods.\n\n\nBy default, i\u2019ts located in a \n./cache\n folder in the same directory EASI\u2019s installed in.\n\n\nAs it can grow quite large, you can move the cache to another location via the \nSettings\n menu.\n\n\nmeta\n folder\n\u00b6\n\n\nThe \nmeta\n folder contains the \nmetadata\n of all mods.\n\n\n\n\nMetadata\n\n\nMerriam-Webster defines the term \u201cmetadata\u201d as \u201cdata that provides information about other data\u201d\n1\n. In the context of EASI, the primary \u201cdata\u201d would be the mod itself: the textures, the *.lua files, the readme, etc. The \u201cmetadata\u201d would be the file that contains the mod name, the list of files to download, and where to install them.\n\n\n\n\nAll \nmetadata\n files are stored in a [Git][git] repository.\n\n\nDuring normal use, you don\u2019t need to worry about it at all (except for accepting or rejecting changes to your mods).\n\n\nHowever, nothing prevents you from \nmanaging your repositories yourself\n.\n\n\nThe \nmetadata\n inside the \nmeta\n folder is contained within Git repositories arranged by their Github username.\n\n\nEASI_META\n\u00b6\n\n\nMain EASI metadata folder\n\n\nCustom \nmetarepo\n\u00b6\n\n\nManaging your repositories directly\n\u00b6\n\n\nI know Git\n\u00b6\n\n\nIf you\u2019re familiar with [Git][git], this is the basic workflow:\n\n\n\n\nPull or fork the \nmetarepo\n you want to edit\n\n\nMake your changes\n\n\nCommit and push / make a PR\n\n\nProfit!\n\n\n\n\nWhat\u2019s Git ?\n\u00b6\n\n\nIf you\u2019re not familiar with Git but would still want to give it a try, I strongly recommend you give this a go first:\n\n\nhttps://try.github.io\n\n\nTutorials about Git\n\u00b6\n\n\nhttps://git-scm.com/docs/gittutorial\n\n\nhttps://www.atlassian.com/git/tutorials/\n\n\nInstall Git\n\u00b6\n\n\nYou will need to [download and install git][gitdl] on your machine before you can use it locally.\n\n\n(optional) Get a GUI\n\u00b6\n\n\nAlso, for the day-to-day use, you might want to use an application with a GUI instead of the crude CLI that comes with Git.\n\n\nI would recommend you give [SmartGit][smartgit] or [GitKraken][gitkraken] a go, they\u2019re both free for non-commercial use.\n\n\n\n\n\n\n\n\n\n\nhttp://www.merriam-webster.com/dictionary/metadata\n\n[git]: https://git-scm.com/\n\n[gitkraken]: https://www.gitkraken.com/\n\n[smartgit]: http://www.syntevo.com/smartgit/\n\n[gitdl]: https://git-scm.com/download/win\u00a0\n\u21a9",
+            "title": "ModCreation"
+        },
+        {
+            "location": "/mod_creation/#creating-a-mod",
+            "text": "",
+            "title": "Creating a mod"
+        },
+        {
+            "location": "/mod_creation/#step-1-select-a-repository",
+            "text": "The first step will be to select a repository to host your mod\u2019s metadata.",
+            "title": "Step 1: select a repository"
+        },
+        {
+            "location": "/mod_creation/#own-metadata-repository",
+            "text": "When you link your Github account with EASI, a repository named  EASIMETA  will be created. By default, EASI will send all your mods\u2019 metadata to this repository, because it\u2019s yours.  The catch is that in order for your mods to be made available for download, end-users will need to add your repository to their list of repositories, which is a manual operation.  This is fine if, for example, you are the maintainer of all the skins for your organization.  This is less fine if you\u2019re not part of any organization and are releasing a HUD mod for the A-10C, in which case you would probably prefer to use the  root metadata repository .",
+            "title": "Own metadata repository"
+        },
+        {
+            "location": "/mod_creation/#easi-root-metadata-repository",
+            "text": "The  root metadata repository  is the central repository of EASI, the only one that is visible by all the clients out of the box.  It\u2019s located at [https://github.com/EASIMETA/EASIMETA][https://github.com/EASIMETA/EASIMETA].  This time, the catch is that you cannot write in a repository you do not own.  What you can do, however, is make a copy of the repository, change it, and then send your changes to the owner with a message attached to it, describing your changes.  This process is called a  Pull Request , and EASI will do it automatically for you.  The disadvantage of the  Pull Request  method is that it may take some time between the moment you make your changes, and the mooment the owner of the repository accepts and merge them, so your mod will not be available immediatly.",
+            "title": "EASI root metadata repository"
+        },
+        {
+            "location": "/mod_creation/#the-pull-request",
+            "text": "",
+            "title": "The Pull Request"
+        },
+        {
+            "location": "/mod_creation/#going-deeper",
+            "text": "",
+            "title": "Going deeper"
+        },
+        {
+            "location": "/mod_creation/#directories",
+            "text": "",
+            "title": "Directories"
+        },
+        {
+            "location": "/mod_creation/#the-cache",
+            "text": "The cache is where EASI stores every local file it works with, be it texture files from mods you\u2019ve downloaded or meta-data related to available mods.  By default, i\u2019ts located in a  ./cache  folder in the same directory EASI\u2019s installed in.  As it can grow quite large, you can move the cache to another location via the  Settings  menu.",
+            "title": "The cache"
+        },
+        {
+            "location": "/mod_creation/#meta-folder",
+            "text": "The  meta  folder contains the  metadata  of all mods.   Metadata  Merriam-Webster defines the term \u201cmetadata\u201d as \u201cdata that provides information about other data\u201d 1 . In the context of EASI, the primary \u201cdata\u201d would be the mod itself: the textures, the *.lua files, the readme, etc. The \u201cmetadata\u201d would be the file that contains the mod name, the list of files to download, and where to install them.   All  metadata  files are stored in a [Git][git] repository.  During normal use, you don\u2019t need to worry about it at all (except for accepting or rejecting changes to your mods).  However, nothing prevents you from  managing your repositories yourself .  The  metadata  inside the  meta  folder is contained within Git repositories arranged by their Github username.",
+            "title": "meta folder"
+        },
+        {
+            "location": "/mod_creation/#easi_meta",
+            "text": "Main EASI metadata folder",
+            "title": "EASI_META"
+        },
+        {
+            "location": "/mod_creation/#custom-metarepo",
+            "text": "",
+            "title": "Custom metarepo"
+        },
+        {
+            "location": "/mod_creation/#managing-your-repositories-directly",
+            "text": "",
+            "title": "Managing your repositories directly"
+        },
+        {
+            "location": "/mod_creation/#i-know-git",
+            "text": "If you\u2019re familiar with [Git][git], this is the basic workflow:   Pull or fork the  metarepo  you want to edit  Make your changes  Commit and push / make a PR  Profit!",
+            "title": "I know Git"
+        },
+        {
+            "location": "/mod_creation/#whats-git",
+            "text": "If you\u2019re not familiar with Git but would still want to give it a try, I strongly recommend you give this a go first:  https://try.github.io",
+            "title": "What's Git ?"
+        },
+        {
+            "location": "/mod_creation/#tutorials-about-git",
+            "text": "https://git-scm.com/docs/gittutorial  https://www.atlassian.com/git/tutorials/",
+            "title": "Tutorials about Git"
+        },
+        {
+            "location": "/mod_creation/#install-git",
+            "text": "You will need to [download and install git][gitdl] on your machine before you can use it locally.",
+            "title": "Install Git"
+        },
+        {
+            "location": "/mod_creation/#optional-get-a-gui",
+            "text": "Also, for the day-to-day use, you might want to use an application with a GUI instead of the crude CLI that comes with Git.  I would recommend you give [SmartGit][smartgit] or [GitKraken][gitkraken] a go, they\u2019re both free for non-commercial use.      http://www.merriam-webster.com/dictionary/metadata \n[git]: https://git-scm.com/ \n[gitkraken]: https://www.gitkraken.com/ \n[smartgit]: http://www.syntevo.com/smartgit/ \n[gitdl]: https://git-scm.com/download/win\u00a0 \u21a9",
+            "title": "(optional) Get a GUI"
+        },
+        {
+            "location": "/versionning/",
+            "text": "Update & versionning\n\u00b6\n\n\nBasics\n\u00b6\n\n\nUpdating EASI is as simple as starting it. If, during startup, it detects a newer version, that version will automatically be downloaded and installed.\n\n\nAll files and settings are preserved during updates.\n\n\nUpdate channels\n\u00b6\n\n\nBy default, EASI will only update itself to the most stable version (which, at the time I\u2019m writing this, is confusingly still considered an experimental version).\n\n\nI you so desire, you may elect to subscribe to a different (less stable) channel and receive early updates before they are integrated in the stable branch.\n\n\nThis allows you to enjoy the latest features, and offers me early feedback on potential bugs.\n\n\nTo opt-in for a different update channel, got the settings page (CTRL+S) and look for the dropdown menu in the update section.\n\n\nSemantic versionning\n\u00b6\n\n\nEASI follows the convention of \nSementic Versionning 2.0.0\n.\n\n\nVersionning is done automatically by \nGit Version\n at build time and written into the resulting \nPE\n.\n\n\nThe current version of EASI is shown in the main window title-bar.\n\n\nBranches & packages\n\u00b6\n\n\n\n\n\n\n\n\nChannel\n\n\nBranch\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nalpha\n\n\nfeat/\n\n\nVery early testing of new features\n\n\n\n\n\n\nbeta\n\n\npull/*\n\n\nEarly testing of features ready to be integrated\n\n\n\n\n\n\ndev\n\n\ndevelop\n\n\nDevelopment version\n\n\n\n\n\n\nrc\n\n\nrelease/*\n\n\nRelease candidate\n\n\n\n\n\n\nstable\n\n\nmaster & hotfix/\n\n\nStable version\n\n\n\n\n\n\n\n\nAV artifacts\n\u00b6",
+            "title": "Versionning"
+        },
+        {
+            "location": "/versionning/#update-versionning",
+            "text": "",
+            "title": "Update &amp; versionning"
+        },
+        {
+            "location": "/versionning/#basics",
+            "text": "Updating EASI is as simple as starting it. If, during startup, it detects a newer version, that version will automatically be downloaded and installed.  All files and settings are preserved during updates.",
+            "title": "Basics"
+        },
+        {
+            "location": "/versionning/#update-channels",
+            "text": "By default, EASI will only update itself to the most stable version (which, at the time I\u2019m writing this, is confusingly still considered an experimental version).  I you so desire, you may elect to subscribe to a different (less stable) channel and receive early updates before they are integrated in the stable branch.  This allows you to enjoy the latest features, and offers me early feedback on potential bugs.  To opt-in for a different update channel, got the settings page (CTRL+S) and look for the dropdown menu in the update section.",
+            "title": "Update channels"
+        },
+        {
+            "location": "/versionning/#semantic-versionning",
+            "text": "EASI follows the convention of  Sementic Versionning 2.0.0 .  Versionning is done automatically by  Git Version  at build time and written into the resulting  PE .  The current version of EASI is shown in the main window title-bar.",
+            "title": "Semantic versionning"
+        },
+        {
+            "location": "/versionning/#branches-packages",
+            "text": "Channel  Branch  Description      alpha  feat/  Very early testing of new features    beta  pull/*  Early testing of features ready to be integrated    dev  develop  Development version    rc  release/*  Release candidate    stable  master & hotfix/  Stable version",
+            "title": "Branches &amp; packages"
+        },
+        {
+            "location": "/versionning/#av-artifacts",
+            "text": "",
+            "title": "AV artifacts"
+        },
+        {
             "location": "/requirements/",
-            "text": "Packages used\n\u00b6\n\n\nNote: the version shown on the packages badges may not be the one used in this project; this list is only intended as an index linking to everyone else\u2019s hard work.\n\n\nFor an up-to-date list of the packages actually used, see the different \u201crequirement*.txt files at the root fo the project. Alternatively, you may refer to the \nVersion Eye page of this project\n.\n\n\nDependencies\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nargh\n\n\n\n\n\n\n\n\nblinker\n\n\n\n\n\n\n\n\ncertifi\n\n\n\n\n\n\n\n\ncffi\n\n\n\n\n\n\n\n\ncontextlib2\n\n\n\n\n\n\n\n\ncoverage\n\n\n\n\n\n\n\n\ndropbox\n\n\n\n\n\n\n\n\nfuture\n\n\n\n\n\n\n\n\ngitdb\n\n\n\n\n\n\n\n\ngithub3.py\n\n\n\n\n\n\n\n\nhumanize\n\n\n\n\n\n\n\n\nhypothesis\n\n\n\n\n\n\n\n\nntplib\n\n\n\n\n\n\n\n\npasslib\n\n\n\n\n\n\n\n\npath.py\n\n\n\n\n\n\n\n\npathtools\n\n\n\n\n\n\n\n\npendulum\n\n\n\n\n\n\n\n\npycparser\n\n\n\n\n\n\n\n\npycrypto\n\n\n\n\n\n\n\n\nPyQt5\n\n\n\n\n\n\n\n\npython-dateutil\n\n\n\n\n\n\n\n\npytz\n\n\n\n\n\n\n\n\nPyYAML\n\n\n\n\n\n\n\n\nraven\n\n\n\n\n\n\n\n\nrequests\n\n\n\n\n\n\n\n\nruamel.yaml\n\n\n\n\n\n\n\n\nsemver\n\n\n\n\n\n\n\n\nshortuuid\n\n\n\n\n\n\n\n\nsip\n\n\n\n\n\n\n\n\nsmmap\n\n\n\n\n\n\n\n\nspark-parser\n\n\n\n\n\n\n\n\ntyping\n\n\n\n\n\n\n\n\ntzlocal\n\n\n\n\n\n\n\n\nuncompyle6\n\n\n\n\n\n\n\n\nuritemplate\n\n\n\n\n\n\n\n\nuritemplate.py\n\n\n\n\n\n\n\n\nurllib3\n\n\n\n\n\n\n\n\nwatchdog\n\n\n\n\n\n\n\n\nWMI\n\n\n\n\n\n\n\n\nxdis\n\n\n\n\n\n\n\n\n\n\nDocumentation\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nclick\n\n\n\n\n\n\n\n\nJinja2\n\n\n\n\n\n\n\n\nlivereload\n\n\n\n\n\n\n\n\nMarkdown\n\n\n\n\n\n\n\n\nMarkupSafe\n\n\n\n\n\n\n\n\nmkdocs-bootstrap\n\n\n\n\n\n\n\n\nmkdocs-bootstrap\n\n\n\n\n\n\n\n\nmkdocs-bootswatch\n\n\n\n\n\n\n\n\nsix\n\n\n\n\n\n\n\n\ntornado\n\n\n\n\n\n\n\n\n\n\nTests\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\napipkg\n\n\n\n\n\n\n\n\ncolorama\n\n\n\n\n\n\n\n\ndiff-cover\n\n\n\n\n\n\n\n\nexecnet\n\n\n\n\n\n\n\n\ninflect\n\n\n\n\n\n\n\n\njinja2-pluralize\n\n\n\n\n\n\n\n\npy\n\n\n\n\n\n\n\n\npytest\n\n\n\n\n\n\n\n\npytest-cache\n\n\n\n\n\n\n\n\npytest-catchlog\n\n\n\n\n\n\n\n\npytest-cov\n\n\n\n\n\n\n\n\npytest-mock\n\n\n\n\n\n\n\n\npytest-qt\n\n\n\n\n\n\n\n\n\n\nBuild\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nCython\n\n\n\n\n\n\n\n\npypiwin32\n\n\n\n\n\n\n\n\n\n\nWheels and custom packages\n\u00b6\n\n\nCollection of libraries I had to tweak for this project.\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\nUsed for\n\n\nCustom repository\n\n\n\n\n\n\n\n\n\n\npygit2\n\n\n\n\nproject\n\n\nhttps://github.com/132nd-etcher/pygit2_wheel\n\n\n\n\n\n\nblinker-herald\n\n\n\n\nproject\n\n\nhttps://github.com/132nd-etcher/blinker_herald\n\n\n\n\n\n\npyinstaller\n\n\n\n\nbuild\n\n\nhttps://github.com/132nd-etcher/pyinstaller\n\n\n\n\n\n\nmkdocs\n\n\n\n\ndocs\n\n\nhttps://github.com/132nd-etcher/mkdocs.git\n\n\n\n\n\n\nhttmock\n\n\n\n\ntest\n\n\nhttps://github.com/132nd-etcher/httmock.git\n\n\n\n\n\n\n\n\nAdditional packages\n\u00b6\n\n\nCollection of libraries used in the making of this project.\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\npipdeptree\n\n\n\n\n\n\n\n\nnose\n\n\n\n\n\n\n\n\ndocopt\n\n\n\n\n\n\n\n\nfeedparser\n\n\n\n\n\n\n\n\ngitsome\n\n\n\n\n\n\n\n\nnumpydoc\n\n\n\n\n\n\n\n\nply\n\n\n\n\n\n\n\n\nprompt-toolkit\n\n\n\n\n\n\n\n\nPygments\n\n\n\n\n\n\n\n\nwcwidth",
+            "text": "Packages used\n\u00b6\n\n\nNote: the version shown on the packages badges may not be the one used in this project; this list is only intended as an index linking to everyone else\u2019s hard work.\n\n\nFor an up-to-date list of the packages actually used, see the different \u201crequirement*.txt files at the root fo the project. Alternatively, you may refer to the \nVersion Eye page of this project\n.\n\n\nDependencies\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nargh\n\n\n\n\n\n\n\n\nblinker\n\n\n\n\n\n\n\n\ncertifi\n\n\n\n\n\n\n\n\ncffi\n\n\n\n\n\n\n\n\ncontextlib2\n\n\n\n\n\n\n\n\ncoverage\n\n\n\n\n\n\n\n\ndropbox\n\n\n\n\n\n\n\n\nfuture\n\n\n\n\n\n\n\n\ngitdb\n\n\n\n\n\n\n\n\ngithub3.py\n\n\n\n\n\n\n\n\nhumanize\n\n\n\n\n\n\n\n\nhypothesis\n\n\n\n\n\n\n\n\nntplib\n\n\n\n\n\n\n\n\npasslib\n\n\n\n\n\n\n\n\npath.py\n\n\n\n\n\n\n\n\npathtools\n\n\n\n\n\n\n\n\npendulum\n\n\n\n\n\n\n\n\npycparser\n\n\n\n\n\n\n\n\npycrypto\n\n\n\n\n\n\n\n\nPyQt5\n\n\n\n\n\n\n\n\npython-dateutil\n\n\n\n\n\n\n\n\npytz\n\n\n\n\n\n\n\n\nPyYAML\n\n\n\n\n\n\n\n\nraven\n\n\n\n\n\n\n\n\nrequests\n\n\n\n\n\n\n\n\nruamel.yaml\n\n\n\n\n\n\n\n\nsemver\n\n\n\n\n\n\n\n\nSend2Trash\n\n\n\n\n\n\n\n\nshortuuid\n\n\n\n\n\n\n\n\nsip\n\n\n\n\n\n\n\n\nsmmap\n\n\n\n\n\n\n\n\nspark-parser\n\n\n\n\n\n\n\n\ntyping\n\n\n\n\n\n\n\n\ntzlocal\n\n\n\n\n\n\n\n\nuncompyle6\n\n\n\n\n\n\n\n\nuritemplate\n\n\n\n\n\n\n\n\nuritemplate.py\n\n\n\n\n\n\n\n\nurllib3\n\n\n\n\n\n\n\n\nwatchdog\n\n\n\n\n\n\n\n\nWMI\n\n\n\n\n\n\n\n\nxdis\n\n\n\n\n\n\n\n\n\n\nDocumentation\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nclick\n\n\n\n\n\n\n\n\nJinja2\n\n\n\n\n\n\n\n\nlivereload\n\n\n\n\n\n\n\n\nMarkdown\n\n\n\n\n\n\n\n\nMarkupSafe\n\n\n\n\n\n\n\n\nmkdocs-bootstrap\n\n\n\n\n\n\n\n\nmkdocs-bootstrap\n\n\n\n\n\n\n\n\nmkdocs-bootswatch\n\n\n\n\n\n\n\n\nsix\n\n\n\n\n\n\n\n\ntornado\n\n\n\n\n\n\n\n\n\n\nTests\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\napipkg\n\n\n\n\n\n\n\n\ncolorama\n\n\n\n\n\n\n\n\ndiff-cover\n\n\n\n\n\n\n\n\nexecnet\n\n\n\n\n\n\n\n\ninflect\n\n\n\n\n\n\n\n\njinja2-pluralize\n\n\n\n\n\n\n\n\npy\n\n\n\n\n\n\n\n\npytest\n\n\n\n\n\n\n\n\npytest-cache\n\n\n\n\n\n\n\n\npytest-catchlog\n\n\n\n\n\n\n\n\npytest-cov\n\n\n\n\n\n\n\n\npytest-mock\n\n\n\n\n\n\n\n\npytest-qt\n\n\n\n\n\n\n\n\n\n\nBuild\n\u00b6\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\nCython\n\n\n\n\n\n\n\n\npypiwin32\n\n\n\n\n\n\n\n\n\n\nWheels and custom packages\n\u00b6\n\n\nCollection of libraries I had to tweak for this project.\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\nUsed for\n\n\nCustom repository\n\n\n\n\n\n\n\n\n\n\npygit2\n\n\n\n\nproject\n\n\nhttps://github.com/132nd-etcher/pygit2_wheel\n\n\n\n\n\n\nblinker-herald\n\n\n\n\nproject\n\n\nhttps://github.com/132nd-etcher/blinker_herald\n\n\n\n\n\n\npyinstaller\n\n\n\n\nbuild\n\n\nhttps://github.com/132nd-etcher/pyinstaller\n\n\n\n\n\n\nmkdocs\n\n\n\n\ndocs\n\n\nhttps://github.com/132nd-etcher/mkdocs.git\n\n\n\n\n\n\nhttmock\n\n\n\n\ntest\n\n\nhttps://github.com/132nd-etcher/httmock.git\n\n\n\n\n\n\n\n\nAdditional packages\n\u00b6\n\n\nCollection of libraries used in the making of this project.\n\n\n\n\n\n\n\n\nPackage\n\n\nVersion\n\n\n\n\n\n\n\n\n\n\npipdeptree\n\n\n\n\n\n\n\n\nnose\n\n\n\n\n\n\n\n\ndocopt\n\n\n\n\n\n\n\n\nfeedparser\n\n\n\n\n\n\n\n\ngitsome\n\n\n\n\n\n\n\n\nnumpydoc\n\n\n\n\n\n\n\n\nply\n\n\n\n\n\n\n\n\nprompt-toolkit\n\n\n\n\n\n\n\n\nPygments\n\n\n\n\n\n\n\n\nwcwidth",
             "title": "Requirements"
         },
         {
@@ -32,7 +157,7 @@
         },
         {
             "location": "/requirements/#dependencies",
-            "text": "Package  Version      argh     blinker     certifi     cffi     contextlib2     coverage     dropbox     future     gitdb     github3.py     humanize     hypothesis     ntplib     passlib     path.py     pathtools     pendulum     pycparser     pycrypto     PyQt5     python-dateutil     pytz     PyYAML     raven     requests     ruamel.yaml     semver     shortuuid     sip     smmap     spark-parser     typing     tzlocal     uncompyle6     uritemplate     uritemplate.py     urllib3     watchdog     WMI     xdis",
+            "text": "Package  Version      argh     blinker     certifi     cffi     contextlib2     coverage     dropbox     future     gitdb     github3.py     humanize     hypothesis     ntplib     passlib     path.py     pathtools     pendulum     pycparser     pycrypto     PyQt5     python-dateutil     pytz     PyYAML     raven     requests     ruamel.yaml     semver     Send2Trash     shortuuid     sip     smmap     spark-parser     typing     tzlocal     uncompyle6     uritemplate     uritemplate.py     urllib3     watchdog     WMI     xdis",
             "title": "Dependencies"
         },
         {
@@ -59,26 +184,6 @@
             "location": "/requirements/#additional-packages",
             "text": "Collection of libraries used in the making of this project.     Package  Version      pipdeptree     nose     docopt     feedparser     gitsome     numpydoc     ply     prompt-toolkit     Pygments     wcwidth",
             "title": "Additional packages"
-        },
-        {
-            "location": "/versionning/",
-            "text": "WIP\n\n\nTalk a bit about SemVer\n\u00b6\n\n\nBranches & packages\n\u00b6\n\n\nalpha: feat/\n\nbeta: pull/\n\ndev: develop\n\nrc: /release\n\nstable: master & hotfix/\n\n\nAV artifacts\n\u00b6",
-            "title": "Versionning"
-        },
-        {
-            "location": "/versionning/#talk-a-bit-about-semver",
-            "text": "",
-            "title": "Talk a bit about SemVer"
-        },
-        {
-            "location": "/versionning/#branches-packages",
-            "text": "alpha: feat/ \nbeta: pull/ \ndev: develop \nrc: /release \nstable: master & hotfix/",
-            "title": "Branches &amp; packages"
-        },
-        {
-            "location": "/versionning/#av-artifacts",
-            "text": "",
-            "title": "AV artifacts"
         },
         {
             "location": "/tests/",
