@@ -1,14 +1,14 @@
 # Creating a mod
 
-## Select a repository
+## Step 1: select a repository
 
 The first step will be to select a repository to host your mod's metadata.
 
 ### Own metadata repository
 
-When you log into github with EASI, a repository named `EASIMETA` will be created. By default, EASI will send all your mods' metadata to this repository, because it's yours.
+When you link your Github account with EASI, a repository named `EASIMETA` will be created. By default, EASI will send all your mods' metadata to this repository, because it's yours.
 
-The catch is that in order for your mods to be made available for download, end-users will need to `add` your repository to their list of repositories.
+The catch is that in order for your mods to be made available for download, end-users will need to add your repository to their list of repositories, which is a manual operation.
 
 This is fine if, for example, you are the maintainer of all the skins for your organization.
 
