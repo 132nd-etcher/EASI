@@ -7,6 +7,7 @@ from src.qt import Qt, QWizard, QWizardPage, dialog_default_flags
 from .page_gh_login import GHLoginPage
 from .page_final import FinalPage
 from src.rem.gh.gh_session import GHSession
+import webbrowser
 
 
 class _ModCreationWizard(Ui_Wizard, QWizard):
@@ -18,6 +19,17 @@ class _ModCreationWizard(Ui_Wizard, QWizard):
         if not GHSession().user:
             self.addPage(GHLoginPage(self))
         self.addPage(FinalPage(self))
+        self.btn_help = self.button(self.HelpButton)
+        self.btn_help.clicked.connect(self.show_help)
+
+    def initializePage(self, page_id):
+        self.btn_help.setEnabled(not self.page(page_id).help_link is None)
+        super(_ModCreationWizard, self).initializePage(page_id)
+
+    def show_help(self):
+        link = self.currentPage().help_link
+        if link:
+            webbrowser.open_new_tab(link)
 
     def exec(self):
         if super(_ModCreationWizard, self).exec() == self.Accepted:
