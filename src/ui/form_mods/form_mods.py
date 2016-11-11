@@ -125,7 +125,6 @@ class _OwnModsTable(Ui_Form, QWidget):
 
     def create_new_mod(self, _):
         SIG_CREATE_NEW_MOD.send()
-        # ModDetailsDialog.make(None, self.selected_meta_repo, self)
         self.resize_columns()
 
     @property
