@@ -27,6 +27,7 @@ class _InputDialog(Ui_Dialog, QDialog, WithBalloons):
             self.btn_help = self.buttonBox.button(self.buttonBox.Help)
             self.btn_help.clicked.connect(self.show_help)
         self.btn_ok = self.buttonBox.button(self.buttonBox.Ok)
+        self.btn_ok.setEnabled(False)
 
     def verify_input(self):
         if self.verify_input_func is None:
