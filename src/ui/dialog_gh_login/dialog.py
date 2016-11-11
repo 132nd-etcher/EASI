@@ -16,7 +16,6 @@ class _GHLoginDialog(QDialog, Ui_Dialog):
         self.setWindowIcon(QIcon(qt_resources.app_ico))
         layout = self.layout()
         self.form = GHLoginForm(self, self.btn_exit)
-
         layout.insertWidget(0, self.form)
         self.form.githubUsernameLineEdit.setFocus()
 
@@ -42,7 +41,8 @@ class GHLoginDialog(BaseDialog):
         self.qobj.show()
 
     @staticmethod
-    def make(parent=None):
+    def make(parent=None) -> bool:
+        """Returns True if a valid GH account was added"""
         dialog = GHLoginDialog(parent)
         dialog.qobj.setup()
         return dialog.qobj.exec()
