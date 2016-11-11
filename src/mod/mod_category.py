@@ -7,44 +7,43 @@ import sys
 
 class BaseModCategory(metaclass=abc.ABCMeta):
     @property
-    @abc.abstractproperty
     def category_name(self) -> str:
-        """"""
+        return self.__class__.__name__
 
     @property
     @abc.abstractproperty
-    def sorting_weight(self):
+    def sort_weight(self):
         """Heavier first"""
 
 
 class GenericMod(BaseModCategory):
     @property
-    def sorting_weight(self):
+    def sort_weight(self):
         return -1
-
-    @property
-    def category_name(self) -> str:
-        return 'Generic mod'
 
 
 class Skin(BaseModCategory):
     @property
-    def sorting_weight(self):
+    def sort_weight(self):
         return 0
 
-    @property
-    def category_name(self) -> str:
-        return 'Skin'
 
-
-class Texture(BaseModCategory):
+class Textures(BaseModCategory):
     @property
-    def sorting_weight(self):
+    def sort_weight(self):
         return 0
 
+
+class Ui(BaseModCategory):
     @property
-    def category_name(self) -> str:
-        return 'Texture pack'
+    def sort_weight(self):
+        return 0
+
+
+class Script(BaseModCategory):
+    @property
+    def sort_weight(self):
+        return 0
 
 
 class ModTypes:
@@ -55,6 +54,6 @@ class ModTypes:
                 yield cls
 
     @staticmethod
-    def enum_category_names():
-        for cls in sorted(ModTypes.__iter__(), key=lambda x: x().sorting_weight):
-            yield cls().category_name
+    def category_names():
+        return [c().category_name for w in sorted(set([x().sort_weight for x in ModTypes.__iter__()])) for c in
+                sorted([x for x in ModTypes.__iter__() if x().sort_weight == w], key=lambda x: x().category_name)]
