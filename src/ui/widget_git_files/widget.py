@@ -5,14 +5,13 @@ import os
 from blinker_herald import signals
 
 from src.cache.cache import CacheEvent
-from src.easi.ops import confirm
+from src.easi.ops import confirm, long_input
 from src.git.wrapper import Repository
+from src.low.custom_path import Path
 from src.qt import QAbstractTableModel, QModelIndex, QVariant, QIcon, \
     qt_resources, QSortFilterProxyModel, QColor
 from src.qt import Qt, QWidget
-from src.ui.dialog_long_input.dialog import LongInputDialog
 from src.ui.skeletons.form_git_files import Ui_Form
-from src.low.custom_path import Path
 
 
 class GitFilesModel(QAbstractTableModel):
@@ -152,9 +151,11 @@ class GitFilesWidget(QWidget, Ui_Form):
 
     def commit_changes(self):
         if self.repo is not None:
-            commit_msg = LongInputDialog.make(self,
-                                              'Describe your changes',
-                                              'Write a short summary of the changes you just made:')
+            commit_msg = long_input(
+                title='Describe your changes',
+                text='Write a short summary of the changes you just made:',
+                parent=self,
+            )
             if commit_msg is None:
                 return
             self.repo.commit(msg=commit_msg, add_all=True)

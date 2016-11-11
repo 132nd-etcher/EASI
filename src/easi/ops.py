@@ -13,6 +13,7 @@ def dummy(*args, **kwargs):
 _confirm_func = dummy
 _select_func = dummy
 _simple_input = dummy
+_long_input = dummy
 _get_dcs_version = dummy
 _warn_func = dummy
 _get_directory = dummy
@@ -37,6 +38,10 @@ def warn(_id: str, text: str, title: str = None, buttons: str = None, parent=Non
 
 def simple_input(title: str, text: str = '', default: str = '', verify_input_func=None, help_link=None, parent=None):
     return _simple_input(title, text, default, verify_input_func, help_link, parent)
+
+
+def long_input(title: str, text: str = '', default: str = '', verify_input_func=None, help_link=None, parent=None):
+    return _long_input(title, text, default, verify_input_func, help_link, parent)
 
 
 def get_dcs_version(title: str, text: str, default: str = '', help_link=None, parent=None):
