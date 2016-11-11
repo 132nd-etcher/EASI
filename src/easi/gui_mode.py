@@ -75,3 +75,6 @@ def init_proxies():
     ops._get_file = BrowseDialog.get_file
     ops._get_existing_file = BrowseDialog.get_existing_file
     ops._get_existing_files = BrowseDialog.get_existing_files
+
+    from src.ui.wizard_create_mod.wizard import ModCreationWizard
+    ops._create_new_mod_collect_basics = ModCreationWizard.make

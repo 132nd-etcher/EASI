@@ -22,6 +22,7 @@ _get_existing_file = dummy
 _get_existing_files = dummy
 _get_file = dummy
 _get_new_gh_login = dummy
+_create_new_mod_collect_basics = dummy
 
 
 def confirm(question: str, title: str = 'Please confirm', parent=None) -> bool:
@@ -74,3 +75,7 @@ def get_file(parent, title: str, _filter: typing.List[str] = None, init_dir: str
 
 def get_new_gh_login(parent=None):
     return _get_new_gh_login(parent)
+
+
+def create_new_mod_collect_basics(parent=None):
+    return _create_new_mod_collect_basics(parent)
