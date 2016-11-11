@@ -20,15 +20,15 @@ class _InputDialog(Ui_Dialog, QDialog, WithBalloons):
         self.label.setText(text)
         self.help_link = help_link
         self.edit.setText(default)
+        self.btn_ok = self.buttonBox.button(self.buttonBox.Ok)
         self.verify_input_func = verify_input_func
         if verify_input_func:
             self.edit.textChanged.connect(self.verify_input)
+            self.btn_ok.setEnabled(False)
         if help_link:
             self.buttonBox.addButton(self.buttonBox.Help)
             self.btn_help = self.buttonBox.button(self.buttonBox.Help)
             self.btn_help.clicked.connect(self.show_help)
-        self.btn_ok = self.buttonBox.button(self.buttonBox.Ok)
-        self.btn_ok.setEnabled(False)
 
     def verify_input(self):
         if self.verify_input_func is None:
