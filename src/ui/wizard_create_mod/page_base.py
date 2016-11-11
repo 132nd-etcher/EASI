@@ -21,3 +21,7 @@ class BasePage(QWizardPage, WithBalloons):
     @abc.abstractproperty
     def help_link(self):
         """"""
+
+    def initializePage(self):
+        self.remove_balloons()
+        super(BasePage, self).initializePage()
