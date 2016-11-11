@@ -4,7 +4,7 @@ from re import compile
 
 import semver
 
-from src.easi.ops import get_new_gh_login, confirm, select, warn, simple_input, get_dcs_version
+from src.easi.ops import get_new_gh_login, confirm, select, warn, simple_input, get_dcs_version, long_input
 from src.low import constants
 from src.low import help_links
 from src.low.custom_logging import make_logger
@@ -27,6 +27,7 @@ class ModCreator(metaclass=Singleton):
         self.__mod_category = None
         self.__mod_version = None
         self.__dcs_version = None
+        self.__mod_desc = ''
         self.steps = [
             self._check_gh_login,
             self._select_metadata_repo,
@@ -34,6 +35,7 @@ class ModCreator(metaclass=Singleton):
             self._select_mod_category,
             self._get_mod_version,
             self._get_dcs_version,
+            self._get_desc,
         ]
         while True:
             try:
@@ -190,7 +192,16 @@ class ModCreator(metaclass=Singleton):
             logger.debug('user cancelled')
             return False
 
-    def _get_dcs_version
+    def _get_desc(self):
+        desc = long_input(
+            title='Mod description',
+            text='(optional)\n\nEnter a short description of your mod:',
+            parent=constants.MAIN_UI
+        )
+        if desc:
+            self.__mod_desc = desc
+        return True
+
 
 
 def init_mod_creator():
