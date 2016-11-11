@@ -9,6 +9,7 @@ from .page_final import FinalPage
 from .page_select_meta_repo import SelectMetaRepoPage
 from .page_mod_name import ModNamePage
 from .page_mod_category import ModCategoryPage
+from .page_mod_version import ModVersionPage
 from src.rem.gh.gh_session import GHSession
 import webbrowser
 
@@ -24,6 +25,7 @@ class _ModCreationWizard(Ui_Wizard, QWizard):
         self.addPage(SelectMetaRepoPage(self))
         self.addPage(ModNamePage(self))
         self.addPage(ModCategoryPage(self))
+        self.addPage(ModVersionPage(self))
         self.addPage(FinalPage(self))
         self.btn_help = self.button(self.HelpButton)
         self.btn_help.clicked.connect(self.show_help)
@@ -47,6 +49,7 @@ class _ModCreationWizard(Ui_Wizard, QWizard):
                 'meta_repo_name': self.field('meta_repo_name'),
                 'mod_name': self.field('mod_name'),
                 'category': self.field('category_name'),
+                'mod_version': self.field('mod_version'),
             }
         else:
             return None
