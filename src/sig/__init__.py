@@ -14,3 +14,5 @@ SIG_LOCAL_REPO_CHANGED = signal('SigLocalRepoChanged', doc='')
 
 SIG_CREDENTIALS_GH_CHANGED = signal('SigGHCredentialsChanged', doc='')
 SIG_CREDENTIALS_GH_AUTH_STATUS = signal('SigGHCredentialsAuthStatus', doc='')
+
+SIG_CREATE_NEW_MOD = signal('SigCreateNewMod', doc='')
