@@ -18,6 +18,7 @@ _save_file = dummy
 _get_existing_file = dummy
 _get_existing_files = dummy
 _get_file = dummy
+_get_new_gh_login = dummy
 
 
 def confirm(question: str, title: str = 'Please confirm', parent=None) -> bool:
@@ -54,3 +55,7 @@ def get_existing_files(
 
 def get_file(parent, title: str, _filter: typing.List[str] = None, init_dir: str = '.') -> Path or None:
     return _get_file(parent, title, _filter, init_dir)
+
+
+def get_new_gh_login(parent=None):
+    return _get_new_gh_login(parent)

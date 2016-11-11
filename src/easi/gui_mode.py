@@ -49,7 +49,9 @@ def connect_signals():
 
 def init_proxies():
     from src.ui.dialog_confirm.dialog import ConfirmDialog
-    from src.ui.dialog_browse.dialog import BrowseDialog
+    from src.ui.dialog_get_new_gh_login.dialog import GetNewGHLoginDialog
+    ops._get_new_gh_login = GetNewGHLoginDialog.make
+
     from src.ui.dialog_warn.dialog_warn import WarningDialog
     ops._confirm_func = ConfirmDialog.make
     ops._warn_func = WarningDialog.make
