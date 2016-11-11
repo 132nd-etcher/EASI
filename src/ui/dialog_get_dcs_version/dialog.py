@@ -11,7 +11,7 @@ from src.ui.skeletons.dialog_get_dcs_version import Ui_Dialog
 
 
 class _GetDcsVersionDialog(QDialog, Ui_Dialog, WithBalloons):
-    def __init__(self, title: str, text: str, default: str = '', default_is_valid: bool = False, help_link=None, parent=None):
+    def __init__(self, title: str, text: str, default: str = '', help_link=None, parent=None):
         QDialog.__init__(self, parent=parent, flags=dialog_default_flags)
         WithBalloons.__init__(self)
         self.setupUi(self)
@@ -81,5 +81,5 @@ class GetDcsVersionDialog(BaseDialog):
         BaseDialog.__init__(self, _GetDcsVersionDialog(title, text, default, help_link, parent))
 
     @staticmethod
-    def make(title: str, text: str, default: str = '', help_link=None,  parent=None):
+    def make(title: str, text: str, default: str = '', help_link=None, parent=None):
         return GetDcsVersionDialog(title, text, default, help_link, parent).qobj.exec()
