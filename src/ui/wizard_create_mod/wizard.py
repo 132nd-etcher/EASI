@@ -8,6 +8,7 @@ from .page_gh_login import GHLoginPage
 from .page_final import FinalPage
 from .page_select_meta_repo import SelectMetaRepoPage
 from .page_mod_name import ModNamePage
+from .page_mod_category import ModCategoryPage
 from src.rem.gh.gh_session import GHSession
 import webbrowser
 
@@ -21,6 +22,8 @@ class _ModCreationWizard(Ui_Wizard, QWizard):
         if not GHSession().user:
             self.addPage(GHLoginPage(self))
         self.addPage(SelectMetaRepoPage(self))
+        self.addPage(ModNamePage(self))
+        self.addPage(ModCategoryPage(self))
         self.addPage(FinalPage(self))
         self.btn_help = self.button(self.HelpButton)
         self.btn_help.clicked.connect(self.show_help)
