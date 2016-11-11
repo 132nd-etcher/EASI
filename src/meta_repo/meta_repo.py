@@ -64,6 +64,12 @@ class MetaRepo:
                     return False
         return True
 
+    def mod_name_is_available_new(self, mod_name: str) -> bool:
+        for other_mod in self.mods:
+            if mod_name == other_mod.meta.name:
+                return False
+        return True
+
     def create_new_mod(self, mod_name: str):
         logger.debug('creating new mod')
         if not mod_name:
