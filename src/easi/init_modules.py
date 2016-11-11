@@ -34,4 +34,8 @@ def init_modules():
     # init_local_mods()
     from src.meta_repo.local_meta_repo import init_local_meta_repo
     init_local_meta_repo()
+
+    from src.mod.mod_creator import init_mod_creator
+    init_mod_creator()
+
     logger.info('INIT: done')
