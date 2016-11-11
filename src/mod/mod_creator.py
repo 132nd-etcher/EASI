@@ -29,6 +29,7 @@ class ModCreator(metaclass=Singleton):
         self.__mod_version = None
         self.__dcs_version = None
         self.__mod_desc = ''
+        self.__mod = None
         self.steps = [
             self._check_gh_login,
             self._select_metadata_repo,
@@ -37,6 +38,7 @@ class ModCreator(metaclass=Singleton):
             self._get_mod_version,
             self._get_dcs_version,
             self._get_desc,
+            self._create_mod_object,
         ]
         while True:
             try:
@@ -213,6 +215,14 @@ class ModCreator(metaclass=Singleton):
         if desc:
             self.__mod_desc = desc
         return True
+
+    def _create_mod_object(self):
+        self.__mod = self.meta_repo.create_new_mod(self.__mod_name)
+        self.mod.meta.category = self.__mod_category
+        self.mod.meta.dcs_version = self.__dcs_version
+        self.mod.meta.version = self.__mod_version
+        self.mod.meta.description = self.__mod_desc
+        self.mod.meta.write()
 
 
 
