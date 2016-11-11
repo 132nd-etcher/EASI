@@ -5,7 +5,6 @@ from .page_base import BasePage
 
 
 class FinalPage(BasePage):
-
     @property
     def help_link(self):
         return None

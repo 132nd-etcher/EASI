@@ -3,20 +3,16 @@
 from blinker_herald import signals
 
 from src.easi.ops import confirm
-from src.low import constants
 from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.meta_repo.meta_repo import MetaRepo
 from src.mod.mod import Mod
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
-from src.rem.gh.gh_session import GHSession
+from src.sig import SIG_CREATE_NEW_MOD
 from src.sig import SIG_LOCAL_MOD_CHANGED
 from src.ui.base.qwidget import BaseQWidget
-from src.ui.dialog_get_new_gh_login.dialog import GetNewGHLoginDialog
 from src.ui.dialog_own_mod.dialog import ModDetailsDialog
 from src.ui.skeletons.form_own_mod_table import Ui_Form
-from src.easi.ops import warn
-from src.sig import SIG_CREATE_NEW_MOD
 
 
 class OwnModModel(QAbstractTableModel):

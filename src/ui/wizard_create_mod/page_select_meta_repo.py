@@ -11,7 +11,6 @@ logger = make_logger(__name__)
 
 
 class SelectMetaRepoPage(BasePage):
-
     @property
     def help_link(self):
         return help_links.mod_creation_meta_repo
@@ -22,11 +21,15 @@ class SelectMetaRepoPage(BasePage):
         self.label = QLabel('Select which repository you want to use to serve your mod to the clients.')
         self.combo = QComboBox()
         self.label_perm = QLabel()
+        self.registerField('meta_repo_name', self.combo, 'currentText', self.combo.currentIndexChanged)
+        self.default_meta_repo = default_meta_repo
+        self.build_layout()
+
+    # noinspection PyArgumentList
+    def build_layout(self):
         self.v_layout.addWidget(self.label)
         self.v_layout.addWidget(self.combo)
         self.v_layout.addWidget(self.label_perm)
-        self.registerField('meta_repo_name', self.combo, 'currentText', self.combo.currentIndexChanged)
-        self.default_meta_repo = default_meta_repo
 
     def selection_changed(self):
         if not self.selected_meta_repo.push_perm:
@@ -60,6 +63,7 @@ class SelectMetaRepoPage(BasePage):
         super(SelectMetaRepoPage, self).initializePage()
         logger.debug('prompting for meta repo')
         try:
+            # noinspection PyUnresolvedReferences
             self.combo.currentIndexChanged.disconnect()
         except TypeError:
             pass
@@ -73,12 +77,15 @@ class SelectMetaRepoPage(BasePage):
         self.combo.addItems(choices)
         if self.default_meta_repo is not None:
             self.combo.setCurrentIndex(self.combo.findText(self.default_meta_repo, flags=Qt.MatchExactly))
+        # noinspection PyUnresolvedReferences
         self.combo.currentIndexChanged.connect(self.selection_changed)
         self.selection_changed()
+        # noinspection PyUnresolvedReferences
         self.completeChanged.emit()
 
     def cleanupPage(self):
         try:
+            # noinspection PyUnresolvedReferences
             self.combo.currentIndexChanged.disconnect()
         except TypeError:
             pass

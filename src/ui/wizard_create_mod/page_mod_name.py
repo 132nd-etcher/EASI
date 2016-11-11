@@ -26,16 +26,21 @@ class ModNamePage(BasePage):
         self.registerField('mod_name*', self.edit)
         self.label_expl = QLabel()
         self.label_expl.setWordWrap(True)
+        self.build_layout()
+        # noinspection PyUnresolvedReferences
+        self.edit.textChanged.connect(self.completeChanged.emit)
+
+    # noinspection PyArgumentList
+    def build_layout(self):
         self.v_layout.addWidget(self.label)
         self.v_layout.addWidget(self.edit)
         self.v_layout.addWidget(self.label_expl)
-        self.edit.textChanged.connect(self.completeChanged.emit)
 
     def initializePage(self):
         super(ModNamePage, self).initializePage()
         self.label_expl.setText('The name of your mod needs to contain at least 4 contiguous letters.\n\n'
-                                'It also has to be unique in the current repository ({})'.format(
-            self.field('meta_repo_name')))
+                                'It also has to be unique in the current repository ({})'
+                                .format(self.field('meta_repo_name')))
 
     def isComplete(self):
         self.remove_balloons()

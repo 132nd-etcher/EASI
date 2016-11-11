@@ -32,11 +32,17 @@ class ModVersionPage(BasePage):
         self.registerField('mod_version*', self.edit)
         self.label_expl = QLabel()
         self.label_expl.setWordWrap(True)
+        self.build_layout()
+        # noinspection PyUnresolvedReferences
+        self.edit.textChanged.connect(self.completeChanged.emit)
+        # noinspection PyUnresolvedReferences
+        self.completeChanged.emit()
+
+    # noinspection PyArgumentList
+    def build_layout(self):
         self.v_layout.addWidget(self.label)
         self.v_layout.addWidget(self.edit)
         self.v_layout.addWidget(self.label_expl)
-        self.edit.textChanged.connect(self.completeChanged.emit)
-        self.completeChanged.emit()
 
     def initializePage(self):
         super(ModVersionPage, self).initializePage()

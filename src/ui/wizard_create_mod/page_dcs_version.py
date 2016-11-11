@@ -1,12 +1,9 @@
 # coding=utf-8
 
-import semver
-
 from src.dcs.dcs_installs import DCSInstalls, DCSInstall
-from src.mod.dcs_version import DCS_VERSION_REGEX, DCSVersion
-
 from src.low import help_links
 from src.low.custom_logging import make_logger
+from src.mod.dcs_version import DCS_VERSION_REGEX, DCSVersion
 from src.qt import QLabel, QLineEdit, QRegExp, QRegExpValidator, QToolButton, Qt, QSize, QAction, QMenu
 from .page_base import BasePage
 
@@ -65,7 +62,10 @@ class DCSVersionPage(BasePage):
 
         self.label_expl = QLabel()
         self.label_expl.setWordWrap(True)
+        self.build_layout()
 
+    # noinspection PyArgumentList
+    def build_layout(self):
         self.v_layout.addWidget(self.label)
         self.v_layout.addWidget(self.edit)
         self.v_layout.addWidget(self.btn_pull)
@@ -81,9 +81,11 @@ class DCSVersionPage(BasePage):
                                 'and specific versions of DCS.\n\n'
                                 '"*" means "any"\n'
                                 'a "+" at the end means "this version and all newer"')
+        # noinspection PyUnresolvedReferences
         self.edit.textChanged.connect(self.completeChanged.emit)
 
     def cleanupPage(self):
+        # noinspection PyUnresolvedReferences
         self.edit.textChanged.disconnect()
         super(DCSVersionPage, self).cleanupPage()
 

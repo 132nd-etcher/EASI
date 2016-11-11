@@ -2,9 +2,8 @@
 
 from src.low import help_links
 from src.low.custom_logging import make_logger
-from src.meta_repo.local_meta_repo import LocalMetaRepo
-from src.qt import QLabel, QLineEdit, QRegExp, QRegExpValidator, QComboBox, pyqtProperty
 from src.mod.mod_category import ModCategories
+from src.qt import QComboBox
 from .page_base import BasePage
 
 logger = make_logger(__name__)
@@ -21,4 +20,5 @@ class ModCategoryPage(BasePage):
         self.combo = QComboBox()
         self.combo.addItems([x for x in ModCategories.category_names()])
         self.registerField('category_name', self.combo, 'currentText', self.combo.currentIndexChanged)
+        # noinspection PyArgumentList
         self.v_layout.addWidget(self.combo)
