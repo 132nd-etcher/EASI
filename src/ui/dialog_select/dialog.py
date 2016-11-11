@@ -8,7 +8,7 @@ from src.ui.skeletons.dialog_select import Ui_Dialog
 
 
 class _SelectDialog(QDialog, Ui_Dialog):
-    def __init__(self, choices: list, title: str, label_text: str = '', help_link=None, parent=None):
+    def __init__(self, choices: list, title: str, label_text: str = '', default=None, help_link=None, parent=None):
         QDialog.__init__(self, parent=parent, flags=dialog_default_flags)
         self.setupUi(self)
         self.setWindowModality(Qt.ApplicationModal)
@@ -16,6 +16,8 @@ class _SelectDialog(QDialog, Ui_Dialog):
         self.setWindowTitle(title)
         self.label.setText(label_text)
         self.combo.addItems(choices)
+        if default is not None:
+            self.combo.setCurrentIndex(self.combo.findText(default, flags=Qt.MatchExactly))
         if help_link:
             self.help_link = help_link
             self.buttonBox.addButton(self.buttonBox.Help)
@@ -33,9 +35,9 @@ class _SelectDialog(QDialog, Ui_Dialog):
 
 
 class SelectDialog(BaseDialog):
-    def __init__(self, choices: list, title: str, label_text: str = '', help_link=None, parent=None):
-        BaseDialog.__init__(self, _SelectDialog(choices, title, label_text, help_link, parent))
+    def __init__(self, choices: list, title: str, label_text: str = '', default=None, help_link=None, parent=None):
+        BaseDialog.__init__(self, _SelectDialog(choices, title, label_text, default, help_link, parent))
 
     @staticmethod
-    def make(choices: list, title: str, label_text: str = '', help_link=None, parent=None):
-        return SelectDialog(choices, title, label_text, help_link, parent).qobj.exec()
+    def make(choices: list, title: str, label_text: str = '', default=None, help_link=None, parent=None):
+        return SelectDialog(choices, title, label_text, default, help_link, parent).qobj.exec()

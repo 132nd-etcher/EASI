@@ -19,9 +19,10 @@ logger = make_logger(__name__)
 RE_MOD_NAME = compile(""".*[a-zA-Z]{4,}.*""")
 
 
-class ModCreator(metaclass=Singleton):
-    def __init__(self):
+class ModCreator():
+    def __init__(self, meta_repo_name=None):
         self.__done = False
+        self.__meta_repo_name = meta_repo_name
         self.__meta_repo = None
         self.__mod_name = None
         self.__mod_category = None
@@ -97,6 +98,7 @@ class ModCreator(metaclass=Singleton):
             choices=choices,
             title='Select a meta repository',
             text='Select which metadata repository you want to use to host your mod.',
+            default=self.__meta_repo_name,
             help_link=help_links.mod_creation_meta_repo
         )
         if meta_repo_name is None:
@@ -228,9 +230,9 @@ class ModCreator(metaclass=Singleton):
 def init_mod_creator():
     logger.info('initializing')
 
-    def on_sig_create_new_mod(sender):
+    def on_sig_create_new_mod(sender, meta_repo_name):
         logger.debug('catched mod creation request from: {}'.format(sender))
-        ModCreator()
+        ModCreator(meta_repo_name=meta_repo_name)
 
     SIG_CREATE_NEW_MOD.connect(on_sig_create_new_mod, weak=False)
 

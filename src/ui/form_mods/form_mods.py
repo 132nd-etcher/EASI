@@ -124,7 +124,7 @@ class _OwnModsTable(Ui_Form, QWidget):
             self.table.setUpdatesEnabled(True)
 
     def create_new_mod(self, _):
-        SIG_CREATE_NEW_MOD.send()
+        SIG_CREATE_NEW_MOD.send(meta_repo_name=self.selected_meta_repo.name)
         self.resize_columns()
 
     @property
