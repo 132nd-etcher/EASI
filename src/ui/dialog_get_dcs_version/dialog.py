@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import webbrowser
 
 from src.dcs.dcs_installs import DCSInstalls, DCSInstall
 from src.mod.dcs_version import DCSVersion
@@ -10,7 +11,7 @@ from src.ui.skeletons.dialog_get_dcs_version import Ui_Dialog
 
 
 class _GetDcsVersionDialog(QDialog, Ui_Dialog, WithBalloons):
-    def __init__(self, title: str, text: str, default: str = '', parent=None):
+    def __init__(self, title: str, text: str, default: str = '', default_is_valid: bool = False, help_link=None, parent=None):
         QDialog.__init__(self, parent=parent, flags=dialog_default_flags)
         WithBalloons.__init__(self)
         self.setupUi(self)
@@ -20,8 +21,12 @@ class _GetDcsVersionDialog(QDialog, Ui_Dialog, WithBalloons):
         self.setWindowModality(Qt.ApplicationModal)
         self.edit.setText(default)
         self.btn_ok = self.buttonBox.button(self.buttonBox.Ok)
-        self.btn_ok.setEnabled(False)
         self.edit.textChanged.connect(self.validate)
+        if help_link:
+            self.help_link = help_link
+            self.buttonBox.addButton(self.buttonBox.Help)
+            self.btn_help = self.buttonBox.button(self.buttonBox.Help)
+            self.btn_help.clicked.connect(self.__show_help)
 
         pull_dcs = {
             'menu': QMenu(self),
@@ -48,10 +53,13 @@ class _GetDcsVersionDialog(QDialog, Ui_Dialog, WithBalloons):
                 continue
             pull_dcs['menu'].addAction(pull_dcs[branch][0])
             pull_dcs[branch][0].triggered.connect(pull_dcs[branch][2])
-        self.btn_pull_dcs_version.setMenu(pull_dcs['menu'])
+        self.btn_pull.setMenu(pull_dcs['menu'])
+
+    def __show_help(self):
+        webbrowser.open_new_tab(self.help_link)
 
     def __pull_dcs_version(self, _branch: DCSInstall):
-        self.edit_dcs_version.setText(_branch.version)
+        self.edit.setText(_branch.version)
 
     def validate(self):
         self.remove_balloons()
@@ -69,9 +77,9 @@ class _GetDcsVersionDialog(QDialog, Ui_Dialog, WithBalloons):
 
 
 class GetDcsVersionDialog(BaseDialog):
-    def __init__(self, title: str, text: str, default: str = '', parent=None):
-        BaseDialog.__init__(self, _GetDcsVersionDialog(title, text, default, parent))
+    def __init__(self, title: str, text: str, default: str = '', help_link=None, parent=None):
+        BaseDialog.__init__(self, _GetDcsVersionDialog(title, text, default, help_link, parent))
 
     @staticmethod
-    def make(title: str, text: str, default: str = '', parent=None):
-        return GetDcsVersionDialog(title, text, default, parent).qobj.exec()
+    def make(title: str, text: str, default: str = '', help_link=None,  parent=None):
+        return GetDcsVersionDialog(title, text, default, help_link, parent).qobj.exec()

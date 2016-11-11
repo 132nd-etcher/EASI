@@ -63,6 +63,9 @@ def init_proxies():
     from src.ui.dialog_input.dialog import InputDialog
     ops._simple_input = InputDialog.make
 
+    from src.ui.dialog_get_dcs_version.dialog import GetDcsVersionDialog
+    ops._get_dcs_version = GetDcsVersionDialog.make
+
     from src.ui.dialog_browse.dialog import BrowseDialog
     ops._get_directory = BrowseDialog.get_directory
     ops._save_file = BrowseDialog.save_file

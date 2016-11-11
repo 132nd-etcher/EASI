@@ -4,7 +4,7 @@ from re import compile
 
 import semver
 
-from src.easi.ops import get_new_gh_login, confirm, select, warn, simple_input
+from src.easi.ops import get_new_gh_login, confirm, select, warn, simple_input, get_dcs_version
 from src.low import constants
 from src.low import help_links
 from src.low.custom_logging import make_logger
@@ -26,12 +26,14 @@ class ModCreator(metaclass=Singleton):
         self.__mod_name = None
         self.__mod_category = None
         self.__mod_version = None
+        self.__dcs_version = None
         self.steps = [
             self._check_gh_login,
             self._select_metadata_repo,
             self._get_mod_name,
             self._select_mod_category,
             self._get_mod_version,
+            self._get_dcs_version,
         ]
         while True:
             try:
@@ -168,6 +170,21 @@ class ModCreator(metaclass=Singleton):
         if mod_version:
             logger.debug('mod version: {}'.format(mod_version))
             self.__mod_version = mod_version
+            return True
+        else:
+            logger.debug('user cancelled')
+            return False
+
+    def _get_dcs_version(self):
+        dcs_version = get_dcs_version(
+            title='DCS version',
+            text='Select which version of DCS your mod is compatible with:',
+            default='*',
+            parent=constants.MAIN_UI,
+        )
+        if dcs_version:
+            logger.debug('dcs version: {}'.format(dcs_version))
+            self.__dcs_version = dcs_version
             return True
         else:
             logger.debug('user cancelled')
