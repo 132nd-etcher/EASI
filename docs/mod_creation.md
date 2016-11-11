@@ -30,6 +30,19 @@ The disadvantage of the `Pull Request` method is that it may take some time betw
 
 #### The Pull Request
 
+## Step 2: name your mod
+
+The name of your mod can be any text value of your choosing, as long as it fits the following 2 rules:
+
+* Rule 1: the name of your mod must contain a string of four contiguous letters (case doesn't matter)
+* Rule 2: the name of your mod must be unique *within the selected metadata repository*
+
+## Step 3: choose your mod's "type"
+
+The type of your mod serves to describe its purpose to the end-user.
+
+It also helps for sorting and finding mods.
+
 ## Going deeper
 
 ### Directories
