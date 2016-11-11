@@ -42,8 +42,6 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.active_dcs_installation = MainUiActiveDCSInstallation(self)
         self.mod_author = MainUiModAuthor(self)  # TODO: remove
         self.feedback_dialog = FeedbackDialog(self)
-        # self.meta_repos = MetaRepoTable(self)
-        # self.own_mods = ModEditor(self)
         self.repos = MetaRepoTable(self)
         self.editor = ModEditor(self)
         self.setup()
