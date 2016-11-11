@@ -7,7 +7,7 @@ from src.ui.form_gh_login.form import GHLoginForm
 from src.ui.skeletons.dialog_gh_login import Ui_Dialog
 
 
-class _GHLoginDialog(QDialog, Ui_Dialog):
+class _GetNewGHLoginDialog(QDialog, Ui_Dialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent=parent, flags=dialog_default_flags)
         self.setupUi(self)
@@ -23,26 +23,26 @@ class _GHLoginDialog(QDialog, Ui_Dialog):
         self.form.setup()
 
     def close(self):
-        super(_GHLoginDialog, self).close()
+        super(_GetNewGHLoginDialog, self).close()
 
     def show(self):
         self.form.show()
-        super(_GHLoginDialog, self).show()
+        super(_GetNewGHLoginDialog, self).show()
 
     def exec(self):
-        super(_GHLoginDialog, self).exec()
+        super(_GetNewGHLoginDialog, self).exec()
         return GHSession().has_valid_token
 
 
-class GHLoginDialog(BaseDialog):
+class GetNewGHLoginDialog(BaseDialog):
     def __init__(self, parent=None):
-        BaseDialog.__init__(self, _GHLoginDialog(parent))
+        BaseDialog.__init__(self, _GetNewGHLoginDialog(parent))
         self.qobj.setup()
         self.qobj.show()
 
     @staticmethod
     def make(parent=None) -> bool:
         """Returns True if a valid GH account was added"""
-        dialog = GHLoginDialog(parent)
+        dialog = GetNewGHLoginDialog(parent)
         dialog.qobj.setup()
         return dialog.qobj.exec()

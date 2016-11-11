@@ -12,7 +12,7 @@ from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterPr
 from src.rem.gh.gh_session import GHSession
 from src.sig import SIG_LOCAL_MOD_CHANGED
 from src.ui.base.qwidget import BaseQWidget
-from src.ui.dialog_gh_login.dialog import GHLoginDialog
+from src.ui.dialog_get_new_gh_login.dialog import GetNewGHLoginDialog
 from src.ui.dialog_own_mod.dialog import ModDetailsDialog
 from src.ui.dialog_warn.dialog_warn import WarningDialog
 from src.ui.skeletons.form_own_mod_table import Ui_Form
@@ -128,7 +128,7 @@ class _OwnModsTable(Ui_Form, QWidget):
             if confirm('Creating a mod requires a valid Github account.<br><br>'
                        'Would you like to connect your Github account now?',
                        'Github account not connected'):
-                if not GHLoginDialog.make(constants.MAIN_UI):
+                if not GetNewGHLoginDialog.make(constants.MAIN_UI):
                     return
             else:
                 return
