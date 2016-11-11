@@ -41,7 +41,9 @@ class MetaRepo:
             if str(event.src.abspath()).startswith(str(self.path.abspath())):
                 self.refresh_mods()
 
-        signals.post_cache_changed_event.connect(cache_signal_handler, weak=False)
+        self.cache_signal_handler = cache_signal_handler
+
+        signals.post_cache_changed_event.connect(self.cache_signal_handler, weak=False)
 
     def refresh_mods(self):
         self.__mods = {}
@@ -88,6 +90,7 @@ class MetaRepo:
 
     def trash_mod(self, mod_name: str):
         logger.debug('trashing mod')
+        signals.post_cache_changed_event.disconnect(self.cache_signal_handler)
         if not mod_name:
             raise ValueError('empty mod name')
         if mod_name not in [mod.meta.name for mod in self.mods]:
@@ -100,6 +103,7 @@ class MetaRepo:
         # Config().to_del = to_del
         del self.__mods[mod_name]
         SIG_LOCAL_MOD_CHANGED.send()
+        signals.post_cache_changed_event.connect(self.cache_signal_handler, weak=False)
 
     @property
     def mods(self):
