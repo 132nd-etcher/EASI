@@ -223,6 +223,7 @@ class ModCreator():
         self.mod.meta.dcs_version = self.__dcs_version
         self.mod.meta.version = self.__mod_version
         self.mod.meta.description = self.__mod_desc
+        self.mod.meta.status = 'draft'
         self.mod.meta.write()
 
 
