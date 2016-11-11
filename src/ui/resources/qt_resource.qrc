@@ -12,6 +12,7 @@
         <file>fs_open.png</file>
         <file>key.png</file>
         <file>question.png</file>
+        <file>mod_create.png</file>
     </qresource>
     <qresource prefix="/font">
         <file>anon_pro.ttf</file>
