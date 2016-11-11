@@ -197,6 +197,7 @@ class ModCreator():
             title='DCS version',
             text='Select which version of DCS your mod is compatible with:',
             default='*',
+            help_link=help_links.mod_creation_dcs_version,
             parent=constants.MAIN_UI,
         )
         if dcs_version:
