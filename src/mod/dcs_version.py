@@ -2,10 +2,12 @@
 
 from re import compile
 
+DCS_VERSION_REGEX = r'^([0-9]+(\.([0-9]+(\.([0-9]+(\.([0-9]{5,}|\*))?|\*))?|\*))?|\*)+(\+)?$'
+RE_DCS_VERSION = compile(DCS_VERSION_REGEX)
+
 
 class DCSVersion:
-    re_DCS_VERSION = compile(r'^([0-9]+(\.([0-9]+(\.([0-9]+(\.([0-9]{5,}|\*))?|\*))?|\*))?|\*)+(\+)?$')
 
     @staticmethod
     def is_valid(dcs_version: str) -> bool:
-        return DCSVersion.re_DCS_VERSION.match(dcs_version) is not None
+        return RE_DCS_VERSION.match(dcs_version) is not None
