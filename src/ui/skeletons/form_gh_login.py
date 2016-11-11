@@ -133,7 +133,7 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label_gh_create_account.setText(_translate("Form", "<html><head/><body><p>Don\'t have a Github account ? <a href=\"https://github.com/join\"><span style=\" text-decoration: underline; color:#0000ff;\">Create one here</span></a></p></body></html>"))
         self.label_gh_status_static.setText(_translate("Form", "Status: "))
-        self.label_gh_status.setText(_translate("Form", "TextLabel"))
+        self.label_gh_status.setText(_translate("Form", "Not connected"))
         self.githubUsernameLabel.setText(_translate("Form", "Username"))
         self.githubPasswordLabel.setText(_translate("Form", "Password"))
         self.btn_gh_create.setText(_translate("Form", "Create token"))
