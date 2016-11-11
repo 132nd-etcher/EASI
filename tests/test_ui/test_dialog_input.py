@@ -3,7 +3,7 @@ import random
 import string
 from pytestqt.qtbot import QtBot
 from hypothesis import strategies as st, given, example, settings
-from src.ui.dialog_input.dialog import InputDialog
+from src.ui.dialog_multi_input.dialog import InputDialog
 from src.qt import Qt
 
 

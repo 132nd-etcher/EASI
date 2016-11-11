@@ -11,7 +11,7 @@ from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterPr
     QWidget, QColor
 from src.sig import SIG_LOCAL_REPO_CHANGED, SigMsg
 from src.ui.base.qwidget import BaseQWidget
-from src.ui.dialog_input.dialog import InputDialog
+from src.easi.ops import simple_input
 from src.ui.dialog_repo.dialog import RepoDetailsDialog
 from src.ui.skeletons.form_repository_table import Ui_Form
 
@@ -103,14 +103,13 @@ class _MetaRepoTable(Ui_Form, QWidget):
 
     def add_repository(self):
         self.table.setUpdatesEnabled(False)
-        dialog = InputDialog(self)
-        dialog.set_title('Adding repository')
-        dialog.set_text('')
-        dialog.add_question('Username')
-        if dialog.exec() == dialog.Accepted:
-            user_name = dialog.result['Username']
+        repo_owner = simple_input(
+            title='Adding repository',
+            parent=self
+        )
+        if repo_owner:
             try:
-                LocalMetaRepo().add_repo(user_name)
+                LocalMetaRepo().add_repo(repo_owner)
             except FileNotFoundError:
                 SigMsg().show('Error', 'The repository was not found')
         self.table.setUpdatesEnabled(True)

@@ -59,6 +59,11 @@ def init_proxies():
 
     from src.ui.dialog_select.dialog import SelectDialog
     ops._select_func = SelectDialog.make
+
+    from src.ui.dialog_input.dialog import InputDialog
+    ops._simple_input = InputDialog.make
+
+    from src.ui.dialog_browse.dialog import BrowseDialog
     ops._get_directory = BrowseDialog.get_directory
     ops._save_file = BrowseDialog.save_file
     ops._get_file = BrowseDialog.get_file

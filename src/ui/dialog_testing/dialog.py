@@ -7,7 +7,7 @@ from src.sig.sigmsg import SigMsg
 from src.sig.sigprogress import SigProgress
 from src.threadpool import ThreadPool
 from src.ui.base.qdialog import BaseDialog
-from src.ui.dialog_input.dialog import InputDialog
+from src.ui.dialog_multi_input.dialog import InputDialog
 from src.ui.skeletons.dialog_testing import Ui_Dialog
 from src.ui.widget_logger.widget import QtLogger
 

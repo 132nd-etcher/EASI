@@ -14,9 +14,9 @@ from src.sig import SIG_LOCAL_MOD_CHANGED
 from src.ui.base.qwidget import BaseQWidget
 from src.ui.dialog_get_new_gh_login.dialog import GetNewGHLoginDialog
 from src.ui.dialog_own_mod.dialog import ModDetailsDialog
-from src.ui.dialog_warn.dialog_warn import WarningDialog
 from src.ui.skeletons.form_own_mod_table import Ui_Form
 from src.easi.ops import warn
+from src.sig import SIG_CREATE_NEW_MOD
 
 
 class OwnModModel(QAbstractTableModel):
@@ -124,30 +124,8 @@ class _OwnModsTable(Ui_Form, QWidget):
             self.table.setUpdatesEnabled(True)
 
     def create_new_mod(self, _):
-        if not GHSession().has_valid_token:
-            if confirm('Creating a mod requires a valid Github account.<br><br>'
-                       'Would you like to connect your Github account now?',
-                       'Github account not connected'):
-                if not GetNewGHLoginDialog.make(constants.MAIN_UI):
-                    return
-            else:
-                return
-        if not self.selected_meta_repo.push_perm:
-            if not warn(
-                    'nopushperm',
-                    'You are about to create a mod in a repository for which you do not have push permission (meaning '
-                    'you cannot write to it).\n\n'
-                    ''
-                    'Your changes will instead be sent as a "Pull Request" (an update proposal) '
-                    'the the repository owner ({})\n\n'
-                    ''
-                    'Do you want to continue?'.format(
-                        self.selected_meta_repo.owner
-                    ),
-                    buttons='yesno'
-            ):
-                return
-        ModDetailsDialog.make(None, self.selected_meta_repo, self)
+        SIG_CREATE_NEW_MOD.send()
+        # ModDetailsDialog.make(None, self.selected_meta_repo, self)
         self.resize_columns()
 
     @property

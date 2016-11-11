@@ -1,56 +1,60 @@
 # coding=utf-8
 
-from src.qt import QDialog, Qt, QLineEdit, QLabel, QDialogButtonBox
-from src.ui.skeletons.input_dialog import Ui_Dialog
+
+from src.ui.skeletons.dialog_input import Ui_Dialog
+from src.qt import Qt, dialog_default_flags, QDialog, qt_resources, QIcon
+import webbrowser
+from src.ui.base.qdialog import BaseDialog
+from src.ui.base.with_balloons import WithBalloons
 
 
-# noinspection PyPep8Naming
-class InputDialog(Ui_Dialog, QDialog):
-    def __init__(self, parent=None):
-        QDialog.__init__(self, parent, flags=Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint)
-        self.setWindowModality(Qt.ApplicationModal)
+class _InputDialog(Ui_Dialog, QDialog, WithBalloons):
+
+    def __init__(self, title: str, text: str = '', verify_input_func=None, help_link=None, parent=None):
+        QDialog.__init__(self, parent, flags=dialog_default_flags)
+        WithBalloons.__init__(self)
         self.setupUi(self)
-        self.questions = {}
-        self.first = None
-
-    @property
-    def btn_ok(self):
-        return self.buttonBox.button(QDialogButtonBox.Ok)
-
-    @property
-    def btn_cancel(self):
-        return self.buttonBox.button(QDialogButtonBox.Cancel)
-
-    def set_title(self, title: str):
+        self.setWindowModality(Qt.ApplicationModal)
+        self.setWindowIcon(QIcon(qt_resources.app_ico))
         self.setWindowTitle(title)
+        self.label.setText(text)
+        self.help_link = help_link
+        self.verify_input_func = verify_input_func
+        if verify_input_func:
+            self.edit.textChanged.connect(self.verify_input)
+        if help_link:
+            self.buttonBox.addButton(self.buttonBox.Help)
+            self.btn_help = self.buttonBox.button(self.buttonBox.Help)
+            self.btn_help.clicked.connect(self.show_help)
+        self.btn_ok = self.buttonBox.button(self.buttonBox.Ok)
 
-    def set_text(self, text: str):
-        self.label.setText(text.replace('\n', '<br>'))
+    def verify_input(self):
+        if self.verify_input_func is None:
+            self.btn_ok.setEnabled(True)
+            return True
+        self.remove_balloons()
+        error = self.verify_input_func(self.edit.text())
+        if error:
+            self.show_error_balloon(error, self.edit)
+            self.btn_ok.setEnabled(False)
+            return False
+        self.btn_ok.setEnabled(True)
+        return True
 
-    def add_question(self, label, default=''):
-        line = QLineEdit()
-        line.setText(default)
-        self.questions[label] = line
-        if self.first is None:
-            self.first = self.questions[label]
-        self.formLayout.addRow(QLabel(label), line)
+    def show_help(self):
+        webbrowser.open_new_tab(self.help_link)
 
-    def set_btn_ok_text(self, text: str):
-        self.btn_ok.setText(text)
+    def exec(self):
+        if super(_InputDialog, self).exec() == self.Accepted:
+            return self.edit.text()
+        else:
+            return None
 
-    def set_btn_cancel_text(self, text: str):
-        self.btn_cancel.setText(text)
 
-    def show(self):
-        self.adjustSize()
-        super(InputDialog, self).show()
-        self.setFocus()
-        self.first.setFocus()
+class InputDialog(BaseDialog):
+    def __init__(self, title: str, text: str = '', verify_input_func=None, help_link=None, parent=None):
+        BaseDialog.__init__(self, _InputDialog(title, text, verify_input_func, help_link, parent))
 
-    def showEvent(self, event):
-        super(InputDialog, self).showEvent(event)
-        self.first.setFocus()
-
-    @property
-    def result(self):
-        return {k: self.questions[k].text() for k in self.questions}
+    @staticmethod
+    def make(title: str, text: str = '', verify_input_func=None, help_link=None, parent=None):
+        return InputDialog(title, text, verify_input_func, help_link, parent).qobj.exec()
