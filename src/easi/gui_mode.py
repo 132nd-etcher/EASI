@@ -53,6 +53,9 @@ def init_proxies():
     from src.ui.dialog_warn.dialog_warn import WarningDialog
     ops._confirm_func = ConfirmDialog.make
     ops._warn_func = WarningDialog.make
+
+    from src.ui.dialog_select.dialog import SelectDialog
+    ops._select_func = SelectDialog.make
     ops._get_directory = BrowseDialog.get_directory
     ops._save_file = BrowseDialog.save_file
     ops._get_file = BrowseDialog.get_file
