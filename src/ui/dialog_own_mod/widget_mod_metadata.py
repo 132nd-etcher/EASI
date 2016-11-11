@@ -93,7 +93,7 @@ class ModMetadataWidget(QWidget, Ui_Form):
         make_dcs_version_pull_menu()
 
         self.combo_category.addItem('<select what type of mod this is>')
-        for mod_type in ModTypes.enum_category_names():
+        for mod_type in ModTypes.category_names():
             self.combo_category.addItem(mod_type)
         self.combo_category.model().itemFromIndex(self.combo_category.model().index(0, 0)).setEnabled(False)
         self.label_help_name.setText(
