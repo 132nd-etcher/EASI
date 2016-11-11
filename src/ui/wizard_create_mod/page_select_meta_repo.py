@@ -57,6 +57,7 @@ class SelectMetaRepoPage(BasePage):
         return LocalMetaRepo()[self.combo.currentText()]
 
     def initializePage(self):
+        super(SelectMetaRepoPage, self).initializePage()
         logger.debug('prompting for meta repo')
         try:
             self.combo.currentIndexChanged.disconnect()

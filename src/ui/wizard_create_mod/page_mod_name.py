@@ -32,6 +32,7 @@ class ModNamePage(BasePage):
         self.edit.textChanged.connect(self.completeChanged.emit)
 
     def initializePage(self):
+        super(ModNamePage, self).initializePage()
         self.label_expl.setText('The name of your mod needs to contain at least 4 contiguous letters.\n\n'
                                 'It also has to be unique in the current repository ({})'.format(
             self.field('meta_repo_name')))

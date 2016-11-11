@@ -39,6 +39,7 @@ class ModVersionPage(BasePage):
         self.completeChanged.emit()
 
     def initializePage(self):
+        super(ModVersionPage, self).initializePage()
         self.edit.setText('0.0.1')
         self.label_expl.setText('The version must be a valid SemVer (see "Help" to learn about SemVer).\n\n'
                                 'You can also let EASI manage your mod\'s versionning for you.')
