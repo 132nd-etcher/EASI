@@ -15,6 +15,7 @@ class Ui_Dialog(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(Dialog)
+        self.label.setOpenExternalLinks(True)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.edit = QtWidgets.QLineEdit(Dialog)
