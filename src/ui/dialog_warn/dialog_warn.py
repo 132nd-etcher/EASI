@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.cfg.cfg import Config
-from src.qt import QDialog, dialog_default_flags, Qt
+from src.qt import QDialog, dialog_default_flags, Qt, QIcon, qt_resources
 from src.ui.base.qdialog import BaseDialog
 from src.ui.skeletons.dialog_warn import Ui_Dialog
 
@@ -16,6 +16,7 @@ class _WarningDialog(QDialog, Ui_Dialog):
         self.setWindowTitle(title)
         self.label.setText(text)
         self.setWindowModality(Qt.ApplicationModal)
+        self.setWindowIcon(QIcon(qt_resources.app_ico))
         if buttons is None:
             buttons = 'ok'
         if buttons == 'ok':
