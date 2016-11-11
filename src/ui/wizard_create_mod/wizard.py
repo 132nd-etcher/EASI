@@ -7,6 +7,7 @@ from src.qt import Qt, QWizard, QWizardPage, dialog_default_flags
 from .page_gh_login import GHLoginPage
 from .page_final import FinalPage
 from .page_select_meta_repo import SelectMetaRepoPage
+from .page_mod_name import ModNamePage
 from src.rem.gh.gh_session import GHSession
 import webbrowser
 
