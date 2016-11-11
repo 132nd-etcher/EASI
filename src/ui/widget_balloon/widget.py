@@ -7,7 +7,7 @@ from src.qt.palette import PaletteBalloon
 class WidgetBalloon(QLabel):
     def __init__(self, widget, text, color, position='bottomLeft', offset_x=6, offset_y=6, adjust_size=False):
         assert isinstance(widget, QWidget)
-        QLabel.__init__(self, widget.window())
+        QLabel.__init__(self, widget.parent())
         effect = QGraphicsDropShadowEffect()
         effect.setBlurRadius(10)
         effect.setOffset(2, 2)
