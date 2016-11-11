@@ -10,6 +10,7 @@ def dummy(*args, **kwargs):
 
 
 _confirm_func = dummy
+_warn_func = dummy
 _get_directory = dummy
 _save_file = dummy
 _get_existing_file = dummy
@@ -19,6 +20,10 @@ _get_file = dummy
 
 def confirm(question: str, title: str = 'Please confirm', parent=None) -> bool:
     return _confirm_func(question, title, parent)
+
+
+def warn(_id: str, text: str, title: str = None, buttons: str = None, parent=None):
+    return _warn_func(_id, text, title, buttons, parent)
 
 
 def get_directory(parent, title: str, init_dir: str = '.') -> Path or None:

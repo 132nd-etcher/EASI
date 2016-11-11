@@ -16,6 +16,7 @@ from src.ui.dialog_gh_login.dialog import GHLoginDialog
 from src.ui.dialog_own_mod.dialog import ModDetailsDialog
 from src.ui.dialog_warn.dialog_warn import WarningDialog
 from src.ui.skeletons.form_own_mod_table import Ui_Form
+from src.easi.ops import warn
 
 
 class OwnModModel(QAbstractTableModel):
@@ -132,7 +133,7 @@ class _OwnModsTable(Ui_Form, QWidget):
             else:
                 return
         if not self.selected_meta_repo.push_perm:
-            if not WarningDialog.make(
+            if not warn(
                     'nopushperm',
                     'You are about to create a mod in a repository for which you do not have push permission (meaning '
                     'you cannot write to it).\n\n'
@@ -146,7 +147,7 @@ class _OwnModsTable(Ui_Form, QWidget):
                     buttons='yesno'
             ):
                 return
-        ModDetailsDialog(None, self.selected_meta_repo, self).qobj.exec()
+        ModDetailsDialog.make(None, self.selected_meta_repo, self)
         self.resize_columns()
 
     @property
@@ -154,7 +155,7 @@ class _OwnModsTable(Ui_Form, QWidget):
         return self.table.selectedIndexes()[0].data(Qt.UserRole)
 
     def show_details_for_selected_mod(self):
-        ModDetailsDialog(self.selected_mod, self.selected_meta_repo, self).qobj.exec()
+        ModDetailsDialog.make(self.selected_mod, self.selected_meta_repo, self)
         self.resize_columns()
 
     def on_double_click(self, _):

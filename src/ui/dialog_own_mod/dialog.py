@@ -67,3 +67,9 @@ class ModDetailsDialog(BaseDialog):
     def __init__(self, mod: Mod or None, meta_repo: MetaRepo, parent=None):
         BaseDialog.__init__(self, _ModDetailsDialog(mod, meta_repo, parent))
         self.qobj.show()
+
+    @staticmethod
+    def make(mod: Mod or None, meta_repo: MetaRepo, parent=None):
+        dialog = ModDetailsDialog(mod, meta_repo, parent)
+        dialog.qobj.show()
+        dialog.qobj.exec()
