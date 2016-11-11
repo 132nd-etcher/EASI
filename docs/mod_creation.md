@@ -26,9 +26,14 @@ What you can do, however, is make a copy of the repository, change it, and then 
 
 This process is called a `Pull Request`, and EASI will do it automatically for you.
 
-The disadvantage of the `Pull Request` method is that it may take some time between the moment you make your changes, and the mooment the owner of the repository accepts and merge them, so your mod will not be available immediatly.
-
 #### The Pull Request
+
+A `Pull request` is:
+
+1. Making changes to someone else's repository
+2. Asking that person to integrate your change into their repository
+
+The disadvantage of the `Pull Request` method is that it may take some time between the moment you make your changes, and the moment the owner of the repository accepts and merge them, so your mod will not be available immediately.
 
 ## Step 2: Name
 
@@ -37,7 +42,7 @@ The name of your mod can be any text value of your choosing, as long as it fits 
 * Rule 1: the name of your mod must contain a string of four contiguous letters (case doesn't matter)
 * Rule 2: the name of your mod must be unique *within the selected metadata repository*
 
-## Step 3: Mod category
+## Step 3: Category
 
 The category of your mod serves to describe its purpose to the end-user.
 
@@ -49,7 +54,7 @@ A versionning scheme is needed to allow updates.
 
 If you do not want to manage the versions yourself, it's mighty fine: leave it at the default when you create a new mod, and let EASI bump the version for you when you update your mod.
 
-EASI is following the [Semantic Versioning 2.0.0](semver) rules for its versionning; both for EASI itself, and for the mods.
+EASI is following the [Semantic Versioning 2.0.0](http://semver.org) rules for its versionning; both for EASI itself, and for the mods.
 
 If you do want to customize the versionning of your mod, make sure you understand and follow SemVer guidelines.
 
@@ -105,7 +110,7 @@ As it can grow quite large, you can move the cache to another location via the `
 The `meta` folder contains the `metadata` of all mods.
 
 Metadata
-:   Merriam-Webster defines the term "metadata" as "data that provides information about other data"[^1]. In the context of EASI, the primary "data" would be the mod itself: the textures, the *.lua files, the readme, etc. The "metadata" would be the file that contains the mod name, the list of files to download, and where to install them.
+:   Merriam-Webster defines the term "metadata" as "data that provides information about other data". In the context of EASI, the primary "data" would be the mod itself: the textures, the *.lua files, the readme, etc. The "metadata" would be the file that contains the mod name, the list of files to download, and where to install them.
 
 All `metadata` files are stored in a [Git][git] repository.
 
@@ -122,11 +127,11 @@ Main EASI metadata folder
 ##### Custom `metarepo`
 
 
-#### Managing your repositories directly
+#### Managing your repositories
 
 ##### I know Git
 
-If you're familiar with [Git][git], this is the basic workflow:
+If you're familiar with [Git](https://git-scm.com), this is the basic workflow:
 
 1. Pull or fork the `metarepo` you want to edit
 2. Make your changes
@@ -147,18 +152,10 @@ If you're not familiar with Git but would still want to give it a try, I strongl
 
 ###### Install Git
 
-You will need to [download and install git][gitdl] on your machine before you can use it locally.
+You will need to [download and install git](https://git-scm.com/download/win) on your machine before you can use it locally.
 
 ###### (optional) Get a GUI
 
 Also, for the day-to-day use, you might want to use an application with a GUI instead of the crude CLI that comes with Git.
 
-I would recommend you give [SmartGit][smartgit] or [GitKraken][gitkraken] a go, they're both free for non-commercial use.
-
-
-[^1]: [http://www.merriam-webster.com/dictionary/metadata](http://www.merriam-webster.com/dictionary/metadata)
-[git]: https://git-scm.com/
-[gitkraken]: https://www.gitkraken.com/
-[smartgit]: http://www.syntevo.com/smartgit/
-[gitdl]: https://git-scm.com/download/win
-[semver]: http://semver.org/
+I would recommend you give [SmartGit](http://www.syntevo.com/smartgit) or [GitKraken](https://www.gitkraken.com) a go, they're both free for non-commercial use.
