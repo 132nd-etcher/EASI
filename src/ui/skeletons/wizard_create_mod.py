@@ -16,7 +16,7 @@ class Ui_Wizard(object):
         Wizard.setSizeGripEnabled(True)
         Wizard.setModal(True)
         Wizard.setWizardStyle(QtWidgets.QWizard.ModernStyle)
-        Wizard.setOptions(QtWidgets.QWizard.DisabledBackButtonOnLastPage|QtWidgets.QWizard.HaveHelpButton|QtWidgets.QWizard.HelpButtonOnRight|QtWidgets.QWizard.NoBackButtonOnStartPage)
+        Wizard.setOptions(QtWidgets.QWizard.HaveHelpButton|QtWidgets.QWizard.HelpButtonOnRight|QtWidgets.QWizard.NoBackButtonOnStartPage)
 
         self.retranslateUi(Wizard)
         QtCore.QMetaObject.connectSlotsByName(Wizard)

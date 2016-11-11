@@ -26,7 +26,7 @@
    <enum>QWizard::ModernStyle</enum>
   </property>
   <property name="options">
-   <set>QWizard::DisabledBackButtonOnLastPage|QWizard::HaveHelpButton|QWizard::HelpButtonOnRight|QWizard::NoBackButtonOnStartPage</set>
+   <set>QWizard::HaveHelpButton|QWizard::HelpButtonOnRight|QWizard::NoBackButtonOnStartPage</set>
   </property>
  </widget>
  <resources/>
