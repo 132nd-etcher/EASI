@@ -8,7 +8,6 @@ from src.easi.ops import get_new_gh_login, confirm, select, warn, simple_input, 
 from src.low import constants
 from src.low import help_links
 from src.low.custom_logging import make_logger
-from src.low.singleton import Singleton
 from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.meta_repo.meta_repo import MetaRepo
 from src.mod.mod_category import ModTypes
