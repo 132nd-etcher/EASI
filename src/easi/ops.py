@@ -34,8 +34,8 @@ def warn(_id: str, text: str, title: str = None, buttons: str = None, parent=Non
     return _warn_func(_id, text, title, buttons, parent)
 
 
-def simple_input(title: str, text: str = '', verify_input_func=None, help_link=None, parent=None):
-    return _simple_input(title, text, verify_input_func, help_link, parent)
+def simple_input(title: str, text: str = '', default: str = '', verify_input_func=None, help_link=None, parent=None):
+    return _simple_input(title, text, default, verify_input_func, help_link, parent)
 
 
 def get_directory(parent, title: str, init_dir: str = '.') -> Path or None:
