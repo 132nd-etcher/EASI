@@ -6,9 +6,10 @@ Footnotes[^1] have a label[^@#$%] and the footnote's content.
 
 # Admonition
 
-!!! type "optional explicit title within double quotes"
-    Any number of other indented markdown elements.
+!!! Note "optional explicit title within double quotes"
 
+    Any number of other indented markdown elements.
+    
     This is the second paragraph.
 
 # Definition lists
@@ -18,12 +19,15 @@ Apple
     the family Rosaceae.
     
 !!! note
+
     You should note that the title will be automatically capitalized.
     
 !!! danger "Don't try this at home"
+
     ...
 
 !!! important "A title anyway"
+
     This is a admonition box without a title.
 
 Orange

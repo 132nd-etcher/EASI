@@ -1,10 +1,10 @@
 ## Packages used
 Note: the version shown on the packages badges may not be the one used in this project; this list is only intended as an index linking to everyone else's hard work.
 
-For an up-to-date list of the packages actually used, see the different "requirement*.txt files at the root fo the project. Alternatively, you may refer to the [Version Eye page of this project][version_eye_project_page].
+For an up-to-date list of the packages actually used, see the different "requirement*.txt files at the root fo the project, or simply go to the [Version Eye page of this project][version_eye_project_page].
 
 ### Dependencies
-| Package | Version |
+| Package | Latest version |
 | ---------------------: | --------------------- |
 | argh | [![PyPI version](https://badge.fury.io/py/argh.svg)](https://badge.fury.io/py/argh) |
 | blinker | [![PyPI version](https://badge.fury.io/py/blinker.svg)](https://badge.fury.io/py/blinker) |
@@ -50,7 +50,7 @@ For an up-to-date list of the packages actually used, see the different "require
 
 
 ### Documentation
-| Package | Version |
+| Package | Latest version |
 | ---------------------: | --------------------- |
 | click | [![PyPI version](https://badge.fury.io/py/click.svg)](https://badge.fury.io/py/click) |
 | Jinja2 | [![PyPI version](https://badge.fury.io/py/Jinja2.svg)](https://badge.fury.io/py/Jinja2) |
@@ -65,7 +65,7 @@ For an up-to-date list of the packages actually used, see the different "require
 
 
 ### Tests
-| Package | Version |
+| Package | Latest version |
 | ---------------------: | --------------------- |
 | apipkg | [![PyPI version](https://badge.fury.io/py/apipkg.svg)](https://badge.fury.io/py/apipkg) |
 | colorama | [![PyPI version](https://badge.fury.io/py/colorama.svg)](https://badge.fury.io/py/colorama) |
@@ -83,7 +83,7 @@ For an up-to-date list of the packages actually used, see the different "require
 
 
 ### Build
-|                Package | Version               |
+|                Package | Latest version               |
 | ---------------------: | --------------------- |
 | Cython | [![PyPI version](https://badge.fury.io/py/Cython.svg)](https://badge.fury.io/py/Cython) |
 | pypiwin32 | [![PyPI version](https://badge.fury.io/py/pypiwin32.svg)](https://badge.fury.io/py/pypiwin32) |
@@ -93,7 +93,7 @@ For an up-to-date list of the packages actually used, see the different "require
 
 Collection of libraries I had to tweak for this project.
 
-|                Package | Version               | Used for | Custom repository |
+|                Package | Latest version     | Used for | Custom repository |
 | ---------------------: | --------------------- | --- | --- |
 | pygit2 | [![PyPI version](https://badge.fury.io/py/pygit2.svg)](https://badge.fury.io/py/pygit2) | project | [https://github.com/132nd-etcher/pygit2_wheel](https://github.com/132nd-etcher/pygit2_wheel) |
 | blinker-herald | [![PyPI version](https://badge.fury.io/py/blinker-herald.svg)](https://badge.fury.io/py/blinker-herald) | project | [https://github.com/132nd-etcher/blinker_herald](https://github.com/132nd-etcher/blinker_herald) |
@@ -107,7 +107,7 @@ Collection of libraries I had to tweak for this project.
 
 Collection of libraries used in the making of this project.
 
-|                Package | Version               |
+|                Package | Latest version     |
 | ---------------------: | --------------------- |
 | pipdeptree | [![PyPI version](https://badge.fury.io/py/pipdeptree.svg)](https://badge.fury.io/py/pipdeptree) |
 | nose | [![PyPI version](https://badge.fury.io/py/nose.svg)](https://badge.fury.io/py/nose) |
