@@ -54,7 +54,8 @@ EASI is following the [Semantic Versioning 2.0.0](semver) rules for its versionn
 If you do want to customize the versionning of your mod, make sure you understand and follow SemVer guidelines.
 
 !!! Note
-    EASI uses `rc` as the default tag for the `prerelease` part of the SemVer; feel free to use any other one you like !
+
+    EASI uses `rc` as the default tag for the `prerelease` part of the SemVer; feel free to use any other one you like, though.
     
 ## Step 5: DCS version
 
@@ -67,20 +68,25 @@ You can also specify that your mod should be working with any newer version of D
 The `Pull from...` button reads the DCS version from your actual DCS installation, so you don't have to look it up yourself.
 
 !!! Note
+
     The default value of `*` means that your mod is compatible with *any* version of DCS.
     
 ### Example table:
+
+In the following table, the leftmost column is the DCS version string that has been given during the mod creation process, while, the header of the other columns is the current DCS version.
+
+A checked cell means that the mod could be installed in that specific DCS installation.
     
-| DCS version string 	| Installs on 1.5.1.00000 	| Installs on 1.5.1.00001 	| Installs on 1.5.2.00000 	| Installs on 2.0.0.00000 	|
-|--------------------	|-------------------------	|-------------------------	|-------------------------	|-------------------------	|
-| 1.5.1.0000         	| x                       	|                         	|                         	|                         	|
-| 1.5.1.0000+        	| x                       	| x                       	| x                       	| x                       	|
-| 1.5.1.*            	| x                       	| x                       	|                         	|                         	|
-| 1.5+               	| x                       	| x                       	| x                       	| x                       	|
-| 1.5.*              	| x                       	| x                       	| x                       	|                         	|
-| 1.5.2+             	|                         	|                         	| x                       	| x                       	|
-| *                  	| x                       	| x                       	| x                       	| x                       	|
-| 2+                 	|                         	|                         	|                         	| x                       	|
+|               	| 1.5.1.00000 	| 1.5.1.00001 	| 1.5.2.00000 	| 2.0.0.00000 	|
+|---------------	|-------------	|-------------	|-------------	|-------------	|
+| "1.5.1.0000"  	| x           	|             	|             	|             	|
+| "1.5.1.0000+" 	| x           	| x           	| x           	| x           	|
+| "1.5.1.*"     	| x           	| x           	|             	|             	|
+| "1.5+"        	| x           	| x           	| x           	| x           	|
+| "1.5.*"       	| x           	| x           	| x           	|             	|
+| "1.5.2+"      	|             	|             	| x           	| x           	|
+| "*"           	| x           	| x           	| x           	| x           	|
+| "2+"          	|             	|             	|             	| x           	|
 
 ## Going deeper
 
