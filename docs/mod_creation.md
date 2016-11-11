@@ -1,6 +1,6 @@
 # Creating a mod
 
-## Step 1: select a repository
+## Step 1: Repository
 
 The first step will be to select a repository to host your mod's metadata.
 
@@ -30,20 +30,20 @@ The disadvantage of the `Pull Request` method is that it may take some time betw
 
 #### The Pull Request
 
-## Step 2: name your mod
+## Step 2: Name
 
 The name of your mod can be any text value of your choosing, as long as it fits the following 2 rules:
 
 * Rule 1: the name of your mod must contain a string of four contiguous letters (case doesn't matter)
 * Rule 2: the name of your mod must be unique *within the selected metadata repository*
 
-## Step 3: choose your mod's "type"
+## Step 3: Mod category
 
-The type of your mod serves to describe its purpose to the end-user.
+The category of your mod serves to describe its purpose to the end-user.
 
 It also helps for sorting and finding mods.
 
-## Step 4: choose the initial version number
+## Step 4: Initial version number
 
 A versionning scheme is needed to allow updates.
 
@@ -56,7 +56,7 @@ If you do want to customize the versionning of your mod, make sure you understan
 !!! Note
     EASI uses `rc` as the default tag for the `prerelease` part of the SemVer; feel free to use any other one you like !
     
-## Step 5: specify the DCS version
+## Step 5: DCS version
 
 To allow for compatibility check before the installation of your mod, it is strongly recommended to define which version of DCS your mod is designed to work with.
   
@@ -65,6 +65,22 @@ Defining a DCS version can be precise (e.g. `1.5.4.12345`) or fuzzy (e.g. `1.5.*
 You can also specify that your mod should be working with any newer version of DCS by using the `+` sign at the end of the DCS version string (e.g. `1.5.4.12345+` or `1.5+`).
  
 The `Pull from...` button reads the DCS version from your actual DCS installation, so you don't have to look it up yourself.
+
+!!! Note
+    The default value of `*` means that your mod is compatible with *any* version of DCS.
+    
+### Example table:
+    
+| DCS version string 	| Installs on 1.5.1.00000 	| Installs on 1.5.1.00001 	| Installs on 1.5.2.00000 	| Installs on 2.0.0.00000 	|
+|--------------------	|-------------------------	|-------------------------	|-------------------------	|-------------------------	|
+| 1.5.1.0000         	| x                       	|                         	|                         	|                         	|
+| 1.5.1.0000+        	| x                       	| x                       	| x                       	| x                       	|
+| 1.5.1.*            	| x                       	| x                       	|                         	|                         	|
+| 1.5+               	| x                       	| x                       	| x                       	| x                       	|
+| 1.5.*              	| x                       	| x                       	| x                       	|                         	|
+| 1.5.2+             	|                         	|                         	| x                       	| x                       	|
+| *                  	| x                       	| x                       	| x                       	| x                       	|
+| 2+                 	|                         	|                         	|                         	| x                       	|
 
 ## Going deeper
 
