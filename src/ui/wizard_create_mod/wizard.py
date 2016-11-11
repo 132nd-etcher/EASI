@@ -6,6 +6,7 @@ from src.ui.base.qdialog import BaseDialog
 from src.qt import Qt, QWizard, QWizardPage, dialog_default_flags
 from .page_gh_login import GHLoginPage
 from .page_final import FinalPage
+from .page_select_meta_repo import SelectMetaRepoPage
 from src.rem.gh.gh_session import GHSession
 import webbrowser
 
@@ -18,6 +19,7 @@ class _ModCreationWizard(Ui_Wizard, QWizard):
         self.setupUi(self)
         if not GHSession().user:
             self.addPage(GHLoginPage(self))
+        self.addPage(SelectMetaRepoPage(self))
         self.addPage(FinalPage(self))
         self.btn_help = self.button(self.HelpButton)
         self.btn_help.clicked.connect(self.show_help)
