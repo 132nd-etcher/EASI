@@ -29,16 +29,16 @@ def pre_init_modules(*args, **kwargs):
 
 
 # noinspection PyUnusedLocal
-def post_discover_dcs_installation(sender, signal_emitter, result):
-    constants.MAIN_UI.do('active_dcs_installation', 'known_dcs_installs_changed')
-
-
-# noinspection PyUnusedLocal
 def post_init_modules(*args, **kwargs):
     constants.MAIN_UI.do('splash', 'hide')
     constants.MAIN_UI.do(None, 'show')
     redirect_signal(SIG_PROGRESS, 'long_op', disconnect_all_others=True)
     redirect_signal(SIG_MSG, 'msgbox', disconnect_all_others=True)
+
+
+# noinspection PyUnusedLocal
+def post_discover_dcs_installation(sender, signal_emitter, result):
+    constants.MAIN_UI.do('active_dcs_installation', 'known_dcs_installs_changed')
 
 
 def connect_signals():
