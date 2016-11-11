@@ -2,6 +2,8 @@
 
 from re import compile
 
+import semver
+
 from src.easi.ops import get_new_gh_login, confirm, select, warn, simple_input
 from src.low import constants
 from src.low import help_links
@@ -23,11 +25,13 @@ class ModCreator(metaclass=Singleton):
         self.__meta_repo = None
         self.__mod_name = None
         self.__mod_category = None
+        self.__mod_version = None
         self.steps = [
             self._check_gh_login,
             self._select_metadata_repo,
             self._get_mod_name,
-            self._select_mod_category
+            self._select_mod_category,
+            self._get_mod_version,
         ]
         while True:
             try:
@@ -145,6 +149,31 @@ class ModCreator(metaclass=Singleton):
         else:
             logger.debug('user cancelled')
             return False
+
+    def _get_mod_version(self):
+
+        def verify_version(version_str):
+            try:
+                semver.parse(version_str)
+            except ValueError:
+                return 'This is not a valid SemVer'
+
+        mod_version = simple_input(
+            title='Initial version',
+            text='Choose an initial version number for your mod.\n\n',
+            default='0.0.1',
+            help_link=help_links.mod_creation_version,
+            parent=constants.MAIN_UI
+        )
+        if mod_version:
+            logger.debug('mod version: {}'.format(mod_version))
+            self.__mod_version = mod_version
+            return True
+        else:
+            logger.debug('user cancelled')
+            return False
+
+    def _get_dcs_version
 
 
 def init_mod_creator():
