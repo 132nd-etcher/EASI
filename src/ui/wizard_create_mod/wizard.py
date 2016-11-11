@@ -43,7 +43,11 @@ class _ModCreationWizard(Ui_Wizard, QWizard):
 
     def exec(self):
         if super(_ModCreationWizard, self).exec() == self.Accepted:
-            return {}
+            return {
+                'meta_repo_name': self.field('meta_repo_name'),
+                'mod_name': self.field('mod_name'),
+                'category': self.field('category_name'),
+            }
         else:
             return None
 
