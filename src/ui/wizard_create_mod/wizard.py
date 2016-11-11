@@ -3,7 +3,7 @@
 
 from src.ui.skeletons.wizard_create_mod import Ui_Wizard
 from src.ui.base.qdialog import BaseDialog
-from src.qt import Qt, QWizard, QWizardPage, dialog_default_flags
+from src.qt import QWizard, dialog_default_flags, QPixmap, qt_resources, QSize, Qt
 from .page_gh_login import GHLoginPage
 from .page_final import FinalPage
 from .page_select_meta_repo import SelectMetaRepoPage
@@ -24,6 +24,10 @@ class _ModCreationWizard(Ui_Wizard, QWizard):
         self.addPage(FinalPage(self))
         self.btn_help = self.button(self.HelpButton)
         self.btn_help.clicked.connect(self.show_help)
+        self.pixmap = QPixmap(qt_resources.mod_create)
+        self.setPixmap(
+            self.LogoPixmap,
+            QPixmap(qt_resources.mod_create).scaled(QSize(64, 64), Qt.KeepAspectRatio, Qt.SmoothTransformation))
 
     def initializePage(self, page_id):
         self.btn_help.setEnabled(not self.page(page_id).help_link is None)
