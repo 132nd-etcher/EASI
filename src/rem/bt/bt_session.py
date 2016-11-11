@@ -122,6 +122,3 @@ class BTSession(Session, metaclass=Singleton):
     def get_latest_version(self, package) -> BTVersion:
         self.build_req(*self.__base_req, package, 'versions', '_latest')
         return BTVersion(self._get_json())
-
-
-bt_session = BTSession()
