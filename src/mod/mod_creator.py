@@ -112,13 +112,12 @@ class ModCreator():
         if not self.meta_repo.push_perm:
             if not warn(
                     'nopushperm',
-                    'You are about to create a mod in a repository in which you do not have push permission '
-                    '(i.e. you cannot write directly to it).\n\n'
+                    'You are about to create a mod in a repository in which you do not have push permission.\n\n'
                     ''
                     'Your changes will instead be sent as a "Pull Request" (an update proposal) '
-                    'the the repository owner ({})\n\n'
+                    'the the repository owner ("{}")\n\n'
                     ''
-                    'Make sure you understand the implications before going further'
+                    'Make sure you understand the implications before going further.\n\n'
                     ''
                     'Do you want to continue?'.format(
                         self.meta_repo.owner
