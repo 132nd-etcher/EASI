@@ -46,14 +46,14 @@ class Script(BaseModCategory):
         return 0
 
 
-class ModTypes:
+class ModCategories:
     @staticmethod
     def __iter__():
         for cls_name, cls in inspect.getmembers(sys.modules[__name__], inspect.isclass):
-            if cls_name != ModTypes.__name__ and not inspect.isabstract(cls):
+            if cls_name != ModCategories.__name__ and not inspect.isabstract(cls):
                 yield cls
 
     @staticmethod
     def category_names():
-        return [c().category_name for w in sorted(set([x().sort_weight for x in ModTypes.__iter__()])) for c in
-                sorted([x for x in ModTypes.__iter__() if x().sort_weight == w], key=lambda x: x().category_name)]
+        return [c().category_name for w in sorted(set([x().sort_weight for x in ModCategories.__iter__()])) for c in
+                sorted([x for x in ModCategories.__iter__() if x().sort_weight == w], key=lambda x: x().category_name)]

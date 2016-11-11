@@ -8,7 +8,7 @@ from src.dcs.dcs_installs import DCSInstalls, DCSInstall
 from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.mod.mod import Mod
 from src.mod.dcs_version import DCSVersion
-from src.mod.mod_category import ModTypes
+from src.mod.mod_category import ModCategories
 from src.qt import QWidget
 from src.qt import Qt, QRegExp, QRegExpValidator, \
     QMenu, QAction
@@ -93,7 +93,7 @@ class ModMetadataWidget(QWidget, Ui_Form):
         make_dcs_version_pull_menu()
 
         self.combo_category.addItem('<select what type of mod this is>')
-        for mod_type in ModTypes.category_names():
+        for mod_type in ModCategories.category_names():
             self.combo_category.addItem(mod_type)
         self.combo_category.model().itemFromIndex(self.combo_category.model().index(0, 0)).setEnabled(False)
         self.label_help_name.setText(

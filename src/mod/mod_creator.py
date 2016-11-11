@@ -11,7 +11,7 @@ from src.low import help_links
 from src.low.custom_logging import make_logger
 from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.meta_repo.meta_repo import MetaRepo
-from src.mod.mod_category import ModTypes
+from src.mod.mod_category import ModCategories
 from src.mod.mod import Mod
 from src.rem.gh.gh_session import GHSession
 from src.sig import SIG_CREATE_NEW_MOD, SigMsg
@@ -159,10 +159,10 @@ class ModCreator():
     def _select_mod_category(self):
         logger.debug('selecting mod category')
         mod_category = select(
-            choices=[x for x in ModTypes.category_names()],
+            choices=[x for x in ModCategories.category_names()],
             title='Select mod type',
             text='How would you describe your mod ?',
-            help_link=help_links.mod_creation_type
+            help_link=help_links.mod_creation_category
         )
         if mod_category:
             logger.debug('mod category: {}'.format(mod_category))
