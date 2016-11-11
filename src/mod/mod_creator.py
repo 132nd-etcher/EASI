@@ -4,7 +4,8 @@ from re import compile
 
 import semver
 
-from src.easi.ops import get_new_gh_login, confirm, select, warn, simple_input, get_dcs_version, long_input
+from src.easi.ops import get_new_gh_login, confirm, select, warn, simple_input, get_dcs_version, long_input,\
+    create_new_mod_collect_basics
 from src.low import constants
 from src.low import help_links
 from src.low.custom_logging import make_logger
@@ -13,7 +14,7 @@ from src.meta_repo.meta_repo import MetaRepo
 from src.mod.mod_category import ModTypes
 from src.mod.mod import Mod
 from src.rem.gh.gh_session import GHSession
-from src.sig import SIG_CREATE_NEW_MOD
+from src.sig import SIG_CREATE_NEW_MOD, SigMsg
 
 logger = make_logger(__name__)
 RE_MOD_NAME = compile(""".*[a-zA-Z]{4,}.*""")
@@ -21,6 +22,9 @@ RE_MOD_NAME = compile(""".*[a-zA-Z]{4,}.*""")
 
 class ModCreator():
     def __init__(self, meta_repo_name=None):
+        self.__basics = create_new_mod_collect_basics(constants.MAIN_UI)
+        print(self.__basics)
+        return
         self.__done = False
         self.__meta_repo_name = meta_repo_name
         self.__meta_repo = None
@@ -225,6 +229,15 @@ class ModCreator():
         self.mod.meta.description = self.__mod_desc
         self.mod.meta.status = 'draft'
         self.mod.meta.write()
+        SigMsg().show('Draft saved', 'Your draft for "{}" has been saved.\n\n'
+                                     'I am now going to open ')
+
+    def _select_hosting_provider(self):
+        pass
+        # choices =
+
+    def _create_fs_stub(self):
+        pass
 
 
 
