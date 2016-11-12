@@ -15,6 +15,8 @@ class Mod:
         self.__meta = ModMeta(path=meta_path)
         # self.__repo = Repository(path=Path(Cache().own_mods_folder.joinpath(new_mod_name or self.meta.name)))
         self.__parent = parent_meta_repo
+        if not self.local_folder.exists():
+            self.local_folder.makedirs_p()
 
     @property
     def meta_repo(self):
