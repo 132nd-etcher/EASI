@@ -93,6 +93,10 @@ A checked cell means that the mod could be installed in that specific DCS instal
 | "*"           	| x           	| x           	| x           	| x           	|
 | "2+"          	|             	|             	|             	| x           	|
 
+## Step 6: Description
+
+If you'd like, you may enter a short description of your mod.
+
 ## Going deeper
 
 ### Directories

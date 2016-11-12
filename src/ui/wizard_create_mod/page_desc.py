@@ -11,7 +11,7 @@ logger = make_logger(__name__)
 class DescriptionPage(BasePage):
     @property
     def help_link(self):
-        return help_links.mod_creation_version
+        return help_links.mod_creation_desc
 
     def __init__(self, parent=None):
         BasePage.__init__(self, parent)
