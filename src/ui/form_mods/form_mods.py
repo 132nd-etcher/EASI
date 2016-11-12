@@ -13,6 +13,7 @@ from src.sig import SIG_LOCAL_MOD_CHANGED
 from src.ui.base.qwidget import BaseQWidget
 from src.ui.dialog_own_mod.dialog import ModDetailsDialog
 from src.ui.skeletons.form_own_mod_table import Ui_Form
+from src.ui.dialog_mod_files.dialog import ModFilesDialog
 
 
 class OwnModModel(QAbstractTableModel):
@@ -136,7 +137,10 @@ class _OwnModsTable(Ui_Form, QWidget):
 
     def on_double_click(self, _):
         if self.selected_mod:
-            self.show_details_for_selected_mod()
+            ModFilesDialog(self.selected_mod, self).qobj.exec()
+            # for x in self.selected_mod.local_files:
+            #     print(x)
+            # self.show_details_for_selected_mod()
 
     def on_click(self, _):
         if self.selected_mod:
