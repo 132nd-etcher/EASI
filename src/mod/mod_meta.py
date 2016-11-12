@@ -40,6 +40,10 @@ class ModMeta(Meta):
     def description(self, value: str) -> str:
         """"""
 
+    @MetaProperty({}, dict)
+    def files(self, value: dict) -> dict:
+        """"""
+
     @MetaProperty('', str)
     def version(self, value: str) -> str:
         try:
