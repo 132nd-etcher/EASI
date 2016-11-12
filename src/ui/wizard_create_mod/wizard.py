@@ -22,6 +22,7 @@ class _ModCreationWizard(Ui_Wizard, QWizard):
         self.meta_repo_name = meta_repo_name
         QWizard.__init__(self, parent, flags=dialog_default_flags)
         self.setupUi(self)
+        self.setWindowTitle('Create new mod')
         if not GHSession().user:
             self.addPage(GHLoginPage(self))
         self.addPage(SelectMetaRepoPage(self))
