@@ -42,6 +42,11 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         self.__is_building = False
         self.cache_build()
 
+    def files_in(self, rel_path):
+        for x in self:
+            if x.abspath.startswith(rel_path):
+                yield x
+
     @property
     def meta_repos_folder(self) -> Path:
         p = Path(self.path.joinpath('meta_repos'))
