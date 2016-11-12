@@ -11,6 +11,7 @@ from .page_mod_name import ModNamePage
 from .page_mod_category import ModCategoryPage
 from .page_mod_version import ModVersionPage
 from .page_dcs_version import DCSVersionPage
+from .page_desc import DescriptionPage
 from src.rem.gh.gh_session import GHSession
 import webbrowser
 
@@ -28,6 +29,7 @@ class _ModCreationWizard(Ui_Wizard, QWizard):
         self.addPage(ModCategoryPage(self))
         self.addPage(ModVersionPage(self))
         self.addPage(DCSVersionPage(self))
+        self.addPage(DescriptionPage(self))
         self.addPage(FinalPage(self))
         self.btn_help = self.button(self.HelpButton)
         self.btn_help.clicked.connect(self.show_help)
@@ -53,6 +55,7 @@ class _ModCreationWizard(Ui_Wizard, QWizard):
                 'category': self.field('category_name'),
                 'mod_version': self.field('mod_version'),
                 'dcs_version': self.field('dcs_version'),
+                'mod_desc': self.field('mod_desc'),
             }
         else:
             return None
