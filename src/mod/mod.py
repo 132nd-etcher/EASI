@@ -7,6 +7,7 @@ from src.cache.cache import Cache
 from src.git.wrapper import Repository
 from src.low.custom_path import Path
 from src.mod.mod_meta import ModMeta
+from src.mod.mod_file import ModFile
 
 
 class Mod:
@@ -34,7 +35,5 @@ class Mod:
 
     @property
     def local_files(self):
-        for root, folders, files in os.walk(self.repo.path, topdown=True):
-            folders[:] = [d for d in folders if d not in ['.git']]
-            for file in files:
-                yield os.path.join(root, file)
+        for cache_file in Cache().files_in(self.local_folder):
+            yield ModFile(self, cache_file)
