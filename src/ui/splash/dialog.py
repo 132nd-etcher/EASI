@@ -16,11 +16,11 @@ class _MainUiSplash(QSplashScreen):
         font = self.label_version.font()
         # font.setBold(True)
         font.setPointSize(14)
-        self.label_version.setFixedWidth(200)
+        self.label_version.setFixedWidth(400)
         self.label_version.setAlignment(Qt.AlignRight)
         self.label_version.setFont(font)
-        # self.label_version.setStyleSheet("color: rgba(255,255,255,255)")
-        self.label_version.setStyleSheet("color: rgba({})".format(self.colors['text']))
+        # self.label_version.setStyleSheet('color: rgba(255,255,255,255)')
+        self.label_version.setStyleSheet('color: rgba({})'.format(self.colors['text']))
         self.label_version.setGeometry(
             self.width() - self.label_version.width() - 33,
             self.height() - self.label_version.height() - 45,
@@ -34,16 +34,27 @@ class _MainUiSplash(QSplashScreen):
         # Monotype Corsiva
         # Palace Script MT
         # Vivaldi
-        self.label_rel_name = QLabel('{}'.format(constants.APP_RELEASE_NAME), self)
-        h_offset = 40
         # font = QFont('Monotype Corsiva', 20)
-        font = QFont('Lucida Handwriting', 16)
+        h_offset = 40
+        self.label_status = QLabel(constants.APP_STATUS, self)
+        self.label_status.setFont(QFont('Mistral', 28))
+        self.label_status.adjustSize()
+        # self.label_status.setFixedWidth(self.width() - h_offset - self.label_status.width())
+        # self.label_status.setFixedHeight(80)
+        self.label_status.setStyleSheet('color: rgba({})'.format(self.colors['text']))
+        self.label_status.setGeometry(
+            self.width() - self.label_status.width() - 33,
+            self.height() - self.label_status.height() - 65,
+            self.label_status.width(),
+            self.label_status.height()
+        )
+        self.label_rel_name = QLabel('{}'.format(constants.APP_RELEASE_NAME), self)
         self.label_rel_name.setWordWrap(True)
-        self.label_rel_name.setFont(font)
+        self.label_rel_name.setFont(QFont('Lucida Handwriting', 14))
         self.label_rel_name.setFixedWidth(self.width() - h_offset - self.label_version.width())
         self.label_rel_name.setFixedHeight(80)
-        # self.label_rel_name.setStyleSheet("color: rgba(255,255,255,255)")
-        self.label_rel_name.setStyleSheet("color: rgba({})".format(self.colors['text']))
+        # self.label_rel_name.setStyleSheet('color: rgba(255,255,255,255)')
+        self.label_rel_name.setStyleSheet('color: rgba({})'.format(self.colors['text']))
         self.label_rel_name.setGeometry(
             h_offset,
             100,
@@ -51,26 +62,27 @@ class _MainUiSplash(QSplashScreen):
             self.label_rel_name.height()
         )
         self.progress = QProgressBar(self)
-        self.progress.setStyleSheet("QProgressBar{{"
-                                    "border: 1px solid transparent;"
-                                    "text-align: center;"
-                                    "color: rgba({});"
-                                    "border-radius: 8px;"
-                                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, "
-                                    "stop:0 rgba(207, 240, 158, 50), "
-                                    "stop:1 rgba(209, 209, 209, 50));"
-                                    "}}"
-                                    "QProgressBar::chunk{{"
-                                    "background-color: rgba(161,247,96,100);"
-                                    "border-radius: 8px;"
-                                    "border: 1px transparent;"
-                                    "color: transparent;"
-                                    "}}".format(self.colors['text']))
+        self.progress.setStyleSheet('QProgressBar{{'
+                                    'border: 1px solid transparent;'
+                                    'text-align: center;'
+                                    'color: rgba({});'
+                                    'border-radius: 8px;'
+                                    'background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, '
+                                    'stop:0 rgba(207, 240, 158, 50), '
+                                    'stop:1 rgba(209, 209, 209, 50));'
+                                    '}}'
+                                    'QProgressBar::chunk{{'
+                                    'background-color: rgba(161,247,96,100);'
+                                    'border-radius: 8px;'
+                                    'border: 1px transparent;'
+                                    'color: transparent;'
+                                    '}}'.format(self.colors['text']))
         self.progress.setAlignment(Qt.AlignCenter)
         self.progress.setFixedHeight(20)
         self.progress.setGeometry(
             12, self.height() - self.progress.height() - 24, self.width() - 40, 20
         )
+        self.progress.setFont(QFont('Lucida Console', 10))
 
     def mousePressEvent(self, _):
         pass
