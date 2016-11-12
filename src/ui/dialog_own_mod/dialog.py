@@ -21,7 +21,8 @@ class _ModDetailsDialog(QDialog, Ui_Form):
             self.setWindowTitle('Creating new mod')
         self.__meta_repo = meta_repo
         self.metadata_widget = ModMetadataWidget(self.mod, self)
-        self.files_widget = GitFilesWidget(self.mod.repo if self.mod else None, self)
+        # self.files_widget = GitFilesWidget(self.mod.repo if self.mod else None, self)
+        self.files_widget = GitFilesWidget(self.mod.local_files if self.mod else None, self)  # FIXME
         self.remote_widget = ModRemoteWidget(self.mod, self)
         self.main_layout.addWidget(self.metadata_widget)
         self.main_layout.addWidget(self.files_widget)
@@ -53,7 +54,7 @@ class _ModDetailsDialog(QDialog, Ui_Form):
             self.btn_local_files.setEnabled(True)
             self.btn_remote.setEnabled(True)
             self.metadata_widget.mod = value
-            self.files_widget.repo = value.repo
+            self.files_widget.repo = value.local_folder  # FIXME
             self.remote_widget.mod = value
 
     def show_widget(self, widget: QWidget):

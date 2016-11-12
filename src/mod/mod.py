@@ -12,7 +12,7 @@ from src.mod.mod_meta import ModMeta
 class Mod:
     def __init__(self, meta_path: Path, parent_meta_repo, new_mod_name: str or None = None):
         self.__meta = ModMeta(path=meta_path)
-        self.__repo = Repository(path=Path(Cache().own_mods_folder.joinpath(new_mod_name or self.meta.name)))
+        # self.__repo = Repository(path=Path(Cache().own_mods_folder.joinpath(new_mod_name or self.meta.name)))
         self.__parent = parent_meta_repo
 
     @property
@@ -20,8 +20,8 @@ class Mod:
         return self.__parent
 
     @property
-    def repo(self) -> Repository:
-        return self.__repo
+    def local_folder(self) -> Path:
+        return Path(Cache().mods_folder.joinpath(self.meta_repo.name).joinpath(self.meta.name))
 
     @property
     def meta(self) -> ModMeta:
@@ -29,7 +29,8 @@ class Mod:
 
     @property
     def has_changed(self):
-        return len(self.repo.status) > 0
+        return False  #FIXME
+        # return len(self.repo.status) > 0
 
     @property
     def local_files(self):
