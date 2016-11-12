@@ -5,7 +5,7 @@ from send2trash import send2trash
 from shortuuid import uuid
 
 from src.cache.cache import Cache
-from src.cache.cache import CacheEvent
+from src.cache.cache_event import CacheEvent
 from src.git.wrapper import Repository
 from src.low.custom_path import Path
 from src.low.custom_logging import make_logger
@@ -96,7 +96,9 @@ class MetaRepo:
         if mod_name not in [mod.meta.name for mod in self.mods]:
             raise ValueError('no mod named: {}'.format(mod_name))
         mod = self.__mods[mod_name]
-        send2trash(str(mod.repo.path.abspath()))
+        assert isinstance(mod, Mod)
+        if mod.local_folder.exists():
+            send2trash(str(mod.local_folder.abspath()))
         send2trash(str(mod.meta.path.abspath()))
         # to_del = set(Config().to_del)
         # to_del.add(str(mod.repo.path.abspath()))

@@ -7,7 +7,8 @@ import string
 import pytest
 from blinker_herald import signals
 
-from src.cache.cache import Cache, CacheEvent
+from src.cache.cache import Cache
+from src.cache.cache_event import CacheEvent
 from src.low.custom_path import Path
 from src.low.singleton import Singleton
 

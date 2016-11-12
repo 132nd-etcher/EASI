@@ -2,73 +2,20 @@
 
 import abc
 import os
-import stat
 
 from blinker import signal
 from blinker_herald import emit, signals
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
+from src.cache.cache_event import CacheEvent
+from src.cache.cache_file import CacheFile
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path, create_temp_file, create_temp_dir
 from src.low.singleton import Singleton
 from src.rem.gh.gh_session import GHSession
 
 logger = make_logger(__name__)
-
-
-class CacheEvent:
-    """
-    Represents an event sent by the Cache when the watched filesystem is changed
-    """
-
-    def __init__(self, event_type: str, src: str, dst: str = None):
-        self.event_type = event_type
-        self.src = Path(src)
-        self.dst = Path(dst) if dst else dst
-
-    def __str__(self):
-        return '{}: {}'.format(
-            self.event_type, self.src if self.dst is None else '{} -> {}'.format(
-                self.src, self.dst))
-
-
-class CacheFile:
-    def __init__(
-            self,
-            name: str,
-            abspath: str,
-            path: str,
-            st):
-        self.size = st.st_size
-        self.atime = st.st_atime
-        self.mtime = st.st_mtime
-        self.ctime = st.st_ctime
-        self.read_only = bool(stat.FILE_ATTRIBUTE_READONLY & st.st_file_attributes)
-        self.hidden = bool(stat.FILE_ATTRIBUTE_HIDDEN & st.st_file_attributes)
-        self.system = bool(stat.FILE_ATTRIBUTE_SYSTEM & st.st_file_attributes)
-        self.archive = bool(stat.FILE_ATTRIBUTE_ARCHIVE & st.st_file_attributes)
-        self.path = path
-        self.abspath = abspath
-        self.name = name
-        self.__crc32 = None
-
-    def __str__(self):
-        return '\n\t\t'.join(['{}: {}'.format(k, getattr(self, k)) for k in self.__dict__])
-
-    @property
-    def crc32(self) -> str or None:
-        if self.__crc32 is None:
-            self.get_crc32()
-        return self.__crc32
-
-    @crc32.setter
-    def crc32(self, value: str):
-        self.__crc32 = value
-
-    def get_crc32(self):
-        p = Path(self.abspath)
-        self.__crc32 = p.crc32()
 
 
 class Cache(FileSystemEventHandler, metaclass=Singleton):
@@ -205,7 +152,6 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                 if any((
                             '\\.git' in rel_path,
                             '\\temp' in rel_path,
-
                 )):
                     pass
                 else:

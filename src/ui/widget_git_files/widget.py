@@ -4,7 +4,7 @@ import os
 
 from blinker_herald import signals
 
-from src.cache.cache import CacheEvent
+from src.cache.cache_event import CacheEvent
 from src.easi.ops import confirm, long_input
 from src.git.wrapper import Repository
 from src.low.custom_path import Path
