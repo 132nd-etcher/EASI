@@ -51,7 +51,7 @@ class _MainUiSplash(QSplashScreen):
         self.label_rel_name = QLabel('{}'.format(constants.APP_RELEASE_NAME), self)
         self.label_rel_name.setWordWrap(True)
         self.label_rel_name.setFont(QFont('Lucida Handwriting', 14))
-        self.label_rel_name.setFixedWidth(self.width() - h_offset - self.label_version.width())
+        self.label_rel_name.setFixedWidth(self.width() - h_offset)  # - self.label_version.width())
         self.label_rel_name.setFixedHeight(80)
         # self.label_rel_name.setStyleSheet('color: rgba(255,255,255,255)')
         self.label_rel_name.setStyleSheet('color: rgba({})'.format(self.colors['text']))
