@@ -18,6 +18,7 @@ class BaseQWidget(metaclass=abc.ABCMeta):
 
     def adjust_size(self):
         self.qobj.setMaximumSize(400, 16777215)
+        self.qobj.setMinimumHeight(self.qobj.height())
         self.qobj.adjustSize()
 
     def fix_size(self):
