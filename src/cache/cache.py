@@ -15,6 +15,8 @@ from src.low.custom_path import Path, create_temp_file, create_temp_dir
 from src.low.singleton import Singleton
 from src.rem.gh.gh_session import GHSession
 
+from src.sig import SigProgress
+
 logger = make_logger(__name__)
 
 
@@ -132,7 +134,16 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
         try:
             if rel_path is None:
                 logger.info('re-building whole cache folder')
+                SigProgress().set_progress(0)
+                SigProgress().set_progress_text('Building local cache')
                 self.meta = {}
+                total = 0
+                count = 0
+                for root, folders, _ in os.walk(self.path, topdown=True):
+                    folders[:] = [d for d in folders if d not in ['.git']]
+                    folders[:] = [d for d in folders if d not in ['temp']]
+                    for _ in os.scandir(root):
+                        total += 1
                 for root, folders, _ in os.walk(self.path, topdown=True):
                     folders[:] = [d for d in folders if d not in ['.git']]
                     folders[:] = [d for d in folders if d not in ['temp']]
@@ -153,6 +164,8 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                         except PermissionError:
                             logger.debug('permission error, canceling')
                             del self.meta[v.path]
+                    count += 1
+                    SigProgress().set_progress((count / total) * 100)
             else:
                 if any((
                             '\\.git' in rel_path,
