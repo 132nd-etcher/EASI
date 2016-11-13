@@ -153,7 +153,8 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                         path = entry.path
                         abspath = os.path.join(self.path.dirname(), path)
                         name = entry.name
-                        meta = CacheFile(name, abspath, path, entry.stat())
+                        isdir = os.path.isdir(abspath)
+                        meta = CacheFile(name, abspath, path, entry.stat(), isdir)
                         self.meta[meta.path] = meta
                     for v in self.meta.values():
                         try:
@@ -177,8 +178,9 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                     path = rel_path
                     abspath = os.path.abspath(rel_path)
                     name = os.path.basename(rel_path)
+                    isdir = os.path.isdir(abspath)
                     try:
-                        meta = CacheFile(name, abspath, path, os.stat(abspath))
+                        meta = CacheFile(name, abspath, path, os.stat(abspath), isdir)
                         meta.get_crc32()
                     except FileNotFoundError:
                         logger.debug('file not found, canceling')

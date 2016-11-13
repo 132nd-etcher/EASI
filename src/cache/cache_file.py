@@ -10,7 +10,10 @@ class CacheFile:
             name: str,
             abspath: str,
             path: str,
-            st):
+            st,
+            isdir: bool,
+    ):
+        self.isdir = isdir
         self.size = st.st_size
         self.atime = st.st_atime
         self.mtime = st.st_mtime
