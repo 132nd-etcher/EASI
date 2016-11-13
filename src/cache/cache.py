@@ -152,15 +152,15 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                         isdir = os.path.isdir(abspath)
                         meta = CacheFile(name, abspath, path, entry.stat(), isdir)
                         self.meta[meta.path] = meta
-                    for v in self.meta.values():
-                        try:
-                            v.get_crc32()
-                        except FileNotFoundError:
-                            logger.debug('file not found, canceling')
-                            del self.meta[v.path]
-                        except PermissionError:
-                            logger.debug('permission error, canceling')
-                            del self.meta[v.path]
+                for v in self.meta.values():
+                    try:
+                        v.get_crc32()
+                    except FileNotFoundError:
+                        logger.debug('file not found, canceling')
+                        del self.meta[v.path]
+                    except PermissionError:
+                        logger.debug('permission error, canceling')
+                        del self.meta[v.path]
                     count += 1
                     SigProgress().set_progress((count / total) * 100)
             else:
