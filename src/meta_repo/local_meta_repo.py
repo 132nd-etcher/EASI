@@ -6,7 +6,7 @@ from src.meta_repo.meta_repo import MetaRepo
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
 from src.rem.gh.gh_session import GHSession
-from src.sig import SIG_LOCAL_REPO_CHANGED
+from src.sig import SIG_LOCAL_REPO_CHANGED, SigProgress
 from src.cfg.cfg import Config
 
 logger = make_logger(__name__)
@@ -15,14 +15,23 @@ logger = make_logger(__name__)
 class LocalMetaRepo(metaclass=Singleton):
     def __init__(self):
         self.__repos = {}
+        total = len(Cache().meta_repos_folder.listdir())
+        current = 0
+        SigProgress().set_progress_title('Initializing meta-repositories')
+        SigProgress().set_progress(0)
         for repo in Cache().meta_repos_folder.listdir():
             user_name = str(repo.basename())
+            SigProgress().set_progress_text('Initializing meta-repository: {}'.format(user_name))
             self.__repos[user_name] = MetaRepo(user_name)
+            current += 1
+            SigProgress().set_progress((current / total) * 100)
 
         if 'EASIMETA' not in self.__repos:
+            SigProgress().set_progress_text('Initializing meta-repository: EASIMETA')
             self.__repos['EASIMETA'] = MetaRepo('EASIMETA')
 
         if GHSession().user and GHSession().user not in self.__repos:
+            SigProgress().set_progress_text('Initializing meta-repository: {}'.format(GHSession().user))
             self.__repos[GHSession().user] = MetaRepo(GHSession().user)
 
     def __getitem__(self, item) -> MetaRepo:
