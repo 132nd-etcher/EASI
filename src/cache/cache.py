@@ -85,8 +85,6 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
 
     @staticmethod
     def __filter_event(event):
-        if event.is_directory:
-            return False
         if '\\.git\\' in event.src_path:
             return False
         return True
@@ -148,8 +146,6 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                     folders[:] = [d for d in folders if d not in ['.git']]
                     folders[:] = [d for d in folders if d not in ['temp']]
                     for entry in os.scandir(root):
-                        if entry.is_dir():
-                            continue
                         path = entry.path
                         abspath = os.path.join(self.path.dirname(), path)
                         name = entry.name
