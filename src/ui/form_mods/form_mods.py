@@ -14,6 +14,8 @@ from src.ui.base.qwidget import BaseQWidget
 from src.ui.dialog_own_mod.dialog import ModDetailsDialog
 from src.ui.skeletons.form_own_mod_table import Ui_Form
 from src.ui.dialog_mod_files.dialog import ModFilesDialog
+from src.threadpool.threadpool import ThreadPool
+from src.sig import SigProgress
 
 
 class OwnModModel(QAbstractTableModel):
@@ -25,18 +27,32 @@ class OwnModModel(QAbstractTableModel):
 
     def refresh_data(self):
         self.beginResetModel()
-        self.__data = list(LocalMetaRepo()[self.parent().combo_repo.currentText()].mods)
+        self.__data = []
+        mods = set(LocalMetaRepo()[self.parent().combo_repo.currentText()].mods)
+        count = 0
+        if mods:
+            SigProgress().show('Updating mods...', '')
+        for mod in mods:
+            SigProgress().set_progress_text('Reading mod: {}'.format(mod.meta.name))
+            mod_meta = mod.meta
+            values = list([str(mod_meta[attr]) for attr in self.columns_map])
+            print(values)
+            self.__data.append(
+                (values, mod, mod.has_changed)
+            )
+            count += 1
+            SigProgress().set_progress((count / len(mods)) * 100)
         self.endResetModel()
 
     def data(self, index: QModelIndex, role=Qt.DisplayRole):
         if not index.isValid():
             return QVariant()
         if role == Qt.DisplayRole:
-            return getattr(self.__data[index.row()].meta, self.columns_map[index.column()])
+            return self.__data[index.row()][0][index.column()]
         elif role == Qt.UserRole:
-            return self.__data[index.row()]
+            return self.__data[index.row()][1]
         elif role == Qt.ForegroundRole:
-            if self.__data[index.row()].has_changed:
+            if self.__data[index.row()][2]:
                 return QColor(Qt.blue)
             else:
                 return QColor(Qt.black)
@@ -87,15 +103,20 @@ class _OwnModsTable(Ui_Form, QWidget):
 
         self.connect_signals()
 
+        self.pool = ThreadPool(1, 'form_mods')
+
     @property
     def selected_meta_repo(self) -> MetaRepo:
         return LocalMetaRepo()[self.combo_repo.currentText()]
 
-    def refresh_data(self):
+    def __refresh_data(self):
         self.btn_details.setEnabled(False)
         self.model.refresh_data()
         self.set_repo_labels()
         self.resize_columns()
+
+    def refresh_data(self):
+        self.pool.queue_task(self.__refresh_data)
 
     def resize_columns(self):
         for x in range(len(self.model.columns_map)):
