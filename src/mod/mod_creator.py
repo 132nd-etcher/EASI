@@ -8,6 +8,7 @@ from src.low import constants
 from src.low.custom_logging import make_logger
 from src.meta_repo.local_meta_repo import LocalMetaRepo
 from src.sig import SIG_CREATE_NEW_MOD, SigMsg
+from src.low.custom_path import Path
 
 logger = make_logger(__name__)
 RE_MOD_NAME = compile(""".*[a-zA-Z]{4,}.*""")
@@ -28,6 +29,8 @@ class ModCreator:
         mod.meta.description = self.basics['mod_desc']
         mod.meta.status = 'draft'
         mod.meta.write()
+        Path(mod.local_folder.joinpath('DCS')).makedirs_p()
+        Path(mod.local_folder.joinpath('Saved Games')).makedirs_p()
 
     def _get_desc(self):
         desc = long_input(
