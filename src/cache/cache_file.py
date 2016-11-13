@@ -42,4 +42,7 @@ class CacheFile:
 
     def get_crc32(self):
         p = Path(self.abspath)
-        self.__crc32 = p.crc32()
+        if p.isfile():
+            self.__crc32 = p.crc32()
+        else:
+            self.__crc32 = 0
