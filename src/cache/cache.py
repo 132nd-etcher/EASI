@@ -115,6 +115,9 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
     def on_deleted(self, event):
         if self.__filter_event(event):
             logger.debug('{}'.format(event.src_path))
+            for path in list(self.meta.keys()):
+                if path.startswith('{}\\'.format(event.src_path)):
+                    del self.meta[path]
             try:
                 del self.meta[event.src_path]
             except KeyError:
