@@ -39,7 +39,8 @@ class MetaRepo:
         # noinspection PyUnusedLocal
         def cache_signal_handler(sender, signal_emitter, event: CacheEvent):
             if str(event.src.abspath()).startswith(str(self.path.abspath())):
-                self.refresh_mods()
+                if event.src.isfile():
+                    self.refresh_mods()
 
         self.cache_signal_handler = cache_signal_handler
 
