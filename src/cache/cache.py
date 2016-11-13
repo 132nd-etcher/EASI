@@ -143,12 +143,24 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
                 for root, folders, _ in os.walk(self.path, topdown=True):
                     folders[:] = [d for d in folders if d not in ['.git']]
                     folders[:] = [d for d in folders if d not in ['temp']]
-                    for _ in os.scandir(root):
+                    # noinspection PyUnusedLocal
+                    for x in os.scandir(root):
+                        abspath = os.path.join(self.path.dirname(), x.path)
+                        if '\\.git\\' in abspath or abspath.endswith('\\.git'):
+                            continue
+                        if '\\temp\\' in abspath or abspath.endswith('\\temp'):
+                            continue
                         total += 1
                 for root, folders, _ in os.walk(self.path, topdown=True):
                     folders[:] = [d for d in folders if d not in ['.git']]
                     folders[:] = [d for d in folders if d not in ['temp']]
                     for entry in os.scandir(root):
+                        path = entry.path
+                        abspath = os.path.join(self.path.dirname(), path)
+                        if '\\.git\\' in abspath or abspath.endswith('\\.git'):
+                            continue
+                        if '\\temp\\' in abspath or abspath.endswith('\\temp'):
+                            continue
                         path = entry.path
                         abspath = os.path.join(self.path.dirname(), path)
                         name = entry.name
