@@ -79,7 +79,7 @@ class MetaRepo:
             raise ValueError('mod already exists: {}'.format(mod_name))
         if GHSession().user in [False, None]:
             raise RuntimeError('no valid GHSession')
-        mod = Mod(self.path.joinpath('{}.yml'.format(mod_name)), self, new_mod_name=mod_name)
+        mod = Mod(self.path.joinpath('{}.yml'.format(mod_name)), self)
         mod.meta.uuid = uuid()
         mod.meta.name = mod_name
         mod.meta.author = GHSession().user

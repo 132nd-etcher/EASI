@@ -183,7 +183,7 @@ class TestCache:
         qtbot.wait_until(lambda: cache_built is True)
         assert p.abspath() in c
         assert df.abspath() in c
-        assert not d.abspath() in c
+        assert d.abspath() in c
         assert not g.abspath() in c
         assert not gd.abspath() in c
         assert not gf.abspath() in c

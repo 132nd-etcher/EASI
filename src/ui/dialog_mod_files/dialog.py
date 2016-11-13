@@ -61,7 +61,7 @@ class ModFilesModel(QAbstractTableModel):
             if mod_file.cache_file.isdir:
                 values = ['{}\\'.format(mod_file.rel_path)] + [''] * (len(self.map) - 1)
                 color = QColor(Qt.gray)
-                status = 'directory'
+                values.append('directory')
             else:
                 values = [str(getattr(mod_file, attr[1])) for attr in self.map if attr[1] not in ['status']]
                 values.append(status)
