@@ -4,6 +4,7 @@ import semver
 from src.meta.meta import Meta
 from src.meta.meta_property import MetaProperty
 from src.mod.dcs_version import DCSVersion
+from collections import OrderedDict
 
 
 class ModMeta(Meta):
@@ -40,8 +41,8 @@ class ModMeta(Meta):
     def description(self, value: str) -> str:
         """"""
 
-    @MetaProperty({}, dict)
-    def files(self, value: dict) -> dict:
+    @MetaProperty(OrderedDict(), OrderedDict)
+    def files(self, value: OrderedDict) -> OrderedDict:
         """"""
 
     @MetaProperty('', str)
