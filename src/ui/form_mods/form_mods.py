@@ -103,7 +103,7 @@ class _OwnModsTable(Ui_Form, QWidget):
 
         self.connect_signals()
 
-        self.pool = ThreadPool(1, 'form_mods')
+        self.pool = ThreadPool(1, 'form_mods', True)
 
     @property
     def selected_meta_repo(self) -> MetaRepo:

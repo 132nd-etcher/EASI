@@ -112,7 +112,7 @@ class _ModFilesDialog(QDialog, Ui_Form):
     def __init__(self, mod: Mod, parent=None):
         QDialog.__init__(self, parent, flags=dialog_default_flags)
         self.setupUi(self)
-        self.pool = ThreadPool(1, 'mod_files')
+        self.pool = ThreadPool(1, 'mod_files', True)
         self.resize(parent.width(), parent.height())
         self.mod = mod
         self.model = ModFilesModel(mod, self)
