@@ -32,6 +32,13 @@ class Mod:
 
     @property
     def has_changed(self):
+        for mod_file in set(self.local_files):
+            # print(mod_file.rel_path)
+            if mod_file.rel_path not in self.meta.files:
+                return True
+            else:
+                if mod_file.meta != self.meta.files[mod_file.rel_path]:
+                    return True
         return False  #FIXME
         # return len(self.repo.status) > 0
 
@@ -40,4 +47,3 @@ class Mod:
         for cache_file in Cache().files_in(self.local_folder):
             if not cache_file.isdir:
                 yield ModFile(self, cache_file)
-
