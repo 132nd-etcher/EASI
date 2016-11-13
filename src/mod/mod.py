@@ -38,4 +38,6 @@ class Mod:
     @property
     def local_files(self):
         for cache_file in Cache().files_in(self.local_folder):
-            yield ModFile(self, cache_file)
+            if not cache_file.isdir:
+                yield ModFile(self, cache_file)
+
