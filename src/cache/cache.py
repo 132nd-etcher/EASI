@@ -46,7 +46,7 @@ class Cache(FileSystemEventHandler, metaclass=Singleton):
 
     def files_in(self, rel_path):
         for x in self:
-            if x.abspath.startswith(rel_path):
+            if x.abspath.startswith('{}\\'.format(rel_path)):
                 yield x
 
     @property
