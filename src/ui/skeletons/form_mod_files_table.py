@@ -15,6 +15,7 @@ class Ui_Form(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.tableView = QtWidgets.QTableView(Form)
+        self.tableView.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.tableView.setObjectName("tableView")
         self.horizontalLayout.addWidget(self.tableView)
         self.verticalLayout = QtWidgets.QVBoxLayout()
