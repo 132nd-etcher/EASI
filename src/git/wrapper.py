@@ -9,6 +9,7 @@ from src.keyring.keyring import Keyring
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.rem.gh.gh_session import GHSession
+from src.sig import SigProgress
 
 logger = make_logger(__name__)
 
@@ -19,7 +20,9 @@ class Callbacks(pygit2.RemoteCallbacks):
         return True
 
     def transfer_progress(self, stats):
-        print(stats)
+        assert isinstance(stats, pygit2.remote.TransferProgress)
+        SigProgress().set_progress_text('Updating local repository...')
+        SigProgress().set_progress((stats.indexed_objects / stats.total_objects) * 100)
 
     def sideband_progress(self, string):
         print(string)
