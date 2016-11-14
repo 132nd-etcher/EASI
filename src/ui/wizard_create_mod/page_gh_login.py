@@ -27,9 +27,12 @@ class GHLoginPage(BasePage, Ui_Form):
 
         # noinspection PyUnusedLocal
         def update_auth_status(sender, text, color):
-            self.label_gh_status.setText(text)
-            self.label_gh_status.setStyleSheet('QLabel {{ color : {}; }}'.format(color))
-            self.label_gh_status.repaint()
+            try:
+                self.label_gh_status.setText(text)
+                self.label_gh_status.setStyleSheet('QLabel {{ color : {}; }}'.format(color))
+                self.label_gh_status.repaint()
+            except RuntimeError:
+                pass
 
         SIG_CREDENTIALS_GH_AUTH_STATUS.connect(update_auth_status, weak=False)
         self.githubUsernameLineEdit.textChanged.connect(self.text_changed)
