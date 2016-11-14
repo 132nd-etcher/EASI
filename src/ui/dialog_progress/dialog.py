@@ -28,7 +28,7 @@ class ProgressDialog(BaseDialog, ProgressInterface):
         self.__auto_close = True
         self.__current_enabled = False
 
-    def show(self, title: str, text: str, auto_close=True):
+    def show(self, title: str, text: str = '', auto_close=True):
         self.qobj.setWindowTitle(title)
         self.qobj.label.setText(text)
         self.__auto_close = auto_close
@@ -61,6 +61,8 @@ class ProgressDialog(BaseDialog, ProgressInterface):
         self.qobj.setWindowTitle(value)
 
     def set_progress_text(self, value: str):
+        if not self.qobj.isVisible():
+            self.show('Please wait...')
         self.qobj.label.setText(str(value))
         self.qobj.label.adjustSize()
         self.adjust_size()
