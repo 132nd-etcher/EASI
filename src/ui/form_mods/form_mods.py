@@ -8,8 +8,7 @@ from src.meta_repo.meta_repo import MetaRepo
 from src.mod.mod import Mod
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
-from src.sig import SIG_CREATE_NEW_MOD
-from src.sig import SIG_LOCAL_MOD_CHANGED
+from src.sig import SIG_CREATE_NEW_MOD, SIG_LOCAL_REPO_CHANGED, SIG_LOCAL_MOD_CHANGED
 from src.ui.base.qwidget import BaseQWidget
 from src.ui.dialog_own_mod.dialog import ModDetailsDialog
 from src.ui.skeletons.form_own_mod_table import Ui_Form
@@ -89,17 +88,22 @@ class _OwnModsTable(Ui_Form, QWidget):
         def refresh_mod_list(*args, **kwargs):
             self.refresh_data()
 
-        # noinspection PyUnusedLocal
-        @signals.post_show.connect_via('MainUi', weak=False)
-        def on_ui_creation(*args, **kwargs):
+        def make_combo(*args, **kwargs):
+            self.combo_repo.clear()
             self.combo_repo.addItems([repo.name for repo in LocalMetaRepo().repos])
             if LocalMetaRepo().own_meta_repo:
                 self.combo_repo.setCurrentText(LocalMetaRepo().own_meta_repo.name)
             self.set_repo_labels()
+
+        # noinspection PyUnusedLocal
+        @signals.post_show.connect_via('MainUi', weak=False)
+        def on_ui_creation(*args, **kwargs):
+            make_combo()
             self.proxy.sort(0, Qt.AscendingOrder)
             self.refresh_data()
 
         SIG_LOCAL_MOD_CHANGED.connect(refresh_mod_list, weak=False)
+        SIG_LOCAL_REPO_CHANGED.connect(make_combo, weak=False)
 
         self.connect_signals()
 
@@ -159,8 +163,6 @@ class _OwnModsTable(Ui_Form, QWidget):
     def on_double_click(self, _):
         if self.selected_mod:
             ModFilesDialog(self.selected_mod, self).qobj.exec()
-            # for x in self.selected_mod.local_files:
-            #     print(x)
             # self.show_details_for_selected_mod()
 
     def on_click(self, _):
