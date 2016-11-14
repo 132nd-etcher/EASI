@@ -1,29 +1,21 @@
 # coding=utf-8
 
-from src.qt import QWizard, QLabel
+from src.qt import QWizard, QLabel, QWidget, Qt
 from src.ui.skeletons.form_gh_login import Ui_Form
 from src.sig import SIG_CREDENTIALS_GH_AUTH_STATUS
 from src.keyring.gh import GHCredentials
 from .page_base import BasePage
+from src.ui.base.with_balloons import WithBalloons
 
 
-class GHLoginPage(BasePage, Ui_Form):
-    @property
-    def help_link(self):
-        return None  # FIXME
+class _GHLoginWidget(QWidget, Ui_Form, WithBalloons):
 
     def __init__(self, parent=None):
-        BasePage.__init__(self, parent)
-        assert isinstance(parent, QWizard)
-        self.setTitle('Login with your Github account')
+        QWidget.__init__(self, parent, flags=Qt.Widget)
+        WithBalloons.__init__(self)
         self.setupUi(self)
-        self.intro = QLabel('In order to create a mod, you need a valid Github account.\n\n')
-        self.intro.setWordWrap(True)
-        self.verticalLayout_10.insertWidget(0, self.intro)
-        self.verticalLayout_10.insertSpacing(1, 40)
-        self.flow = None
-        self.default_btn = parent.button(QWizard.NextButton)
         self.btn_gh_create.clicked.connect(self.authenticate)
+        self.default_btn = parent.parent().button(QWizard.NextButton)
 
         # noinspection PyUnusedLocal
         def update_auth_status(sender, text, color):
@@ -52,3 +44,21 @@ class GHLoginPage(BasePage, Ui_Form):
         else:
             GHCredentials.authenticate(usr, pwd)
             self.default_btn.setDefault(True)
+
+
+class GHLoginPage(BasePage):
+    @property
+    def help_link(self):
+        return None  # FIXME
+
+    def __init__(self, parent=None):
+        BasePage.__init__(self, parent)
+        assert isinstance(parent, QWizard)
+        self.setTitle('Login with your Github account')
+        self.gh_widget = _GHLoginWidget(self)
+        self.intro = QLabel('In order to create a mod, you need a valid Github account.\n\n')
+        self.intro.setWordWrap(True)
+        self.v_layout.addWidget(self.intro)
+        self.v_layout.addSpacing(40)
+        self.v_layout.addWidget(self.gh_widget)
+        self.flow = None
