@@ -21,7 +21,15 @@ logger = make_logger(__name__)
 class MetaRepo:
     def __init__(self, user: str):
         logger.info('creating meta repo for user: {}'.format(user))
-        self.__remote = GHSession().get_repo('EASIMETA', user=user)
+        self.__user = user
+        if user == GHSession().user:
+            self.__remote = GHSession().own_meta_repo
+        else:
+            try:
+                self.__remote = GHSession().get_repo('EASIMETA', user=user)
+            except FileNotFoundError:
+                logger.error('user {} has not EASIMETA repository'.format(user))
+                return
         self.__local = Repository(Cache().meta_repos_folder.joinpath(user), auto_init=False)
         if not self.local.is_init:
             logger.debug('no local repo, cloning remote')
@@ -45,6 +53,16 @@ class MetaRepo:
         self.cache_signal_handler = cache_signal_handler
 
         signals.post_cache_changed_event.connect(self.cache_signal_handler, weak=False)
+
+        # noinspection PyUnusedLocal
+        def gh_user_changed(sender, *args, **kwargs):
+            if sender == 'GHSession':
+                try:
+                    self.__remote = GHSession().get_repo('EASIMETA', user=self.__user)
+                except FileNotFoundError:
+                    logger.error('user {} has not EASIMETA repository'.format(self.__user))
+
+        signals.post_authenticate.connect(gh_user_changed, weak=False)
 
     def refresh_mods(self):
         self.__mods = {}
@@ -137,6 +155,8 @@ class MetaRepo:
         try:
             return self.remote.permissions().push
         except KeyError:
+            return False
+        except AttributeError:
             return False
 
     @property
