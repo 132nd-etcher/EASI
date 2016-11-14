@@ -2,7 +2,7 @@
 
 from blinker_herald import emit, SENDER_CLASS_NAME
 from blinker import signal
-from src.sig import SIG_CREDENTIALS_GH_AUTH_STATUS
+from src.sig import SIG_CREDENTIALS_GH_AUTH_STATUS, SigProgress
 
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
@@ -88,6 +88,8 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
         try:
             return self.get_repo('EASIMETA')
         except FileNotFoundError:
+            SigProgress().set_progress_text('Creating EASIMETA repository on Github for user: {}'.format(self.user))
+            SigProgress().set_progress(0)
             self.create_repo(name='EASIMETA',
                              description='Meta repository for EASI mods',
                              auto_init=True)
@@ -97,6 +99,7 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
             self.create_status('EASIMETA', sha, 'success',
                                description='This commit was made by EASI',
                                context='EASI')
+            SigProgress().set_progress(100)
             return self.get_repo('EASIMETA')
 
     @property
