@@ -8,6 +8,7 @@ from src.low.singleton import Singleton
 from src.rem.gh.gh_session import GHSession
 from src.sig import SIG_LOCAL_REPO_CHANGED, SigProgress
 from src.cfg.cfg import Config
+from blinker_herald import signals
 
 logger = make_logger(__name__)
 
@@ -28,11 +29,27 @@ class LocalMetaRepo(metaclass=Singleton):
 
         if 'EASIMETA' not in self.__repos:
             SigProgress().set_progress_text('Initializing meta-repository: EASIMETA')
+            SigProgress().set_progress(0)
             self.__repos['EASIMETA'] = MetaRepo('EASIMETA')
+            SigProgress().set_progress(100)
+
+        self.make_own_repo()
+
+        # noinspection PyUnusedLocal
+        def post_authenticate(sender, *args, **kwargs):
+            if sender == 'GHSession':
+                self.make_own_repo()
+
+        signals.post_authenticate.connect(post_authenticate, weak=False)
+
+    def make_own_repo(self):
 
         if GHSession().user and GHSession().user not in self.__repos:
             SigProgress().set_progress_text('Initializing meta-repository: {}'.format(GHSession().user))
+            SigProgress().set_progress(0)
             self.__repos[GHSession().user] = MetaRepo(GHSession().user)
+            SigProgress().set_progress(100)
+            SIG_LOCAL_REPO_CHANGED.send()
 
     def __getitem__(self, item) -> MetaRepo:
         return self.__repos[item]
