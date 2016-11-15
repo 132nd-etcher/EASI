@@ -10,9 +10,11 @@ class DropboxSetting(AbstractCredentialSetting):
         AbstractCredentialSetting.__init__(self, dialog)
         self.flow = None
 
-        @signals.post_authenticate.connect_via('DBSession', weak=False, )
+        @signals.post_authenticate.connect_via('DBSession')
         def status_changed(_, **kwargs):
             self.status_changed(kwargs['result'])
+
+        self.on_status_changed = status_changed
 
     def status_changed(self, result):
         super(DropboxSetting, self).status_changed(result)
