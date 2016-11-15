@@ -45,14 +45,13 @@ class MetaRepo:
             self.__mods[mod.meta.name] = mod
 
         # noinspection PyUnusedLocal
+        @signals.post_cache_changed_event.connect_via('Cache')
         def cache_signal_handler(sender, signal_emitter, event: CacheEvent):
             if str(event.src.abspath()).startswith(str(self.path.abspath())):
                 if event.src.isfile():
                     self.refresh_mods()
 
         self.cache_signal_handler = cache_signal_handler
-
-        signals.post_cache_changed_event.connect(self.cache_signal_handler, weak=False)
 
         # noinspection PyUnusedLocal
         @signals.post_authenticate.connect_via('GHSession')
