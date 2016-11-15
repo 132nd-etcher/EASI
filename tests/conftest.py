@@ -17,16 +17,18 @@ def secret():
     yield Secret
 
 
-@pytest.fixture()
-def wipe_cache():
-    Singleton.wipe_instances('Cache')
-    yield
-    Singleton.wipe_instances('Cache')
+# @pytest.fixture()
+# def wipe_cache():
+#     Singleton.wipe_instances('Cache')
+#     yield
+#     Singleton.wipe_instances('Cache')
 
 
 # noinspection PyUnusedLocal,PyShadowingNames
 @pytest.fixture(autouse=True)
-def make_tmp_cache(tmpdir):
+def make_tmp_cache(tmpdir, monkeypatch, mocker):
+    import src.cache.cache
+    monkeypatch.setattr(src.cache.cache, 'SigProgress', mocker.MagicMock())
     Singleton.wipe_instances('Cache')
     c = Cache(str(tmpdir))
     yield

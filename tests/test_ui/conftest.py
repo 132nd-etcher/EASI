@@ -7,6 +7,15 @@ from src.low.custom_logging import make_logger
 logger = make_logger(__name__)
 
 
+@pytest.fixture(autouse=True)
+def path_signals(monkeypatch, mocker):
+    import src.low.constants
+    src.low.constants.MAIN_UI = None
+    # main_ui = mocker.MagicMock()
+    # main_ui.long_op = mocker.MagicMock()
+    # monkeypatch.setattr(src.low.constants, 'MAIN_UI', main_ui)
+
+
 # noinspection PyUnusedLocal
 @pytest.fixture()
 def config_dialog(qtbot, tmpdir, config):

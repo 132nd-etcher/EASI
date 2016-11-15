@@ -274,18 +274,20 @@ class TestGHAnonymousSession(TestCase):
 
 
 class TestGHSessionAuthentication:
-    @pytest.fixture(autouse=True)
-    def new_gh_session(self, qtbot):
+    # @pytest.fixture(autouse=True)
+    def test_new_gh_session(self, qtbot):
         result = -1
 
         @signals.post_authenticate.connect_via('GHSession', weak=False)
         def check_result(_, **kwargs):
             nonlocal result
-            result = kwargs['result']
+            gh_session = kwargs['gh_session']
+            assert isinstance(gh_session, GHSession)
+            result = gh_session.user
 
         Singleton.wipe_instances('GHSession')
         # noinspection PyAttributeOutsideInit
-        self.s = GHSession()
+        GHSession()
         qtbot.wait_until(lambda: result is None)
 
     def test_init_wrong_token(self, qtbot):
@@ -294,12 +296,17 @@ class TestGHSessionAuthentication:
         @signals.post_authenticate.connect_via('GHSession', weak=False)
         def check_result(_, **kwargs):
             nonlocal result
-            result = kwargs['result']
+            gh_session = kwargs['gh_session']
+            assert isinstance(gh_session, GHSession)
+            result = gh_session.user
 
-        self.s.authenticate(st.text(min_size=1))
+        Singleton.wipe_instances('GHSession')
+        GHSession().authenticate(st.text(min_size=1))
         qtbot.wait_until(lambda: result is False)
 
-    def test_init_correct_token(self, qtbot, secret):
+    def test_init_correct_token(self, qtbot, secret, monkeypatch, mocker):
+        import src.meta_repo.local_meta_repo
+        monkeypatch.setattr(src.meta_repo.local_meta_repo.LocalMetaRepo, 'make_own_repo', mocker.MagicMock)
         if not secret.gh_test_token:
             pytest.skip('missing_token')
 
@@ -308,9 +315,12 @@ class TestGHSessionAuthentication:
         @signals.post_authenticate.connect_via('GHSession', weak=False)
         def check_result(_, **kwargs):
             nonlocal result
-            result = kwargs['result']
+            gh_session = kwargs['gh_session']
+            assert isinstance(gh_session, GHSession)
+            result = gh_session.user
 
-        self.s.authenticate(secret.gh_test_token)
+        Singleton.wipe_instances('GHSession')
+        GHSession(secret.gh_test_token)
         qtbot.wait_until(lambda: result == secret.gh_test_login)
 
 
@@ -328,7 +338,9 @@ class TestGHSession:
         @signals.post_authenticate.connect_via('GHSession', weak=False)
         def check_result(_, **kwargs):
             nonlocal result
-            result = kwargs['result']
+            gh_session = kwargs['gh_session']
+            assert isinstance(gh_session, GHSession)
+            result = gh_session.user
 
         Singleton.wipe_instances('GHSession')
         # noinspection PyAttributeOutsideInit

@@ -15,8 +15,12 @@ from src.low.singleton import Singleton
 
 class TestCache:
     @pytest.fixture(autouse=True)
-    def wipe_cache(self):
+    def wipe_cache(self, mocker, monkeypatch):
         Singleton.wipe_instances('Cache')
+        import src.cache.cache_file
+        monkeypatch.setattr(src.cache.cache, 'SigProgress', mocker.MagicMock())
+
+
 
     # noinspection PyUnusedLocal
     @pytest.fixture(params=list(range(4)))
