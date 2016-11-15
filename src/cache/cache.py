@@ -14,7 +14,6 @@ from src.low.custom_logging import make_logger
 from src.low.custom_path import Path, create_temp_file, create_temp_dir
 from src.low.singleton import Singleton
 from src.rem.gh.gh_session import GHSession
-
 from src.sig import SigProgress
 
 logger = make_logger(__name__)
