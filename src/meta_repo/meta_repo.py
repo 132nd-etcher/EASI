@@ -55,14 +55,16 @@ class MetaRepo:
         signals.post_cache_changed_event.connect(self.cache_signal_handler, weak=False)
 
         # noinspection PyUnusedLocal
+        @signals.post_authenticate.connect_via('GHSession')
         def gh_user_changed(sender, *args, **kwargs):
-            if sender == 'GHSession':
-                try:
-                    self.__remote = GHSession().get_repo('EASIMETA', user=self.__user)
-                except FileNotFoundError:
-                    logger.error('user {} has not EASIMETA repository'.format(self.__user))
+            try:
+                gh_session = kwargs['gh_session']
+                assert isinstance(gh_session, GHSession)
+                self.__remote = gh_session.get_repo('EASIMETA', user=self.__user)
+            except FileNotFoundError:
+                logger.error('user {} has not EASIMETA repository'.format(self.__user))
 
-        signals.post_authenticate.connect(gh_user_changed, weak=False)
+        self.gh_user_changed = gh_user_changed
 
     def refresh_mods(self):
         self.__mods = {}

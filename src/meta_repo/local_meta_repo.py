@@ -36,18 +36,22 @@ class LocalMetaRepo(metaclass=Singleton):
         self.make_own_repo()
 
         # noinspection PyUnusedLocal
+        @signals.post_authenticate.connect_via('GHSession')
         def post_authenticate(sender, *args, **kwargs):
-            if sender == 'GHSession':
-                self.make_own_repo()
+            gh_session = kwargs['gh_session']
+            assert isinstance(gh_session, GHSession)
+            self.make_own_repo(gh_session)
 
-        signals.post_authenticate.connect(post_authenticate, weak=False)
+        self.post_authenticate = post_authenticate
 
-    def make_own_repo(self):
+    def make_own_repo(self, gh_session: GHSession = None):
+        if gh_session is None:
+            gh_session = GHSession()
 
-        if GHSession().user and GHSession().user not in self.__repos:
-            SigProgress().set_progress_text('Initializing meta-repository: {}'.format(GHSession().user))
+        if gh_session.user and gh_session.user not in self.__repos:
+            SigProgress().set_progress_text('Initializing meta-repository: {}'.format(gh_session.user))
             SigProgress().set_progress(0)
-            self.__repos[GHSession().user] = MetaRepo(GHSession().user)
+            self.__repos[gh_session.user] = MetaRepo(gh_session.user)
             SigProgress().set_progress(100)
             SIG_LOCAL_REPO_CHANGED.send()
 

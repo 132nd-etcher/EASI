@@ -57,7 +57,7 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
     def has_valid_token(self):
         return isinstance(self.user, str)
 
-    @emit(only='post', sender=SENDER_CLASS_NAME)
+    @emit(only='post', sender=SENDER_CLASS_NAME, post_result_name='gh_session')
     def authenticate(self, token):
         if token is None:
             self.user = None
@@ -73,7 +73,7 @@ class GHSession(GHAnonymousSession, metaclass=Singleton):
                 self.user = self.gh_user.login
             except GHSessionError:
                 self.user = False
-        return self.user
+        return self
 
     def check_authentication(self, _raise=True):
         if not isinstance(self.user, str):
