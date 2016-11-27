@@ -222,7 +222,7 @@ class ThreadPoolThread(threading.Thread):
             if cmd is None:
                 time.sleep(ThreadPoolThread.threadSleepTime)
             else:
-                from src.sentry import crash_reporter
+                from src.sentry.sentry import crash_reporter
                 with crash_reporter.context:
                     # noinspection PyBroadException
                     try:

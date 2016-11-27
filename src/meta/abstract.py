@@ -1,10 +1,10 @@
 # coding=utf-8
 import abc
 
-from src.abstract.abstract_sentry import SentryContextInterface
+from src.sentry.sentry_context_provider import ISentryContextProvider
 
 
-class AbstractMeta(SentryContextInterface, metaclass=abc.ABCMeta):
+class AbstractMeta(ISentryContextProvider, metaclass=abc.ABCMeta):
     """
     Defines the interface for a class that holds Metadata.
     """

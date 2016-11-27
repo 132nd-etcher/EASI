@@ -7,12 +7,12 @@ import certifi
 import raven.breadcrumbs
 
 from src.__version__ import __version__
-from src.abstract.abstract_sentry import SentryContextInterface
 from src.cfg import Config
-from src.rem.gh.gh_session import GHSession
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
+from src.rem.gh.gh_session import GHSession
+from src.sentry.sentry_context_provider import ISentryContextProvider
 
 try:
     from vault.secret import Secret
@@ -67,7 +67,7 @@ class Sentry(raven.Client, metaclass=Singleton):
         if kwargs['data'].get('level') is None:
             kwargs['data']['level'] = logging.DEBUG
         for k, context_provider in self.registered_contexts.items():
-            assert isinstance(context_provider, SentryContextInterface)
+            assert isinstance(context_provider, ISentryContextProvider)
             crash_reporter.extra_context({k: context_provider.get_context()})
         super(Sentry, self).captureMessage(message, **kwargs)
 
@@ -79,7 +79,7 @@ class Sentry(raven.Client, metaclass=Singleton):
 
         logger.debug('capturing exception')
         for k, context_provider in self.registered_contexts.items():
-            assert isinstance(context_provider, SentryContextInterface)
+            assert isinstance(context_provider, ISentryContextProvider)
             crash_reporter.extra_context({k: context_provider.get_context()})
         super(Sentry, self).captureException(exc_info, **kwargs)
 

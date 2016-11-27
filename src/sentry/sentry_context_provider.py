@@ -3,7 +3,7 @@
 import abc
 
 
-class SentryContextInterface(metaclass=abc.ABCMeta):
+class ISentryContextProvider(metaclass=abc.ABCMeta):
     """
     Interface for any object that would like to register context with Sentry.
 
