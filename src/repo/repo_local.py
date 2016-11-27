@@ -13,7 +13,7 @@ from blinker_herald import signals
 logger = make_logger(__name__)
 
 
-class LocalMetaRepo(metaclass=Singleton):
+class LocalRepo(metaclass=Singleton):
     def __init__(self):
         self.__repos = {}
         total = len(Cache().meta_repos_folder.listdir())
@@ -110,5 +110,5 @@ class LocalMetaRepo(metaclass=Singleton):
 
 def init_local_meta_repo():
     logger.info('initializing')
-    LocalMetaRepo()
+    LocalRepo()
     logger.info('initialized')

@@ -5,7 +5,7 @@ import webbrowser
 from blinker_herald import signals
 
 from src.easi.ops import confirm
-from src.repo.local_meta_repo import LocalMetaRepo
+from src.repo.repo_local import LocalRepo
 from src.repo.meta_repo import MetaRepo
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
@@ -25,7 +25,7 @@ class MetaRepoModel(QAbstractTableModel):
 
     def refresh_data(self):
         self.beginResetModel()
-        self.__data = [mod for mod in LocalMetaRepo().repos]
+        self.__data = [mod for mod in LocalRepo().repos]
         self.endResetModel()
 
     def data(self, index: QModelIndex, role=Qt.DisplayRole):
@@ -109,7 +109,7 @@ class _MetaRepoTable(Ui_Form, QWidget):
         )
         if repo_owner:
             try:
-                LocalMetaRepo().add_repo(repo_owner)
+                LocalRepo().add_repo(repo_owner)
             except FileNotFoundError:
                 SigMsg().show('Error', 'The repository was not found')
         self.table.setUpdatesEnabled(True)
@@ -121,7 +121,7 @@ class _MetaRepoTable(Ui_Form, QWidget):
                 '(the repository will be deleted the next time EASI starts)',
                 'Removing: {}'.format(self.selected_repo.name)
         ):
-            LocalMetaRepo().remove_repo(self.selected_repo.name)
+            LocalRepo().remove_repo(self.selected_repo.name)
         self.table.setUpdatesEnabled(True)
 
     @property
@@ -139,8 +139,8 @@ class _MetaRepoTable(Ui_Form, QWidget):
     def on_click(self, _):
         if isinstance(self.selected_repo, MetaRepo):
             if any(
-                    {self.selected_repo is LocalMetaRepo().own_meta_repo,
-                     self.selected_repo is LocalMetaRepo().root_meta_repo}
+                    {self.selected_repo is LocalRepo().own_meta_repo,
+                     self.selected_repo is LocalRepo().root_meta_repo}
             ):
                 self.btn_remove.setEnabled(False)
             else:

@@ -6,7 +6,7 @@ from src.easi.ops import long_input, \
     create_new_mod_collect_basics
 from src.low import constants
 from src.low.custom_logging import make_logger
-from src.repo.local_meta_repo import LocalMetaRepo
+from src.repo.repo_local import LocalRepo
 from src.sig import SIG_CREATE_NEW_MOD, SigMsg
 from src.low.custom_path import Path
 
@@ -21,7 +21,7 @@ class ModCreator:
             self.create_draft_mod_object()
 
     def create_draft_mod_object(self):
-        meta_repo = LocalMetaRepo()[self.basics['meta_repo_name']]
+        meta_repo = LocalRepo()[self.basics['meta_repo_name']]
         mod = meta_repo.create_new_mod(self.basics['mod_name'])
         mod.meta.category = self.basics['category']
         mod.meta.version = self.basics['mod_version']

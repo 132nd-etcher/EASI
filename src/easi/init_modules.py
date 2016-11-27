@@ -32,7 +32,7 @@ def init_modules():
     init_cache()
     # from src.mod.local_mod import init_local_mods
     # init_local_mods()
-    from src.repo.local_meta_repo import init_local_meta_repo
+    from src.repo.repo_local import init_local_meta_repo
     init_local_meta_repo()
 
     from src.mod.mod_creator import init_mod_creator

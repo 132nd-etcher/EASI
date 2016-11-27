@@ -3,7 +3,7 @@
 from .page_base import BasePage
 from src.low import help_links
 from src.low.custom_logging import make_logger
-from src.repo.local_meta_repo import LocalMetaRepo
+from src.repo.repo_local import LocalRepo
 from src.qt import QComboBox, Qt, QLabel
 from src.easi.ops import warn
 
@@ -57,7 +57,7 @@ class SelectMetaRepoPage(BasePage):
 
     @property
     def selected_meta_repo(self):
-        return LocalMetaRepo()[self.combo.currentText()]
+        return LocalRepo()[self.combo.currentText()]
 
     def initializePage(self):
         super(SelectMetaRepoPage, self).initializePage()
@@ -68,10 +68,10 @@ class SelectMetaRepoPage(BasePage):
         except TypeError:
             pass
         choices = [
-            LocalMetaRepo().own_meta_repo.name,
-            LocalMetaRepo().root_meta_repo.name,
+            LocalRepo().own_meta_repo.name,
+            LocalRepo().root_meta_repo.name,
         ]
-        for meta_repo_name in LocalMetaRepo().names:
+        for meta_repo_name in LocalRepo().names:
             if meta_repo_name not in choices:
                 choices.append(meta_repo_name)
         self.combo.addItems(choices)

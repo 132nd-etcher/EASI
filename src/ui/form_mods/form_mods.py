@@ -3,7 +3,7 @@
 from blinker_herald import signals
 
 from src.easi.ops import confirm
-from src.repo.local_meta_repo import LocalMetaRepo
+from src.repo.repo_local import LocalRepo
 from src.repo.meta_repo import MetaRepo
 from src.mod.mod import Mod
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
@@ -27,7 +27,7 @@ class OwnModModel(QAbstractTableModel):
     def refresh_data(self):
         self.beginResetModel()
         self.__data = []
-        mods = set(LocalMetaRepo()[self.parent().combo_repo.currentText()].mods)
+        mods = set(LocalRepo()[self.parent().combo_repo.currentText()].mods)
         count = 0
         if mods:
             SigProgress().show('Updating mods...', '')
@@ -90,9 +90,9 @@ class _OwnModsTable(Ui_Form, QWidget):
 
         def make_combo(*args, **kwargs):
             self.combo_repo.clear()
-            self.combo_repo.addItems([repo.name for repo in LocalMetaRepo().repos])
-            if LocalMetaRepo().own_meta_repo:
-                self.combo_repo.setCurrentText(LocalMetaRepo().own_meta_repo.name)
+            self.combo_repo.addItems([repo.name for repo in LocalRepo().repos])
+            if LocalRepo().own_meta_repo:
+                self.combo_repo.setCurrentText(LocalRepo().own_meta_repo.name)
             self.set_repo_labels()
 
         # noinspection PyUnusedLocal
@@ -111,7 +111,7 @@ class _OwnModsTable(Ui_Form, QWidget):
 
     @property
     def selected_meta_repo(self) -> MetaRepo:
-        return LocalMetaRepo()[self.combo_repo.currentText()]
+        return LocalRepo()[self.combo_repo.currentText()]
 
     def __refresh_data(self):
         self.btn_details.setEnabled(False)

@@ -2,7 +2,7 @@
 
 
 from src.easi.ops import confirm
-from src.repo.local_meta_repo import LocalMetaRepo
+from src.repo.repo_local import LocalRepo
 from src.mod.mod import Mod
 from src.qt import QWidget, Qt
 from src.ui.skeletons.form_mod_remote import Ui_Form
@@ -12,7 +12,7 @@ class ModRemoteWidget(Ui_Form, QWidget):
     def __init__(self, mod: Mod, parent=None):
         QWidget.__init__(self, parent, flags=Qt.Widget)
         self.setupUi(self)
-        self.combo_meta.addItems(LocalMetaRepo().names)
+        self.combo_meta.addItems(LocalRepo().names)
         self.__mod = mod
         self.set_combo_meta_to_mod_value()
         self.combo_meta.currentIndexChanged.connect(self.change_meta_repository)
