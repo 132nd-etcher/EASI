@@ -4,8 +4,6 @@
 import semver
 
 from src.dcs.dcs_installs import DCSInstalls, DCSInstall
-# noinspection PyUnresolvedReferences
-from src.repo.repo_local import LocalRepo
 from src.mod.mod import Mod
 from src.mod.dcs_version import DCSVersion
 from src.mod.mod_category import ModCategories
