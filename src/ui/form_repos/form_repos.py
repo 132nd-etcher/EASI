@@ -6,7 +6,7 @@ from blinker_herald import signals
 
 from src.easi.ops import confirm
 from src.repo.repo_local import LocalRepo
-from src.repo.meta_repo import MetaRepo
+from src.repo.repo import Repo
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
 from src.sig import SIG_LOCAL_REPO_CHANGED, SigMsg
@@ -125,7 +125,7 @@ class _MetaRepoTable(Ui_Form, QWidget):
         self.table.setUpdatesEnabled(True)
 
     @property
-    def selected_repo(self) -> MetaRepo:
+    def selected_repo(self) -> Repo:
         return self.table.selectedIndexes()[0].data(Qt.UserRole)
 
     def show_details_for_selected_repo(self):
@@ -133,11 +133,11 @@ class _MetaRepoTable(Ui_Form, QWidget):
         self.resize_columns()
 
     def on_double_click(self, _):
-        if isinstance(self.selected_repo, MetaRepo):
+        if isinstance(self.selected_repo, Repo):
             self.show_details_for_selected_repo()
 
     def on_click(self, _):
-        if isinstance(self.selected_repo, MetaRepo):
+        if isinstance(self.selected_repo, Repo):
             if any(
                     {self.selected_repo is LocalRepo().own_meta_repo,
                      self.selected_repo is LocalRepo().root_meta_repo}

@@ -18,7 +18,7 @@ from src.sig import SIG_LOCAL_MOD_CHANGED
 logger = make_logger(__name__)
 
 
-class MetaRepo:
+class Repo:
     def __init__(self, user: str):
         logger.info('creating meta repo for user: {}'.format(user))
         self.__user = user

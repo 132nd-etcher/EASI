@@ -4,11 +4,11 @@ from src.qt import QDialog, dialog_default_flags, QWidget
 from src.ui.base.qdialog import BaseDialog
 from src.ui.widget_git_files.widget import GitFilesWidget
 from src.ui.skeletons.form_repo_details import Ui_Form
-from src.repo.meta_repo import MetaRepo
+from src.repo.repo import Repo
 
 
 class _RepoDetailsDialog(QDialog, Ui_Form):
-    def __init__(self, repo: MetaRepo, parent=None):
+    def __init__(self, repo: Repo, parent=None):
         QDialog.__init__(self, parent, flags=dialog_default_flags)
         self.setupUi(self)
         self.__repo = repo
@@ -34,6 +34,6 @@ class _RepoDetailsDialog(QDialog, Ui_Form):
 
 
 class RepoDetailsDialog(BaseDialog):
-    def __init__(self, repo: MetaRepo, parent=None):
+    def __init__(self, repo: Repo, parent=None):
         BaseDialog.__init__(self, _RepoDetailsDialog(repo, parent))
         self.qobj.show()

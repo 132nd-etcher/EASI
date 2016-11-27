@@ -4,7 +4,7 @@ from blinker_herald import signals
 
 from src.easi.ops import confirm
 from src.repo.repo_local import LocalRepo
-from src.repo.meta_repo import MetaRepo
+from src.repo.repo import Repo
 from src.mod.mod import Mod
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor
@@ -110,7 +110,7 @@ class _OwnModsTable(Ui_Form, QWidget):
         self.pool = ThreadPool(1, 'form_mods', True)
 
     @property
-    def selected_meta_repo(self) -> MetaRepo:
+    def selected_meta_repo(self) -> Repo:
         return LocalRepo()[self.combo_repo.currentText()]
 
     def __refresh_data(self):

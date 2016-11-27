@@ -2,7 +2,7 @@
 
 
 from src.cache.cache import Cache
-from src.repo.meta_repo import MetaRepo
+from src.repo.repo import Repo
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
 from src.rem.gh.gh_session import GHSession
@@ -23,14 +23,14 @@ class LocalRepo(metaclass=Singleton):
         for repo in Cache().meta_repos_folder.listdir():
             user_name = str(repo.basename())
             SigProgress().set_progress_text('Initializing meta-repository: {}'.format(user_name))
-            self.__repos[user_name] = MetaRepo(user_name)
+            self.__repos[user_name] = Repo(user_name)
             current += 1
             SigProgress().set_progress((current / total) * 100)
 
         if 'EASIMETA' not in self.__repos:
             SigProgress().set_progress_text('Initializing meta-repository: EASIMETA')
             SigProgress().set_progress(0)
-            self.__repos['EASIMETA'] = MetaRepo('EASIMETA')
+            self.__repos['EASIMETA'] = Repo('EASIMETA')
             SigProgress().set_progress(100)
 
         self.make_own_repo()
@@ -51,11 +51,11 @@ class LocalRepo(metaclass=Singleton):
         if gh_session.user and gh_session.user not in self.__repos:
             SigProgress().set_progress_text('Initializing meta-repository: {}'.format(gh_session.user))
             SigProgress().set_progress(0)
-            self.__repos[gh_session.user] = MetaRepo(gh_session.user)
+            self.__repos[gh_session.user] = Repo(gh_session.user)
             SigProgress().set_progress(100)
             SIG_LOCAL_REPO_CHANGED.send()
 
-    def __getitem__(self, item) -> MetaRepo:
+    def __getitem__(self, item) -> Repo:
         return self.__repos[item]
 
     @property
@@ -67,14 +67,14 @@ class LocalRepo(metaclass=Singleton):
         return list(x for x in self.__repos.keys())
 
     @property
-    def own_meta_repo(self) -> MetaRepo or None:
+    def own_meta_repo(self) -> Repo or None:
         if GHSession().user:
             return self.__repos[GHSession().user]
         else:
             return None
 
     @property
-    def root_meta_repo(self) -> MetaRepo:
+    def root_meta_repo(self) -> Repo:
         return self.__repos['EASIMETA']
 
     @property
@@ -88,7 +88,7 @@ class LocalRepo(metaclass=Singleton):
     def add_repo(self, user_name: str):
         if user_name in self.__repos.keys():
             raise ValueError('repo already added')
-        repo = MetaRepo(user_name)
+        repo = Repo(user_name)
         self.__repos[user_name] = repo
         if repo in Config().to_del:
             Config().to_del.remove(repo.path.abspath())

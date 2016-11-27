@@ -7,11 +7,11 @@ from src.ui.dialog_own_mod.widget_mod_metadata import ModMetadataWidget
 from src.ui.dialog_own_mod.widget_mod_remote import ModRemoteWidget
 from src.ui.skeletons.form_mod_details import Ui_Form
 from src.mod.mod import Mod
-from src.repo.meta_repo import MetaRepo
+from src.repo.repo import Repo
 
 
 class _ModDetailsDialog(QDialog, Ui_Form):
-    def __init__(self, mod: Mod or None, meta_repo: MetaRepo, parent=None):
+    def __init__(self, mod: Mod or None, meta_repo: Repo, parent=None):
         QDialog.__init__(self, parent, flags=dialog_default_flags)
         self.setupUi(self)
         self.__mod = mod
@@ -36,7 +36,7 @@ class _ModDetailsDialog(QDialog, Ui_Form):
         self.mod = mod
 
     @property
-    def meta_repo(self) -> MetaRepo:
+    def meta_repo(self) -> Repo:
         return self.__meta_repo
 
     @property
@@ -65,12 +65,12 @@ class _ModDetailsDialog(QDialog, Ui_Form):
 
 
 class ModDetailsDialog(BaseDialog):
-    def __init__(self, mod: Mod or None, meta_repo: MetaRepo, parent=None):
+    def __init__(self, mod: Mod or None, meta_repo: Repo, parent=None):
         BaseDialog.__init__(self, _ModDetailsDialog(mod, meta_repo, parent))
         self.qobj.show()
 
     @staticmethod
-    def make(mod: Mod or None, meta_repo: MetaRepo, parent=None):
+    def make(mod: Mod or None, meta_repo: Repo, parent=None):
         dialog = ModDetailsDialog(mod, meta_repo, parent)
         dialog.qobj.show()
         dialog.qobj.exec()
