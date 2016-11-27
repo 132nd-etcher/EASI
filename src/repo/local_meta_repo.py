@@ -67,7 +67,7 @@ class LocalMetaRepo(metaclass=Singleton):
         return list(x for x in self.__repos.keys())
 
     @property
-    def own_meta_repo(self) -> MetaRepo:
+    def own_meta_repo(self) -> MetaRepo or None:
         if GHSession().user:
             return self.__repos[GHSession().user]
         else:
