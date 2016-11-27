@@ -340,8 +340,3 @@ class GitRepository:
             base_alias='Previous version',
             output=output
         )
-
-
-if __name__ == '__main__':
-    r = GitRepository(path=r'F:\DEV\EASI\EASIv0.0.11\cache\meta_repos\132nd-etcher')
-    print(r.show_file_diff(Path(r'F:\DEV\EASI\EASIv0.0.11\cache\meta_repos\132nd-etcher\test.yml')))
