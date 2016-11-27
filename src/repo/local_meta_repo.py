@@ -2,7 +2,7 @@
 
 
 from src.cache.cache import Cache
-from src.meta_repo.meta_repo import MetaRepo
+from src.repo.meta_repo import MetaRepo
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
 from src.rem.gh.gh_session import GHSession

@@ -2,7 +2,7 @@
 
 from src.low import help_links
 from src.low.custom_logging import make_logger
-from src.meta_repo.local_meta_repo import LocalMetaRepo
+from src.repo.local_meta_repo import LocalMetaRepo
 from src.qt import QLabel, QLineEdit, QRegExp, QRegExpValidator
 from .page_base import BasePage
 

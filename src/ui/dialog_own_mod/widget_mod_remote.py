@@ -2,7 +2,7 @@
 
 
 from src.easi.ops import confirm
-from src.meta_repo.local_meta_repo import LocalMetaRepo
+from src.repo.local_meta_repo import LocalMetaRepo
 from src.mod.mod import Mod
 from src.qt import QWidget, Qt
 from src.ui.skeletons.form_mod_remote import Ui_Form

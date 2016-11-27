@@ -3,8 +3,8 @@
 from blinker_herald import signals
 
 from src.easi.ops import confirm
-from src.meta_repo.local_meta_repo import LocalMetaRepo
-from src.meta_repo.meta_repo import MetaRepo
+from src.repo.local_meta_repo import LocalMetaRepo
+from src.repo.meta_repo import MetaRepo
 from src.mod.mod import Mod
 from src.qt import QAbstractTableModel, QModelIndex, Qt, QVariant, QSortFilterProxyModel, QHeaderView, \
     QWidget, QColor

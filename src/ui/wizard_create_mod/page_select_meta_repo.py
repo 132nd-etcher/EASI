@@ -3,7 +3,7 @@
 from .page_base import BasePage
 from src.low import help_links
 from src.low.custom_logging import make_logger
-from src.meta_repo.local_meta_repo import LocalMetaRepo
+from src.repo.local_meta_repo import LocalMetaRepo
 from src.qt import QComboBox, Qt, QLabel
 from src.easi.ops import warn
 

@@ -7,7 +7,7 @@ from src.ui.dialog_own_mod.widget_mod_metadata import ModMetadataWidget
 from src.ui.dialog_own_mod.widget_mod_remote import ModRemoteWidget
 from src.ui.skeletons.form_mod_details import Ui_Form
 from src.mod.mod import Mod
-from src.meta_repo.meta_repo import MetaRepo
+from src.repo.meta_repo import MetaRepo
 
 
 class _ModDetailsDialog(QDialog, Ui_Form):

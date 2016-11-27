@@ -4,7 +4,7 @@ from src.qt import QDialog, dialog_default_flags, QWidget
 from src.ui.base.qdialog import BaseDialog
 from src.ui.widget_git_files.widget import GitFilesWidget
 from src.ui.skeletons.form_repo_details import Ui_Form
-from src.meta_repo.meta_repo import MetaRepo
+from src.repo.meta_repo import MetaRepo
 
 
 class _RepoDetailsDialog(QDialog, Ui_Form):

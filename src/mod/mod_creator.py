@@ -6,7 +6,7 @@ from src.easi.ops import long_input, \
     create_new_mod_collect_basics
 from src.low import constants
 from src.low.custom_logging import make_logger
-from src.meta_repo.local_meta_repo import LocalMetaRepo
+from src.repo.local_meta_repo import LocalMetaRepo
 from src.sig import SIG_CREATE_NEW_MOD, SigMsg
 from src.low.custom_path import Path
 
@@ -44,7 +44,7 @@ class ModCreator:
 
     @staticmethod
     def _create_mod_object():
-        # self.__mod = self.meta_repo.create_new_mod(self.__mod_name)
+        # self.__mod = self.repo.create_new_mod(self.__mod_name)
         # self.mod.meta.category = self.__mod_category
         # self.mod.meta.dcs_version = self.__dcs_version
         # self.mod.meta.version = self.__mod_version
