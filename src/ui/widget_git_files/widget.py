@@ -6,7 +6,7 @@ from blinker_herald import signals
 
 from src.cache.cache_event import CacheEvent
 from src.easi.ops import confirm, long_input
-from src.git.wrapper import Repository
+from src.git.wrapper import GitRepository
 from src.low.custom_path import Path
 from src.qt import QAbstractTableModel, QModelIndex, QVariant, QIcon, \
     qt_resources, QSortFilterProxyModel, QColor
@@ -15,7 +15,7 @@ from src.ui.skeletons.form_git_files import Ui_Form
 
 
 class GitFilesModel(QAbstractTableModel):
-    def __init__(self, repo: Repository, parent):
+    def __init__(self, repo: GitRepository, parent):
         QAbstractTableModel.__init__(self, parent)
         self.__data = []
         self.repo = repo
@@ -25,7 +25,7 @@ class GitFilesModel(QAbstractTableModel):
         self.beginResetModel()
         self.__data = []
         if self.repo is not None:
-            assert isinstance(self.repo, Repository)
+            assert isinstance(self.repo, GitRepository)
             changed = set()
             for x in self.repo.working_dir_new:
                 self.__data.append(('new', x))
@@ -80,7 +80,7 @@ class GitFilesModel(QAbstractTableModel):
 
 
 class GitFilesWidget(QWidget, Ui_Form):
-    def __init__(self, repo: Repository, parent=None):
+    def __init__(self, repo: GitRepository, parent=None):
         QWidget.__init__(self, parent, flags=Qt.Widget)
         self.setupUi(self)
         self.setWindowIcon(QIcon(qt_resources.app_ico))

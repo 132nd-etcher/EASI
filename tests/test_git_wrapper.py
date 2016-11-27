@@ -2,14 +2,14 @@
 
 import pytest
 import os
-from src.git.wrapper import Repository
+from src.git.wrapper import GitRepository
 from src.low.custom_path import Path
 
 
 class TestGitWrapper:
     def test_git_init(self, tmpdir):
         t = str(tmpdir)
-        repo = Repository(t)
+        repo = GitRepository(t)
         with pytest.raises(FileExistsError):
             repo.init()
         c = Path(repo.path).joinpath('.git/CONFIG')
@@ -24,7 +24,7 @@ class TestGitWrapper:
         assert repo.repo.head.name == 'refs/heads/master'
 
     def test_repo_status(self, tmpdir):
-        repo = Repository(str(tmpdir))
+        repo = GitRepository(str(tmpdir))
         f = str(tmpdir.join('f'))
         with open(f, 'w') as _f:
             _f.write('')

@@ -6,7 +6,7 @@ from shortuuid import uuid
 
 from src.cache.cache import Cache
 from src.cache.cache_event import CacheEvent
-from src.git.wrapper import Repository
+from src.git.wrapper import GitRepository
 from src.low.custom_path import Path
 from src.low.custom_logging import make_logger
 from src.mod.mod import Mod
@@ -30,7 +30,7 @@ class MetaRepo:
             except FileNotFoundError:
                 logger.error('user {} has not EASIMETA repository'.format(user))
                 return
-        self.__local = Repository(Cache().meta_repos_folder.joinpath(user), auto_init=False)
+        self.__local = GitRepository(Cache().meta_repos_folder.joinpath(user), auto_init=False)
         if not self.local.is_init:
             logger.debug('no local repo, cloning remote')
             self.local.clone_from('https://github.com/{}/EASIMETA.git'.format(user))
@@ -132,7 +132,7 @@ class MetaRepo:
         return set(self.__mods.values())
 
     @property
-    def local(self) -> Repository:
+    def local(self) -> GitRepository:
         return self.__local
 
     @property

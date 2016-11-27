@@ -37,7 +37,7 @@ class Callbacks(pygit2.RemoteCallbacks):
         return pygit2.UserPass(Keyring().gh_username, Keyring().gh_password)
 
 
-class Repository:
+class GitRepository:
     repo_status_map = {
         pygit2.GIT_STATUS_CONFLICTED: 'conflicted',
         pygit2.GIT_STATUS_CURRENT: 'current',
@@ -343,5 +343,5 @@ class Repository:
 
 
 if __name__ == '__main__':
-    r = Repository(path=r'F:\DEV\EASI\EASIv0.0.11\cache\meta_repos\132nd-etcher')
+    r = GitRepository(path=r'F:\DEV\EASI\EASIv0.0.11\cache\meta_repos\132nd-etcher')
     print(r.show_file_diff(Path(r'F:\DEV\EASI\EASIv0.0.11\cache\meta_repos\132nd-etcher\test.yml')))
