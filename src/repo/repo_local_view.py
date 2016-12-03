@@ -61,7 +61,7 @@ class LocalRepoTableView(BaseTableView):
         self.set_updates_enabled(False)
 
     def show_details_for_selected_repo(self):
-        RepoDetailsDialog(self.selected_row, self.table).qobj.exec()
+        RepoDetailsDialog(self.selected_row, self.qt_table).qobj.exec()
         self.resize_columns()
 
     def show_on_github(self):
@@ -85,21 +85,21 @@ class LocalRepoTableView(BaseTableView):
         pass
 
     def add_repository(self):
-        self.table.setUpdatesEnabled(False)
+        self.qt_table.setUpdatesEnabled(False)
         repo_owner = simple_input(
             title='Adding repository',
-            parent=self.table
+            parent=self.qt_table
         )
         if repo_owner:
             LocalRepo().add_repo(repo_owner)
-        self.table.setUpdatesEnabled(True)
+        self.qt_table.setUpdatesEnabled(True)
 
     def remove_repository(self):
-        self.table.setUpdatesEnabled(False)
+        self.qt_table.setUpdatesEnabled(False)
         if confirm(
                 'Are you sure you want to remove this repository ?\n\n'
                 '(the repository will be deleted the next time EASI starts)',
                 'Removing: {}'.format(self.selected_row.name)
         ):
             LocalRepo().remove_repo(self.selected_row.name)
-        self.table.setUpdatesEnabled(True)
+        self.qt_table.setUpdatesEnabled(True)

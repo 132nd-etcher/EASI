@@ -24,21 +24,21 @@ class BaseTableView(ITableView, WithDynamicButtons):
         self.__table_data = []
         self.__qt_table = qt_table_view
 
-        self.table.verticalHeader().hide()
-        self.table.horizontalHeader().show()
-        self.table.setSelectionMode(1)
-        self.table.setSelectionBehavior(1)
+        self.qt_table.verticalHeader().hide()
+        self.qt_table.horizontalHeader().show()
+        self.qt_table.setSelectionMode(1)
+        self.qt_table.setSelectionBehavior(1)
 
         if sorting_enabled:
-            self.proxy = QSortFilterProxyModel(self.table)
+            self.proxy = QSortFilterProxyModel(self.qt_table)
             self.proxy.setSourceModel(self)
-            self.table.setSortingEnabled(True)
-            self.table.setModel(self.proxy)
+            self.qt_table.setSortingEnabled(True)
+            self.qt_table.setModel(self.proxy)
             self.proxy.sort(0, Qt.AscendingOrder)
         else:
-            self.table.setSortingEnabled(False)
+            self.qt_table.setSortingEnabled(False)
             self.proxy = None
-            self.table.setModel(self)
+            self.qt_table.setModel(self)
 
         if self.reset_model_signals is not None:
             def reset_model(sender):
@@ -61,15 +61,15 @@ class BaseTableView(ITableView, WithDynamicButtons):
 
     @property
     def selected_row(self) -> object:
-        return self.table.selectedIndexes()[0].data(Qt.UserRole)
+        return self.qt_table.selectedIndexes()[0].data(Qt.UserRole)
 
     def resize_columns(self):
         for x in range(len(self.table_headers)):
-            self.table.horizontalHeader().setSectionResizeMode(x, QHeaderView.ResizeToContents)
-        self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
+            self.qt_table.horizontalHeader().setSectionResizeMode(x, QHeaderView.ResizeToContents)
+        self.qt_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
 
     @property
-    def table(self) -> QTableView:
+    def qt_table(self) -> QTableView:
         return self.__qt_table
 
     def reset_model(self):

@@ -74,7 +74,7 @@ class ITableView(QAbstractTableModel, IView):
 
     @property
     @abstractproperty
-    def table(self) -> QTableView:
+    def qt_table(self) -> QTableView:
         pass
 
     @abstractmethod
