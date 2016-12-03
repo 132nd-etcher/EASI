@@ -1,5 +1,6 @@
 # coding=utf-8
 
+from pygit2 import GitError
 
 from src.cache.cache import Cache
 from src.repo.repo import Repo
@@ -113,6 +114,9 @@ class LocalRepo(metaclass=Singleton):
         except FileNotFoundError:
             SigMsg().error('The repository was not found')
             return
+        except GitError:
+            SigMsg().error('Invalid response from Github server. Feel free to try again !')
+            raise
         self.__repos[user_name] = repo
         if repo in Config().to_del:
             Config().to_del.remove(repo.local_git_repo_path.abspath())
