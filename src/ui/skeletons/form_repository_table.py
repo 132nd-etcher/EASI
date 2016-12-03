@@ -19,23 +19,8 @@ class Ui_Form(object):
         self.horizontalLayout.addWidget(self.table)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        self.btn_add = QtWidgets.QPushButton(Form)
-        self.btn_add.setObjectName("btn_add")
-        self.verticalLayout.addWidget(self.btn_add)
-        self.btn_remove = QtWidgets.QPushButton(Form)
-        self.btn_remove.setObjectName("btn_remove")
-        self.verticalLayout.addWidget(self.btn_remove)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.verticalLayout.addItem(spacerItem)
-        self.btn_details = QtWidgets.QPushButton(Form)
-        self.btn_details.setObjectName("btn_details")
-        self.verticalLayout.addWidget(self.btn_details)
-        self.btn_open_on_gh = QtWidgets.QPushButton(Form)
-        self.btn_open_on_gh.setObjectName("btn_open_on_gh")
-        self.verticalLayout.addWidget(self.btn_open_on_gh)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
+        self.horizontalLayout.setStretch(0, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -43,8 +28,4 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.btn_add.setText(_translate("Form", "Add"))
-        self.btn_remove.setText(_translate("Form", "Remove"))
-        self.btn_details.setText(_translate("Form", "Details"))
-        self.btn_open_on_gh.setText(_translate("Form", "Open on Github"))
 
