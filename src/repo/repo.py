@@ -20,34 +20,39 @@ logger = make_logger(__name__)
 
 class Repo:
     def __init__(self, user: str):
-        logger.info('creating meta repo for user: {}'.format(user))
+        logger.info('init meta repo for user: {}'.format(user))
+
         self.__user = user
+
         if user == GHSession().user:
+            logger.debug('valid GHSession found')
             self.__remote = GHSession().own_meta_repo
         else:
             try:
                 self.__remote = GHSession().get_repo('EASIMETA', user=user)
             except FileNotFoundError:
                 logger.error('user {} has not EASIMETA repository'.format(user))
-                return
-        self.__local = GitRepository(Cache().meta_repos_folder.joinpath(user), auto_init=False)
+                raise
+
+        logger.debug('creating local GitRepository object')
+        self.__local_git_repo = GitRepository(self.local_git_repo_path, auto_init=False)
+
         if not self.local.is_init:
             logger.debug('no local repo, cloning remote')
-            self.local.clone_from('https://github.com/{}/EASIMETA.git'.format(user))
+            self.__create_local_git_repo(user)
         else:
             ahead, behind = self.local.ahead_behind()
+            logger.debug('local repo exists; behind: {} ahead: {}'.format(behind, ahead))
             if behind:
                 logger.debug('local repo is behind remote, pulling')
                 self.local.pull()
-        self.__mods = {}
-        for mod_meta_path in self.path.listdir(pattern='*.yml'):
-            mod = Mod(mod_meta_path, self)
-            self.__mods[mod.meta.name] = mod
+
+        self.__gather_local_mods()
 
         # noinspection PyUnusedLocal
         @signals.post_cache_changed_event.connect_via('Cache')
         def cache_signal_handler(sender, signal_emitter, event: CacheEvent):
-            if str(event.src.abspath()).startswith(str(self.path.abspath())):
+            if str(event.src.abspath()).startswith(str(self.local_git_repo_path.abspath())):
                 if event.src.isfile():
                     self.refresh_mods()
 
@@ -65,16 +70,23 @@ class Repo:
 
         self.gh_user_changed = gh_user_changed
 
-    def refresh_mods(self):
+    def __create_local_git_repo(self, user):
+        self.local.clone_from('https://github.com/{}/EASIMETA.git'.format(user))
+
+    def __gather_local_mods(self):
+        """Refreshes the local mod dictionnary"""
         self.__mods = {}
-        for mod_meta_path in self.path.listdir(pattern='*.yml'):
+        for mod_meta_path in self.local_git_repo_path.listdir(pattern='*.yml'):
             mod = Mod(mod_meta_path, self)
             self.__mods[mod.meta.name] = mod
+
+    def refresh_mods(self):
+        self.__gather_local_mods()
         SIG_LOCAL_MOD_CHANGED.send()
 
     @property
     def github_url(self):
-        return 'https://github.com/{}/EASIMETA.git'.format(self.name)
+        return 'https://github.com/{}/EASIMETA.git'.format(self.user_name)
 
     def mod_name_is_available(self, mod_name: str, mod: Mod or None) -> bool:
         for other_mod in self.mods:
@@ -98,7 +110,7 @@ class Repo:
             raise ValueError('mod already exists: {}'.format(mod_name))
         if GHSession().user in [False, None]:
             raise RuntimeError('no valid GHSession')
-        mod = Mod(self.path.joinpath('{}.yml'.format(mod_name)), self)
+        mod = Mod(self.local_git_repo_path.joinpath('{}.yml'.format(mod_name)), self)
         mod.meta.uuid = uuid()
         mod.meta.name = mod_name
         mod.meta.author = GHSession().user
@@ -128,24 +140,28 @@ class Repo:
         signals.post_cache_changed_event.connect(self.cache_signal_handler, weak=False)
 
     @property
-    def mods(self):
-        return set(self.__mods.values())
-
-    @property
     def local(self) -> GitRepository:
-        return self.__local
+        return self.__local_git_repo
 
     @property
     def remote(self) -> GHRepo:
         return self.__remote
 
     @property
-    def path(self) -> Path:
-        return self.__local.path
+    def user_name(self):
+        return self.__user
+
+    @property
+    def mods(self):
+        return set(self.__mods.values())
+
+    @property
+    def local_git_repo_path(self) -> Path:
+        return Cache().meta_repos_folder.joinpath(self.user_name)
 
     @property
     def name(self) -> str:
-        return str(self.path.basename())
+        return str(self.local_git_repo_path.basename())
 
     @property
     def has_changed(self):
