@@ -52,12 +52,10 @@ class LocalRepoTableView(BaseTableView):
             self.btns_get('Remove').setEnabled(False)
 
     def on_show(self, *args, **kwargs):
-        print('on show')
         self.btns_set_enabled(False)
         self.set_updates_enabled(True)
 
     def on_hide(self, *args, **kwargs):
-        print('on hide')
         self.set_updates_enabled(False)
 
     def show_details_for_selected_repo(self):
