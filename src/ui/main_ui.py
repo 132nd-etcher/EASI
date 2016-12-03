@@ -19,6 +19,7 @@ from src.ui.splash.dialog import MainUiSplash
 from src.ui.threading import MainGuiThreading
 from src.ui.form_repos.form_repos import MetaRepoTable
 from src.ui.widget_balloon.widget import WidgetBalloon
+from src.sig import SIG_INIT_VIEWS
 
 
 class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
@@ -84,6 +85,7 @@ class MainUi(Ui_MainWindow, QMainWindow, MainGuiThreading):
         self.activateWindow()
         super(MainUi, self).show()
         self.raise_()
+        SIG_INIT_VIEWS.send('MainUi')
 
     def exit(self, code=0):
         self.close()
