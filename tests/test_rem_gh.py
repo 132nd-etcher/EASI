@@ -306,7 +306,7 @@ class TestGHSessionAuthentication:
 
     def test_init_correct_token(self, qtbot, secret, monkeypatch, mocker):
         import src.repo.repo_local
-        monkeypatch.setattr(src.repo.repo_local.LocalRepo, 'make_own_repo', mocker.MagicMock)
+        monkeypatch.setattr(src.repo.repo_local.LocalRepo, '_LocalRepo__make_own_repo', mocker.MagicMock)
         if not secret.gh_test_token:
             pytest.skip('missing_token')
 
