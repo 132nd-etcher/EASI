@@ -14,6 +14,7 @@ class _MsgDialog(Ui_Dialog, QDialog):
 
 
 class MsgDialog(BaseDialog, MsgInterface):
+
     def __init__(self, parent=None):
         BaseDialog.__init__(self, _MsgDialog(parent))
 
@@ -28,3 +29,6 @@ class MsgDialog(BaseDialog, MsgInterface):
         self.qobj.label.setText(text)
         self.adjust_size()
         self.qobj.show()
+
+    def error(self, text: str):
+        self.show('Oops', text)

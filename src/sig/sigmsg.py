@@ -7,3 +7,6 @@ from src.sig.customsig import CustomSig
 class SigMsg(MsgInterface, metaclass=CustomSig):
     def show(self, title: str, text: str):
         pass
+
+    def error(self, text: str):
+        pass
