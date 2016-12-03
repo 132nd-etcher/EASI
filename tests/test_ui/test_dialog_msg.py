@@ -5,7 +5,7 @@ import os
 from hypothesis import strategies as st, given, example
 
 from src.sig.sigmsg import SigMsg
-from src.ui.dialog_msg.dialog import MsgDialog
+from src.ui.dialog_msg.msg_dialog import MsgDialog
 
 
 @given(text=st.text(), title=st.text())

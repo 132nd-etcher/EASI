@@ -9,7 +9,7 @@ from src.qt import QMainWindow, Qt, QIcon, qt_resources
 from src.ui.active_dcs_installation import MainUiActiveDCSInstallation
 from src.ui.dialog_config.dialog import ConfigDialog
 from src.ui.dialog_feedback.dialog import FeedbackDialog
-from src.ui.dialog_msg.dialog import MsgDialog
+from src.ui.dialog_msg.msg_dialog import MsgDialog
 from src.ui.dialog_progress.dialog import ProgressDialog
 from src.ui.dialog_testing.dialog import TestingDialog
 from src.ui.form_mods.form_mods import ModEditor

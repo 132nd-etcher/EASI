@@ -4,6 +4,9 @@ from src.abstract.msg_interface import MsgInterface
 from src.qt import QDialog, Qt
 from src.ui.base.qdialog import BaseDialog
 from src.ui.skeletons.msg_dialog import Ui_Dialog
+from src.low.custom_logging import make_logger
+
+logger = make_logger(__name__)
 
 
 class _MsgDialog(Ui_Dialog, QDialog):
@@ -24,6 +27,7 @@ class MsgDialog(BaseDialog, MsgInterface):
 
     # noinspection PyMethodOverriding
     def show(self, title: str, text: str):
+        logger.debug('{}: {}'.format(title, text))
         text = text.replace('\n', '<br>')
         self.qobj.setWindowTitle(title)
         self.qobj.label.setText(text)
@@ -31,4 +35,5 @@ class MsgDialog(BaseDialog, MsgInterface):
         self.qobj.show()
 
     def error(self, text: str):
+        logger.error(text)
         self.show('Oops', text)
