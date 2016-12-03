@@ -26,7 +26,7 @@ class _RepoDetailsDialog(QDialog, Ui_Form):
     @repo.setter
     def repo(self, value):
         self.__repo = value
-        self.setWindowTitle('Showing files for: {}'.format(self.repo.path.abspath()))
+        self.setWindowTitle('Showing files for: {}'.format(self.repo.local_git_repo_path.abspath()))
 
     def show_widget(self, widget: QWidget):
         self.files_widget.setHidden(True)
