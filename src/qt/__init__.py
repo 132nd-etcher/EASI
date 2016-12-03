@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QMainWindow, QSplashScreen, QLabel, QProgressBar, QD
     QComboBox, QAction, QMenu, QFileDialog, QDialogButtonBox, QLineEdit, QToolTip, QToolButton, QWidget, \
     QGraphicsDropShadowEffect, QStylePainter, QFormLayout, QTextBrowser, QWizardPage, QVBoxLayout, QWizard,\
     QPushButton, QTableView, QHBoxLayout, QFileSystemModel, QTreeWidgetItem, QHeaderView, QSpacerItem, QSizePolicy,\
-    QTextEdit, QItemDelegate, QStyleOptionViewItem
+    QTextEdit, QItemDelegate, QStyleOptionViewItem, QBoxLayout
 
 from . import qt_resources
 
