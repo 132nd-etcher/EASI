@@ -142,7 +142,8 @@ class ModMetadataWidget(QWidget, Ui_Form):
             self.parent().mod = self.parent().meta_repo.create_new_mod(self.edit_mod_name.text())
             self.edit_uuid.setText(self.mod.meta.uuid)
             self.btn_save.setText('Save')
-        self.mod.meta.name = self.edit_mod_name.text()
+        if self.edit_mod_name.text() != self.mod.meta.name:
+            self.mod.rename(self.edit_mod_name.text())
         self.mod.meta.category = self.combo_category.currentText()
         self.mod.meta.description = self.text_desc.toPlainText()
         self.mod.meta.version = self.edit_version.text()

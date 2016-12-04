@@ -14,6 +14,15 @@ class Mod:
         if not self.local_folder.exists():
             self.local_folder.makedirs_p()
 
+    def rename(self, new_name: str):
+        print('renaming: ', new_name)
+        print(self.local_folder, ' -> ', self.local_folder.dirname().joinpath(new_name))
+        return
+        self.local_folder.move(Path(Cache().mods_folder.joinpath(self.meta_repo.name).joinpath(new_name)))
+        self.meta.path = self.meta.path.dirname().joinpath(new_name)
+        self.meta.name = new_name
+        self.meta.write()
+
     @property
     def meta_repo(self):
         return self.__parent
