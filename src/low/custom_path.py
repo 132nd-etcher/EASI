@@ -158,6 +158,9 @@ class Path(path.Path):
                 os.remove(root + '\\' + file)
         shutil.rmtree(self.abspath())
 
+    def joinpath(self, first, *others):
+        return Path(super(Path, self).joinpath(first, *others))
+
 
 def create_temp_file(*, suffix: str = None, prefix: str = None, create_in_dir: str = None) -> Path:
     os_handle, temp_file = tempfile.mkstemp(suffix=suffix, prefix=prefix, dir=create_in_dir or tempfile.gettempdir())
