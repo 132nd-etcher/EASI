@@ -8,12 +8,13 @@ from src.cache.cache_event import CacheEvent
 from src.mod.mod import Mod
 from src.mod.mod_file import ModFile
 from src.qt import Qt, QDialog, dialog_default_flags, QAbstractTableModel, QVariant, QSortFilterProxyModel, \
-    QModelIndex, QHeaderView, QColor, \
-    QTimer, pyqtSignal
+    QModelIndex, QHeaderView, QColor, QTimer, pyqtSignal, QWidget
 from src.ui.base.qdialog import BaseDialog
 from src.ui.skeletons.form_mod_files_table import Ui_Form
 from src.sig import SigProgress
 from src.threadpool.threadpool import ThreadPool
+
+from src.mod.mod_files_view import ModFilesView
 
 
 class ModFilesModel(QAbstractTableModel):
@@ -50,8 +51,6 @@ class ModFilesModel(QAbstractTableModel):
             status = 'unchanged'
             if mod_file.rel_path in mod_meta:
                 if mod_file.meta != mod_meta[mod_file.rel_path]:
-                    print(mod_file.meta)
-                    print(mod_meta[mod_file.rel_path])
                     color = QColor(Qt.blue)
                     status = 'updated'
                 del mod_meta[mod_file.rel_path]
@@ -205,6 +204,18 @@ class _ModFilesDialog(QDialog, Ui_Form):
         pass
 
 
+class _NewModFilesDialog(QDialog, Ui_Form):
+
+    def __init__(self, mod: Mod, parent=None):
+        QDialog.__init__(self, parent, flags=dialog_default_flags)
+        self.setupUi(self)
+        self.model = ModFilesView(mod, self.tableView, sorting_enabled=True, parent=parent,
+                                  btns_layout=self.verticalLayout)
+        if parent:
+            assert isinstance(parent, QWidget)
+            self.resize(parent.size())
+
+
 class ModFilesDialog(BaseDialog):
     def __init__(self, mod: Mod, parent=None):
-        BaseDialog.__init__(self, _ModFilesDialog(mod, parent))
+        BaseDialog.__init__(self, _NewModFilesDialog(mod, parent))
