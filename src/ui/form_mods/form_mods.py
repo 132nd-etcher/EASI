@@ -12,7 +12,7 @@ from src.sig import SIG_CREATE_NEW_MOD, SIG_LOCAL_REPO_CHANGED, SIG_LOCAL_MOD_CH
 from src.ui.base.qwidget import BaseQWidget
 from src.ui.dialog_own_mod.dialog import ModDetailsDialog
 from src.ui.skeletons.form_own_mod_table import Ui_Form
-from src.ui.dialog_mod_files.dialog import ModFilesDialog
+from src.ui.dialog_mod_files.dialog_modfiles import ModFilesDialog
 from src.threadpool.threadpool import ThreadPool
 from src.sig import SigProgress
 
