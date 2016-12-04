@@ -74,7 +74,7 @@ class Repo:
         self.local.clone_from('https://github.com/{}/EASIMETA.git'.format(user))
 
     def __gather_local_mods(self):
-        """Refreshes the local mod dictionnary"""
+        """Refreshes the local mod dictionary"""
         self.__mods = {}
         for mod_meta_path in self.local_git_repo_path.listdir(pattern='*.yml'):
             mod = Mod(mod_meta_path, self)
