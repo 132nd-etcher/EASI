@@ -84,6 +84,28 @@ class ModFile:
         if value not in available_actions():
             raise ValueError('unknown action: {}'.format(value))
         self.__meta['action'] = value
+        
+    @property
+    def is_new(self):
+        return self.rel_path not in self.mod.meta.files
+    
+    @property
+    def is_modified(self):
+        if self.rel_path in self.mod.meta.files:
+            return self.meta != self.mod.meta.files[self.rel_path]
+
+    @property
+    def has_changed(self):
+        return any({self.is_new, self.is_modified})
+
+    @property
+    def status(self):
+        if self.is_modified:
+            return 'modified'
+        elif self.is_new:
+            return 'new'
+        else:
+            return 'unchanged'
 
 
 def available_actions():
