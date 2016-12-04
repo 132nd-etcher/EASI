@@ -6,7 +6,7 @@ from PyQt5.QtCore import Qt, QThread, QObject, pyqtSignal, pyqtSlot, QAbstractIt
     QTimer
 # noinspection PyUnresolvedReferences
 from PyQt5.QtGui import QIcon, QPixmap, QFont, QBrush, QPainter, QPen, QRegExpValidator, QStandardItemModel, QColor,\
-    QStandardItem
+    QStandardItem, QCursor
 # noinspection PyUnresolvedReferences
 from PyQt5.QtWidgets import QMainWindow, QSplashScreen, QLabel, QProgressBar, QDialog, QApplication, QStyleFactory, \
     QComboBox, QAction, QMenu, QFileDialog, QDialogButtonBox, QLineEdit, QToolTip, QToolButton, QWidget, \
