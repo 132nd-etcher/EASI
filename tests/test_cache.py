@@ -133,7 +133,6 @@ class TestCache:
         p.write_text('')
 
         c = Cache(td)
-        print(c.meta)
 
         def got_signal(sender, signal_emitter, event):
             nonlocal signal_caught
@@ -149,7 +148,6 @@ class TestCache:
         assert os.path.exists(p.abspath())
         assert os.path.relpath(p.abspath(), td)
         signals.post_cache_changed_event.connect(got_signal)
-        print(p.abspath())
         qtbot.wait_until(lambda: p.abspath() in c, timeout=5000)
         assert len(c) == 1
         p.remove()
