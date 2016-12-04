@@ -207,3 +207,9 @@ class TestMeta(ContainedTestCase):
     def test_single_meta_wrong_type(self, x):
         with self.assertRaises(TypeError):
             DummySingletonMeta(x)
+
+    def test_read_header(self):
+        p = self.create_temp_file()
+        m = DummyMeta(p, init_dict=OrderedDict({'some': 'data'}))
+        m.write()
+        self.assertSequenceEqual(Meta.read_header(p), DummyMeta(p).meta_header)

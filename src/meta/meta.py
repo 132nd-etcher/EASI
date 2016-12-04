@@ -184,12 +184,6 @@ class Meta(AbstractMeta):
         finally:
             self.free = True
 
-    @staticmethod
-    def read_header(path):
-        path = Path(path)
-        data = yload(path.text(encoding='utf8'))
-        return data['header']
-
     def write(self):
         """
         Writes the current config to the local Config file
@@ -218,3 +212,13 @@ class Meta(AbstractMeta):
                 self.debug('waiting for resource lock')
                 i = 0
         self.free = False
+
+    @staticmethod
+    def read_header(path):
+        path = Path(path)
+        data = yload(path.text(encoding='utf8'))
+        return data['header']
+
+
+def read_meta_header(meta_file_path: Path or str):
+    return Meta.read_header(meta_file_path)
