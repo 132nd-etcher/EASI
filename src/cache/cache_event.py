@@ -16,3 +16,10 @@ class CacheEvent:
         return '{}: {}'.format(
             self.event_type, self.src if self.dst is None else '{} -> {}'.format(
                 self.src, self.dst))
+
+    def filter(self, path: str or Path):
+        if isinstance(path, Path):
+            path = str(path.abspath())
+        if not path.endswith('\\'):
+            path += '\\'
+        return str(self.src.abspath()).startswith(path)
