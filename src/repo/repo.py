@@ -13,12 +13,13 @@ from src.mod.mod import Mod
 from src.rem.gh.gh_anon import GHRepo
 from src.rem.gh.gh_session import GHSession
 from src.sig import SIG_LOCAL_MOD_CHANGED
+from src.repo.irepo import IRepo
 
 
 logger = make_logger(__name__)
 
 
-class Repo:
+class Repo(IRepo):
     def __init__(self, user: str):
         logger.info('init meta repo for user: {}'.format(user))
 
