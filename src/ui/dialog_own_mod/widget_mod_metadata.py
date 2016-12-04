@@ -95,7 +95,7 @@ class ModMetadataWidget(QWidget, Ui_Form):
             self.combo_category.addItem(mod_type)
         self.combo_category.model().itemFromIndex(self.combo_category.model().index(0, 0)).setEnabled(False)
         self.label_help_name.setText(
-            'The name of your new mod must contain at least one string of 4 letters.')
+            'The name of your mod must contain at least one string of 4 letters.')
         self.edit_mod_name.setValidator(
             QRegExpValidator(QRegExp('.*[a-zA-Z]{4,}.*'), self.edit_mod_name)
         )
