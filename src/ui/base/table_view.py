@@ -58,6 +58,7 @@ class BaseTableView(ITableView, WithDynamicButtons):
         self.__qt_table.doubleClicked.connect(self.on_double_click)
         self.__qt_table.showEvent = self.on_show
         self.__qt_table.hideEvent = self.on_hide
+        self.__qt_table.contextMenuEvent = self.context_menu
 
     @property
     def selected_row(self) -> object:
@@ -84,6 +85,9 @@ class BaseTableView(ITableView, WithDynamicButtons):
     @abc.abstractmethod
     def build_model(self):
         """Populates the model using self.add_row"""
+
+    def context_menu(self, event):
+        pass
 
     def reset_table_data(self):
         self.__table_data = []
