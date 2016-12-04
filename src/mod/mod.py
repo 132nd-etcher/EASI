@@ -10,7 +10,7 @@ from src.mod.mod_meta import ModMeta
 class Mod:
     def __init__(self, meta_path: Path, parent_meta_repo):
         self.__meta = ModMeta(path=meta_path)
-        self.__parent = parent_meta_repo
+        self.__parent_meta_repo = parent_meta_repo
         if not self.local_folder.exists():
             self.local_folder.makedirs_p()
 
@@ -25,7 +25,7 @@ class Mod:
 
     @property
     def meta_repo(self):
-        return self.__parent
+        return self.__parent_meta_repo
 
     @property
     def local_folder(self) -> Path:
