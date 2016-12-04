@@ -64,6 +64,9 @@ class BaseTableView(ITableView, WithDynamicButtons):
     def selected_row(self) -> object:
         return self.qt_table.selectedIndexes()[0].data(Qt.UserRole)
 
+    def map_to_global(self, pos):
+        return self.__qt_table.mapToGlobal(pos)
+
     def resize_columns(self):
         try:
             for x in range(len(self.table_headers)):
