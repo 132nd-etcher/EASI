@@ -64,7 +64,7 @@ class ModFile:
         return humanize.naturalsize(self.cache_file.size, gnu=True)
 
     @property
-    def rel_path(self):
+    def rel_path(self) -> Path:
         return Path(self.cache_file.abspath).relpath(self.mod.local_folder.abspath())
 
     @property
