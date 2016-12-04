@@ -38,15 +38,18 @@ class Mod:
     @property
     def has_changed(self):
         for mod_file in set(self.local_files):
-            if mod_file.rel_path not in self.meta.files:
+            if mod_file.has_changed:
                 return True
-            else:
-                if mod_file.meta != self.meta.files[mod_file.rel_path]:
-                    return True
         return False
 
     @property
     def local_files(self):
-        for cache_file in Cache().files_in(self.local_folder):
-            if not cache_file.isdir:
-                yield ModFile(self, cache_file)
+        return [ModFile(self, cache_file) for cache_file in Cache().files_in(self.local_folder) if not cache_file.isdir]
+
+    @property
+    def deleted_local_files(self):
+        return [local_file for local_file in self.meta.files if not self.local_folder.joinpath(local_file) in Cache()]
+
+    @property
+    def local_mod_files(self) -> dict:
+        return {mod_file.abspath: mod_file for mod_file in self.local_files}
