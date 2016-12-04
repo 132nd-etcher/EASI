@@ -46,7 +46,7 @@ class ModNamePage(BasePage):
         self.remove_balloons()
         if self.edit.hasAcceptableInput():
             meta_repo = LocalRepo()[self.field('meta_repo_name')]
-            if not meta_repo.mod_name_is_available_new(self.edit.text()):
+            if not meta_repo.mod_name_is_available(self.edit.text()):
                 self.show_error_balloon(
                     'There is already a mod named "{}" in repository "{}"'.format(self.edit.text(),
                                                                                   meta_repo.name
