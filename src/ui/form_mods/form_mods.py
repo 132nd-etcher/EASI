@@ -35,7 +35,6 @@ class OwnModModel(QAbstractTableModel):
             SigProgress().set_progress_text('Reading mod: {}'.format(mod.meta.name))
             mod_meta = mod.meta
             values = list([str(mod_meta[attr]) for attr in self.columns_map])
-            print(values)
             self.__data.append(
                 (values, mod, mod.has_changed)
             )
