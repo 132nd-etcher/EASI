@@ -64,9 +64,12 @@ class BaseTableView(ITableView, WithDynamicButtons):
         return self.qt_table.selectedIndexes()[0].data(Qt.UserRole)
 
     def resize_columns(self):
-        for x in range(len(self.table_headers)):
-            self.qt_table.horizontalHeader().setSectionResizeMode(x, QHeaderView.ResizeToContents)
-        self.qt_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
+        try:
+            for x in range(len(self.table_headers)):
+                self.qt_table.horizontalHeader().setSectionResizeMode(x, QHeaderView.ResizeToContents)
+            self.qt_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
+        except RuntimeError:
+            pass
 
     @property
     def qt_table(self) -> QTableView:
