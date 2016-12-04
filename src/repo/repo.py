@@ -6,11 +6,11 @@ from shortuuid import uuid
 
 from src.cache.cache import Cache
 from src.cache.cache_event import CacheEvent
-from src.git.wrapper import GitRepository
 from src.low.custom_path import Path
 from src.low.custom_logging import make_logger
 from src.mod.mod import Mod
 from src.rem.gh.gh_anon import GHRepo
+from src.git.wrapper import GitRepository
 from src.rem.gh.gh_session import GHSession
 from src.sig import SIG_LOCAL_MOD_CHANGED
 from src.repo.irepo import IRepo
