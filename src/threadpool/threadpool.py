@@ -256,31 +256,6 @@ class ThreadPoolThread(threading.Thread):
                             crash_reporter.captureException(sys.exc_info())
                     finally:
                         self.__pool.task_done()
-                        # ----------------------------------------------
-                        # Pre-Sentry
-                        # ----------------------------------------------
-                        # try:
-                        #     return_value = self.__run_with_optional_args(cmd, args, kwargs)
-                        #     if callback is not None:
-                        #         if task_id is not None:
-                        #             callback((task_id, return_value))
-                        #         else:
-                        #             callback(return_value)
-                        # except:
-                        #     from secret import crash_reporter
-                        #     crash_reporter.capture_exceptions()
-                        #     print('what now ?')
-                        #     import sys
-                        #     logger.error('caught error in worker thread:\n{}\n{}: {}'.format(
-                        #         ''.join([x for x in traceback.format_tb(sys.exc_info()[2])]), sys.exc_info()[0],
-                        #         sys.exc_info()[1]))
-                        #     if err_call_back:
-                        #         self.__run_with_optional_args(err_call_back, err_args, err_kwargs)
-                        #     else:
-                        #         send_crash_report(False)
-                        # finally:
-                        #     self.__pool.task_done()
-                        # ----------------------------------------------
 
     def kill(self):
 
