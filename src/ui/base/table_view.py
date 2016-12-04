@@ -123,7 +123,10 @@ class BaseTableView(ITableView, WithDynamicButtons):
         return self.table_data[row]
 
     def add_row(self, row: ITableViewRow):
+        self.beginInsertRows(QModelIndex(), len(self.__table_data), len(self.__table_data))
         self.__table_data.append(row)
+        self.endInsertRows()
+        self.resize_columns()
 
     def remove_row(self, row: int):
         del self.__table_data[row]
