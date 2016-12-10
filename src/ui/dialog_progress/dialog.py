@@ -58,9 +58,11 @@ class ProgressDialog(BaseDialog, ProgressInterface):
         self.qobj.progress_bar_total.setValue(self.qobj.progressBar.value() + value)
 
     def set_progress_title(self, value: str):
+        logger.debug('starting: {}'.format(value))
         self.qobj.setWindowTitle(value)
 
     def set_progress_text(self, value: str):
+        logger.debug('starting: {}'.format(value))
         if not self.qobj.isVisible():
             self.show('Please wait...')
         self.qobj.label.setText(str(value))
