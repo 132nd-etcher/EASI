@@ -45,7 +45,8 @@ def make_test_logger():
 def set_testing_mode(monkeypatch):
     """Sets global testing mode"""
     from src.low import constants
-    monkeypatch.setattr(constants, 'TESTING', True)
+    constants.TESTING = True
+    # monkeypatch.setattr(constants, 'TESTING', True)
 
 
 @pytest.fixture()
