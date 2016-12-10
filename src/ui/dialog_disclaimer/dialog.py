@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from src.cfg import Config
+from src.cfg.cfg import Config
 from src.low import constants
 from src.qt import QDialog, QIcon, QDialogButtonBox, Qt, qt_resources
 from src.ui.skeletons.dialog_disclaimer import Ui_Dialog

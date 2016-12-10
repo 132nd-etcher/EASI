@@ -3,7 +3,7 @@
 import zipfile
 
 from src.dld import downloader, FileDownload
-from src.cfg import Config
+from src.cfg.cfg import Config
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.low.singleton import Singleton

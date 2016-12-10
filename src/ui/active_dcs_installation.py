@@ -2,7 +2,7 @@
 
 import os
 
-from src.cfg import Config
+from src.cfg.cfg import Config
 from src.dcs.dcs_installs import DCSInstalls, DCSInstall
 from src.qt import QMenu, QAction
 from src.ui.skeletons.main import Ui_MainWindow

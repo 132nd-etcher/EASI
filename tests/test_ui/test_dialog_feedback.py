@@ -7,7 +7,7 @@ from PyQt5.Qt import QTest
 from hypothesis import strategies as st, given, example, settings
 from pytestqt.qtbot import QtBot
 
-from src.cfg import Config
+from src.cfg.cfg import Config
 from src.qt import Qt
 from src.ui.dialog_feedback.dialog import FeedbackDialog
 

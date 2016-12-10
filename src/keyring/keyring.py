@@ -6,7 +6,7 @@ from base64 import b64encode, b64decode
 from Crypto.Cipher import AES
 from blinker import signal
 
-from src.cfg import Config
+from src.cfg.cfg import Config
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton

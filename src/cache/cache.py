@@ -272,7 +272,7 @@ class CacheEventCatcher:
 
 def init_cache():
     logger.info('initializing')
-    from src.cfg import Config
+    from src.cfg.cfg import Config
     p = Path(Config().cache_path)
     logger.debug('cache will be in: {}'.format(p.abspath()))
     if not p.exists():

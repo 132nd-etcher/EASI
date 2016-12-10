@@ -11,7 +11,7 @@ def show_disclaimer():
     if constants.TESTING:
         logger.info('disclaimer: skipping (testing mode)')
     else:
-        from src.cfg import Config
+        from src.cfg.cfg import Config
         from src.ui.dialog_disclaimer.dialog import DisclaimerDialog
         logger.info('disclaimer: showing')
         if not DisclaimerDialog.make():

@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from src.cfg import Config
+from src.cfg.cfg import Config
 from blinker import signal
 from src.ui.skeletons.main import Ui_MainWindow
 

@@ -7,7 +7,7 @@ import certifi
 import raven.breadcrumbs
 
 from src.__version__ import __version__
-from src.cfg import Config
+from src.cfg.cfg import Config
 from src.low import constants
 from src.low.custom_logging import make_logger
 from src.low.singleton import Singleton
