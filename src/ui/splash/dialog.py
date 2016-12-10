@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from src.abstract.progress_interface import ProgressInterface
+from src.abstract.progress_interface import IProgress
 from src.low import constants
 from src.qt import QSplashScreen, QPixmap, qt_resources, Qt, QLabel, QFont, QProgressBar
 from src.ui.base.qwidget import BaseQWidget
@@ -88,7 +88,7 @@ class _MainUiSplash(QSplashScreen):
         pass
 
 
-class MainUiSplash(BaseQWidget, ProgressInterface):
+class MainUiSplash(BaseQWidget, IProgress):
     def __init__(self, parent):
         BaseQWidget.__init__(self, _MainUiSplash(parent))
 

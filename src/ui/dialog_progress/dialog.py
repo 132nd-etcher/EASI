@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from src.qt import QDialog, Qt
-from src.abstract.progress_interface import ProgressInterface
+from src.abstract.progress_interface import IProgress
 from src.low.custom_logging import make_logger
 from src.ui.skeletons.dialog_progress import Ui_Dialog
 from src.ui.base.qdialog import BaseDialog
@@ -19,7 +19,7 @@ class _ProgressDialog(Ui_Dialog, QDialog):
         pass
 
 
-class ProgressDialog(BaseDialog, ProgressInterface):
+class ProgressDialog(BaseDialog, IProgress):
     """Creates the LongOp dialog and transforms Blinker sig to QtSignals via the MainUi Interface"""
 
     def __init__(self, parent):

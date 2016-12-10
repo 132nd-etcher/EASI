@@ -5,7 +5,7 @@ import time
 from requests import head, get
 from requests.exceptions import InvalidURL, MissingSchema
 
-from src.abstract.progress_interface import ProgressInterface
+from src.abstract.progress_interface import IProgress
 from src.cache.cache import Cache
 from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
@@ -174,7 +174,7 @@ class Downloader:
 
     def __download(self,
                    fdl,
-                   progress: ProgressInterface = None,
+                   progress: IProgress = None,
                    raise_err: bool = True) -> FileDownload:
         if progress:
             progress.set_progress_text('Downloading:\n{}'.format(fdl.url))
@@ -188,7 +188,7 @@ class Downloader:
     def download(self,
                  url,
                  local_file: str or Path = None,
-                 progress: ProgressInterface = None,
+                 progress: IProgress = None,
                  callback: callable = None,
                  raise_err: bool = True,
                  size: int = None) -> FileDownload:
@@ -213,7 +213,7 @@ class Downloader:
 
     def bulk_download(self,
                       fdl_list,
-                      progress: ProgressInterface = None,
+                      progress: IProgress = None,
                       callback: callable = None,
                       raise_err: bool = True):
 
