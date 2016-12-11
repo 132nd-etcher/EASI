@@ -19,7 +19,7 @@ def invalid_destination(request, tmpdir):
 
 
 @pytest.fixture(params=[uuid(), uuid(), uuid(), uuid(), uuid(), uuid()])
-def random_mod_name(request, tmpdir):
+def random_mod_uuid(request, tmpdir):
     yield request.param
     tmpdir.remove()
 
