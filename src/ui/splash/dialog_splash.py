@@ -37,14 +37,14 @@ class _MainUiSplash(QSplashScreen):
         # font = QFont('Monotype Corsiva', 20)
         h_offset = 40
         self.label_status = QLabel(constants.APP_STATUS, self)
-        self.label_status.setFont(QFont('Mistral', 28))
+        self.label_status.setFont(QFont('Monotype', 28))
         self.label_status.adjustSize()
         # self.label_status.setFixedWidth(self.width() - h_offset - self.label_status.width())
         # self.label_status.setFixedHeight(80)
         self.label_status.setStyleSheet('color: rgba({})'.format(self.colors['text']))
         self.label_status.setGeometry(
             self.width() - self.label_status.width() - 33,
-            self.height() - self.label_status.height() - 65,
+            self.height() - self.label_status.height() - 70,
             self.label_status.width(),
             self.label_status.height()
         )
