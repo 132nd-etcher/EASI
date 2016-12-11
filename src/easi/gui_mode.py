@@ -69,7 +69,7 @@ def init_proxies():
     from src.ui.dialog_long_input.dialog import LongInputDialog
     ops._long_input = LongInputDialog.make
 
-    from src.ui.dialog_browse.dialog import BrowseDialog
+    from src.ui.dialog_browse.dialog_browse import BrowseDialog
     ops._get_directory = BrowseDialog.get_directory
     ops._save_file = BrowseDialog.save_file
     ops._get_file = BrowseDialog.get_file

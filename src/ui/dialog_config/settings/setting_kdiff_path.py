@@ -6,7 +6,7 @@ from src.low.custom_logging import make_logger
 from src.low.custom_path import Path
 from src.qt import QToolButton, QAction, QLineEdit, QIcon
 from src.ui.dialog_config.settings.abstract_path_setting import AbstractPathSetting
-from src.ui.dialog_browse.dialog import BrowseDialog
+from src.ui.dialog_browse.dialog_browse import BrowseDialog
 
 logger = make_logger(__name__)
 

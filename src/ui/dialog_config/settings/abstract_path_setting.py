@@ -3,7 +3,7 @@ import os
 
 from src.low.custom_path import Path
 from src.qt import QMenu, QAction, QToolButton, QIcon, QLineEdit
-from src.ui.dialog_browse.dialog import BrowseDialog
+from src.ui.dialog_browse.dialog_browse import BrowseDialog
 from src.ui.dialog_config.settings.abstract_config import AbstractConfigSetting
 
 
