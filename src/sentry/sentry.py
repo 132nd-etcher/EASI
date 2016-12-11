@@ -56,9 +56,9 @@ class Sentry(raven.Client, metaclass=Singleton):
         except AttributeError:
             pass
 
-    def register_context(self, key, obj):
+    def register_context(self, context_name: str, context_provider: ISentryContextProvider):
         """Registers a context to be read when a crash occurs; obj must implement get_context()"""
-        self.registered_contexts[key] = obj
+        self.registered_contexts[context_name] = context_provider
 
     def captureMessage(self, message, **kwargs):
         self.set_context()
@@ -66,9 +66,9 @@ class Sentry(raven.Client, metaclass=Singleton):
             kwargs['data'] = {}
         if kwargs['data'].get('level') is None:
             kwargs['data']['level'] = logging.DEBUG
-        for k, context_provider in self.registered_contexts.items():
+        for context_name, context_provider in self.registered_contexts.items():
             assert isinstance(context_provider, ISentryContextProvider)
-            crash_reporter.extra_context({k: context_provider.get_context()})
+            crash_reporter.extra_context({context_name: context_provider.get_context()})
         super(Sentry, self).captureMessage(message, **kwargs)
 
     def captureException(self, exc_info=None, **kwargs):
