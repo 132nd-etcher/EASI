@@ -135,6 +135,8 @@ class BulkFileDownload:
             time.sleep(0.1)
 
     def add_file(self, fdl: FileDownload):
+        if not isinstance(fdl, FileDownload):
+            raise TypeError('expected FileDownload instance, got: {}'.format(type(fdl)))
         self.fdl_list.append(fdl)
 
     @property
