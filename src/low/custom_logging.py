@@ -13,7 +13,7 @@ WARN = WARNING
 ERR = ERROR
 
 
-def make_logger(module_name='__main__', log_file_path=None, logging_level=logging.DEBUG, custom_handler=None):
+def make_logger(module_name='__main__', log_file_path=None, logging_level=logging.DEBUG, custom_handler=None) -> logging.Logger:
     """Creates a module-specific logger
     :param log_file_path: path to the logfile for this logger; if None (default), no file will be created
     :param custom_handler: optional logging handler to add to the logger
