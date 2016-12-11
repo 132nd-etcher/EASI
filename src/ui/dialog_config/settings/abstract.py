@@ -15,7 +15,7 @@ class AbstractSetting(metaclass=abc.ABCMeta):
     @property
     @abc.abstractproperty
     def qt_object(self):
-        return
+        """"""
 
     @property
     @abc.abstractproperty
