@@ -220,7 +220,7 @@ class TestConfigDialog:
             dialog.config_settings['sg_path'].show_in_explorer()
             m.assert_called_with(test_dir)
 
-        with mock.patch('src.ui.dialog_browse.dialog.BrowseDialog.get_directory') as m:
+        with mock.patch('src.ui.dialog_browse.dialog_browse.BrowseDialog.get_directory') as m:
             dialog.config_settings['sg_path'].browse_for_value()
             m.assert_called_with(
                 init_dir=test_dir,
