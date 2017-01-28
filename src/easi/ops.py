@@ -7,7 +7,7 @@ from src.low.custom_path import Path
 
 # noinspection PyUnusedLocal
 def dummy(*args, **kwargs):
-    raise RuntimeError('confirm not initialized')
+    raise RuntimeError('not initialized')
 
 
 _confirm_func = dummy
