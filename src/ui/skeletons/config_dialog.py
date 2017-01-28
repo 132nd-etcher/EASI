@@ -287,7 +287,7 @@ class Ui_Settings(object):
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(Settings)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(Settings)
 
     def retranslateUi(self, Settings):
@@ -308,7 +308,7 @@ class Ui_Settings(object):
         self.btn_update_check.setText(_translate("Settings", "Check now"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_general), _translate("Settings", "General"))
         self.groupBox_encrypt.setTitle(_translate("Settings", "Encryption"))
-        self.label_encrypt.setText(_translate("Settings", "<html><head/><body><p>If you so desire, you can further protect your credentials by encrypting the fil in which EASI writes them. Note that the encryption will be <span style=\" font-weight:600;\">linked to the current Windows installation</span> and will not be retrievable if you lose access to this machine.</p></body></html>"))
+        self.label_encrypt.setText(_translate("Settings", "<html><head/><body><p>If you so desire, you can further protect your credentials by encrypting the file in which EASI writes them. Note that the encryption will be <span style=\" font-weight:600;\">linked to the current Windows installation</span> and will not be retrievable if you lose access to this machine.</p></body></html>"))
         self.check_box_encrypt.setText(_translate("Settings", "Encrypt my credentials"))
         self.grp_github.setTitle(_translate("Settings", "Github"))
         self.verticalGroupBox.setTitle(_translate("Settings", "Dropbox"))

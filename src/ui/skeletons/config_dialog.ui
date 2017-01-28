@@ -27,7 +27,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_general">
       <attribute name="title">
@@ -328,7 +328,7 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If you so desire, you can further protect your credentials by encrypting the fil in which EASI writes them. Note that the encryption will be &lt;span style=&quot; font-weight:600;&quot;&gt;linked to the current Windows installation&lt;/span&gt; and will not be retrievable if you lose access to this machine.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If you so desire, you can further protect your credentials by encrypting the file in which EASI writes them. Note that the encryption will be &lt;span style=&quot; font-weight:600;&quot;&gt;linked to the current Windows installation&lt;/span&gt; and will not be retrievable if you lose access to this machine.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
