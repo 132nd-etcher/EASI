@@ -7,6 +7,8 @@ from json import loads
 
 from src.low.custom_path import Path
 
+__version__ = None
+
 if hasattr(sys, 'frozen'):
     __version__ = Path(sys.executable).get_win32_file_info().file_version
 elif os.environ.get('APPVEYOR'):
