@@ -26,10 +26,10 @@ def init_modules():
     if constants.TESTING:
         logger.debug('testing mode, skipping helpers download & cache init')
     else:
+        from src.cache.cache import init_cache
+        init_cache()
         from src.helper import init_helpers
         init_helpers()
-    from src.cache.cache import init_cache
-    init_cache()
     # from src.mod.local_mod import init_local_mods
     # init_local_mods()
     from src.repo.repo_local import init_local_meta_repo
